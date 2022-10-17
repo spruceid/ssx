@@ -1,0 +1,32 @@
+{
+  "name": "@spruceid/create-ssx-dapp",
+  "version": "0.1.0",
+  "description": "Creates a new SSX project from scratch.",
+  "type": "module",
+  "author": "Spruce Systems, Inc.",
+  "license": "Apache-2.0 OR MIT",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:spruceid/ssx.git"
+  },
+  "files": [
+    "templates",
+    "src"
+  ],
+  "bin": {
+    "create-ssx-dapp": "src/main.js"
+  },
+  "dependencies": {
+    "chalk": "5.0.1",
+    "commander": "9.2.0",
+    "cpy": "9.0.1",
+    "execa": "6.1.0",
+    "fs-extra": "10.1.0",
+    "handlebars": "^4.7.7",
+    "prompts": "2.4.2",
+    "validate-npm-package-name": "4.0.0"
+  },
+  "scripts": {
+    "build": ""
+  }
+}

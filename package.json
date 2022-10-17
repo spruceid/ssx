@@ -1,0 +1,36 @@
+{
+  "name": "ssx",
+  "version": "0.1.0",
+  "repository": "ssh://git@github.com:spruceid/ssx.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "ci": "yarn && yarn build && yarn test",
+    "test": "lerna run test",
+    "documentation": "lerna run doc && yarn documentation:reference",
+    "documentation:reference": "node scripts/build-docs.js",
+    "bootstrap": "lerna bootstrap",
+    "run-examples": "concurrently \"yarn test-dapp start\" \"yarn express-api start\"",
+    "graph": "nx graph",
+    "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
+    "sdk": "yarn workspace @spruceid/ssx",
+    "server": "yarn workspace @spruceid/ssx-server",
+    "test-dapp": "yarn workspace ssx-test-dapp",
+    "express-api": "yarn workspace ssx-test-express-api",
+    "http-api": "yarn workspace ssx-test-http-api"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0",
+    "lerna": "^5.1.2",
+    "nx": "^14.5.4",
+    "rimraf": "^3.0.2"
+  }
+}

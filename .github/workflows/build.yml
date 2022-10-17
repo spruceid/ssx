@@ -1,0 +1,17 @@
+name: Build and Test Monorepo Packages
+on: [push]
+jobs:
+  Build-And-Test-Monorepo-Packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          scope: '@spruceid'
+      - name: Install dependencies, build and test
+        run: yarn ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSX_GITHUB_TOKEN }}

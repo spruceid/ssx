@@ -1,0 +1,34 @@
+{
+  "name": "ssx-test-http-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "redis": "node dist/redis.js",
+    "prestart": "yarn build",
+    "preredis": "yarn build",
+    "clean": "rimraf dist",
+    "dev": "concurrently \"tsc --watch\" \"nodemon src/index.ts\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@spruceid/ssx-server": "*",
+    "connect-redis": "^6.1.3",
+    "dotenv": "^16.0.1",
+    "ethers": "^5.6.9",
+    "redis": "^4.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.6.3",
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
