@@ -1,0 +1,11 @@
+{
+  "name": "ssx-react",
+  "version": "0.1.0",
+  "description": "SSX React Package",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "react": "^18.2.0",
+    "typescript": "^4.8.4"
+  }
+}
