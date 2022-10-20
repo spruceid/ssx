@@ -6,17 +6,20 @@ import getSSXConfig from './ssx.config';
 
 function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
   return (
-    <div>
+    <div className="App-account-info">
+      <h2>
+        Account Info
+      </h2>
       {
         address &&
         <p>
-          <b>Address:</b> <code>{address}</code>
-        </p>
-      }
-      {
-        delegator &&
-        <p>
-          <b>Delegator:</b> <code>{delegator}</code>
+          <b>
+            Address
+          </b>
+          <br />
+          <code>
+            {address}
+          </code>
         </p>
       }
     </div>
@@ -48,30 +51,28 @@ function App() {
           className="App-logo"
           alt="logo"
         />
-        <h1>SSX Example dApp</h1>
+        <span>SSX</span>
       </div>
-      {
-        ssxProvider ?
-          <div className="App-content">
-            <h2>
-              Account Info
-            </h2>
-            <AccountInfo
-              address={ssxProvider?.address() || ''}
-            />
-            <button onClick={ssxLogoutHandler}>
-              Sign-Out
-            </button>
-          </div> :
-          <div className="App-content">
-            <h2>
-              Connect and Sign-In with your Ethereum account.
-            </h2>
+      <div className="App-title">
+        <h1>SSX Example Dapp</h1>
+        <h2>Connect and sign in with your Ethereum account</h2>
+      </div>
+      <div className="App-content">
+        {
+          ssxProvider ?
+            <>
+              <button onClick={ssxLogoutHandler}>
+                SIGN OUT
+              </button>
+              <AccountInfo
+                address={ssxProvider?.address() || ''}
+              />
+            </> :
             <button onClick={ssxHandler}>
-              Sign-In with Ethereum (SSX)
+              SIGN-IN WITH ETHEREUM
             </button>
-          </div>
-      }
+        }
+      </div>
     </div>
   );
 }
