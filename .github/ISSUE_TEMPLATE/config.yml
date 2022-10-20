@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Request a new feature
+    url: https://ssxid.canny.io/ssx-feature-requests
+    about: Request new features and vote on the ones that are important to you
+  - name: Get support or ask a question
+    url: https://discord.gg/spruce
+    about: Access Discord to ask any questions and interact with SSX Team
