@@ -38,5 +38,8 @@
     "lerna": "^5.1.2",
     "nx": "^14.5.4",
     "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.25.0"
   }
 }
