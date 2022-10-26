@@ -10,8 +10,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          scope: '@spruceid'
       - name: Install dependencies, build and test
         run: yarn ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.SSX_GITHUB_TOKEN }}
