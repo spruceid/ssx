@@ -1,5 +1,5 @@
 name: Build and Test Monorepo Packages
-on: [push]
+on: [push, pull_request]
 jobs:
   Build-And-Test-Monorepo-Packages:
     runs-on: ubuntu-latest
