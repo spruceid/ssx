@@ -30,7 +30,11 @@ export class SSXInit {
     let provider: ethers.providers.Web3Provider;
 
     try {
-      provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      if (!this.config.providers.web3.driver?._isProvider) {
+        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      } else {
+        provider = this.config.providers.web3.driver;
+      }
       try {
         if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
           await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
