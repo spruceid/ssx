@@ -248,7 +248,7 @@ async function run() {
         name: "features",
         message: "Which features would you like to enable?",
         choices: [
-          { title: "Delegation History", value: delegationFeature },
+          { title: "Dao Login", value: delegationFeature },
           // TODO(w4ll3): figure out typing
           // { title: "Storage", value: storageFeature },
         ],
