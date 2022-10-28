@@ -1,0 +1,66 @@
+# SSX Server API Reference
+
+[Home](https://github.com/spruceid/ssx/blob/main/documentation/reference/ssx-server/index.md) > [@spruceid/ssx-server](./)
+
+### ssx-server package
+
+### Classes
+
+| Class                              | Description                                                                                                                                                                                                                                     |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [SSXServer](ssx-server.ssxserver/) | SSX-Server is a server-side library made to work with the SSX client libraries. SSX-Server is the base class that takes in a configuration object and works with various middleware libraries to add authentication and metrics to your server. |
+
+### Enumerations
+
+| Enumeration                                                                | Description                              |
+| -------------------------------------------------------------------------- | ---------------------------------------- |
+| [SSXAlchemyProviderNetworks](ssx-server.ssxalchemyprovidernetworks.md)     | Enum of supported networks for Alchemy   |
+| [SSXAnkrProviderNetworks](ssx-server.ssxankrprovidernetworks.md)           | Enum of supported networks for Ankr      |
+| [SSXEtherscanProviderNetworks](ssx-server.ssxetherscanprovidernetworks.md) | Enum of supported networks for Etherscan |
+| [SSXEventLogTypes](ssx-server.ssxeventlogtypes.md)                         | Available SSX Log Types                  |
+| [SSXInfuraProviderNetworks](ssx-server.ssxinfuraprovidernetworks.md)       | Enum of supported networks for Infura    |
+| [SSXPocketProviderNetworks](ssx-server.ssxpocketprovidernetworks.md)       | Enum of supported networks for Pocket    |
+| [SSXRPCProviders](ssx-server.ssxrpcproviders.md)                           | Enum of supported RPC providers          |
+
+### Interfaces
+
+| Interface                                                  | Description                                              |
+| ---------------------------------------------------------- | -------------------------------------------------------- |
+| [SSXCookieOptions](ssx-server.ssxcookieoptions/)           | Configuration interface for cookies issued by ssx-server |
+| [SSXLogFields](ssx-server.ssxlogfields/)                   | Allowed fields for an SSX Log                            |
+| [SSXProviders](ssx-server.ssxproviders/)                   | SSX web3 configuration settings                          |
+| [SSXServerConfig](ssx-server.ssxserverconfig/)             | Configuration interface for ssx-server                   |
+| [SSXSessionStoreConfig](ssx-server.ssxsessionstoreconfig/) | SSX Session Store configuration settings                 |
+
+### Variables
+
+| Variable                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [isSSXAlchemyProvider](ssx-server.isssxalchemyprovider.md)       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXAnkrProvider](ssx-server.isssxankrprovider.md)             |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXCloudflareProvider](ssx-server.isssxcloudflareprovider.md) |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXCustomProvider](ssx-server.isssxcustomprovider.md)         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXEtherscanProvider](ssx-server.isssxetherscanprovider.md)   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXInfuraProvider](ssx-server.isssxinfuraprovider.md)         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [isSSXPocketProvider](ssx-server.isssxpocketprovider.md)         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [SSXAuthenticated](ssx-server.ssxauthenticated.md)               | This middleware function can be used to protect an Express route with SSX authentication. It will check for ssx.verified and if it is set, the route will be allowed to proceed. If it is not set, the route will redirect or return a 401 Unauthorized response, based on the value of the redirect property.                                                                                                                                                                                      |
+| [SSXExpressMiddleware](ssx-server.ssxexpressmiddleware.md)       | This middleware function has two key functions: 1. It provides 3 endpoints for the client to hit: /ssx-nonce, /ssx-login, and /ssx-logout. These endpoints are used to authenticate the SIWE message and issue sessions. 2. It provides a middleware function that can be used to authenticate session. The middleware then exposes the authenticated session's data via the `req.ssx` property.                                                                                                    |
+| [SSXHttpMiddleware](ssx-server.ssxhttpmiddleware.md)             | <p>This middleware function does the following: 1. Checks for a ssx-session cookie and if it exists, it will manage and set the session on the request object. 2. Adds a ssx field to the request object with SSX authentication information in the object. 3. It adds a nonce, login, and logout route to the server</p><p>This function returns another function that can take an event listen as a parameter and calls it with the updated request object if none of the ssx routes are hit.</p> |
+
+### Type Aliases
+
+| Type Alias                                                                         | Description                                 |
+| ---------------------------------------------------------------------------------- | ------------------------------------------- |
+| [SSXAlchemyProvider](ssx-server.ssxalchemyprovider.md)                             | Alchemy provider settings                   |
+| [SSXAnkrProvider](ssx-server.ssxankrprovider.md)                                   | Ankr provider settings                      |
+| [SSXCloudflareProvider](ssx-server.ssxcloudflareprovider.md)                       | Cloudflare provider settings                |
+| [SSXCustomProvider](ssx-server.ssxcustomprovider.md)                               | Custom provider settings                    |
+| [SSXEtherscanProvider](ssx-server.ssxetherscanprovider.md)                         | Etherscan provider settings                 |
+| [SSXExpressSessionStoreProvider](ssx-server.ssxexpresssessionstoreprovider.md)     | SSX Express Session Store Provider settings |
+| [SSXGenericProvider](ssx-server.ssxgenericprovider.md)                             | Generic provider settings                   |
+| [SSXInfuraProvider](ssx-server.ssxinfuraprovider.md)                               | Infura provider settings                    |
+| [SSXInfuraProviderProjectSettings](ssx-server.ssxinfuraproviderprojectsettings.md) | Infura provider project settings            |
+| [SSXMetricsProvider](ssx-server.ssxmetricsprovider.md)                             | SSX Metrics Provider settings               |
+| [SSXPocketProvider](ssx-server.ssxpocketprovider.md)                               | Pocket provider settings                    |
+| [SSXRedisSessionStoreProvider](ssx-server.ssxredissessionstoreprovider.md)         | SSX Redis Session Store Provider settings   |
+| [SSXRPCProvider](ssx-server.ssxrpcprovider.md)                                     |                                             |

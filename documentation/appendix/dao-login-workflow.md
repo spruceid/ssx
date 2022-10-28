@@ -29,7 +29,7 @@ We are currently collaborating with the Safe team on enabling multiple delegates
 
 Once enabled on an application, users that are delegates for multsigs will now be prompted to choose whether they would like to log in as themselves, or on behalf of a multisig they're a delegate of.&#x20;
 
-![](<../.gitbook/assets/SafeLoginExample (1) (1) (1).png>)
+![](../.gitbook/assets/SafeLoginExample.png)
 
 To test out this functionality locally, please make sure to check out the SSX Test Dapp:
 
