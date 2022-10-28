@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/create-ssx-dapp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Creates a new SSX project from scratch.",
   "type": "module",
   "author": "Spruce Systems, Inc.",
