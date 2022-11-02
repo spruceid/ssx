@@ -20,13 +20,13 @@ https://docs.ssx.id
 
 SSX ships with a [Docker Compose](https://docs.docker.com/compose/) configuration 
 for setting up a local development and testing environment with SSX server and 
-our example dApp. Make sure you have 
+our example dapp. Make sure you have 
 [Docker and Compose installed](https://docs.docker.com/compose/install/), then 
 create a `.env` file in the project root:
 
 ```
 ssx_listenPort=8443 # ssx server will be available on http://localhost:8443 
-ssx_signingKey=meow # session secret for ssx server
+ssx_signingKey= # session secret for ssx server
 ssx_providers__metrics__apiKey= # ssx metrics api key https://app.ssx.id
 ssx_providers__rpc__apiKey= # infura api key for wallet connect (optional)
 ```
@@ -37,8 +37,8 @@ Save your `.env` file and from the project root, run:
 docker compose up
 ```
 
-Docker will build containers for the SSX server and example dApp from the 
+Docker will build containers for the SSX server and example dapp from the 
 working tree and start them both.
 
-* Example dApp: http://localhost:3000
+* Example dapp: http://localhost:3000
 * SSX Server: http://localhost:8443
