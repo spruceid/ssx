@@ -5,12 +5,12 @@ import {
 } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
+import { generateNonce } from 'siwe';
 import { SSXExtension } from './extension';
 import {
   SSXSession,
   SSXConfig,
 } from './types';
-import { generateNonce } from 'siwe';
 
 /** Initializer for an SSXSession. */
 export class SSXInit {
@@ -158,7 +158,7 @@ export class SSXConnected {
           chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
         })
-          .then(response => response.data);
+          .then((response) => response.data);
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -182,16 +182,15 @@ export class SSXConnected {
       return Promise.reject(new Error('unable to retrieve session key'));
     }
 
-    let defaults = {
+    const defaults = {
       address: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
-      domain: window.location.hostname,
-      // @TODO(w4ll3): remove issuedAt
+      domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
     };
 
     const serverNonce = await this.ssxServerNonce(defaults) ?? { nonce: generateNonce() };
-    defaults['nonce'] = serverNonce.nonce;
+    defaults.nonce = serverNonce.nonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
@@ -212,7 +211,7 @@ export class SSXConnected {
 
     session = {
       ...session,
-      ...response
+      ...response,
     };
 
     await this.afterSignIn(session);

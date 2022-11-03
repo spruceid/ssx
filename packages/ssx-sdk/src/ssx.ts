@@ -18,7 +18,7 @@ declare global {
 const SSX_DEFAULT_CONFIG: SSXConfig = {
   providers: {
     web3: {
-      driver: window.ethereum,
+      driver: globalThis.ethereum,
     },
   },
 };
