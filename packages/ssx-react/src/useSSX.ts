@@ -2,8 +2,7 @@ import { SSX, SSXConfig } from "@spruceid/ssx";
 import { useEffect, useState } from 'react';
 import { useSigner } from 'wagmi';
 
-export function useSSX(ssxConfig?: SSXConfig) {
-
+export function useSSX({ ssxConfig }: { ssxConfig?: SSXConfig }) {
     const { data: signer, isSuccess: signerLoaded  } = useSigner()
     const [ssx, setSSX] = useState<SSX>();
 
