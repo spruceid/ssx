@@ -14,8 +14,8 @@ export function useSSX({ ssxConfig }: { ssxConfig?: SSXConfig }) {
                 providers: {
                     ...ssxConfig?.providers,
                     web3: { 
-                        ...ssxConfig?.providers?.web3,
                         driver: signer?.provider,
+                        ...ssxConfig?.providers?.web3,
                     },
                 }
             };
