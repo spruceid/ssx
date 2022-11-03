@@ -1,51 +1,32 @@
-import { SSX } from "@spruceid/ssx";
-import * as React from 'react'
-import { useMutation } from 'wagmi'
+import { SSX, SSXConfig } from "@spruceid/ssx";
+import { useEffect, useState } from 'react';
+import { useSigner } from 'wagmi';
 
-export const mutationKey = () =>
-    [{ entity: 'signIn' }] as const
+export function useSSX(ssxConfig?: SSXConfig) {
 
+    const { data: signer, isSuccess: signerLoaded  } = useSigner()
+    const [ssx, setSSX] = useState<SSX>();
 
-export function useSSX({
-    ssxConfig,
-    onError,
-    onMutate,
-    onSettled,
-    onSuccess,
-}: any) {
-    const [ssx, setSSX] = React.useState<SSX>(new SSX(ssxConfig));
-
-    const {
-        data,
-        error,
-        isError,
-        isIdle,
-        isLoading,
-        isSuccess,
-        mutate: signIn,
-        mutateAsync: signInAsync,
-        reset,
-        status,
-        variables,
-    } = useMutation(mutationKey(), ssx.signIn, {
-        onError,
-        onMutate,
-        onSettled,
-        onSuccess,
-    });
-
-    return {
-        data,
-        error,
-        isError,
-        isIdle,
-        isLoading,
-        isSuccess,
-        reset,
-        status,
-        variables,
-        signIn,
-        signInAsync,
-        ssx,
-    }
+    useEffect(() => {
+       async function initializeSSX() {
+            const { SSX } = await import('@spruceid/ssx');
+            const modifiedSSXConfig = {
+                ...ssxConfig,
+                providers: {
+                    ...ssxConfig?.providers,
+                    web3: { 
+                        ...ssxConfig?.providers?.web3,
+                        driver: signer?.provider,
+                    },
+                }
+            };
+            const ssxInstance = new SSX(modifiedSSXConfig);
+            setSSX(ssxInstance);
+        }
+        if (signerLoaded && signer) {
+            initializeSSX();
+        }
+    }, [signer, signerLoaded, ssxConfig]);   
+    
+    return { ssx }
 }
