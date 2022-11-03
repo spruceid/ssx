@@ -23,6 +23,7 @@
     "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
     "sdk": "yarn workspace @spruceid/ssx",
     "server": "yarn workspace @spruceid/ssx-server",
+    "react": "yarn workspace @spruceid/ssx-react",
     "test-dapp": "yarn workspace ssx-test-dapp",
     "express-api": "yarn workspace ssx-test-express-api",
     "http-api": "yarn workspace ssx-test-http-api"

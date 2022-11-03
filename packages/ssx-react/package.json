@@ -1,8 +1,20 @@
 {
-  "name": "ssx-react",
+  "name": "@spruceid/ssx-react",
   "version": "0.1.0",
-  "description": "SSX React Package",
-  "main": "index.js",
+  "description": "SSX React Hooks",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:spruceid/ssx.git"
+  },
+  "type": "commonjs",
+  "author": "Spruce Systems, Inc.",
+  "license": "Apache-2.0 OR MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "@spruceid/ssx": "0.1.0",
     "react": "^18.2.0",

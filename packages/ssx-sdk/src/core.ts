@@ -30,6 +30,7 @@ export class SSXInit {
     let provider: ethers.providers.Web3Provider;
 
     try {
+      // eslint-disable-next-line no-underscore-dangle
       if (!this.config.providers.web3.driver?._isProvider) {
         provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
       } else {
