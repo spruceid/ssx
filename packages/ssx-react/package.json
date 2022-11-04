@@ -13,7 +13,7 @@
   "license": "Apache-2.0 OR MIT",
   "private": false,
   "scripts": {
-    "build": "tsc --jsx react-jsx"
+    "build": "tsc"
   },
   "dependencies": {
     "@spruceid/ssx": "0.1.0",
