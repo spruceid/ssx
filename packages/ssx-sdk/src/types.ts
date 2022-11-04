@@ -25,6 +25,7 @@ export enum StorageModule {
 /** Representation of an active SSXSession. */
 export type SSXSession = {
     address: string;
+    walletAddress: string;
     chainId: number;
     sessionKey: string;
     siwe: string;

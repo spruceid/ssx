@@ -10,6 +10,7 @@ import {
   SSXSession,
   SSXConfig,
 } from './types';
+import { generateNonce } from 'siwe';
 
 /** Initializer for an SSXSession. */
 export class SSXInit {
@@ -126,29 +127,33 @@ export class SSXConnected {
     }
   }
 
-  public async ssxServerNonce(): Promise<{} | { nonce: string }> {
-    let override = {};
+  public async ssxServerNonce(params: Record<string, any>): Promise<{ nonce: string }> {
     try {
       if (this.api) {
-        const { data: nonce } = await this.api.get('/ssx-nonce');
-        override = { nonce };
+        const { data: nonce } = await this.api.get('/ssx-nonce', { params });
+        return { nonce };
       }
     } catch (error) {
       // were do we log this error? ssx.log?
       // show to user?
       console.error(error);
+      throw error;
     }
-    return override;
   }
 
-  public async ssxServerLogin(session: SSXSession): Promise<void> {
+  public async ssxServerLogin(session: SSXSession): Promise<any> {
     try {
       if (this.api) {
-        const response = await this.api.post('/ssx-login', {
+        // @TODO(w4ll3): figure out how to send a custom sessionKey
+        return this.api.post('/ssx-login', {
           signature: session.signature,
           siwe: session.siwe,
+          address: session.address,
+          walletAddress: session.walletAddress,
+          chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
-        });
+        })
+          .then(response => response.data);
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -171,15 +176,17 @@ export class SSXConnected {
     if (sessionKey === undefined) {
       return Promise.reject(new Error('unable to retrieve session key'));
     }
-    const serverNonce = await this.ssxServerNonce();
 
-    const defaults = {
+    let defaults = {
       address: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
       domain: window.location.hostname,
+      // @TODO(w4ll3): remove issuedAt
       issuedAt: new Date().toISOString(),
-      ...serverNonce,
     };
+
+    const serverNonce = await this.ssxServerNonce(defaults) ?? { nonce: generateNonce() };
+    defaults['nonce'] = serverNonce.nonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
@@ -187,25 +194,31 @@ export class SSXConnected {
 
     const signature = await this.provider.getSigner().signMessage(siwe);
 
-    const session = {
+    let session = {
       address: siweConfig.address,
+      walletAddress: await this.provider.getSigner().getAddress(),
       chainId: siweConfig.chainId,
       sessionKey,
       siwe,
       signature,
     };
 
-    await this.ssxServerLogin(session);
+    const response = await this.ssxServerLogin(session);
+
+    session = {
+      ...session,
+      ...response
+    };
 
     await this.afterSignIn(session);
 
     return session;
   }
 
-  async signOut(): Promise<void> {
+  async signOut(session: SSXSession): Promise<void> {
     try {
       if (this.api) {
-        await this.api.post('/ssx-logout');
+        await this.api.post('/ssx-logout', { ...session });
       }
     } catch (error) {
       // were do we log this error? ssx.log?
