@@ -81,7 +81,7 @@ const ssx = new SSX({
 
 #### [providers.server](broken-reference)
 
-The server field is an optional reference to a corresponding server running `ssx-server`. Providing these fields enables automatic communication with the server to establish sessions upon successful SIWE signing. For more information on configuring `ssx-server`, check out the [readme-1.md](../readme-1.md "mention"):
+The server field is an optional reference to a corresponding server running `ssx-server`. Providing these fields enables automatic communication with the server to establish sessions upon successful SIWE signing. For more information on configuring `ssx-server`, check out the [ssx-quickstart.md](../ssx-quickstart.md "mention"):
 
 ```javascript
 const ssx = new SSX({
