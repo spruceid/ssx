@@ -1,1 +1,1 @@
-export * from './useSSX';
+export * from './ssx';
