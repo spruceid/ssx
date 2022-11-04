@@ -17,7 +17,7 @@ We have collaborated with the [Gnosis Safe](https://gnosis-safe.io/) team to pow
 In order for your app to have DAO Logins enabled, make sure to follow the related section in our [configuration guide](../configuring-ssx/#enabling-dao-login).
 {% endhint %}
 
-In the Delegate Registry Manager app from the Gnosis Safe team, signers will be able to add a delegate that can log into apps and services on behalf of the multisig. This can be accomplished by inserting their address in the `Enter delegate Address or ENS Name` field and selecting `Add delegate`.&#x20;
+In the [Delegate Registry Manager](https://gnosis-safe.io/app/share/safe-app?appUrl=https://pr499--safereactapps.review.gnosisdev.com/delegate-registry-manager/\&chainId=1) app from the Gnosis Safe team, signers will be able to add a delegate that can log into apps and services on behalf of the multisig. This can be accomplished by inserting their address in the `Enter delegate Address or ENS Name` field and selecting `Add delegate`.&#x20;
 
 <figure><img src="../.gitbook/assets/DelegateRegistry.png" alt=""><figcaption><p>The Gnosis Safe Delegate Registry App</p></figcaption></figure>
 
@@ -29,7 +29,7 @@ We are currently collaborating with the Safe team on enabling multiple delegates
 
 Once enabled on an application, users that are delegates for multsigs will now be prompted to choose whether they would like to log in as themselves, or on behalf of a multisig they're a delegate of.&#x20;
 
-![](../.gitbook/assets/SafeLoginExample.png)
+![](../.gitbook/assets/SafeModal.png)
 
 To test out this functionality locally, please make sure to check out the SSX Test Dapp:
 
