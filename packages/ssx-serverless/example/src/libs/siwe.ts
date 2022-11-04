@@ -16,11 +16,9 @@ const dynamoDb = new DynamoDB.DocumentClient({
 const update = async <T>(key: any, value: any, opts?: Record<string, any>): Promise<T> => {
   const ddbParams = {
     TableName: DYNAMODB_TABLE_NAME,
-    Key: { address: key },
-    UpdateExpression: opts.updateExpression,
-    ExpressionAttributeValues: value,
+    Item: { address: key, ...value },
   };
-  return dynamoDb.update(ddbParams).promise()
+  return dynamoDb.put(ddbParams).promise()
     .then(result => result as T);
 };
 

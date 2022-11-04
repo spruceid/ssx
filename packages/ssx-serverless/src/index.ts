@@ -157,51 +157,68 @@ export class SSXServer {
       session = await this.session.retrieve(sessionKey);
     } catch (error) {
       const sessionError = new Error('Unable to retrieve session.');
-      console.error(sessionError);
+      console.error(sessionError, error);
       throw sessionError;
     }
 
-    let siweMessage;
-    try {
-      siweMessage = await new SiweMessage(siwe).verify(
-        { signature, nonce: session?.nonce },
-        {
-          verificationFallback: signInOpts?.daoLogin ? SiweGnosisVerify : undefined,
-          provider: this.provider,
-        },
-      );
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    const siweMessage = new SiweMessage(siwe);
+
+    const siweMessageVerifyPromise = siweMessage.verify(
+      { signature, nonce: session?.nonce },
+      {
+        verificationFallback: signInOpts?.daoLogin ? SiweGnosisVerify : undefined,
+        provider: this.provider,
+      },
+    )
+      .then(data => data)
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
 
     let ens: SSXEnsData = {};
+    let promises;
     try {
       if (signInOpts?.resolveEns) {
-        ens.ensName = await this.provider.lookupAddress(siweMessage.data.address);
-        if (ens.ensName) {
-          ens.ensAvatarUrl = await this.provider.getAvatar(ens.ensName);
-        }
+        promises = await Promise.all([
+          siweMessageVerifyPromise,
+          this.provider.lookupAddress(siweMessage.address),
+          this.provider.getAvatar(siweMessage.address)
+        ])
+          .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
+            ens = {
+              ensName,
+              ensAvatarUrl,
+            };
+
+            return {
+              siweMessageVerify,
+              ensName,
+              ensAvatarUrl,
+            }
+          });
       }
     } catch (error) {
       console.error(error);
     }
 
+    if (!promises?.siweMessageVerify.success) {
+      throw promises?.siweMessageVerify.error;
+    }
+
     const sessionData: SSXSessionData = {
-      siweMessage: siweMessage.data,
+      siweMessage,
       signature,
       daoLogin: !!signInOpts?.daoLogin,
       ens
     };
 
-    let dbResult;
     try {
       const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
-      dbResult = await this.session.update(sessionKey, updateValue, signInOpts?.updateOpts);
+      await this.session.update(sessionKey, updateValue, signInOpts?.updateOpts);
     } catch (error) {
-      const updateError = new Error('Unable to update session data.');
-      console.error(updateError);
-      throw updateError;
+      console.error(error);
+      throw error;
     }
 
     try {
@@ -211,11 +228,11 @@ export class SSXServer {
        **/
       let smartContractWalletOrCustomMethod = false;
       smartContractWalletOrCustomMethod = !(
-        utils.verifyMessage(siweMessage.data.prepareMessage(), signature) === siweMessage.data.address
+        utils.verifyMessage(siweMessage.prepareMessage(), signature) === siweMessage.address
       );
 
       this.log({
-        userId: `did:pkh:eip155:${siweMessage.data.chainId}:${siweMessage.data.address}`,
+        userId: `did:pkh:eip155:${siweMessage.chainId}:${siweMessage.address}`,
         type: SSXEventLogTypes.LOGIN,
         content: {
           signature,
@@ -245,17 +262,28 @@ export class SSXServer {
     return await this.session.delete<T>(sessionKey, deleteOpts);
   };
 
+
+  /**
+   * Returns the SSXSessionData if a the session still exists and is valid. 
+   * @param sessionKey Key used to index sessions.
+   * @param getSSXDataFromSession Function that will parse the resolved value from 
+   * session into {SSXSessionData} if the a custom session structure is being used.
+   * @returns {SSXSessionData}
+   */
   public me = async (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => {
-    let session;
+    const dbResult = await this.session.retrieve(sessionKey);
+    if (!dbResult) {
+      throw new Error('Unable to retrieve session.');
+    }
+    let session: SSXSessionData;
     try {
-      session = await this.session.retrieve(sessionKey);
-      session = session as SSXSessionData
+      session = dbResult as SSXSessionData;
     } catch (error) {
-      if(!getSSXDataFromSession) {
+      if (!getSSXDataFromSession) {
         console.error(error);
         throw error;
       }
-      session = getSSXDataFromSession(session)
+      session = getSSXDataFromSession(dbResult);
     }
     const siweMessage = new SiweMessage(session.siweMessage);
     siweMessage.verify(
