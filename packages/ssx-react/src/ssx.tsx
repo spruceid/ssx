@@ -15,7 +15,22 @@ const defaultContext = {
 const SSXContext = createContext(defaultContext);
 
 export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps)  => {
-  const { data: signer, isSuccess: signerLoaded  } = useSigner()
+
+  // if no wagmi
+  let signer: any = undefined;
+  let signerLoaded = false;
+  
+  try {
+     // eslint-disable-next-line react-hooks/rules-of-hooks
+     ({ data: signer, isSuccess: signerLoaded  } = useSigner());
+    
+  } catch (error) {
+    return (
+      <SSXContext.Provider value={defaultContext}>
+        {children}
+      </SSXContext.Provider>
+    );
+  }
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
@@ -41,9 +56,13 @@ export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps)  => {
       }
   }, [signer, signerLoaded, ssxConfig]);  
 
+  const SSXProviderValue = {
+    ssx,
+    ssxLoaded,
+  };
 
   return (
-    <SSXContext.Provider value={{ssx, ssxLoaded}}>
+    <SSXContext.Provider value={SSXProviderValue}>
       {children}
     </SSXContext.Provider>
   );
