@@ -14,47 +14,32 @@ const defaultContext = {
 
 const SSXContext = createContext(defaultContext);
 
-export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps)  => {
-
-  // if no wagmi
-  let signer: any = undefined;
-  let signerLoaded = false;
-  
-  try {
-     // eslint-disable-next-line react-hooks/rules-of-hooks
-     ({ data: signer, isSuccess: signerLoaded  } = useSigner());
-    
-  } catch (error) {
-    return (
-      <SSXContext.Provider value={defaultContext}>
-        {children}
-      </SSXContext.Provider>
-    );
-  }
+export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
+  const { data: signer, isSuccess: signerLoaded } = (typeof window !== 'undefined' && useSigner()) || { data: undefined, isSuccess: false };
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
   useEffect(() => {
-     async function initializeSSX() {
-          const { SSX } = await import('@spruceid/ssx');
-          const modifiedSSXConfig = {
-              ...ssxConfig,
-              providers: {
-                  ...ssxConfig?.providers,
-                  web3: { 
-                      driver: signer?.provider,
-                      ...ssxConfig?.providers?.web3,
-                  },
-              }
-          };
-          const ssxInstance = new SSX(modifiedSSXConfig);
-          setSSX(ssxInstance);
-          setSSXLoaded(true);
-      }
-      if (signerLoaded && signer) {
-          initializeSSX();
-      }
-  }, [signer, signerLoaded, ssxConfig]);  
+    async function initializeSSX() {
+      const { SSX } = await import('@spruceid/ssx');
+      const modifiedSSXConfig = {
+        ...ssxConfig,
+        providers: {
+          ...ssxConfig?.providers,
+          web3: {
+            driver: signer?.provider,
+            ...ssxConfig?.providers?.web3,
+          },
+        }
+      };
+      const ssxInstance = new SSX(modifiedSSXConfig);
+      setSSX(ssxInstance);
+      setSSXLoaded(true);
+    }
+    if (signerLoaded && signer) {
+      initializeSSX();
+    }
+  }, [signer, signerLoaded, ssxConfig]);
 
   const SSXProviderValue = {
     ssx,
