@@ -288,7 +288,7 @@ export class SSXServer {
       session = getSSXDataFromSession(dbResult);
     }
     const siweMessage = new SiweMessage(session.siweMessage);
-    siweMessage.verify(
+    await siweMessage.verify(
       { signature: session.signature },
       {
         verificationFallback: this._config.daoLogin ? SiweGnosisVerify : undefined,

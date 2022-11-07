@@ -50,6 +50,7 @@ const _delete = async <T>(key: any): Promise<T> => {
 };
 
 const ssx = new SSXServer({
+  daoLogin: true,
   providers: {
     rpc: {
       service: SSXRPCProviders.SSXInfuraProvider,

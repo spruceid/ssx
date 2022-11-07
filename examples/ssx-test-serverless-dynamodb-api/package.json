@@ -15,8 +15,7 @@
     "@spruceid/ssx-serverless": "*",
     "ethers": "^5.7.2",
     "keccak": "^3.0.2",
-    "serverless-dynamodb-local": "0.2.24",
-    "uuid": "^9.0.0"
+    "serverless-dynamodb-local": "0.2.24"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
