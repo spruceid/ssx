@@ -1,4 +1,4 @@
-import { generateNonce, SiweError, SiweMessage } from 'siwe';
+import { generateNonce, SiweError, SiweMessage, SiweResponse } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
 import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXSessionCRUDConfig, SSXSessionData, SSXEnsData } from './types';
@@ -144,8 +144,10 @@ export class SSXServer {
     signInOpts: {
       /* Enables lookup for delegations */
       daoLogin?: boolean,
-      /* Enables ENS resolution */
-      resolveEns?: boolean,
+      /* Enables ENS Domain resolution */
+      resolveEnsDomain?: boolean,
+      /* Enables ENS Avatar resolution */
+      resolveEnsAvatar?: boolean,
       /* Optional parameters to be passed to session.retrieve */
       retrieveOpts?: Record<string, any>,
       /* A function that will return the value for the update statement */
@@ -158,14 +160,13 @@ export class SSXServer {
     try {
       session = await this.session.retrieve(sessionKey);
     } catch (error) {
-      const sessionError = new Error('Unable to retrieve session.');
-      console.error(sessionError, error);
-      throw sessionError;
+      console.error(error);
+      throw error;
     }
 
     const siweMessage = new SiweMessage(siwe);
 
-    const siweMessageVerifyPromise = siweMessage.verify(
+    let siweMessageVerify: any = siweMessage.verify(
       { signature, nonce: session?.nonce },
       {
         verificationFallback: signInOpts?.daoLogin ? SiweGnosisVerify : undefined,
@@ -179,33 +180,28 @@ export class SSXServer {
       });
 
     let ens: SSXEnsData = {};
-    let promises;
+    let promises: Array<Promise<any>> = [siweMessageVerify];
     try {
-      if (signInOpts?.resolveEns) {
-        promises = await Promise.all([
-          siweMessageVerifyPromise,
-          this.provider.lookupAddress(siweMessage.address),
-          this.provider.getAvatar(siweMessage.address)
-        ])
-          .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
-            ens = {
-              ensName,
-              ensAvatarUrl,
-            };
-
-            return {
-              siweMessageVerify,
-              ensName,
-              ensAvatarUrl,
-            }
-          });
+      if (signInOpts?.resolveEnsDomain) {
+        promises.push(this.provider.lookupAddress(siweMessage.address))
       }
+      if (signInOpts?.resolveEnsAvatar) {
+        promises.push(this.provider.getAvatar(siweMessage.address))
+      }
+      siweMessageVerify = await Promise.all(promises)
+        .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
+          ens = {
+            ensName,
+            ensAvatarUrl,
+          };
+          return siweMessageVerify;
+        });
     } catch (error) {
       console.error(error);
     }
 
-    if (!promises?.siweMessageVerify.success) {
-      throw promises?.siweMessageVerify.error;
+    if (siweMessageVerify.success) {
+      throw siweMessageVerify.error;
     }
 
     const sessionData: SSXSessionData = {
