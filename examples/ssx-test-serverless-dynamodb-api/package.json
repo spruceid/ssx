@@ -5,9 +5,7 @@
   "main": "serverless.ts",
   "author": "Spruce Systems, Inc.",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "engines": {
     "node": ">=14.15.0"
   },
