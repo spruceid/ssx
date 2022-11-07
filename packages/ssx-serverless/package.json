@@ -30,6 +30,8 @@
     "axios": "^1.1.3"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.4",
+    "@microsoft/api-extractor": "^7.29.2",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
