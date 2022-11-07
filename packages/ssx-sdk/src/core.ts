@@ -132,11 +132,11 @@ export class SSXConnected {
     }
   }
 
-  public async ssxServerNonce(params: Record<string, any>): Promise<{ nonce: string }> {
+  public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     try {
       if (this.api) {
         const { data: nonce } = await this.api.get('/ssx-nonce', { params });
-        return { nonce };
+        return nonce;
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -190,8 +190,8 @@ export class SSXConnected {
       nonce: generateNonce(),
     };
 
-    const serverNonce = await this.ssxServerNonce(defaults) ?? { nonce: generateNonce() };
-    if (serverNonce) defaults.nonce = serverNonce.nonce;
+    const serverNonce = await this.ssxServerNonce(defaults);
+    if (serverNonce) defaults.nonce = serverNonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
