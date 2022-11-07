@@ -11,6 +11,8 @@ const DYNAMODB_TABLE_NAME = 'SSX';
 const dynamoDb = new DynamoDB.DocumentClient({
   region: 'localhost',
   endpoint: 'http://localhost:8000',
+  accessKeyId: 'FAKE_ACCESS_KEY',
+  secretAccessKey: 'FAKE_SECRET_SECRET'
 });
 
 const update = async <T>(key: any, value: any, opts?: Record<string, any>): Promise<T> => {
