@@ -2,8 +2,14 @@
   "name": "@spruceid/ssx-serverless",
   "version": "0.1.0",
   "description": "Create SSX applications in serverless architectures",
+  "author": "Spruce Systems Inc.",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/spruceid/ssx-serverless#readme",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/spruceid/ssx-serverless/issues"
+  },
   "directories": {
     "src": "src"
   },
@@ -30,11 +36,5 @@
   },
   "peerDependencies": {
     "ethers": "^5.6.8"
-  },
-  "author": "Spruce Systems Inc.",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/spruceid/ssx-serverless/issues"
-  },
-  "homepage": "https://github.com/spruceid/ssx-serverless#readme"
+  }
 }
