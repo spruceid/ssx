@@ -166,7 +166,7 @@ export class SSXServer {
 
     const siweMessage = new SiweMessage(siwe);
 
-    let siweMessageVerify: any = siweMessage.verify(
+    let siweMessageVerifyPromise: any = siweMessage.verify(
       { signature, nonce: session?.nonce },
       {
         verificationFallback: signInOpts?.daoLogin ? SiweGnosisVerify : undefined,
@@ -180,7 +180,7 @@ export class SSXServer {
       });
 
     let ens: SSXEnsData = {};
-    let promises: Array<Promise<any>> = [siweMessageVerify];
+    let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
     try {
       if (signInOpts?.resolveEnsDomain) {
         promises.push(this.provider.lookupAddress(siweMessage.address))
@@ -188,8 +188,11 @@ export class SSXServer {
       if (signInOpts?.resolveEnsAvatar) {
         promises.push(this.provider.getAvatar(siweMessage.address))
       }
-      siweMessageVerify = await Promise.all(promises)
+      siweMessageVerifyPromise = await Promise.all(promises)
         .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
+          if (!signInOpts.resolveEnsDomain && signInOpts.resolveEnsAvatar) {
+            [ensName, ensAvatarUrl] = [undefined, ensName];
+          }
           ens = {
             ensName,
             ensAvatarUrl,
@@ -200,8 +203,8 @@ export class SSXServer {
       console.error(error);
     }
 
-    if (siweMessageVerify.success) {
-      throw siweMessageVerify.error;
+    if (!siweMessageVerifyPromise.success) {
+      throw siweMessageVerifyPromise.error;
     }
 
     const sessionData: SSXSessionData = {
