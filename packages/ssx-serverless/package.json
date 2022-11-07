@@ -15,6 +15,9 @@
   },
   "scripts": {
     "build": "tsc",
+    "doc": "yarn doc:extractor && yarn doc:documenter",
+    "doc:extractor": "api-extractor run",
+    "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
