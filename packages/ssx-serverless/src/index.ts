@@ -20,9 +20,10 @@ export class SSXServer {
   public session: SSXSessionCRUDConfig;
 
   /**
-   * @param config Base configuration of the SSXServer
-   * @param session CRUD definition for session operations
+   * @param config - Base configuration of the SSXServer
+   * @param session - CRUD definition for session operations
    * @example
+   * ```
    * const ssx = new SSXServer({
    *   providers: {
    *     rpc: {
@@ -37,6 +38,7 @@ export class SSXServer {
    *     update: async <T>(key: any, value: any, opts?: Record<string, any>): Promise<T> => { },
    *     delete: async <T>(key: any): Promise<T> => { },
    * });
+   * ```
    */
   constructor(
     config: SSXServerConfig,
@@ -128,11 +130,11 @@ export class SSXServer {
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
    * If the message is verified, a session token is generated and returned.
-   * @param siwe Object containing the siwe fields or EIP-4361 message
-   * @param signature Signature of the EIP-4361 message
-   * @param sessionKey Key used to index user's session
-   * @param signInOpts Additional options to customize sign-in behavior
-   * @returns {SSXSessionData} object containing information about the session
+   * @param siwe - Object containing the siwe fields or EIP-4361 message
+   * @param signature - Signature of the EIP-4361 message
+   * @param sessionKey - Key used to index user's session
+   * @param signInOpts - Additional options to customize sign-in behavior
+   * @returns Object containing information about the session
    */
   public signIn = async (
     siwe: SiweMessage | string,
@@ -249,8 +251,8 @@ export class SSXServer {
 
   /**
    * Calls the delete function to delete the user's session
-   * @param sessionKey Key used to index sessions
-   * @param deleteOpts Additional options to be passed to the seeion.delete function.
+   * @param sessionKey - Key used to index sessions
+   * @param deleteOpts - Additional options to be passed to the seeion.delete function.
    * @returns The result of session.delete<T>
    * @example
    * signOut<boolean>("0x9D85ca56217D2bb651b00f15e694EB7E713637D4")
@@ -265,10 +267,10 @@ export class SSXServer {
 
   /**
    * Returns the SSXSessionData if a the session still exists and is valid. 
-   * @param sessionKey Key used to index sessions.
-   * @param getSSXDataFromSession Function that will parse the resolved value from 
-   * session into {SSXSessionData} if the a custom session structure is being used.
-   * @returns {SSXSessionData}
+   * @param sessionKey - Key used to index sessions.
+   * @param getSSXDataFromSession - Function that will parse the resolved value from 
+   * session into SSXSessionData if the a custom session structure is being used.
+   * @returns SSXSessionData
    */
   public me = async (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => {
     const dbResult = await this.session.retrieve(sessionKey);

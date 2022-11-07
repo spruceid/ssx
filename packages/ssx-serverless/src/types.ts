@@ -215,10 +215,12 @@ export enum SSXEventLogTypes {
 /** 
  * Type definition for CRUD session functions
  * @example
+ * ```
  * create: async <T>(value: any, opts?: Record<string, any>): Promise<T> => { },
  * retrieve: async <T>(key: any, opts?: Record<string, any>): Promise<T> => { },
  * update: async <T>(key: any, value: any, opts?: Record<string, any>): Promise<T> => { },
  * delete: async <T>(key: any): Promise<T> => { },
+ * ```
  */
 export interface SSXSessionCRUDConfig {
   /** Definition of the create function */
