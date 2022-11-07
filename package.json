@@ -8,7 +8,9 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/ssx-test-dapp",
+    "examples/ssx-test-express-api",
+    "examples/ssx-test-http-api"
   ],
   "scripts": {
     "build": "lerna run build",
