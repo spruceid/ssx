@@ -38,7 +38,6 @@ const Home: NextPage = () => {
         <p className={styles.description}>
           Sign-in with Ethereum powered by SSX
           <br/>
-          {/* <button onClick={() => {console.log(ssx)}}>Sign Message</button> */}
           <button onClick={handleSignIn} disabled={!ssxLoaded}>Sign Message</button>
         </p>
         {
