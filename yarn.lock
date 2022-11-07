@@ -3655,6 +3655,9 @@
     uri-js "^4.4.1"
     valid-url "^1.0.9"
 
+"@spruceid/ssx-react@file:packages/ssx-react/dist":
+  version "0.0.0"
+
 "@spruceid/ssx-sdk-wasm@0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.1.2.tgz#d28301d83b4b008247fef774a082c4c50bd3c4ee"

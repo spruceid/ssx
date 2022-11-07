@@ -25,6 +25,7 @@
     "server": "yarn workspace @spruceid/ssx-server",
     "react": "yarn workspace @spruceid/ssx-react",
     "test-dapp": "yarn workspace ssx-test-dapp",
+    "react-dapp": "yarn workspace ssx-test-react-dapp",
     "express-api": "yarn workspace ssx-test-express-api",
     "http-api": "yarn workspace ssx-test-http-api"
   },
