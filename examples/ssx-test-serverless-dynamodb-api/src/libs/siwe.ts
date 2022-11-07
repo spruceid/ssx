@@ -77,7 +77,8 @@ const signIn = handleResponse<any>(async (event: any): Promise<any> => {
     event.body.walletAddress,
     {
       daoLogin: true,
-      resolveEns: true,
+      resolveEnsAddress: true,
+      resolveEnsAvatar: true,
     }
   );
 });
