@@ -187,10 +187,11 @@ export class SSXConnected {
       chainId: await this.provider.getSigner().getChainId(),
       domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
+      nonce: generateNonce(),
     };
 
     const serverNonce = await this.ssxServerNonce(defaults) ?? { nonce: generateNonce() };
-    defaults.nonce = serverNonce.nonce;
+    if (serverNonce) defaults.nonce = serverNonce.nonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
