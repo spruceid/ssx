@@ -39,4 +39,4 @@ const ssx = new SSXServer({
 });
 ```
 
-For more information see the [example](./example/README.md).
+For more information see the [example](../../examples/ssx-test-serverless-dynamodb-api/README.md).
