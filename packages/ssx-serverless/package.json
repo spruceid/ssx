@@ -19,6 +19,9 @@
     "doc:extractor": "api-extractor run",
     "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-serverless"
   },
+  "engines": {
+    "node": ">=16.13.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spruceid/ssx.git"
