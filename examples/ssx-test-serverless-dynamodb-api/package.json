@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {},
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=16.18.0"
   },
   "dependencies": {
     "@middy/core": "^3.4.0",
