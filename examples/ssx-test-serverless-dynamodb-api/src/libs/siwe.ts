@@ -1,11 +1,8 @@
 import { middyfy } from '@libs/lambda';
-import {
-  SSXServer,
-  SSXInfuraProviderNetworks,
-  SSXRPCProviders,
-} from '@spruceid/ssx-serverless';
-import { handleResponse } from './http';
 import { DynamoDB } from 'aws-sdk';
+import { requireAddressSchema, signOutSchema, signInSchema } from './schemas';
+import { formatJSONResponse, ValidatedEventAPIGatewayProxyEvent } from './api-gateway';
+import { SSXServer, SSXInfuraProviderNetworks, SSXRPCProviders } from '@spruceid/ssx-serverless';
 
 const DYNAMODB_TABLE_NAME = 'SSX';
 const dynamoDb = new DynamoDB.DocumentClient({
@@ -67,12 +64,13 @@ const ssx = new SSXServer({
   delete: _delete,
 });
 
-const getNonce = handleResponse<any>(async (event): Promise<any> => {
+const getNonce: ValidatedEventAPIGatewayProxyEvent<typeof requireAddressSchema> = async (event): Promise<any> => {
   return await ssx.getNonce({ sessionKey: event.queryStringParameters?.address })
-    .then(({ nonce }) => nonce);
-});
+    .then(({ nonce }) => nonce)
+    .catch(error => formatJSONResponse(500, { error }));
+};
 
-const signIn = handleResponse<any>(async (event: any): Promise<any> => {
+const signIn: ValidatedEventAPIGatewayProxyEvent<typeof signInSchema> = async (event): Promise<any> => {
   return await ssx.signIn(
     event.body.siwe,
     event.body.signature,
@@ -82,17 +80,19 @@ const signIn = handleResponse<any>(async (event: any): Promise<any> => {
       resolveEnsDomain: true,
       resolveEnsAvatar: true,
     }
-  );
-});
+  )
+    .catch(error => formatJSONResponse(500, { error }));
+};
 
-export const signOut = handleResponse<any>(async (event: any) => {
-  return await ssx.signOut(event.body.walletAddress);
-});
+export const signOut: ValidatedEventAPIGatewayProxyEvent<typeof signOutSchema> = async (event): Promise<any> => {
+  return await ssx.signOut(event.body.walletAddress)
+    .catch(error => formatJSONResponse(500, { error }));
+};
 
-// Used to test that an address is logged in
-export const me = handleResponse<any>(async (event: any) => {
-  return await ssx.me(event.body.address);
-});
+export const me: ValidatedEventAPIGatewayProxyEvent<typeof requireAddressSchema> = async (event): Promise<any> => {
+  return await ssx.me(event.body.address)
+    .catch(error => formatJSONResponse(500, { error }));
+};
 
 export const _getNonce = middyfy(getNonce);
 export const _signIn = middyfy(signIn);

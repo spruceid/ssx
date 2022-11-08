@@ -1,5 +1,5 @@
-import { getMeSchema } from './schema';
 import { handlerPath } from '@libs/handler-resolver';
+import { requireAddressSchema } from '@libs/schemas';
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
@@ -10,7 +10,7 @@ export default {
         path: 'ssx-me',
         request: {
           schemas: {
-            'application/json': getMeSchema,
+            'application/json': requireAddressSchema,
           },
         },
       },

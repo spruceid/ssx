@@ -1,5 +1,5 @@
-import { signOutSchema } from './schema';
 import { handlerPath } from '@libs/handler-resolver';
+import { signOutSchema } from '@libs/schemas';
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
