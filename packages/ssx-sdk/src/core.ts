@@ -38,7 +38,10 @@ export class SSXInit {
       }
       try {
         if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
-          await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          const connectedAccounts = await provider.listAccounts();
+          if (connectedAccounts.length === 0) {
+            await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          }
         }
       } catch (err) {
         // Permission rejected error
