@@ -1,0 +1,33 @@
+{
+  "name": "ssx-test-serverless-dynamodb-api",
+  "version": "1.0.0",
+  "description": "Serverless example for SSX using aws-lambda and DynamoDB.",
+  "main": "serverless.ts",
+  "author": "Spruce Systems, Inc.",
+  "private": true,
+  "scripts": {},
+  "engines": {
+    "node": ">=16.13.0"
+  },
+  "dependencies": {
+    "@middy/core": "^3.4.0",
+    "@middy/http-json-body-parser": "^3.4.0",
+    "@spruceid/ssx-serverless": "*",
+    "ethers": "^5.7.2",
+    "keccak": "^3.0.2",
+    "serverless-dynamodb-local": "0.2.24"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^3.0.0",
+    "@types/aws-lambda": "^8.10.71",
+    "@types/node": "^16.11.7",
+    "esbuild": "^0.14.11",
+    "json-schema-to-ts": "^1.5.0",
+    "serverless": "^3.0.0",
+    "serverless-esbuild": "^1.23.3",
+    "serverless-offline": "^11.2.3",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.1.3"
+  }
+}
