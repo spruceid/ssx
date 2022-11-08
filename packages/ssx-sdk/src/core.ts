@@ -5,12 +5,12 @@ import {
 } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
+import { generateNonce } from 'siwe';
 import { SSXExtension } from './extension';
 import {
   SSXSession,
   SSXConfig,
 } from './types';
-import { generateNonce } from 'siwe';
 
 /** Initializer for an SSXSession. */
 export class SSXInit {
@@ -30,7 +30,12 @@ export class SSXInit {
     let provider: ethers.providers.Web3Provider;
 
     try {
-      provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      // eslint-disable-next-line no-underscore-dangle
+      if (!this.config.providers.web3.driver?._isProvider) {
+        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      } else {
+        provider = this.config.providers.web3.driver;
+      }
       try {
         if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
           await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
@@ -127,11 +132,11 @@ export class SSXConnected {
     }
   }
 
-  public async ssxServerNonce(params: Record<string, any>): Promise<{ nonce: string }> {
+  public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     try {
       if (this.api) {
         const { data: nonce } = await this.api.get('/ssx-nonce', { params });
-        return { nonce };
+        return nonce;
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -153,7 +158,7 @@ export class SSXConnected {
           chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
         })
-          .then(response => response.data);
+          .then((response) => response.data);
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -177,16 +182,16 @@ export class SSXConnected {
       return Promise.reject(new Error('unable to retrieve session key'));
     }
 
-    let defaults = {
+    const defaults = {
       address: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
-      domain: window.location.hostname,
-      // @TODO(w4ll3): remove issuedAt
+      domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
+      nonce: generateNonce(),
     };
 
-    const serverNonce = await this.ssxServerNonce(defaults) ?? { nonce: generateNonce() };
-    defaults['nonce'] = serverNonce.nonce;
+    const serverNonce = await this.ssxServerNonce(defaults);
+    if (serverNonce) defaults.nonce = serverNonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
@@ -207,7 +212,7 @@ export class SSXConnected {
 
     session = {
       ...session,
-      ...response
+      ...response,
     };
 
     await this.afterSignIn(session);
