@@ -106,7 +106,6 @@ export const ssxMiddleware = (ssx: SSXServer) => {
           req.session.destroy(() => next());
         }
       } catch (error) {
-        console.error(error);
         // ignore errors? Log them?
       }
     }

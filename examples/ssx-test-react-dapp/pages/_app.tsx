@@ -7,8 +7,8 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
 
-if (!process.env.ALCHEMY_API_KEY) {
-  throw new Error('Missing ALCHEMY_API_KEY environment variable. Add to .env.local');
+if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
+  throw new Error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -25,7 +25,7 @@ const { chains, provider, webSocketProvider } = configureChains(
     alchemyProvider({
       // This is Alchemy's default API key.
       // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: process.env.ALCHEMY_API_KEY,
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     }),
     publicProvider(),
   ]
