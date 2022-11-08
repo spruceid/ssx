@@ -9,6 +9,14 @@ npm install --save @spruceid/ssx-serverless
 yarn add @spruceid/ssx-serverless
 ```
 
+## Building
+
+```bash
+npm run build
+# OR
+yarn build
+```
+
 ## Usage
 The library exports a main class `SSXServer` which is supposed to be used as a Singleton. A basic configuration for this class would look like the following:
 

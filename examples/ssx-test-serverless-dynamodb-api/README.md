@@ -48,6 +48,15 @@ sls dynamodb start --migrate
 sls offline
 ```
 
+# Testing
+
+You can test this API using the [ssx-test-dapp](../ssx-test-dapp/README.md)! 
+
+1. Follow the ssx-test-dapp instructions to run the frontend;
+2. On the frontend, click on *Select Preference(s)* and enable *Server*;
+3. Set the *Host* field to `http://localhost:3001/dev`;
+4. Sign-In with Ethereum!
+
 # Endpoints
 
 Variables:
