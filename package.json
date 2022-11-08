@@ -23,9 +23,11 @@
     "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
     "sdk": "yarn workspace @spruceid/ssx",
     "server": "yarn workspace @spruceid/ssx-server",
+    "serverless": "yarn workspace @spruceid/ssx-serverless",
     "test-dapp": "yarn workspace ssx-test-dapp",
     "express-api": "yarn workspace ssx-test-express-api",
-    "http-api": "yarn workspace ssx-test-http-api"
+    "http-api": "yarn workspace ssx-test-http-api",
+    "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api"
   },
   "devDependencies": {
     "concurrently": "^7.3.0",
