@@ -12,4 +12,8 @@ In a PR, you can add a changeset by running `yarn changeset` in the root of the 
 
 For more information on changesets, see the changesets [intro](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) and [detailed explanation](https://github.com/changesets/changesets/blob/main/docs/detailed-explanation.md)
 
+#### Releasing
+When releasing with changesets, there are two simple commands:
+- `yarn changeset version`: This will bump the versions of packages that have changesets, and create a new changeset file with the new versions. This should be run before a release is cut.
+- `yarn changeset publish`: This will publish the packages to npm, and create a new git tag for the release. This should be run after a release is cut.
 
