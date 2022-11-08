@@ -4,6 +4,7 @@
 * [⚡ SSX Quickstart](readme-1.md)
 * [🛠 Configuring SSX](configuring-ssx/README.md)
   * [Configuring SSX Server](configuring-ssx/configuring-ssx-server.md)
+  * [Configuring SSX for Serverless](configuring-ssx/configuring-ssx-for-serverless.md)
 * [❓ SSX: How It Works](ssx-how-it-works.md)
 * [📊 Accessing the SSX Dashboard](accessing-the-ssx-dashboard.md)
 * [📈 Scaling SSX Server](scaling-ssx-server.md)

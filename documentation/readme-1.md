@@ -74,7 +74,7 @@ pnpm install @spruceid/ssx-server
 ```
 
 {% hint style="info" %}
-Looking for SSX support for other servers besides Express? Check out [Configuring SSX on other Servers](configuring-ssx/configuring-ssx-server.md)
+Looking for SSX support for serverless or other servers besides Express? Check out [Configuring SSX on other Servers](configuring-ssx/configuring-ssx-server.md)
 {% endhint %}
 
 ### Express.js Middleware
