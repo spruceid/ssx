@@ -20,6 +20,10 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      DYNAMO_DB_REGION: '${env:DYNAMO_DB_REGION}',
+      DYNAMO_DB_ENDPOINT: '${env:DYNAMO_DB_ENDPOINT}',
+      DYNAMO_DB_ACCESS_KEY_ID: '${env:DYNAMO_DB_ACCESS_KEY_ID}',
+      DYNAMO_DB_SECRET_ACCESS_KEY: '${env:DYNAMO_DB_SECRET_ACCESS_KEY}',
       INFURA_ID: '${env:INFURA_ID}'
     },
   },

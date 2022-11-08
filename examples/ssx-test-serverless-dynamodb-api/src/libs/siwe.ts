@@ -9,10 +9,10 @@ import { DynamoDB } from 'aws-sdk';
 
 const DYNAMODB_TABLE_NAME = 'SSX';
 const dynamoDb = new DynamoDB.DocumentClient({
-  region: 'localhost',
-  endpoint: 'http://localhost:8000',
-  accessKeyId: 'FAKE_ACCESS_KEY',
-  secretAccessKey: 'FAKE_SECRET_SECRET'
+  region: process.env.DYNAMO_DB_REGION,
+  endpoint: process.env.DYNAMO_DB_ENDPOINT,
+  accessKeyId: process.env.DYNAMO_DB_ACCESS_KEY_ID,
+  secretAccessKey: process.env.DYNAMO_DB_SECRET_ACCESS_KEY
 });
 
 const update = async <T>(key: any, value: any, opts?: Record<string, any>): Promise<T> => {
