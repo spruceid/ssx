@@ -7,7 +7,10 @@
   },
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/ssx-test-dapp",
+    "examples/ssx-test-express-api",
+    "examples/ssx-test-http-api"
   ],
   "scripts": {
     "postinstall": "npm run clean && npm run build",
