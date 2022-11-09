@@ -35,6 +35,7 @@
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.25.0",
     "concurrently": "^7.3.0",
     "lerna": "^5.1.2",
     "nx": "^14.5.4",
