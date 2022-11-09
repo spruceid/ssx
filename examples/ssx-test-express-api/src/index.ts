@@ -14,7 +14,7 @@ const ssx = new SSXServer({
   providers: {
     rpc: {
       service: SSXRPCProviders.SSXInfuraProvider,
-      network: SSXInfuraProviderNetworks.MAINNET,
+      network: SSXInfuraProviderNetworks.GOERLI,
       apiKey: process.env.INFURA_API_KEY ?? "",
     },
     metrics: {
@@ -23,8 +23,8 @@ const ssx = new SSXServer({
     },
   },
   ens: {
-    resolveEnsDomain: true,
-    resolveEnsAvatar: true,
+    resolveEnsDomain: false,
+    resolveEnsAvatar: false,
   }
 });
 

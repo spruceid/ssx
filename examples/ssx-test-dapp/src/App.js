@@ -11,7 +11,6 @@ import Button from './components/Button';
 import './App.css';
 
 function AccountInfo({ address, session }) {
-  console.log(session)
   return (
     <div className='AccountInfo'>
       <h2 className='AccountInfo-h2'>
@@ -144,13 +143,11 @@ function App() {
       enableDaoLogin: enableDaoLogin === 'On'
     }
 
-    window.ssxConfig = ssxConfig;
-
     const ssx = new SSX(ssxConfig);
     try {
       await ssx.signIn({
-        resolveEnsDomain: resolveEnsDomain === 'On',
-        resolveEnsAvatar: resolveEnsAvatar === 'On'
+        resolveEnsDomain: resolveEns === 'On' && resolveEnsDomain === 'On',
+        resolveEnsAvatar: resolveEns === 'On' && resolveEnsAvatar === 'On'
       });
       setSSX(ssx);
     } catch (err) {

@@ -21,9 +21,9 @@ export interface SSXServerConfig {
 /** ENS resolution settings */
 export interface SSXResolveEns {
   /** Enable  ENS name/domain resolution on login */
-  resolveEnsDomain: boolean;
+  resolveEnsDomain?: boolean;
   /** Enable  ENS avatar url resolution on login */
-  resolveEnsAvatar: boolean;
+  resolveEnsAvatar?: boolean;
 }
 
 /** SSX web3 configuration settings */
