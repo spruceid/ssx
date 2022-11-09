@@ -10,50 +10,69 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import Button from './components/Button';
 import './App.css';
 
-function AccountInfo({ address, delegator }) {
+function AccountInfo({ address, session }) {
+  console.log(session)
   return (
     <div className='AccountInfo'>
       <h2 className='AccountInfo-h2'>
         Account Info
       </h2>
       {
-        address &&
-        <p>
-          <b className='AccountInfo-label'>
-            Address
-          </b>
-          <br />
-          <code className='AccountInfo-value'>
-            {address}
-          </code>
-        </p>
+        session?.ens &&
+          (session?.ens.ensName || session?.ens.ensAvatarUrl) ?
+          <div>
+            <b className='AccountInfo-label'>
+              ENS
+            </b>
+            <br />
+            <div className='AccountInfo-container'>
+              {
+                session.ens.ensAvatarUrl ?
+                  <img
+                    className='AccountInfo-avatar'
+                    src={session.ens.ensAvatarUrl}
+                    alt='ENS avatar'
+                  /> :
+                  null
+              }
+              {
+                session.ens.ensName ?
+                  <code className='AccountInfo-value'>
+                    {session.ens.ensName}
+                  </code> :
+                  null
+              }
+            </div>
+          </div> :
+          null
       }
-      {
-        delegator &&
-        <p>
-          <b className='AccountInfo-label'>
-            Delegator
-          </b>
-          <br />
-          <code className='AccountInfo-value'>
-            {delegator}
-          </code>
-        </p>
-      }
+      <p>
+        <b className='AccountInfo-label'>
+          Address
+        </b>
+        <br />
+        <code className='AccountInfo-value'>
+          {address}
+        </code>
+      </p>
     </div>
   );
 };
 
 function App() {
 
+  const [loading, setLoading] = useState(false);
+
   const [ssxProvider, setSSX] = useState(null);
   const [provider, setProvider] = useState('MetaMask');
   const [enableDaoLogin, setDaoLogin] = useState('Off');
   const [server, setServer] = useState('Off');
+  const [resolveEns, setResolveEns] = useState('Off');
   const [siweConfig, setSiweConfig] = useState('Off');
   const [infuraId, setInfuraId] = useState('');
   const [host, setHost] = useState('');
-
+  const [resolveEnsDomain, setResolveEnsDomain] = useState('On');
+  const [resolveEnsAvatar, setResolveEnsAvatar] = useState('On');
   // siweConfig Fields
   const [address, setAddress] = useState('');
   const [chainId, setChainId] = useState('');
@@ -67,7 +86,7 @@ function App() {
   const [statement, setStatement] = useState('');
 
   const ssxHandler = async () => {
-
+    setLoading(true);
     let ssxConfig = {};
 
     if (provider !== 'MetaMask') {
@@ -128,8 +147,16 @@ function App() {
     window.ssxConfig = ssxConfig;
 
     const ssx = new SSX(ssxConfig);
-    await ssx.signIn();
-    setSSX(ssx);
+    try {
+      await ssx.signIn({
+        resolveEnsDomain: resolveEnsDomain === 'On',
+        resolveEnsAvatar: resolveEnsAvatar === 'On'
+      });
+      setSSX(ssx);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
   };
 
   const ssxLogoutHandler = async () => {
@@ -144,21 +171,25 @@ function App() {
 
       <div className='Content'>
         <div className='Content-container'>
-
-
           {
             ssxProvider ?
               <>
-                <Button onClick={ssxLogoutHandler}>
+                <Button
+                  onClick={ssxLogoutHandler}
+                  loading={loading}
+                >
                   SIGN OUT
                 </Button>
                 <AccountInfo
                   address={ssxProvider?.address()}
-                  delegator={ssxProvider?.siweSessionData?.delegator}
+                  session={ssxProvider?.session}
                 />
               </> :
               <>
-                <Button onClick={ssxHandler}>
+                <Button
+                  onClick={ssxHandler}
+                  loading={loading}
+                >
                   SIGN-IN WITH ETHEREUM
                 </Button>
               </>
@@ -206,6 +237,19 @@ function App() {
             </div>
             <div className='Dropdown-item'>
               <span className='Dropdown-item-name'>
+                resolveEns
+              </span>
+              <div className='Dropdown-item-options'>
+                <RadioGroup
+                  name='resolveEns'
+                  options={['On', 'Off']}
+                  value={resolveEns}
+                  onChange={setResolveEns}
+                />
+              </div>
+            </div>
+            <div className='Dropdown-item'>
+              <span className='Dropdown-item-name'>
                 siweConfig
               </span>
               <div className='Dropdown-item-options'>
@@ -234,6 +278,26 @@ function App() {
                 value={host}
                 onChange={setHost}
               /> :
+              null
+          }
+          {
+            resolveEns === 'On' ?
+              <>
+                <RadioGroup
+                  label='Resolve ENS Domain'
+                  name='resolveEnsDomain'
+                  options={['On', 'Off']}
+                  value={resolveEnsDomain}
+                  onChange={setResolveEnsDomain}
+                />
+                <RadioGroup
+                  label='Resolve ENS Avatar'
+                  name='resolveEnsAvatar'
+                  options={['On', 'Off']}
+                  value={resolveEnsAvatar}
+                  onChange={setResolveEnsAvatar}
+                />
+              </> :
               null
           }
           {
