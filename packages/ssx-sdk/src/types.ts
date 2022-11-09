@@ -30,6 +30,7 @@ export type SSXSession = {
     sessionKey: string;
     siwe: string;
     signature: string;
+    ens?: SSXEnsData;
 };
 
 /** The URL of the server running ssx-server. Providing this field enables SIWE server communication */
@@ -195,4 +196,12 @@ export interface Storage {
     list(prefix?: string): Promise<string[]>,
     /** Delete a value from storage. */
     delete(key: string): Promise<any>,
+}
+
+/** ENS data supported by SSX */
+export interface SSXEnsData {
+    /** ENS name/domain */
+    ensName?: string | null,
+    /** ENS avatar */
+    ensAvatarUrl?: string | null
 }
