@@ -25,6 +25,10 @@ const ssx = new SSXServer({
       apiKey: process.env.SSX_API_TOKEN ?? "",
     },
   },
+  ens: {
+    resolveEnsDomain: true,
+    resolveEnsAvatar: true,
+  }
 });
 
 // example function: get user data from rpc node

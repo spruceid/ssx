@@ -20,8 +20,12 @@ const ssx = new SSXServer({
     metrics: {
       service: 'ssx',
       apiKey: process.env.SSX_API_TOKEN ?? ""
-    }
+    },
   },
+  ens: {
+    resolveEnsDomain: true,
+    resolveEnsAvatar: true,
+  }
 });
 
 app.use(cors({
