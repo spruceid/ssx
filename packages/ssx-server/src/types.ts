@@ -12,6 +12,18 @@ export interface SSXServerConfig {
   /** Changes cookie attributes. Determines whether or not server cookies
    * require HTTPS and sets the SameSite attribute to 'lax'. Defaults to false */
   useSecureCookies?: boolean;
+  /** Configure ENS resolution on signIn. If true, the login function
+   *  will return an ens object in session containing the ens data 
+   * (if available). */
+  ens?: SSXResolveEns;
+}
+
+/** ENS resolution settings */
+export interface SSXResolveEns {
+  /** Enable  ENS name/domain resolution on login */
+  resolveEnsDomain: boolean;
+  /** Enable  ENS avatar url resolution on login */
+  resolveEnsAvatar: boolean;
 }
 
 /** SSX web3 configuration settings */
@@ -254,4 +266,12 @@ export enum SSXEventLogTypes {
   // LOG = "LOG",
   /** Event type definition */
   // EVENT = "event",
+}
+
+/** ENS data supported by SSX */
+export interface SSXEnsData {
+  /** ENS name/domain */
+  ensName?: string | null,
+  /** ENS avatar */
+  ensAvatarUrl?: string | null
 }

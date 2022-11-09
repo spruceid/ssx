@@ -18,7 +18,7 @@ import { ethers } from 'ethers';
 /**
  * Returns an ethers provider based on the RPC configuration
  */
-export const getProvider = (rpc: SSXRPCProvider): ethers.providers.Provider => {
+export const getProvider = (rpc: SSXRPCProvider): ethers.providers.BaseProvider => {
   if (isSSXEtherscanProvider(rpc)) {
     return new ethers.providers.EtherscanProvider(
       rpc.network ?? SSXEtherscanProviderNetworks.MAINNET,

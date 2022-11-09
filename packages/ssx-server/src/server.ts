@@ -1,7 +1,7 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes } from './types';
+import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData } from './types';
 import { getProvider } from './utils';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -18,7 +18,7 @@ import { EventEmitter } from 'events';
 export class SSXServer extends EventEmitter {
   private _config: SSXServerConfig;
   private _api: AxiosInstance;
-  public provider: ethers.providers.Provider;
+  public provider: ethers.providers.BaseProvider;
   /** session is a configured instance of express-session middleware */
   public session: RequestHandler;
 
@@ -103,13 +103,42 @@ export class SSXServer extends EventEmitter {
     // TODO(w4ll3): Refactor this function.
     let smartContractWalletOrCustomMethod = false;
     try {
-      const { success, error, data } = await new SiweMessage(siwe).verify(
+      const siweMessage = new SiweMessage(siwe);
+
+      let siweMessageVerifyPromise: any = siweMessage.verify(
         { signature, nonce },
         {
-          verificationFallback: daoLogin ? SiweGnosisVerify : null,
+          verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
           provider: this.provider,
         },
-      );
+      )
+        .then(data => data)
+        .catch(error => {
+          console.error(error);
+          throw error;
+        });
+
+      let ens: SSXEnsData = {};
+      let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+      if (this._config.ens) {
+        promises.push(this.resolveEns(
+          siweMessage.address, {
+          resolveEnsDomain: this._config.ens.resolveEnsDomain,
+          resolveEnsAvatar: this._config.ens.resolveEnsAvatar,
+        }));
+      }
+      try {
+        siweMessageVerifyPromise = await Promise.all(promises)
+          .then(([siweMessageVerify, ensData]) => {
+            ens = ensData
+            return siweMessageVerify;
+          });
+      } catch (error) {
+        console.error(error);
+      }
+
+      const { success, error, data } = siweMessageVerifyPromise;
+
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
@@ -137,6 +166,7 @@ export class SSXServer extends EventEmitter {
           siwe: new SiweMessage(siwe),
           signature: signature,
           daoLogin: daoLogin,
+          ens,
         },
       };
     } catch (e) {
@@ -151,6 +181,53 @@ export class SSXServer extends EventEmitter {
       };
     }
   };
+
+  /**
+   * ENS data supported by SSX. 
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public resolveEns = async (
+    /* User Address */
+    address: string,
+    resolveEnsOpts: {
+      /* Enables ENS domain/name resolution */
+      resolveEnsDomain?: boolean,
+      /* Enables ENS avatar resolution */
+      resolveEnsAvatar?: boolean,
+    } = {
+        resolveEnsDomain: true,
+        resolveEnsAvatar: true
+      }
+  ): Promise<SSXEnsData> => {
+    if (!address) {
+      throw new Error('Missing address.');
+    }
+    let ens: SSXEnsData = {};
+    let promises: Array<Promise<any>> = [];
+    if (resolveEnsOpts?.resolveEnsDomain) {
+      promises.push(this.provider.lookupAddress(address))
+    }
+    if (resolveEnsOpts?.resolveEnsAvatar) {
+      promises.push(this.provider.getAvatar(address))
+    }
+
+    await Promise.all(promises)
+      .then(([ensName, ensAvatarUrl]) => {
+        if (!resolveEnsOpts.resolveEnsDomain && resolveEnsOpts.resolveEnsAvatar) {
+          [ensName, ensAvatarUrl] = [undefined, ensName];
+        }
+        if (ensName) {
+          ens['ensName'] = ensName;
+        }
+        if (ensAvatarUrl) {
+          ens['ensAvatarUrl'] = ensAvatarUrl;
+        }
+      });
+    
+    return ens;
+  }
 
   /**
    * Logs out the user by deleting the session.
