@@ -193,10 +193,12 @@ export class SSXServer {
           if (!signInOpts.resolveEnsDomain && signInOpts.resolveEnsAvatar) {
             [ensName, ensAvatarUrl] = [undefined, ensName];
           }
-          ens = {
-            ensName,
-            ensAvatarUrl,
-          };
+          if (ensName) {
+            ens['ensName'] = ensName;
+          }
+          if (ensAvatarUrl) {
+            ens['ensAvatarUrl'] = ensAvatarUrl;
+          }
           return siweMessageVerify;
         });
     } catch (error) {
