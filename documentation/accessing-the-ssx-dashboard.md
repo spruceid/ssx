@@ -8,6 +8,10 @@ description: Learn how to access and configure the metrics SSX reports from your
 
 Wondering how to see usage metrics from your dapp? You can integrate your SSX-powered dapp with the SSX Dashboard! By configuring your project and connecting it with the SSX Dashboard, you can access [metrics](accessing-the-ssx-dashboard.md#viewing-metrics) such as DAUs, MAUs, Total Unique Users, logins over time, and more.
 
+{% hint style="info" %}
+In order to use the SSX Dashboard, a backend setup is required.
+{% endhint %}
+
 ## Getting Started
 
 First, log into the platform ([app.ssx.id](https://app.ssx.id)), and click on "New Project".

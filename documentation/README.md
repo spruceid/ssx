@@ -18,6 +18,7 @@ To hop right in, check out our Quickstart guide:
 
 **SSX enables dapps to:**
 
+* Easily integrate Sign-In with Ethereum
 * Automatically create and manage sessions
 * Allow users to sign in on behalf of a multisig wallet (Gnosis Safe) for DAO login
 * Get metrics on user sign-ins and learn more about their dapp experience

@@ -12,7 +12,7 @@ SSX is a library that enables you to easily integrate Sign-In with Ethereum (SIW
 
 ### SSX Client
 
-When you install SSX, you have an easy way to add Sign-In with Ethereum to your front-end application. SSX has a few configuration options that enable your users to sign in with their externally owned waller or on behalf of a Gnosis Safe. Further configuration allows seamless communication with your backend server. But what happens in those few moments before their wallet pops up and after they sign the message? Continue below to find out!
+When you install SSX, you have an easy way to add Sign-In with Ethereum to your front-end application. SSX has a few configuration options that enable your users to sign in with their externally owned wallet or on behalf of a Gnosis Safe. Further configuration allows seamless communication with your backend server. But what happens in those few moments before their wallet pops up and after they sign the message? Continue below to find out!
 
 ### SSX Server&#x20;
 
