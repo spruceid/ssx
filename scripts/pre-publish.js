@@ -1,4 +1,4 @@
-const { readJson, readdir, pathExists, writeJSON, readFile } = require('fs-extra');
+const { readJson, readdir, pathExists, writeJSON } = require('fs-extra');
 
 
 const packageJSON = "package.json" 
@@ -6,8 +6,8 @@ const packageJSON = "package.json"
 
 const writePackages = async (packages) => {
     for (const package in packages) {
-        const { location, data} = packages[package];
-        await writeJSON(location, data, { spaces: 2 })
+        const { location, data } = packages[package];
+        await writeJSON(location, data, { spaces: 2 })      
     }
 }
 
@@ -38,24 +38,49 @@ const getAllPackageJSON = async () => {
                 data
             };
         }
-       
     }
-    writePackages(packages)
+
+    // writePackages(packages)
     // console.log(packages)
+    return packages;
 }
 
-const useLocalPackages = () => {
+const updatePackageVersion = (packages, usePublishedVersion = true) => {
     console.log("Using local package versions");
-    getAllPackageJSON();
+    const packageNames = Object.keys(packages);
+    // console.log(packages);
+    console.log(packageNames);
+    for (const package in packages) {
+        // console.log(package)
+        // in each package, check for package names
+        for (const dependency in packages[package].data.dependencies) {
+            // console.log(packageNames)
+            if (packageNames.includes(dependency)) {
+                let newVersion = "*";
+                if (usePublishedVersion) {
+                    newVersion = packages[dependency].version;
+                }
+                console.log(dependency)
+                packages[package].data.dependencies[dependency] = newVersion;
+                // if found, set to *
+                // or set to version
+            }
+        }
+    }
+    return packages;
+    
 }
 
-const usePublicPackages = () => {
+const usePublicPackages = (packages) => {
     console.log("Using public package versions");
-
 }
 
-const main = () => {
-    useLocalPackages();
+const main = async () => {
+    const usePublishedVersion = !process.argv.includes("local");
+    const packages = await getAllPackageJSON();
+    // console.log(packages)
+    const updatedPackages = updatePackageVersion(packages, usePublishedVersion);
+    writePackages(updatedPackages);
 }
 
 main();
