@@ -193,8 +193,11 @@ export class SSXConnected {
       nonce: generateNonce(),
     };
 
-    const serverNonce = await this.ssxServerNonce(defaults);
-    if (serverNonce) defaults.nonce = serverNonce;
+    defaults.nonce = await this.ssxServerNonce(defaults);
+
+    if(this.api && !defaults.nonce) {
+      throw new Error('Unable to retrieve nonce from server.');
+    }
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
