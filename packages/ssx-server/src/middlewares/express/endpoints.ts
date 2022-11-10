@@ -69,7 +69,6 @@ const ssxEndpoints = (ssx: SSXServer) => {
 
       res.status(200).json({ session: req.session });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: error.message });
     }
   });

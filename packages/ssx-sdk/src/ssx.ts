@@ -18,7 +18,7 @@ declare global {
 const SSX_DEFAULT_CONFIG: SSXConfig = {
   providers: {
     web3: {
-      driver: window.ethereum,
+      driver: globalThis.ethereum,
     },
   },
 };
@@ -50,7 +50,7 @@ export class SSX {
   }
 
   /** Request the user to sign in, and start the session. */
-  async signIn() {
+  async signIn(): Promise<SSXSession> {
     try {
       this.connection = await this.init.connect();
     } catch (err) {
@@ -61,6 +61,7 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
+      return this.session;
     } catch (err) {
       // Request to /ssx-login went wrong
       console.error(err);
@@ -70,7 +71,7 @@ export class SSX {
 
   async signOut() {
     try {
-      await this.connection.signOut();
+      await this.connection.signOut(this.session);
       this.session = null;
       this.connection = null;
     } catch (err) {

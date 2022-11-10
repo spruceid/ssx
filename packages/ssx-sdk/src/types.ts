@@ -25,6 +25,7 @@ export enum StorageModule {
 /** Representation of an active SSXSession. */
 export type SSXSession = {
     address: string;
+    walletAddress: string;
     chainId: number;
     sessionKey: string;
     siwe: string;
@@ -44,7 +45,7 @@ export interface SSXProviderWeb3 {
     /**
      * window.ethereum for Metamask;
      * web3modal.connect() for Web3Modal;
-     * const provider = useProvider() from Wagmi for Rainbowkit
+     * const signer = useSigner(); const provider = signer.provider; from Wagmi for Rainbowkit
      * */
     driver: any;
 }

@@ -66,7 +66,6 @@ export class SSXServer extends EventEmitter {
       .post(route, typeof body === 'string' ? body : JSON.stringify(body))
       .then((res) => res.status === 204)
       .catch((e) => {
-        console.error(e);
         return false;
       });
   };
@@ -104,13 +103,13 @@ export class SSXServer extends EventEmitter {
     // TODO(w4ll3): Refactor this function.
     let smartContractWalletOrCustomMethod = false;
     try {
-    const { success, error, data } = await new SiweMessage(siwe).verify(
-      { signature, nonce },
-      {
-        verificationFallback: daoLogin ? SiweGnosisVerify : null,
-        provider: this.provider,
-      },
-    );
+      const { success, error, data } = await new SiweMessage(siwe).verify(
+        { signature, nonce },
+        {
+          verificationFallback: daoLogin ? SiweGnosisVerify : null,
+          provider: this.provider,
+        },
+      );
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
@@ -150,7 +149,6 @@ export class SSXServer extends EventEmitter {
           daoLogin: daoLogin,
         },
       };
-
     }
   };
 

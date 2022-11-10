@@ -1,0 +1,18 @@
+# yarn
+yarn-error.log
+
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# esbuild directories
+.esbuild
+
+#dynamodb directories
+.dynamodb
+
+# .envs
+.env

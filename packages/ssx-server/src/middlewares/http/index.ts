@@ -80,7 +80,6 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
             req.session.destroy(() => {});
           }
         } catch (error) {
-          console.error(error);
           // ignore errors? Log them?
         }
       }
