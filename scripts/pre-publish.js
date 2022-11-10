@@ -5,7 +5,10 @@ const packageJSON = "package.json"
 
 
 const writePackages = async (packages) => {
-    await writeJSON("test.json", packages, { spaces: 2 })
+    for (const package in packages) {
+        const { location, data} = packages[package];
+        await writeJSON(location, data, { spaces: 2 })
+    }
 }
 
 const getAllPackageJSON = async () => {
@@ -38,7 +41,7 @@ const getAllPackageJSON = async () => {
        
     }
     writePackages(packages)
-    console.log(packages)
+    // console.log(packages)
 }
 
 const useLocalPackages = () => {
