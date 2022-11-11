@@ -221,5 +221,5 @@ export interface SSXEnsConfig {
     /** Enable the ENS resolution on server instead of on client. */
     resolveOnServer?: boolean;
     /** ENS resolution options. True means resolve all. */
-    resolve: boolean | SSXEnsResolveOptions;
+    resolve: SSXEnsResolveOptions;
 }

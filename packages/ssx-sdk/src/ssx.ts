@@ -8,6 +8,7 @@ import {
   SSXSession,
   SSXRPCProviders,
   SSXEnsData,
+  SSXEnsResolveOptions,
 } from './types';
 
 declare global {
@@ -65,19 +66,12 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
-      let ens = {};
-      if (
-        this.config.resolveEns && (
-          typeof this.config.resolveEns === 'boolean' ||
-          !this.config.resolveEns?.resolveOnServer
-        )
-      ) {
-        let resolveEnsOpts;
-        if (typeof this.config.resolveEns === 'object') {
-          resolveEnsOpts = this.config.resolveEns.resolve;
+      if (this.config.resolveEns) {
+        if (this.config.resolveEns === true) {
+          this.session.ens = await this.resolveEns(this.session.address);
+        } else if (!this.config.resolveEns.resolveOnServer) {
+          this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
         }
-        ens = await this.resolveEns(this.session.address, resolveEnsOpts);
-        this.session.ens = ens;
       }
       return this.session;
     } catch (err) {
@@ -96,15 +90,7 @@ export class SSX {
   async resolveEns(
     /** User address */
     address: string,
-    resolveEnsOpts: {
-      /* Enables ENS domain/name resolution */
-      domain?: boolean,
-      /* Enables ENS avatar resolution */
-      avatar?: boolean,
-    } = {
-        domain: true,
-        avatar: true
-      }
+    resolveEnsOpts?: SSXEnsResolveOptions 
   ): Promise<SSXEnsData> {
     if (!address) {
       throw new Error('Missing address.');
@@ -120,7 +106,7 @@ export class SSX {
 
     await Promise.all(promises)
       .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+        if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
           [domain, avatarUrl] = [undefined, domain];
         }
         if (domain) {
@@ -130,7 +116,6 @@ export class SSX {
           ens['avatarUrl'] = avatarUrl;
         }
       });
-
     return ens;
   }
 
