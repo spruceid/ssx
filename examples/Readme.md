@@ -1,6 +1,6 @@
 # SSX Examples
 ## Overview
-This directory contains examples of how to use the various packages in the SSX Monorepo. The examples are can be run standalone or together.
+This directory contains examples of how to use the various packages in the SSX Monorepo. The examples can be run standalone or together.
 
 Frontend examples include 
 - `ssx-test-dapp`
@@ -20,7 +20,7 @@ yarn ci
 yarn && yarn build
 ```
 
-Then, you can run the examples:
+Then, you can run ssx-test-dapp and ssx-test-express-api:
 ```sh
 # From the root of the repo
 yarn run-examples
