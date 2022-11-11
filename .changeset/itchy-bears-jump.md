@@ -4,18 +4,18 @@
 "@spruceid/ssx-serverless": patch
 ---
 
-Add ENS resolution feature to the client and server to allow the developer to choose where to resolve it. If it is being resolved in both, the client resolution will override it.
+Add ENS resolution feature to the client and server to allow the developer to choose where to resolve it.
 
 ## @spruceid/ssx changes: 
-- The internal SSX session object is now public and accessible by `ssx.session`;
+- Adds ENS resolution configuration when creating a new `SSX` instance. This configuration isn't mandatory;
 - Updates `SSXSession` interface to add `ens: SSXEnsData` as optional property;
-- Updates `ssx.signIn()` to resolve ENS data and accept `signInOpts` as a parameter;
-- Adds `ssx.resolveEns()` method to resolve ENS data based on the session;
+- Updates `ssx.signIn()` to resolve ENS data according to the `SSX` config. This method now sends `resolveEns` param to the `/ssx-login` request;
+- Adds `ssx.resolveEns(...)` method to resolve ENS data on client;
+- The internal SSX session object is now public and accessible by `ssx.session`;
 - Updates `ssx-test-dapp` to show how to use this feature.
 
 ## @spruceid/ssx-server changes: 
-- Adds ENS resolution configuration when creating a new `SSXServer` instance. This configuration isn't mandatory;
-- Adds `ssx.resolveEns(...)` method to resolve ENS data given an address;
+- Adds `ssx.resolveEns(...)` method to resolve ENS data;
 - Express and HTTP middlewares `/ssx-login` responses were updated. These requests were returning a session object with a session property. Now it returns a session object without the session property, but keeping all information;
 - Updates `ssx-test-express-api` and `ssx-test-http-api` to show how to use this feature.
 
