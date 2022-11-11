@@ -1,0 +1,18 @@
+services:
+  example-dapp:
+    container_name: ssx-example-dapp-dev
+    image: spruce/ssx-test-dapp-dev
+    build:
+      context: .
+      dockerfile: ssx-test-dapp.Dockerfile
+    ports:
+      - "3000:3000"
+  ssx-server:
+    container_name: ssx-server-dev
+    image: spruce/ssx-server-dev
+    env_file: .env
+    build:
+      context: .
+      dockerfile: ssx-server.Dockerfile
+    ports: 
+      - "8443:8443"
