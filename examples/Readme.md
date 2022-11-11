@@ -28,3 +28,5 @@ yarn run-examples
 yarn test-dapp start
 yarn express-api start
 ```
+
+The ssx-test-dapp is compatible with any example backend and is a good way to test them.
