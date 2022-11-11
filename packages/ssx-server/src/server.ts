@@ -1,7 +1,7 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData } from './types';
+import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData, SSXEnsResolveOptions } from './types';
 import { getProvider } from './utils';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -94,6 +94,7 @@ export class SSXServer extends EventEmitter {
     siwe: SiweMessage | string,
     signature: string,
     daoLogin: boolean,
+    resolveEns: boolean | SSXEnsResolveOptions,
     nonce: string,
   ): Promise<{
     success: boolean;
@@ -120,12 +121,12 @@ export class SSXServer extends EventEmitter {
 
       let ens: SSXEnsData = {};
       let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
-      if (this._config.ens) {
-        promises.push(this.resolveEns(
-          siweMessage.address, {
-          resolveEnsDomain: this._config.ens.resolveEnsDomain,
-          resolveEnsAvatar: this._config.ens.resolveEnsAvatar,
-        }));
+      if (resolveEns) {
+        let resolveEnsOpts;
+        if (resolveEns !== true) {
+          resolveEnsOpts = resolveEns;
+        }
+        promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
       }
       try {
         siweMessageVerifyPromise = await Promise.all(promises)
@@ -193,12 +194,12 @@ export class SSXServer extends EventEmitter {
     address: string,
     resolveEnsOpts: {
       /* Enables ENS domain/name resolution */
-      resolveEnsDomain?: boolean,
+      domain?: boolean,
       /* Enables ENS avatar resolution */
-      resolveEnsAvatar?: boolean,
+      avatar?: boolean,
     } = {
-        resolveEnsDomain: true,
-        resolveEnsAvatar: true
+        domain: true,
+        avatar: true
       }
   ): Promise<SSXEnsData> => {
     if (!address) {
@@ -206,26 +207,26 @@ export class SSXServer extends EventEmitter {
     }
     let ens: SSXEnsData = {};
     let promises: Array<Promise<any>> = [];
-    if (resolveEnsOpts?.resolveEnsDomain) {
+    if (resolveEnsOpts?.domain) {
       promises.push(this.provider.lookupAddress(address))
     }
-    if (resolveEnsOpts?.resolveEnsAvatar) {
+    if (resolveEnsOpts?.avatar) {
       promises.push(this.provider.getAvatar(address))
     }
 
     await Promise.all(promises)
-      .then(([ensName, ensAvatarUrl]) => {
-        if (!resolveEnsOpts.resolveEnsDomain && resolveEnsOpts.resolveEnsAvatar) {
-          [ensName, ensAvatarUrl] = [undefined, ensName];
+      .then(([domain, avatarUrl]) => {
+        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+          [domain, avatarUrl] = [undefined, domain];
         }
-        if (ensName) {
-          ens['ensName'] = ensName;
+        if (domain) {
+          ens['domain'] = domain;
         }
-        if (ensAvatarUrl) {
-          ens['ensAvatarUrl'] = ensAvatarUrl;
+        if (avatarUrl) {
+          ens['avatarUrl'] = avatarUrl;
         }
       });
-    
+
     return ens;
   }
 

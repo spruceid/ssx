@@ -117,6 +117,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
           body.siwe,
           body.signature,
           body.daoLogin,
+          body.resolveEns,
           req.session.nonce,
         );
 

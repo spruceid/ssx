@@ -52,6 +52,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
         req.body.siwe,
         req.body.signature,
         req.body.daoLogin,
+        req.body.resolveEns,
         req.session.nonce,
       );
 

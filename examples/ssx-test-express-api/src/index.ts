@@ -21,10 +21,6 @@ const ssx = new SSXServer({
       service: 'ssx',
       apiKey: process.env.SSX_API_TOKEN ?? ""
     },
-  },
-  ens: {
-    resolveEnsDomain: false,
-    resolveEnsAvatar: false,
   }
 });
 

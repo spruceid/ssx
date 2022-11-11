@@ -52,17 +52,9 @@ export class SSX {
 
   /** 
    * Request the user to sign in, and start the session. 
-   * @param signInOpts - Additional options to customize sign-in behavior
-   * @returns Object containing information about the session and ENS (depending on signInOpts param)
+   * @returns Object containing information about the session
    */
-  async signIn(
-    signInOpts: {
-      /* Enables ENS Domain resolution on client side */
-      resolveEnsDomain?: boolean,
-      /* Enables ENS Avatar resolution on client side */
-      resolveEnsAvatar?: boolean,
-    } = {}
-  ): Promise<SSXSession> {
+  async signIn(): Promise<SSXSession> {
     try {
       this.connection = await this.init.connect();
     } catch (err) {
@@ -73,14 +65,20 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
-      const ens = await this.resolveEns({
-        resolveEnsDomain: signInOpts.resolveEnsDomain,
-        resolveEnsAvatar: signInOpts.resolveEnsAvatar
-      });
-      this.session.ens = {
-        ...this.session.ens,
-        ...ens
-      };
+      let ens = {};
+      if (
+        this.config.resolveEns && (
+          typeof this.config.resolveEns === 'boolean' ||
+          !this.config.resolveEns?.resolveOnServer
+        )
+      ) {
+        let resolveEnsOpts;
+        if (typeof this.config.resolveEns === 'object') {
+          resolveEnsOpts = this.config.resolveEns.resolve;
+        }
+        ens = await this.resolveEns(this.session.address, resolveEnsOpts);
+        this.session.ens = ens;
+      }
       return this.session;
     } catch (err) {
       // Request to /ssx-login went wrong
@@ -91,43 +89,45 @@ export class SSX {
 
   /**
    * ENS data supported by SSX. 
+   * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
    */
   async resolveEns(
+    /** User address */
+    address: string,
     resolveEnsOpts: {
       /* Enables ENS domain/name resolution */
-      resolveEnsDomain?: boolean,
+      domain?: boolean,
       /* Enables ENS avatar resolution */
-      resolveEnsAvatar?: boolean,
+      avatar?: boolean,
     } = {
-        resolveEnsDomain: true,
-        resolveEnsAvatar: true
+        domain: true,
+        avatar: true
       }
   ): Promise<SSXEnsData> {
-    const { address } = this.session;
     if (!address) {
-      throw new Error('Address not found in session data.');
+      throw new Error('Missing address.');
     }
     let ens: SSXEnsData = {};
     let promises: Array<Promise<any>> = [];
-    if (resolveEnsOpts?.resolveEnsDomain) {
+    if (resolveEnsOpts?.domain) {
       promises.push(this.connection.provider.lookupAddress(address))
     }
-    if (resolveEnsOpts?.resolveEnsAvatar) {
+    if (resolveEnsOpts?.avatar) {
       promises.push(this.connection.provider.getAvatar(address))
     }
 
     await Promise.all(promises)
-      .then(([ensName, ensAvatarUrl]) => {
-        if (!resolveEnsOpts.resolveEnsDomain && resolveEnsOpts.resolveEnsAvatar) {
-          [ensName, ensAvatarUrl] = [undefined, ensName];
+      .then(([domain, avatarUrl]) => {
+        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+          [domain, avatarUrl] = [undefined, domain];
         }
-        if (ensName) {
-          ens['ensName'] = ensName;
+        if (domain) {
+          ens['domain'] = domain;
         }
-        if (ensAvatarUrl) {
-          ens['ensAvatarUrl'] = ensAvatarUrl;
+        if (avatarUrl) {
+          ens['avatarUrl'] = avatarUrl;
         }
       });
 

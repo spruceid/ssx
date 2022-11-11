@@ -18,7 +18,7 @@ function AccountInfo({ address, session }) {
       </h2>
       {
         session?.ens &&
-          (session?.ens.ensName || session?.ens.ensAvatarUrl) ?
+          (session?.ens.domain || session?.ens.avatarUrl) ?
           <div>
             <b className='AccountInfo-label'>
               ENS
@@ -26,18 +26,18 @@ function AccountInfo({ address, session }) {
             <br />
             <div className='AccountInfo-container'>
               {
-                session.ens.ensAvatarUrl ?
+                session.ens.avatarUrl ?
                   <img
                     className='AccountInfo-avatar'
-                    src={session.ens.ensAvatarUrl}
+                    src={session.ens.avatarUrl}
                     alt='ENS avatar'
                   /> :
                   null
               }
               {
-                session.ens.ensName ?
+                session.ens.domain ?
                   <code className='AccountInfo-value'>
-                    {session.ens.ensName}
+                    {session.ens.domain}
                   </code> :
                   null
               }
@@ -70,6 +70,7 @@ function App() {
   const [siweConfig, setSiweConfig] = useState('Off');
   const [infuraId, setInfuraId] = useState('');
   const [host, setHost] = useState('');
+  const [resolveOnServer, setResolveOnServer] = useState('Off');
   const [resolveEnsDomain, setResolveEnsDomain] = useState('On');
   const [resolveEnsAvatar, setResolveEnsAvatar] = useState('On');
   // siweConfig Fields
@@ -141,6 +142,19 @@ function App() {
     ssxConfig = {
       ...ssxConfig,
       enableDaoLogin: enableDaoLogin === 'On'
+    }
+
+    if (resolveEns === 'On') {
+      ssxConfig = {
+        ...ssxConfig,
+        resolveEns: {
+          resolveOnServer: resolveOnServer === 'On',
+          resolve: {
+            domain: resolveEnsDomain === 'On',
+            avatar: resolveEnsAvatar === 'On'
+          }
+        }
+      }
     }
 
     const ssx = new SSX(ssxConfig);
@@ -280,6 +294,13 @@ function App() {
           {
             resolveEns === 'On' ?
               <>
+                <RadioGroup
+                  label='Resolve ENS on Server'
+                  name='resolveOnServer'
+                  options={['On', 'Off']}
+                  value={resolveOnServer}
+                  onChange={setResolveOnServer}
+                />
                 <RadioGroup
                   label='Resolve ENS Domain'
                   name='resolveEnsDomain'

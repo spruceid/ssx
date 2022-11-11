@@ -10,6 +10,7 @@ import { SSXExtension } from './extension';
 import {
   SSXSession,
   SSXConfig,
+  SSXEnsResolveOptions,
 } from './types';
 
 /** Initializer for an SSXSession. */
@@ -155,6 +156,10 @@ export class SSXConnected {
   public async ssxServerLogin(session: SSXSession): Promise<any> {
     try {
       if (this.api) {
+        let resolveEns: boolean | SSXEnsResolveOptions = false;
+        if (typeof this.config.resolveEns === 'object' && this.config.resolveEns.resolveOnServer) {
+          resolveEns = this.config.resolveEns.resolve;
+        }
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api.post('/ssx-login', {
           signature: session.signature,
@@ -163,6 +168,7 @@ export class SSXConnected {
           walletAddress: session.walletAddress,
           chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
+          resolveEns
         })
           .then((response) => response.data);
       }
