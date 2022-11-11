@@ -90,7 +90,10 @@ export class SSX {
   async resolveEns(
     /** User address */
     address: string,
-    resolveEnsOpts?: SSXEnsResolveOptions 
+    resolveEnsOpts: SSXEnsResolveOptions = {
+        domain: true,
+        avatar: true
+      }
   ): Promise<SSXEnsData> {
     if (!address) {
       throw new Error('Missing address.');
@@ -106,7 +109,7 @@ export class SSX {
 
     await Promise.all(promises)
       .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
+        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
           [domain, avatarUrl] = [undefined, domain];
         }
         if (domain) {
@@ -116,6 +119,7 @@ export class SSX {
           ens['avatarUrl'] = avatarUrl;
         }
       });
+
     return ens;
   }
 
