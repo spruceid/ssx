@@ -159,10 +159,7 @@ function App() {
 
     const ssx = new SSX(ssxConfig);
     try {
-      await ssx.signIn({
-        resolveEnsDomain: resolveEns === 'On' && resolveEnsDomain === 'On',
-        resolveEnsAvatar: resolveEns === 'On' && resolveEnsAvatar === 'On'
-      });
+      await ssx.signIn();
       setSSX(ssx);
     } catch (err) {
       console.error(err);
