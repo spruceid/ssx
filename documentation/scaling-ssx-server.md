@@ -28,6 +28,10 @@ A shared session store allows you to share session data across multiple servers.
 
 As part of handling end-to-end authentication, SSX makes it simple to scale by providing many compatible ways to configure your session store on Express, Connect or Node http servers.
 
+### Why use a Session Store?
+
+Keeping state of the session lets a system allow users to maintain and invalidate active sessions instead of issuing a session token that will be active until it is expired. Giving users this ability is important from a user security perspective (e.g. a user can log out of all devices if a device is compromised).
+
 ## Adding Sessions to SSX
 
 SSX comes with a default session manager that lives in memory. This is not advised for production use, as this store is volatile (if the server restarts, all data in the session store will be lost) and not scalable (other server instances cannot access this server's memory). We recommend using a [compatible session store](https://github.com/expressjs/session#compatible-session-stores) like Redis.
