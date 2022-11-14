@@ -4,7 +4,7 @@
 
 ## SSXExtension.defaultActions() method
 
-\[capgrok\] Default delegated actions in capability namespace.
+\[recap\] Default delegated actions in capability namespace.
 
 <b>Signature:</b>
 

@@ -9,8 +9,9 @@ SSX-Server is a server-side library made to work with the SSX client libraries. 
 <b>Signature:</b>
 
 ```typescript
-export declare class SSXServer 
+export declare class SSXServer extends EventEmitter 
 ```
+<b>Extends:</b> EventEmitter
 
 ## Constructors
 

@@ -7,8 +7,15 @@
 <b>Signature:</b>
 
 ```typescript
-signOut(): Promise<void>;
+signOut(session: SSXSession): Promise<void>;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  session | [SSXSession](./ssx.ssxsession.md) |  |
+
 <b>Returns:</b>
 
 Promise&lt;void&gt;

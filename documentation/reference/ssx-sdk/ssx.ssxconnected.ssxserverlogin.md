@@ -7,7 +7,7 @@
 <b>Signature:</b>
 
 ```typescript
-ssxServerLogin(session: SSXSession): Promise<void>;
+ssxServerLogin(session: SSXSession): Promise<any>;
 ```
 
 ## Parameters
@@ -18,5 +18,5 @@ ssxServerLogin(session: SSXSession): Promise<void>;
 
 <b>Returns:</b>
 
-Promise&lt;void&gt;
+Promise&lt;any&gt;
 

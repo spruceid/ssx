@@ -16,5 +16,5 @@ export declare interface SSXProviderWeb3
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [driver](./ssx.ssxproviderweb3.driver.md) |  | any | window.ethereum for Metamask; web3modal.connect() for Web3Modal; const provider = useProvider() from Wagmi for Rainbowkit |
+|  [driver](./ssx.ssxproviderweb3.driver.md) |  | any | window.ethereum for Metamask; web3modal.connect() for Web3Modal; const signer = useSigner(); const provider = signer.provider; from Wagmi for Rainbowkit |
 
