@@ -16,6 +16,8 @@ export interface SSXConfig {
     /** Optional session configuration for the SIWE message. */
     siweConfig?: SiweConfig;
     storage?: StorageModule;
+    /** Whether or not ENS resolution is enabled. True means resolve all on client. */
+    resolveEns?: boolean | SSXEnsConfig;
 }
 
 /** Selection and configuration of the storage module. */
@@ -30,6 +32,7 @@ export type SSXSession = {
     sessionKey: string;
     siwe: string;
     signature: string;
+    ens?: SSXEnsData;
 };
 
 /** The URL of the server running ssx-server. Providing this field enables SIWE server communication */
@@ -183,7 +186,7 @@ export type SSXCustomProvider = {
 };
 
 /** Optional session configuration for the SIWE message. */
-export interface SiweConfig extends Partial<ssxSession.SiweConfig> {}
+export interface SiweConfig extends Partial<ssxSession.SiweConfig> { }
 
 /** A Storage module. */
 export interface Storage {
@@ -195,4 +198,28 @@ export interface Storage {
     list(prefix?: string): Promise<string[]>,
     /** Delete a value from storage. */
     delete(key: string): Promise<any>,
+}
+
+/** ENS data supported by SSX. */
+export interface SSXEnsData {
+    /** ENS name/domain. */
+    domain?: string | null,
+    /** ENS avatar. */
+    avatarUrl?: string | null
+}
+
+/** ENS options supported by SSX. */
+export interface SSXEnsResolveOptions {
+    /** Enable ENS name/domain resolution. */
+    domain?: boolean;
+    /** Enable ENS avatar resolution. */
+    avatar?: boolean;
+}
+
+/** ENS options supported by SSX. */
+export interface SSXEnsConfig {
+    /** Enable the ENS resolution on server instead of on client. */
+    resolveOnServer?: boolean;
+    /** ENS resolution options. True means resolve all. */
+    resolve: SSXEnsResolveOptions;
 }

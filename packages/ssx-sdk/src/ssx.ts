@@ -7,6 +7,8 @@ import {
   SSXConfig,
   SSXSession,
   SSXRPCProviders,
+  SSXEnsData,
+  SSXEnsResolveOptions,
 } from './types';
 
 declare global {
@@ -32,7 +34,7 @@ export class SSX {
   private init: SSXInit;
 
   /** The session representation (once signed in). */
-  private session?: SSXSession;
+  public session?: SSXSession;
 
   /** Current connection of SSX */
   public connection?: SSXConnected;
@@ -49,7 +51,10 @@ export class SSX {
     }
   }
 
-  /** Request the user to sign in, and start the session. */
+  /** 
+   * Request the user to sign in, and start the session. 
+   * @returns Object containing information about the session
+   */
   async signIn(): Promise<SSXSession> {
     try {
       this.connection = await this.init.connect();
@@ -61,6 +66,13 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
+      if (this.config.resolveEns) {
+        if (this.config.resolveEns === true) {
+          this.session.ens = await this.resolveEns(this.session.address);
+        } else if (!this.config.resolveEns.resolveOnServer) {
+          this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
+        }
+      }
       return this.session;
     } catch (err) {
       // Request to /ssx-login went wrong
@@ -69,6 +81,51 @@ export class SSX {
     }
   }
 
+  /**
+   * ENS data supported by SSX. 
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  async resolveEns(
+    /** User address */
+    address: string,
+    resolveEnsOpts: SSXEnsResolveOptions = {
+        domain: true,
+        avatar: true
+      }
+  ): Promise<SSXEnsData> {
+    if (!address) {
+      throw new Error('Missing address.');
+    }
+    let ens: SSXEnsData = {};
+    let promises: Array<Promise<any>> = [];
+    if (resolveEnsOpts?.domain) {
+      promises.push(this.connection.provider.lookupAddress(address))
+    }
+    if (resolveEnsOpts?.avatar) {
+      promises.push(this.connection.provider.getAvatar(address))
+    }
+
+    await Promise.all(promises)
+      .then(([domain, avatarUrl]) => {
+        if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
+          [domain, avatarUrl] = [undefined, domain];
+        }
+        if (domain) {
+          ens['domain'] = domain;
+        }
+        if (avatarUrl) {
+          ens['avatarUrl'] = avatarUrl;
+        }
+      });
+
+    return ens;
+  }
+
+  /**
+   * Invalidates user's session.
+   */
   async signOut() {
     try {
       await this.connection.signOut(this.session);

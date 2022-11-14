@@ -1,7 +1,7 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes } from './types';
+import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData, SSXEnsResolveOptions } from './types';
 import { getProvider } from './utils';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -18,7 +18,7 @@ import { EventEmitter } from 'events';
 export class SSXServer extends EventEmitter {
   private _config: SSXServerConfig;
   private _api: AxiosInstance;
-  public provider: ethers.providers.Provider;
+  public provider: ethers.providers.BaseProvider;
   /** session is a configured instance of express-session middleware */
   public session: RequestHandler;
 
@@ -94,6 +94,7 @@ export class SSXServer extends EventEmitter {
     siwe: SiweMessage | string,
     signature: string,
     daoLogin: boolean,
+    resolveEns: boolean | SSXEnsResolveOptions,
     nonce: string,
   ): Promise<{
     success: boolean;
@@ -103,13 +104,42 @@ export class SSXServer extends EventEmitter {
     // TODO(w4ll3): Refactor this function.
     let smartContractWalletOrCustomMethod = false;
     try {
-      const { success, error, data } = await new SiweMessage(siwe).verify(
+      const siweMessage = new SiweMessage(siwe);
+
+      let siweMessageVerifyPromise: any = siweMessage.verify(
         { signature, nonce },
         {
-          verificationFallback: daoLogin ? SiweGnosisVerify : null,
+          verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
           provider: this.provider,
         },
-      );
+      )
+        .then(data => data)
+        .catch(error => {
+          console.error(error);
+          throw error;
+        });
+
+      let ens: SSXEnsData = {};
+      let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+      if (resolveEns) {
+        let resolveEnsOpts;
+        if (resolveEns !== true) {
+          resolveEnsOpts = resolveEns;
+        }
+        promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+      }
+      try {
+        siweMessageVerifyPromise = await Promise.all(promises)
+          .then(([siweMessageVerify, ensData]) => {
+            ens = ensData
+            return siweMessageVerify;
+          });
+      } catch (error) {
+        console.error(error);
+      }
+
+      const { success, error, data } = siweMessageVerifyPromise;
+
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
@@ -137,6 +167,7 @@ export class SSXServer extends EventEmitter {
           siwe: new SiweMessage(siwe),
           signature: signature,
           daoLogin: daoLogin,
+          ens,
         },
       };
     } catch (e) {
@@ -151,6 +182,53 @@ export class SSXServer extends EventEmitter {
       };
     }
   };
+
+  /**
+   * ENS data supported by SSX. 
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public resolveEns = async (
+    /* User Address */
+    address: string,
+    resolveEnsOpts: {
+      /* Enables ENS domain/name resolution */
+      domain?: boolean,
+      /* Enables ENS avatar resolution */
+      avatar?: boolean,
+    } = {
+        domain: true,
+        avatar: true
+      }
+  ): Promise<SSXEnsData> => {
+    if (!address) {
+      throw new Error('Missing address.');
+    }
+    let ens: SSXEnsData = {};
+    let promises: Array<Promise<any>> = [];
+    if (resolveEnsOpts?.domain) {
+      promises.push(this.provider.lookupAddress(address))
+    }
+    if (resolveEnsOpts?.avatar) {
+      promises.push(this.provider.getAvatar(address))
+    }
+
+    await Promise.all(promises)
+      .then(([domain, avatarUrl]) => {
+        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+          [domain, avatarUrl] = [undefined, domain];
+        }
+        if (domain) {
+          ens['domain'] = domain;
+        }
+        if (avatarUrl) {
+          ens['avatarUrl'] = avatarUrl;
+        }
+      });
+
+    return ens;
+  }
 
   /**
    * Logs out the user by deleting the session.

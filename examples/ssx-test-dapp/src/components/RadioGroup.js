@@ -1,26 +1,38 @@
-const RadioGroup = ({ name, options, value, onChange, inline = true }) => {
-    return <div className={'RadioGroup' + (inline ? ' inline' : '')}>
+const RadioGroup = ({ label, name, options, value, onChange, inline = true }) => {
+    return <>
         {
-            options.map((option, i) => (
-                <div
-                    className='RadioGroup-option'
-                    key={i}
+            label ?
+                <label
+                    className='RadioGroup-label'
+                    htmlFor={name}
                 >
-                    <input
-                        type='radio'
-                        id={`${name}-${option}`}
-                        name={name}
-                        value={option}
-                        checked={value === option}
-                        onChange={() => onChange(option)}
-                    />
-                    <label htmlFor={`${name}-${option}`}>
-                        {option}
-                    </label>
-                </div>
-            ))
+                    {label}
+                </label> :
+                null
         }
-    </div>
+        <div className={'RadioGroup' + (inline ? ' inline' : '') + (label ? ' margin' : '')}>
+            {
+                options.map((option, i) => (
+                    <div
+                        className='RadioGroup-option'
+                        key={i}
+                    >
+                        <input
+                            type='radio'
+                            id={`${name}-${option}`}
+                            name={name}
+                            value={option}
+                            checked={value === option}
+                            onChange={() => onChange(option)}
+                        />
+                        <label htmlFor={`${name}-${option}`}>
+                            {option}
+                        </label>
+                    </div>
+                ))
+            }
+        </div>
+    </>
 };
 
 export default RadioGroup;
