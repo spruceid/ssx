@@ -38,7 +38,10 @@ export class SSXInit {
       }
       try {
         if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
-          await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          const connectedAccounts = await provider.listAccounts();
+          if (connectedAccounts.length === 0) {
+            await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          }
         }
       } catch (err) {
         // Permission rejected error
@@ -136,6 +139,9 @@ export class SSXConnected {
     try {
       if (this.api) {
         const { data: nonce } = await this.api.get('/ssx-nonce', { params });
+        if (!nonce) {
+          throw new Error('Unable to retrieve nonce from server.');
+        }
         return nonce;
       }
     } catch (error) {

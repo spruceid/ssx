@@ -13,14 +13,15 @@
     "examples/ssx-test-http-api"
   ],
   "scripts": {
+    "postinstall": "npm run clean && npm run build",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "ci": "yarn && yarn build && yarn test",
+    "ci": "npm install && npm test",
     "test": "lerna run test",
     "documentation": "lerna run doc && yarn documentation:reference",
     "documentation:reference": "node scripts/build-docs.js",
     "bootstrap": "lerna bootstrap",
-    "run-examples": "concurrently \"yarn test-dapp start\" \"yarn express-api start\"",
+    "examples": "concurrently \"yarn test-dapp start\" \"yarn express-api start\"",
     "graph": "nx graph",
     "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
     "sdk": "yarn workspace @spruceid/ssx",
@@ -37,6 +38,9 @@
     "concurrently": "^7.3.0",
     "lerna": "^5.1.2",
     "nx": "^14.5.4",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "yarn": "^1.22.19",
+    "typescript": "^4.8.4",
+    "@changesets/cli": "^2.25.0"
   }
 }
