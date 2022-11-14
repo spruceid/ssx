@@ -109,7 +109,7 @@ export class SSX {
 
     await Promise.all(promises)
       .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+        if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
           [domain, avatarUrl] = [undefined, domain];
         }
         if (domain) {
