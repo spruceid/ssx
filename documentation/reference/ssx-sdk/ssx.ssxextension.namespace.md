@@ -4,7 +4,7 @@
 
 ## SSXExtension.namespace property
 
-\[capgrok\] Capability namespace.
+\[recap\] Capability namespace.
 
 <b>Signature:</b>
 

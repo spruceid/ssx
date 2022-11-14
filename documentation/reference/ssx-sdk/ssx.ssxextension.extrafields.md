@@ -4,7 +4,7 @@
 
 ## SSXExtension.extraFields() method
 
-\[capgrok\] Extra metadata to help validate the capability.
+\[recap\] Extra metadata to help validate the capability.
 
 <b>Signature:</b>
 

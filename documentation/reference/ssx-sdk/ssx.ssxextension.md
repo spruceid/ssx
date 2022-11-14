@@ -16,7 +16,7 @@ export declare interface SSXExtension
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [namespace?](./ssx.ssxextension.namespace.md) |  | string | <i>(Optional)</i> \[capgrok\] Capability namespace. |
+|  [namespace?](./ssx.ssxextension.namespace.md) |  | string | <i>(Optional)</i> \[recap\] Capability namespace. |
 
 ## Methods
 
@@ -24,7 +24,7 @@ export declare interface SSXExtension
 |  --- | --- |
 |  [afterConnect(ssx)?](./ssx.ssxextension.afterconnect.md) | <i>(Optional)</i> Hook to run after SSX has connected to the user's wallet. This can return an object literal to override the session configuration before the user signs in. |
 |  [afterSignIn(session)?](./ssx.ssxextension.aftersignin.md) | <i>(Optional)</i> Hook to run after SSX has signed in. |
-|  [defaultActions()?](./ssx.ssxextension.defaultactions.md) | <i>(Optional)</i> \[capgrok\] Default delegated actions in capability namespace. |
-|  [extraFields()?](./ssx.ssxextension.extrafields.md) | <i>(Optional)</i> \[capgrok\] Extra metadata to help validate the capability. |
-|  [targetedActions()?](./ssx.ssxextension.targetedactions.md) | <i>(Optional)</i> \[capgrok\] Delegated actions by target in capability namespace. |
+|  [defaultActions()?](./ssx.ssxextension.defaultactions.md) | <i>(Optional)</i> \[recap\] Default delegated actions in capability namespace. |
+|  [extraFields()?](./ssx.ssxextension.extrafields.md) | <i>(Optional)</i> \[recap\] Extra metadata to help validate the capability. |
+|  [targetedActions()?](./ssx.ssxextension.targetedactions.md) | <i>(Optional)</i> \[recap\] Delegated actions by target in capability namespace. |
 

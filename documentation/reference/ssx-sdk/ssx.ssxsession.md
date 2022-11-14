@@ -11,6 +11,7 @@ Representation of an active SSXSession.
 ```typescript
 export declare type SSXSession = {
     address: string;
+    walletAddress: string;
     chainId: number;
     sessionKey: string;
     siwe: string;

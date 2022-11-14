@@ -4,7 +4,7 @@
 
 ## SSXExtension.targetedActions() method
 
-\[capgrok\] Delegated actions by target in capability namespace.
+\[recap\] Delegated actions by target in capability namespace.
 
 <b>Signature:</b>
 

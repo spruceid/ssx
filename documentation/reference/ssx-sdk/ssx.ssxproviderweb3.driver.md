@@ -4,7 +4,7 @@
 
 ## SSXProviderWeb3.driver property
 
-window.ethereum for Metamask; web3modal.connect() for Web3Modal; const provider = useProvider() from Wagmi for Rainbowkit
+window.ethereum for Metamask; web3modal.connect() for Web3Modal; const signer = useSigner(); const provider = signer.provider; from Wagmi for Rainbowkit
 
 <b>Signature:</b>
 

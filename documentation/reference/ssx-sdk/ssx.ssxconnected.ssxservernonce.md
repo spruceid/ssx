@@ -7,11 +7,16 @@
 <b>Signature:</b>
 
 ```typescript
-ssxServerNonce(): Promise<{} | {
-        nonce: string;
-    }>;
+ssxServerNonce(params: Record<string, any>): Promise<string>;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  params | Record&lt;string, any&gt; |  |
+
 <b>Returns:</b>
 
-Promise&lt;{} \| { nonce: string; }&gt;
+Promise&lt;string&gt;
 

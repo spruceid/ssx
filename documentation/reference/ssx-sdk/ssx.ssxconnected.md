@@ -37,7 +37,7 @@ export declare class SSXConnected
 |  [afterSignIn(session)](./ssx.ssxconnected.aftersignin.md) |  | Applies the "afterSignIn" methods of the extensions. |
 |  [applyExtensions()](./ssx.ssxconnected.applyextensions.md) |  | Applies the "afterConnect" methods and the delegated capabilities of the extensions. |
 |  [signIn()](./ssx.ssxconnected.signin.md) |  | <p>Requests the user to sign in.</p><p>Generates the SIWE message for this session, requests the configured Signer to sign the message, calls the "afterSignIn" methods of the extensions and returns the SSXSession object.</p> |
-|  [signOut()](./ssx.ssxconnected.signout.md) |  |  |
+|  [signOut(session)](./ssx.ssxconnected.signout.md) |  |  |
 |  [ssxServerLogin(session)](./ssx.ssxconnected.ssxserverlogin.md) |  |  |
-|  [ssxServerNonce()](./ssx.ssxconnected.ssxservernonce.md) |  |  |
+|  [ssxServerNonce(params)](./ssx.ssxconnected.ssxservernonce.md) |  |  |
 
