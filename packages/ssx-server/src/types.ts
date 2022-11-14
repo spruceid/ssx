@@ -255,3 +255,19 @@ export enum SSXEventLogTypes {
   /** Event type definition */
   // EVENT = "event",
 }
+
+/** ENS options supported by SSX. */
+export interface SSXEnsResolveOptions {
+  /** Enable ENS name/domain resolution. */
+  domain?: boolean;
+  /** Enable ENS avatar resolution. */
+  avatar?: boolean;
+}
+
+/** ENS data supported by SSX */
+export interface SSXEnsData {
+  /** ENS name/domain */
+  domain?: string | null,
+  /** ENS avatar */
+  avatarUrl?: string | null
+}

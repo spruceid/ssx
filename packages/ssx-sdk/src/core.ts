@@ -5,10 +5,12 @@ import {
 } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
+import { generateNonce } from 'siwe';
 import { SSXExtension } from './extension';
 import {
   SSXSession,
   SSXConfig,
+  SSXEnsResolveOptions,
 } from './types';
 
 /** Initializer for an SSXSession. */
@@ -29,10 +31,18 @@ export class SSXInit {
     let provider: ethers.providers.Web3Provider;
 
     try {
-      provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      // eslint-disable-next-line no-underscore-dangle
+      if (!this.config.providers.web3.driver?._isProvider) {
+        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+      } else {
+        provider = this.config.providers.web3.driver;
+      }
       try {
         if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
-          await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          const connectedAccounts = await provider.listAccounts();
+          if (connectedAccounts.length === 0) {
+            await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          }
         }
       } catch (err) {
         // Permission rejected error
@@ -126,29 +136,41 @@ export class SSXConnected {
     }
   }
 
-  public async ssxServerNonce(): Promise<{} | { nonce: string }> {
-    let override = {};
+  public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     try {
       if (this.api) {
-        const { data: nonce } = await this.api.get('/ssx-nonce');
-        override = { nonce };
+        const { data: nonce } = await this.api.get('/ssx-nonce', { params });
+        if (!nonce) {
+          throw new Error('Unable to retrieve nonce from server.');
+        }
+        return nonce;
       }
     } catch (error) {
       // were do we log this error? ssx.log?
       // show to user?
       console.error(error);
+      throw error;
     }
-    return override;
   }
 
-  public async ssxServerLogin(session: SSXSession): Promise<void> {
+  public async ssxServerLogin(session: SSXSession): Promise<any> {
     try {
       if (this.api) {
-        const response = await this.api.post('/ssx-login', {
+        let resolveEns: boolean | SSXEnsResolveOptions = false;
+        if (typeof this.config.resolveEns === 'object' && this.config.resolveEns.resolveOnServer) {
+          resolveEns = this.config.resolveEns.resolve;
+        }
+        // @TODO(w4ll3): figure out how to send a custom sessionKey
+        return this.api.post('/ssx-login', {
           signature: session.signature,
           siwe: session.siwe,
+          address: session.address,
+          walletAddress: session.walletAddress,
+          chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
-        });
+          resolveEns
+        })
+          .then((response) => response.data);
       }
     } catch (error) {
       // were do we log this error? ssx.log?
@@ -171,15 +193,17 @@ export class SSXConnected {
     if (sessionKey === undefined) {
       return Promise.reject(new Error('unable to retrieve session key'));
     }
-    const serverNonce = await this.ssxServerNonce();
 
     const defaults = {
       address: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
-      domain: window.location.hostname,
+      domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
-      ...serverNonce,
+      nonce: generateNonce(),
     };
+
+    const serverNonce = await this.ssxServerNonce(defaults);
+    if (serverNonce) defaults.nonce = serverNonce;
 
     const siweConfig = merge(defaults, this.config.siweConfig);
 
@@ -187,25 +211,31 @@ export class SSXConnected {
 
     const signature = await this.provider.getSigner().signMessage(siwe);
 
-    const session = {
+    let session = {
       address: siweConfig.address,
+      walletAddress: await this.provider.getSigner().getAddress(),
       chainId: siweConfig.chainId,
       sessionKey,
       siwe,
       signature,
     };
 
-    await this.ssxServerLogin(session);
+    const response = await this.ssxServerLogin(session);
+
+    session = {
+      ...session,
+      ...response,
+    };
 
     await this.afterSignIn(session);
 
     return session;
   }
 
-  async signOut(): Promise<void> {
+  async signOut(session: SSXSession): Promise<void> {
     try {
       if (this.api) {
-        await this.api.post('/ssx-logout');
+        await this.api.post('/ssx-logout', { ...session });
       }
     } catch (error) {
       // were do we log this error? ssx.log?

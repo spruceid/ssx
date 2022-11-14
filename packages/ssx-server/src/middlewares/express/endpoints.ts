@@ -52,6 +52,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
         req.body.siwe,
         req.body.signature,
         req.body.daoLogin,
+        req.body.resolveEns,
         req.session.nonce,
       );
 
@@ -66,10 +67,10 @@ const ssxEndpoints = (ssx: SSXServer) => {
       req.session.siwe = session.siwe;
       req.session.signature = session.signature;
       req.session.daoLogin = session.daoLogin;
+      req.session.ens = session.ens;
 
-      res.status(200).json({ session: req.session });
+      res.status(200).json({ ...req.session });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: error.message });
     }
   });

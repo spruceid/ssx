@@ -1,7 +1,7 @@
 import { SSXServer } from '../../server';
 import { SiweMessage } from 'siwe';
 import { NextFunction, Request, Response } from 'express';
-import { SSXLogFields } from '../../types';
+import { SSXEnsData, SSXLogFields } from '../../types';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {
@@ -23,6 +23,8 @@ declare module 'express-session' {
     signature?: string;
     /** If it's a DAO session */
     daoLogin: boolean;
+    /** If enable ENS resolution */
+    ens?: SSXEnsData;
   }
 }
 
@@ -106,7 +108,6 @@ export const ssxMiddleware = (ssx: SSXServer) => {
           req.session.destroy(() => next());
         }
       } catch (error) {
-        console.error(error);
         // ignore errors? Log them?
       }
     }

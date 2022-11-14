@@ -80,7 +80,6 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
             req.session.destroy(() => {});
           }
         } catch (error) {
-          console.error(error);
           // ignore errors? Log them?
         }
       }
@@ -118,6 +117,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
           body.siwe,
           body.signature,
           body.daoLogin,
+          body.resolveEns,
           req.session.nonce,
         );
 
@@ -136,7 +136,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ session: req.session }));
+        res.end(JSON.stringify({ ...req.session }));
       } else if (req.url === '/ssx-logout') {
         req.session.destroy(null);
         req.session = null;
