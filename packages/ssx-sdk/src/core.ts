@@ -139,6 +139,9 @@ export class SSXConnected {
     try {
       if (this.api) {
         const { data: nonce } = await this.api.get('/ssx-nonce', { params });
+        if (!nonce) {
+          throw new Error('Unable to retrieve nonce from server.');
+        }
         return nonce;
       }
     } catch (error) {
