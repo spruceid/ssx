@@ -1,4 +1,4 @@
-# @spruceid/ssx
+# @spruceid/ssx-serverless
 
 ## 1.0.0
 
@@ -6,9 +6,8 @@
 
 - f317c82: Public release of the SSX SDK
 
-### Minor Changes
+### Patch Changes
 
-- a91af88: Throws an error in case an API is configured but no nonce is returned from it.
 - 1072382: Add ENS resolution feature to the client and server to allow the developer to choose where to resolve it.
 
   ## @spruceid/ssx changes:
@@ -30,14 +29,5 @@
 
   - Updates the ENS resolution to only return defined properties.
 
-### Patch Changes
-
 - Updated dependencies [f317c82]
   - @spruceid/ssx-gnosis-extension@1.0.0
-
-## 0.1.1
-
-### Patch Changes
-
-- a44f78c: Detect wallet connection and prevent connect attempt if already connected
-- 0f84d97: Detect if a web3 provider is being provided instead of always instantiating a new Web3Provider.

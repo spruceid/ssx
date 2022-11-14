@@ -1,4 +1,4 @@
-# @spruceid/ssx
+# @spruceid/ssx-server
 
 ## 1.0.0
 
@@ -8,7 +8,6 @@
 
 ### Minor Changes
 
-- a91af88: Throws an error in case an API is configured but no nonce is returned from it.
 - 1072382: Add ENS resolution feature to the client and server to allow the developer to choose where to resolve it.
 
   ## @spruceid/ssx changes:
@@ -34,10 +33,3 @@
 
 - Updated dependencies [f317c82]
   - @spruceid/ssx-gnosis-extension@1.0.0
-
-## 0.1.1
-
-### Patch Changes
-
-- a44f78c: Detect wallet connection and prevent connect attempt if already connected
-- 0f84d97: Detect if a web3 provider is being provided instead of always instantiating a new Web3Provider.
