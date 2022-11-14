@@ -7,6 +7,7 @@ import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
 import { RequestHandler } from 'express';
+import { EventEmitter } from 'events';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
@@ -14,7 +15,7 @@ import { RequestHandler } from 'express';
  * with various middleware libraries to add authentication and metrics to your server.
  *
  **/
-export class SSXServer {
+export class SSXServer extends EventEmitter {
   private _config: SSXServerConfig;
   private _api: AxiosInstance;
   public provider: ethers.providers.Provider;
@@ -22,6 +23,7 @@ export class SSXServer {
   public session: RequestHandler;
 
   constructor(config: SSXServerConfig = {}) {
+    super()
     this._setDefaults();
 
     Object.assign(this._config, {
@@ -115,7 +117,7 @@ export class SSXServer {
         utils.verifyMessage(data.prepareMessage(), signature) === data.address
       );
 
-      this.log({
+      const event = {
         userId: `did:pkh:eip155:${data.chainId}:${data.address}`,
         type: SSXEventLogTypes.LOGIN,
         content: {
@@ -123,7 +125,10 @@ export class SSXServer {
           siwe,
           isGnosis: daoLogin && smartContractWalletOrCustomMethod,
         },
-      });
+      };
+
+      this.log(event);
+      this.emit(event.type, event);
 
       return {
         success,
