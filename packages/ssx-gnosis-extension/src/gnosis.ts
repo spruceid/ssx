@@ -43,6 +43,9 @@ export const getGnosisDelegationHistoryEventsFor = async (
   address: string,
   provider: providers.Provider,
 ): Promise<Array<Event>> => {
+  const utf8Encode = new TextEncoder();
+  const siweSpace = utils.keccak256(utf8Encode.encode(`siwe${address}`));
+
   const contractAddress = await getContractAddress(provider);
 
   const delegationHistory = new Contract(
@@ -52,12 +55,12 @@ export const getGnosisDelegationHistoryEventsFor = async (
   );
   const setDelegateFilter = delegationHistory.filters.SetDelegate(
     null,
-    null,
+    siweSpace,
     address,
   );
   const clearDelegateFilter = delegationHistory.filters.ClearDelegate(
     null,
-    null,
+    siweSpace,
     address,
   );
 

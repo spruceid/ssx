@@ -17,7 +17,7 @@
   },
   "peerDependencies": {
     "siwe": "^2.1.2",
-    "ethers": "5.6.8"
+    "ethers": "^5.7.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
