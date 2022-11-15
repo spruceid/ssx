@@ -8,7 +8,7 @@ DAO Login is a workflow that allows EOAs (externally owned accounts) or smart co
 
 When DAOs or organizations that use multisigs need to make off-chain actions on apps or services (such as draft a governance proposal, or manage organizational profile information), they have problems due to there being no standard way for a decisionmaker to do it. This even extends beyond DAOs to include users that own multisigs and need a way to prove asset ownership held by the multisig while using an individual account to sign in to apps and services.&#x20;
 
-We have collaborated with the[ Safe](https://gnosis-safe.io/) team to power a workflow that enables:
+We have collaborated with the[ Safe](https://gnosis-safe.io/) (formerly Gnosis Safe) team to power a workflow that enables:
 
 * Multisig owners to specify individual accounts to log in on behalf of the multisig
 * Apps and services to enable this workflow
@@ -17,7 +17,7 @@ We have collaborated with the[ Safe](https://gnosis-safe.io/) team to power a wo
 In order for your app to have DAO Logins enabled, make sure to follow the related section in our [configuration guide](../configuring-ssx/#enabling-dao-login).
 {% endhint %}
 
-In the Sign-In with Ethereum Delegate Registry Manager app from the Gnosis Safe team, signers will be able to add a delegate that can log into apps and services on behalf of the multisig. This can be accomplished by inserting their address in the `Enter delegate Address or ENS Name` field and selecting `Add delegate`.&#x20;
+In the [Sign-In with Ethereum Delegate Registry Manager app](https://app.safe.global/share/safe-app?appUrl=https%3A%2F%2Fapps.gnosis-safe.io%2Fsiwe-delegate-manager\&chain=eth) from the Safe team, signers will be able to add a delegate that can log into apps and services on behalf of the multisig. This can be accomplished by inserting their address in the `Enter delegate Address or ENS Name` field and selecting `Add delegate`.&#x20;
 
 <figure><img src="../.gitbook/assets/Screen Shot 2022-11-10 at 11.55.43 PM.png" alt=""><figcaption><p>The Safe Sign-In with Ethereum Delegate Registry Application</p></figcaption></figure>
 

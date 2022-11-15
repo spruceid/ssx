@@ -41,7 +41,7 @@ const buttonHandlerWeb3ModalGnosis = async () => {
 
 ### SSX-Client Configuration Options
 
-The configuration options for SSX are defined [here](../reference/ssx/ssx.ssxconfig/) and include: `enableDaoLogin`, `providers`, and `siweConfig`.
+The configuration options for SSX are defined [here](../reference/ssx-sdk/ssx.ssxconfig.md) and include: `enableDaoLogin`, `providers`, and `siweConfig`.
 
 #### [enableDaoLogin](../appendix/dao-login-workflow.md)
 
@@ -67,7 +67,7 @@ const ssx = new SSX({
 
 SSX acts as a super-provider for your dapp to make multiple resources available to your dapp with minimal configuration: [a web3 provider ](./#providers.web3)(to connect to your wallet), [an RPC provider](./#providers.rpc) (to connect to blockchains) and [a server provider](./#providers.server) (to connect to a server using ssx).
 
-#### [providers.web3](../reference/ssx/ssx.ssxproviderweb3/)
+#### [providers.web3](../reference/ssx-sdk/ssx.ssxproviderweb3.md)
 
 Dapps interact with the Ethereum network by accessing the [Ethereum JavaScript provider API](https://eips.ethereum.org/EIPS/eip-1193), which is usually injected into the browser by an Ethereum wallet. SSX works with any wallet by connecting to the wallet's implementation of [Web3Provider](https://docs.ethers.io/v5/api/providers/other/#Web3Provider), which is passed to the config as seen below.
 
@@ -81,7 +81,7 @@ const ssx = new SSX({
 
 #### [providers.server](broken-reference)
 
-The server field is an optional reference to a corresponding server running `ssx-server`. Providing these fields enables automatic communication with the server to establish sessions upon successful SIWE signing. For more information on configuring `ssx-server`, check out the [readme-1.md](../readme-1.md "mention"):
+The server field is an optional reference to a corresponding server running `ssx-server`. Providing these fields enables automatic communication with the server to establish sessions upon successful SIWE signing. For more information on configuring `ssx-server`, check out the [ssx-quickstart.md](../ssx-quickstart.md "mention"):
 
 ```javascript
 const ssx = new SSX({
@@ -89,9 +89,9 @@ const ssx = new SSX({
 });
 ```
 
-#### [providers.rpc](../reference/ssx/ssx.ssxrpcprovider.md)
+#### [providers.rpc](../reference/ssx-sdk/ssx.ssxrpcprovider.md)
 
-SSX Server supports all JSON RPC providers that are currently supported by [`ethers`](https://docs.ethers.io/v5/api/providers/api-providers/#api-providers), requiring only the credentials from the desired provider to instantiate it. The SSX library provides valid enumerated options for various RPC providers, but developers can also just use the valid strings, as seen below. A list of supported RPC providers can be found [here](../reference/ssx/ssx.ssxrpcproviders.md).
+SSX Server supports all JSON RPC providers that are currently supported by [`ethers`](https://docs.ethers.io/v5/api/providers/api-providers/#api-providers), requiring only the credentials from the desired provider to instantiate it. The SSX library provides valid enumerated options for various RPC providers, but developers can also just use the valid strings, as seen below. A list of supported RPC providers can be found [here](../reference/ssx-sdk/ssx.ssxrpcproviders.md).
 
 ```javascript
 import { SSX, SSXRPCProviders, SSXInfuraProviderNetworks } from '@spruceid/ssx-server';
@@ -129,13 +129,13 @@ const rpcExample = async () => {
 
 ### SSX-Server Configuration Options
 
-The configuration options for `ssx-server` are defined [here](../reference/ssx-server/ssx-server.ssxserverconfig/) and include: `signingKey`, `useSecureCookies`, and `providers`.&#x20;
+The configuration options for `ssx-server` are defined [here](../reference/ssx-server/ssx-server.ssxserverconfig.md) and include: `signingKey`, `useSecureCookies`, and `providers`.&#x20;
 
 {% hint style="info" %}
 SSX Server supports multiple server configurations. To explore setting a specific server environment with SSX, check out [configuring-ssx-server.md](configuring-ssx-server.md "mention")
 {% endhint %}
 
-#### [signingKey](../reference/ssx-server/ssx-server.ssxserverconfig/ssx-server.ssxserverconfig.signingkey.md)
+#### [signingKey](../reference/ssx-server/ssx-server.ssxserverconfig.signingkey.md)
 
 This is an optional, string field. It is the key that is used to sign cookies to prevent cookie tampering on the client. The server will issue unsigned cookies if this field is not provided. It is recommended for production environments.
 
@@ -145,7 +145,7 @@ const ssx = new SSXServer({
 });
 ```
 
-#### [useSecureCookies](../reference/ssx-server/ssx-server.ssxserverconfig/ssx-server.ssxserverconfig.usesecurecookies.md)
+#### [useSecureCookies](../reference/ssx-server/ssx-server.ssxserverconfig.usesecurecookies.md)
 
 This is an optional, boolean field. It adds extra protection to your cookies by changing their attributes to be more secure. This defaults to `true` in production environments.&#x20;
 
@@ -194,7 +194,7 @@ const ssx = new SSXServer({
 const currentBlock = await ssx.provider.getBlockNumber();
 ```
 
-#### [providers.sessionConfig](../reference/ssx-server/ssx-server.ssxsessionstoreconfig/)
+#### [providers.sessionConfig](../reference/ssx-server/ssx-server.ssxsessionstoreconfig.md)
 
 This optional field is for managing the session store. It includes a [`sessionOptions`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a24d35afe48f7fb702e7617b983ddca1904ba36b/types/express-session/index.d.ts#L52) field and a `store` connector function. Under the hood, SSX connects to session stores that implement [express-session's EventEmitter API](https://github.com/expressjs/session#compatible-session-stores) and uses the same configuration options to do so. These fields are automatically set by your SSX configuration
 
