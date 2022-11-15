@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "An identity solution that enables SSI to JS/TS dApps.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
