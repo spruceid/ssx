@@ -1,7 +1,7 @@
 # Table of contents
 
 * [SSX](README.md)
-* [⚡ SSX Quickstart](ssx-quickstart.md)
+* [⚡ SSX Quickstart](readme-1.md)
 * [🛠 Configuring SSX](configuring-ssx/README.md)
   * [Configuring SSX Server](configuring-ssx/configuring-ssx-server.md)
   * [Configuring SSX with React](configuring-ssx/configuring-ssx-with-react.md)

@@ -6,8 +6,6 @@ description: >-
 
 # ⚡ SSX Quickstart
 
-
-
 {% hint style="info" %}
 :zap: **Requirements**
 
@@ -51,6 +49,7 @@ import { SSX } from "@spruceid/ssx";
 const signIn = async () => {
     const ssx = new SSX({
       enableDaoLogin: true,
+      resolveEns: true,
       providers: {
         web3: { driver: window.ethereum },
         server: { host: process.env.SERVER_URL },
@@ -58,6 +57,7 @@ const signIn = async () => {
     });
     await ssx.signIn();
     const userAddress = ssx.address();
+    const session = ssx.session;
 };
 ```
 

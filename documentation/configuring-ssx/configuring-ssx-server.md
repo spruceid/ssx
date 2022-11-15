@@ -4,7 +4,7 @@ SSX aims to work with as many different servers and backend configurations as po
 
 ### Express
 
-SSX has support for Express, and it is the default we assume for users of the library. Check out our guides on [SSX Server Quickstart](../ssx-quickstart.md#express.js-middleware) and [Scaling SSX Server](../scaling-ssx-server.md#adding-sessions-to-ssx) to see examples of how to use SSX with Express.
+SSX has support for Express, and it is the default we assume for users of the library. Check out our guides on [SSX Server Quickstart](../readme-1.md#express.js-middleware) and [Scaling SSX Server](../scaling-ssx-server.md#adding-sessions-to-ssx) to see examples of how to use SSX with Express.
 
 ### Node HTTP Server Middleware
 
