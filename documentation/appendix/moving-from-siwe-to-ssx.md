@@ -208,6 +208,29 @@ And replace this code to login with only ssx
     let { address, ens } = await ssx.signIn();
 +   updateTitle(ens?.domain || address);
 +   const res = await fetch(`/api/me`);
+-    /**	
+-     * Gets a nonce from our backend, this will add this nonce to the session so	
+-     * we can check it on sign in.	
+-     */	
+-    const nonce = await fetch('/api/nonce', { credentials: 'include' }).then((res) => res.text());	
+-
+-    /**	
+-     * Creates the message object	
+-     */	
+-    const message = new SiweMessage({	
+-        domain: document.location.host,	
+-        address,	
+-        chainId: await provider.getNetwork().then(({ chainId }) => chainId),	
+-        uri: document.location.origin,	
+-        version: '1',	
+-        statement: 'SIWE Notepad Example',	
+-        nonce,	
+-    });	
+
+-    /**	
+-     * Generates the message to be signed and uses the provider to ask for a signature	
+-     */	
+-    const signature = await provider.getSigner().signMessage(message.prepareMessage());
 -    fetch(`/api/sign_in`, {
 -        method: 'POST',
 -        body: JSON.stringify({ message, ens, signature }),
