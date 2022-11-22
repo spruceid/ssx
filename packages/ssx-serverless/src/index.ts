@@ -1,8 +1,8 @@
-import { generateNonce, SiweError, SiweMessage, SiweResponse } from 'siwe';
+import { generateNonce, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXSessionCRUDConfig, SSXSessionData, SSXEnsData } from './types';
-import { getProvider } from './utils';
+import { SSXServerConfig, SSXSessionCRUDConfig, SSXSessionData, ISSXEnsData } from './types';
+import { SSXLogFields, SSXEventLogTypes, ssxLog, getProvider } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
 /**
@@ -66,24 +66,10 @@ export class SSXServer {
     this.provider = getProvider(config.providers?.rpc);
   }
 
-  /**
-   * Abstracts the fetch API to append correct headers, host and parse
-   * responses to JSON for POST requests.
-   */
-  private _post = (route: string, body: any): Promise<boolean> => {
-    return this._api
-      .post(route, typeof body === 'string' ? body : JSON.stringify(body))
-      .then((res) => res.status === 204)
-      .catch((e) => {
-        console.error(e);
-        return false;
-      });
-  };
-
   /** Registers a new event to the API */
   public log = async (data: SSXLogFields): Promise<boolean> => {
-    if (!data.timestamp) { data.timestamp = new Date().toISOString() };
-    return !!this._config.providers?.metrics?.apiKey && this._post('/events', data);
+    this._api;
+    return ssxLog(this._api, this._config.providers?.metrics?.apiKey ?? '', data);
   };
 
   /**
@@ -179,7 +165,7 @@ export class SSXServer {
         throw error;
       });
 
-    let ens: SSXEnsData = {};
+    let ens: ISSXEnsData = {};
     let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
     try {
       if (signInOpts?.resolveEnsDomain) {
@@ -300,5 +286,6 @@ export class SSXServer {
   }
 }
 
+export { SSXLogFields, SSXEventLogTypes };
+export * from "@spruceid/ssx-core/dist/types";
 export * from "./types";
-export * from "./utils";

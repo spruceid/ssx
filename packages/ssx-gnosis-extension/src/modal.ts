@@ -1,3 +1,4 @@
+import { ConfigOverrides, ISSXConnected, SSXExtension } from '@spruceid/ssx-core';
 import { providers } from 'ethers';
 import { gnosisDelegatorsFor } from './gnosis';
 
@@ -205,16 +206,16 @@ const getBaseModal = (): Element => {
   return container;
 }
 
-export class GnosisDelegation {
+export class GnosisDelegation implements SSXExtension {
   public web3provider: providers.Web3Provider;
   public selectedOption: string = '';
-  private _proceed: (value: any | PromiseLike<any>) => void;
+  private _proceed: (value: ConfigOverrides | PromiseLike<ConfigOverrides>) => void;
   private _failure: (reason?: any) => void;
   private _connectedAddress: string;
 
   namespace = "delegationRegistry";
 
-  async afterConnect(ssx: any): Promise<any> {
+  async afterConnect(ssx: ISSXConnected): Promise<ConfigOverrides> {
     this.web3provider = ssx.provider;
     this._connectedAddress = await ssx.provider.getSigner().getAddress();
 
@@ -226,7 +227,7 @@ export class GnosisDelegation {
     };
 
     window.gnosisModal = gnosisModal;
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<ConfigOverrides>((resolve, reject) => {
       this.openModal();
       this._proceed = resolve;
       this._failure = reject;

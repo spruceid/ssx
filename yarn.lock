@@ -4844,9 +4844,10 @@
   integrity sha512-PuxRlyTlycXrTU11B22XcCz1PUU7p5krXxnb+ztPkgR3fAMP3ubENgoUyLllUJXxx2O/Jpne+0P9HIro+vilPg==
 
 "@spruceid/ssx@file:packages/ssx-sdk":
-  version "0.1.1"
+  version "1.0.0"
   dependencies:
     "@metamask/detect-provider" "^1.2.0"
+    "@spruceid/ssx-core" "*"
     "@spruceid/ssx-gnosis-extension" "*"
     "@spruceid/ssx-sdk-wasm" "0.1.2"
     "@types/lodash.merge" "^4.6.7"
@@ -6802,7 +6803,7 @@ axios@^0.27.2:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
 
-axios@^1.0.0, axios@^1.1.3:
+axios@^1.0.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.1.3.tgz#8274250dada2edf53814ed7db644b9c2866c1e35"
   integrity sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==

@@ -1,3 +1,4 @@
 export * from './server';
-export * from './types';
 export * from './middlewares';
+export * from '@spruceid/ssx-core/dist/server/types';
+export * from '@spruceid/ssx-core/dist/types';

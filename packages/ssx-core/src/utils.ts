@@ -8,6 +8,7 @@ import {
   isSSXPocketProvider,
   SSXAlchemyProviderNetworks,
   SSXAnkrProviderNetworks,
+  SSXEnsData,
   SSXEtherscanProviderNetworks,
   SSXInfuraProviderNetworks,
   SSXPocketProviderNetworks,
@@ -59,4 +60,54 @@ export const getProvider = (rpc?: SSXRPCProvider): ethers.providers.BaseProvider
     return new ethers.providers.JsonRpcProvider(rpc.url, rpc.network);
   }
   return getDefaultProvider();
+};
+
+/**
+   * Resolves ENS data supported by SSX. 
+   * @param provider - Ether provider.
+   * @param address - User address.
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  export const ssxResolveEns = async (
+    provider: ethers.providers.BaseProvider,
+    /* User Address */
+    address: string,
+    resolveEnsOpts: {
+      /* Enables ENS domain/name resolution */
+      domain?: boolean,
+      /* Enables ENS avatar resolution */
+      avatar?: boolean,
+    } = {
+        domain: true,
+        avatar: true
+      }
+  ): Promise<SSXEnsData> => {
+  if (!address) {
+    throw new Error('Missing address.');
+  }
+  let ens: SSXEnsData = {};
+  let promises: Array<Promise<any>> = [];
+  if (resolveEnsOpts?.domain) {
+    promises.push(provider.lookupAddress(address))
+  }
+  if (resolveEnsOpts?.avatar) {
+    promises.push(provider.getAvatar(address))
+  }
+
+  await Promise.all(promises)
+    .then(([domain, avatarUrl]) => {
+      if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+        [domain, avatarUrl] = [undefined, domain];
+      }
+      if (domain) {
+        ens['domain'] = domain;
+      }
+      if (avatarUrl) {
+        ens['avatarUrl'] = avatarUrl;
+      }
+    });
+
+  return ens;
 };

@@ -1,4 +1,4 @@
 export * from './ssx';
-export * from './extension';
 export * from './core';
-export * from './types';
+export * from '@spruceid/ssx-core/dist/client/types';
+export * from '@spruceid/ssx-core/dist/types';

@@ -1,8 +1,16 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData, SSXEnsResolveOptions } from './types';
-import { getProvider } from './utils';
+import {
+  SSXLogFields,
+  SSXServerConfig,
+  SSXEventLogTypes,
+  SSXEnsData,
+  SSXEnsResolveOptions,
+  ssxLog,
+  ssxResolveEns,
+  getProvider
+} from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
@@ -57,25 +65,9 @@ export class SSXServer extends EventEmitter {
     this._config.useSecureCookies = process.env.NODE_ENV === 'production';
   };
 
-  /**
-   * Abstracts the fetch API to append correct headers, host and parse
-   * responses to JSON for POST requests.
-   */
-  private _post = (route: string, body: any): Promise<boolean> => {
-    return this._api
-      .post(route, typeof body === 'string' ? body : JSON.stringify(body))
-      .then((res) => res.status === 204)
-      .catch((e) => {
-        return false;
-      });
-  };
-
   /** Registers a new event to the API */
   public log = async (data: SSXLogFields): Promise<boolean> => {
-    if (!data.timestamp) data.timestamp = new Date().toISOString();
-    return (
-      this._config.providers?.metrics?.apiKey && this._post('/events', data)
-    );
+    return ssxLog(this._api, this._config.providers?.metrics?.apiKey, data);
   };
 
   /**
@@ -192,43 +184,11 @@ export class SSXServer extends EventEmitter {
   public resolveEns = async (
     /* User Address */
     address: string,
-    resolveEnsOpts: {
-      /* Enables ENS domain/name resolution */
-      domain?: boolean,
-      /* Enables ENS avatar resolution */
-      avatar?: boolean,
-    } = {
-        domain: true,
-        avatar: true
-      }
+    /* ENS resolution settings */
+    resolveEnsOpts?: SSXEnsResolveOptions
   ): Promise<SSXEnsData> => {
-    if (!address) {
-      throw new Error('Missing address.');
-    }
-    let ens: SSXEnsData = {};
-    let promises: Array<Promise<any>> = [];
-    if (resolveEnsOpts?.domain) {
-      promises.push(this.provider.lookupAddress(address))
-    }
-    if (resolveEnsOpts?.avatar) {
-      promises.push(this.provider.getAvatar(address))
-    }
-
-    await Promise.all(promises)
-      .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
-          [domain, avatarUrl] = [undefined, domain];
-        }
-        if (domain) {
-          ens['domain'] = domain;
-        }
-        if (avatarUrl) {
-          ens['avatarUrl'] = avatarUrl;
-        }
-      });
-
-    return ens;
-  }
+    return ssxResolveEns(this.provider, address, resolveEnsOpts)
+  };
 
   /**
    * Logs out the user by deleting the session.

@@ -1,11 +1,11 @@
 import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
-import { SSX, SSXConfig } from "@spruceid/ssx";
+import { SSX, SSXClientConfig } from "@spruceid/ssx";
 import { useSigner } from 'wagmi';
 
 /** Props for SSX Provider */
 export interface SSXProviderProps {
   /** Optional SSX configuration, used for instantiating an SSX Instance */
-  ssxConfig?: SSXConfig;
+  ssxConfig?: SSXClientConfig;
   /** Provider child nodes, for rendering*/
   children: ReactNode;
 }

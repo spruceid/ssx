@@ -1,7 +1,7 @@
 import { SSXServer } from '../../server';
 import { SiweMessage } from 'siwe';
 import { NextFunction, Request, Response } from 'express';
-import { SSXEnsData, SSXLogFields } from '../../types';
+import { SSXEnsData, SSXLogFields } from '@spruceid/ssx-core';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {

@@ -27,6 +27,7 @@
     "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
     "sdk": "yarn workspace @spruceid/ssx",
     "react": "yarn workspace @spruceid/ssx-react",
+    "core": "yarn workspace @spruceid/ssx-core",
     "server": "yarn workspace @spruceid/ssx-server",
     "serverless": "yarn workspace @spruceid/ssx-serverless",
     "test-dapp": "yarn workspace ssx-test-dapp",
@@ -42,7 +43,6 @@
     "nx": "^14.5.4",
     "rimraf": "^3.0.2",
     "yarn": "^1.22.19",
-    "typescript": "^4.8.4",
-    "@changesets/cli": "^2.25.0"
+    "typescript": "^4.8.4"
   }
 }

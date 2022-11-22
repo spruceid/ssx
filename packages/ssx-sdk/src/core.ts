@@ -6,19 +6,20 @@ import {
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
 import { generateNonce } from 'siwe';
-import { SSXExtension } from './extension';
 import {
-  SSXSession,
-  SSXConfig,
+  SSXClientSession,
+  SSXClientConfig,
   SSXEnsResolveOptions,
-} from './types';
+  ISSXConnected,
+  SSXExtension
+} from '@spruceid/ssx-core';
 
-/** Initializer for an SSXSession. */
+/** Initializer for an SSXClientSession. */
 export class SSXInit {
-  /** Extensions for the SSXSession. */
+  /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
-  constructor(private config?: SSXConfig) { }
+  constructor(private config?: SSXClientConfig) { }
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -70,7 +71,7 @@ export class SSXInit {
 }
 
 /** An intermediate SSX state: connected, but not signed-in. */
-export class SSXConnected {
+export class SSXConnected implements ISSXConnected {
   /** Promise that is initialized on construction of this class to run the "afterConnect" methods
    * of the extensions.
    */
@@ -82,7 +83,7 @@ export class SSXConnected {
 
   constructor(
     public builder: ssxSession.SSXSessionBuilder,
-    public config: SSXConfig,
+    public config: SSXClientConfig,
     public extensions: SSXExtension[],
     public provider: ethers.providers.Web3Provider,
   ) {
@@ -128,7 +129,7 @@ export class SSXConnected {
   }
 
   /** Applies the "afterSignIn" methods of the extensions. */
-  public async afterSignIn(session: SSXSession): Promise<void> {
+  public async afterSignIn(session: SSXClientSession): Promise<void> {
     for (const extension of this.extensions) {
       if (extension.afterSignIn) {
         await extension.afterSignIn(session);
@@ -153,7 +154,7 @@ export class SSXConnected {
     }
   }
 
-  public async ssxServerLogin(session: SSXSession): Promise<any> {
+  public async ssxServerLogin(session: SSXClientSession): Promise<any> {
     try {
       if (this.api) {
         let resolveEns: boolean | SSXEnsResolveOptions = false;
@@ -184,9 +185,9 @@ export class SSXConnected {
      *
      * Generates the SIWE message for this session, requests the configured
      * Signer to sign the message, calls the "afterSignIn" methods of the
-     * extensions and returns the SSXSession object.
+     * extensions and returns the SSXClientSession object.
      */
-  async signIn(): Promise<SSXSession> {
+  async signIn(): Promise<SSXClientSession> {
     await this.afterConnectHooksPromise;
 
     const sessionKey = this.builder.jwk();
@@ -232,7 +233,7 @@ export class SSXConnected {
     return session;
   }
 
-  async signOut(session: SSXSession): Promise<void> {
+  async signOut(session: SSXClientSession): Promise<void> {
     try {
       if (this.api) {
         await this.api.post('/ssx-logout', { ...session });
