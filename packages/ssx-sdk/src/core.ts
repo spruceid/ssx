@@ -31,29 +31,30 @@ export class SSXInit {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
     let provider: ethers.providers.Web3Provider;
 
-    try {
-      // eslint-disable-next-line no-underscore-dangle
-      if (!this.config.providers.web3.driver?._isProvider) {
-        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
-      } else {
-        provider = this.config.providers.web3.driver;
-      }
+    // eslint-disable-next-line no-underscore-dangle
+    if (!this.config.providers.web3.driver?._isProvider) {
       try {
-        if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
-          const connectedAccounts = await provider.listAccounts();
-          if (connectedAccounts.length === 0) {
-            await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
-          }
-        }
+        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
       } catch (err) {
-        // Permission rejected error
+        // Provider creation error
         console.error(err);
         throw err;
       }
-    } catch (err) {
-      // Provider creation error
-      console.error(err);
-      throw err;
+    } else {
+      provider = this.config.providers.web3.driver;
+    }
+
+    if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
+      const connectedAccounts = await provider.listAccounts();
+      if (connectedAccounts.length === 0) {
+        try {
+          await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+        } catch (err) {
+          // Permission rejected error
+          console.error(err);
+          throw err;
+        }
+      }
     }
 
     let builder;
@@ -138,29 +139,28 @@ export class SSXConnected implements ISSXConnected {
   }
 
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
-    try {
-      if (this.api) {
-        const { data: nonce } = await this.api.get('/ssx-nonce', { params });
-        if (!nonce) {
-          throw new Error('Unable to retrieve nonce from server.');
-        }
-        return nonce;
+    if (this.api) {
+      let nonce;
+      try {
+        nonce = (await this.api.get('/ssx-nonce', { params })).data;
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
-    } catch (error) {
-      // were do we log this error? ssx.log?
-      // show to user?
-      console.error(error);
-      throw error;
+      if (!nonce) {
+        throw new Error('Unable to retrieve nonce from server.');
+      }
+      return nonce;
     }
   }
 
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
-    try {
-      if (this.api) {
-        let resolveEns: boolean | SSXEnsResolveOptions = false;
-        if (typeof this.config.resolveEns === 'object' && this.config.resolveEns.resolveOnServer) {
-          resolveEns = this.config.resolveEns.resolve;
-        }
+    if (this.api) {
+      let resolveEns: boolean | SSXEnsResolveOptions = false;
+      if (typeof this.config.resolveEns === 'object' && this.config.resolveEns.resolveOnServer) {
+        resolveEns = this.config.resolveEns.resolve;
+      }
+      try {
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api.post('/ssx-login', {
           signature: session.signature,
@@ -172,12 +172,12 @@ export class SSXConnected implements ISSXConnected {
           resolveEns
         })
           .then((response) => response.data);
+      } catch (error) {
+        // were do we log this error? ssx.log?
+        // show to user?
+        console.error(error);
+        throw error;
       }
-    } catch (error) {
-      // were do we log this error? ssx.log?
-      // show to user?
-      console.error(error);
-      throw error;
     }
   }
 
@@ -234,15 +234,13 @@ export class SSXConnected implements ISSXConnected {
   }
 
   async signOut(session: SSXClientSession): Promise<void> {
-    try {
-      if (this.api) {
+    if (this.api) {
+      try {
         await this.api.post('/ssx-logout', { ...session });
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
-    } catch (error) {
-      // were do we log this error? ssx.log?
-      // show to user?
-      console.error(error);
-      throw error;
     }
   }
 }

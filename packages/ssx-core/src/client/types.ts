@@ -52,8 +52,7 @@ export interface SSXClientProviders {
     /** JSON RPC provider configurations */
     rpc?: SSXRPCProvider;
     /** Optional reference to server running ssx-server.
-     * Providing this field enables communication with ssx-server
-     */
+     * Providing this field enables communication with ssx-server */
     server?: SSXProviderServer;
 }
 
@@ -61,14 +60,13 @@ export interface SSXClientProviders {
 /** Optional session configuration for the SIWE message. */
 export interface SiweConfig extends Partial<ssxSession.SiweConfig> { }
 
-
+/** Extra SIWE fields. */
 export type ExtraFields = ssxSession.ExtraFields;
 
 /** Overrides for the session configuration. */
 export type ConfigOverrides = {
     siwe?: SiweConfig
 };
-
 
 /** ENS options supported by SSX. */
 export interface SSXEnsConfig {
@@ -78,6 +76,7 @@ export interface SSXEnsConfig {
     resolve: SSXEnsResolveOptions;
 }
 
+/** Interface to an intermediate SSX state: connected, but not signed-in. */
 export interface ISSXConnected {
     builder: ssxSession.SSXSessionBuilder;
     config: SSXClientConfig;

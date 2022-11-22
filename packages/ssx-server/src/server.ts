@@ -93,86 +93,79 @@ export class SSXServer extends EventEmitter {
     error: SiweError;
     session: Partial<SessionData>;
   }> => {
-    // TODO(w4ll3): Refactor this function.
+
+    const siweMessage = new SiweMessage(siwe);
+
+    let siweMessageVerifyPromise: any = siweMessage.verify(
+      { signature, nonce },
+      {
+        verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
+        provider: this.provider,
+      },
+    )
+      .then(data => data)
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
+
+    let ens: SSXEnsData = {};
+    let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+    if (resolveEns) {
+      let resolveEnsOpts;
+      if (resolveEns !== true) {
+        resolveEnsOpts = resolveEns;
+      }
+      promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+    }
+    try {
+      siweMessageVerifyPromise = await Promise.all(promises)
+        .then(([siweMessageVerify, ensData]) => {
+          ens = ensData
+          return siweMessageVerify;
+        });
+    } catch (error) {
+      console.error(error);
+    }
+
+    const { success, error, data } = siweMessageVerifyPromise;
+
     let smartContractWalletOrCustomMethod = false;
     try {
-      const siweMessage = new SiweMessage(siwe);
-
-      let siweMessageVerifyPromise: any = siweMessage.verify(
-        { signature, nonce },
-        {
-          verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
-          provider: this.provider,
-        },
-      )
-        .then(data => data)
-        .catch(error => {
-          console.error(error);
-          throw error;
-        });
-
-      let ens: SSXEnsData = {};
-      let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
-      if (resolveEns) {
-        let resolveEnsOpts;
-        if (resolveEns !== true) {
-          resolveEnsOpts = resolveEns;
-        }
-        promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
-      }
-      try {
-        siweMessageVerifyPromise = await Promise.all(promises)
-          .then(([siweMessageVerify, ensData]) => {
-            ens = ensData
-            return siweMessageVerify;
-          });
-      } catch (error) {
-        console.error(error);
-      }
-
-      const { success, error, data } = siweMessageVerifyPromise;
-
+      // TODO: Refactor this function.
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
       smartContractWalletOrCustomMethod = !(
         utils.verifyMessage(data.prepareMessage(), signature) === data.address
       );
-
-      const event = {
-        userId: `did:pkh:eip155:${data.chainId}:${data.address}`,
-        type: SSXEventLogTypes.LOGIN,
-        content: {
-          signature,
-          siwe,
-          isGnosis: daoLogin && smartContractWalletOrCustomMethod,
-        },
-      };
-
-      this.log(event);
-      this.emit(event.type, event);
-
-      return {
-        success,
-        error,
-        session: {
-          siwe: new SiweMessage(siwe),
-          signature: signature,
-          daoLogin: daoLogin,
-          ens,
-        },
-      };
-    } catch (e) {
-      return {
-        success: false,
-        error: e,
-        session: {
-          siwe: new SiweMessage(siwe),
-          signature: signature,
-          daoLogin: daoLogin,
-        },
-      };
+    } catch (error) {
+      console.error(error);
     }
+
+    const event = {
+      userId: `did:pkh:eip155:${data.chainId}:${data.address}`,
+      type: SSXEventLogTypes.LOGIN,
+      content: {
+        signature,
+        siwe,
+        isGnosis: daoLogin && smartContractWalletOrCustomMethod,
+      },
+    };
+
+    this.log(event);
+    this.emit(event.type, event);
+
+    return {
+      success,
+      error,
+      session: {
+        siwe: new SiweMessage(siwe),
+        signature: signature,
+        daoLogin: daoLogin,
+        ens,
+      },
+    };
   };
 
   /**

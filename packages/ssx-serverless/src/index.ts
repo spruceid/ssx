@@ -2,7 +2,7 @@ import { generateNonce, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
 import { SSXServerConfig, SSXSessionCRUDConfig, SSXSessionData, ISSXEnsData } from './types';
-import { SSXLogFields, SSXEventLogTypes, ssxLog, getProvider } from '@spruceid/ssx-core';
+import { SSXLogFields, SSXEventLogTypes, ssxLog, getProvider, SSXEnsResolveOptions, SSXEnsData, ssxResolveEns } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
 /**
@@ -80,6 +80,58 @@ export class SSXServer {
    */
   public generateNonce = generateNonce;
 
+  /** Tries to update the session to store the new nonce */
+  private updateSessionNonce = async (
+    /* The session with this key will be updated */
+    sessionKey: string,
+    /** Value for the update statement */
+    value: any,
+    /* Optional parameters to be passed to session.update */
+    opts: any
+  ): Promise<{
+    success: boolean;
+    dbResult: any;
+  }> => {
+    let dbResult;
+    try {
+      dbResult = await this.session.update(sessionKey, value, opts);
+    } catch (error) {
+      throw {
+        success: false,
+        dbResult: error
+      };
+    }
+    return {
+      success: true,
+      dbResult
+    };
+  };
+
+  /** Tries to create a session to store and store a nonce */
+  private createSessionNonce = async (
+    /** Value for the create statement */
+    value: any,
+    /* Optional parameters to be passed to session.create */
+    opts: any
+  ): Promise<{
+    success: boolean;
+    dbResult: any;
+  }> => {
+    let dbResult;
+    try {
+      dbResult = await this.session.create(value, opts);
+    } catch (error) {
+      throw {
+        success: false,
+        dbResult: error
+      };
+    }
+    return {
+      success: true,
+      dbResult
+    };
+  };
+
   /**
    * Generates a nonce and stores it in the current session
    * if a sessionKey is provided or creates a new one if not.
@@ -101,12 +153,28 @@ export class SSXServer {
 
     let dbResult;
     if (getNonceOpts) {
-      try {
+
+      let updateSessionResponse;
+      if (getNonceOpts?.sessionKey) {
         const updateValue = getNonceOpts.generateUpdateValue?.(nonce) ?? nonce;
-        dbResult = await this.session.update(getNonceOpts.sessionKey, updateValue, getNonceOpts?.updateOpts);
-      } catch (error) {
+        try {
+          updateSessionResponse = await this.updateSessionNonce(getNonceOpts?.sessionKey, updateValue, getNonceOpts?.updateOpts);
+        } catch (error) {
+          updateSessionResponse = error;
+        }
+      }
+      /* 
+        If I don't have a sessionKey (to update) 
+        OR
+        I have a sessionKey (to update) but the update returned success=false
+      */
+      if (!getNonceOpts.sessionKey || (getNonceOpts.sessionKey && !updateSessionResponse?.success)) {
         const createValue = getNonceOpts.generateCreateValue?.(nonce) ?? { nonce, address: getNonceOpts.sessionKey };
-        dbResult = await this.session.create(createValue, getNonceOpts?.createOpts);
+        try {
+          dbResult = (await this.createSessionNonce(createValue, getNonceOpts?.createOpts)).dbResult;
+        } catch (error) {
+          dbResult = error.dbResult;
+        }
       }
     }
 
@@ -167,23 +235,23 @@ export class SSXServer {
 
     let ens: ISSXEnsData = {};
     let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+
+    if (signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar) {
+      const resolveEnsOpts = {
+        domain: signInOpts?.resolveEnsDomain,
+        avatar: signInOpts?.resolveEnsAvatar,
+      }
+      promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+    }
+
     try {
-      if (signInOpts?.resolveEnsDomain) {
-        promises.push(this.provider.lookupAddress(siweMessage.address))
-      }
-      if (signInOpts?.resolveEnsAvatar) {
-        promises.push(this.provider.getAvatar(siweMessage.address))
-      }
       siweMessageVerifyPromise = await Promise.all(promises)
-        .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
-          if (!signInOpts.resolveEnsDomain && signInOpts.resolveEnsAvatar) {
-            [ensName, ensAvatarUrl] = [undefined, ensName];
+        .then(([siweMessageVerify, ensData]) => {
+          if (ensData.domain) {
+            ens['ensName'] = ensData.domain;
           }
-          if (ensName) {
-            ens['ensName'] = ensName;
-          }
-          if (ensAvatarUrl) {
-            ens['ensAvatarUrl'] = ensAvatarUrl;
+          if (ensData.avatarUrl) {
+            ens['ensAvatarUrl'] = ensData.avatarUrl;
           }
           return siweMessageVerify;
         });
@@ -202,38 +270,53 @@ export class SSXServer {
       ens
     };
 
+    const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
     try {
-      const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
       await this.session.update(sessionKey, updateValue, signInOpts?.updateOpts);
     } catch (error) {
       console.error(error);
       throw error;
     }
 
+    let smartContractWalletOrCustomMethod = false;
     try {
-      // TODO(w4ll3): Refactor this function.
+      // TODO: Refactor this function.
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
-      let smartContractWalletOrCustomMethod = false;
       smartContractWalletOrCustomMethod = !(
         utils.verifyMessage(siweMessage.prepareMessage(), signature) === siweMessage.address
       );
-
-      this.log({
-        userId: `did:pkh:eip155:${siweMessage.chainId}:${siweMessage.address}`,
-        type: SSXEventLogTypes.LOGIN,
-        content: {
-          signature,
-          siwe,
-          isGnosis: signInOpts?.daoLogin && smartContractWalletOrCustomMethod,
-        },
-      });
     } catch (error) {
       console.error(error);
     }
 
+    this.log({
+      userId: `did:pkh:eip155:${siweMessage.chainId}:${siweMessage.address}`,
+      type: SSXEventLogTypes.LOGIN,
+      content: {
+        signature,
+        siwe,
+        isGnosis: signInOpts?.daoLogin && smartContractWalletOrCustomMethod,
+      },
+    });
+
     return sessionData;
+  };
+
+  /**
+   * ENS data supported by SSX. 
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public resolveEns = async (
+    /* User Address */
+    address: string,
+    /* ENS resolution settings */
+    resolveEnsOpts?: SSXEnsResolveOptions
+  ): Promise<SSXEnsData> => {
+    return ssxResolveEns(this.provider, address, resolveEnsOpts)
   };
 
   /**
@@ -265,15 +348,21 @@ export class SSXServer {
       throw new Error('Unable to retrieve session.');
     }
     let session: SSXSessionData;
+    let castingError: any;
     try {
       session = dbResult as SSXSessionData;
     } catch (error) {
+      castingError = error;
+    }
+
+    if (!session) {
       if (!getSSXDataFromSession) {
-        console.error(error);
-        throw error;
+        console.error(castingError);
+        throw castingError;
       }
       session = getSSXDataFromSession(dbResult);
     }
+
     const siweMessage = new SiweMessage(session.siweMessage);
     await siweMessage.verify(
       { signature: session.signature },

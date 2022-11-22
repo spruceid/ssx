@@ -66,19 +66,19 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
-      if (this.config.resolveEns) {
-        if (this.config.resolveEns === true) {
-          this.session.ens = await this.resolveEns(this.session.address);
-        } else if (!this.config.resolveEns.resolveOnServer) {
-          this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
-        }
-      }
-      return this.session;
     } catch (err) {
       // Request to /ssx-login went wrong
       console.error(err);
       throw err;
     }
+    if (this.config.resolveEns) {
+      if (this.config.resolveEns === true) {
+        this.session.ens = await this.resolveEns(this.session.address);
+      } else if (!this.config.resolveEns.resolveOnServer) {
+        this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
+      }
+    }
+    return this.session;
   }
 
   /**
@@ -91,9 +91,9 @@ export class SSX {
     /** User address */
     address: string,
     resolveEnsOpts: SSXEnsResolveOptions = {
-        domain: true,
-        avatar: true
-      }
+      domain: true,
+      avatar: true
+    }
   ): Promise<SSXEnsData> {
     if (!address) {
       throw new Error('Missing address.');
@@ -129,13 +129,13 @@ export class SSX {
   async signOut() {
     try {
       await this.connection.signOut(this.session);
-      this.session = null;
-      this.connection = null;
     } catch (err) {
       // request to /ssx-logout went wrong
       console.error(err);
       throw err;
     }
+    this.session = null;
+    this.connection = null;
   }
 
   /** Get the address that is connected and signed in. */

@@ -14,6 +14,7 @@ export const ssxPost = (
         .post(route, typeof body === 'string' ? body : JSON.stringify(body))
         .then((res: any) => res.status === 204)
         .catch((e: any) => {
+            console.error(e);
             return false;
         });
 };
@@ -26,6 +27,6 @@ export const ssxLog = async (
 ): Promise<boolean> => {
     if (!data.timestamp) data.timestamp = new Date().toISOString();
     return (
-        Boolean(apiKey) && ssxPost(api,'/events', data)
+        Boolean(apiKey) && ssxPost(api, '/events', data)
     );
 };
