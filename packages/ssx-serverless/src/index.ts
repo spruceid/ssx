@@ -1,8 +1,21 @@
 import { generateNonce, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXServerConfig, SSXSessionCRUDConfig, SSXSessionData, ISSXEnsData } from './types';
-import { SSXLogFields, SSXEventLogTypes, ssxLog, getProvider, SSXEnsResolveOptions, SSXEnsData, ssxResolveEns } from '@spruceid/ssx-core';
+import {
+  SSXServerConfig,
+  SSXSessionCRUDConfig,
+  SSXSessionData,
+  SSXEnsData as ISSXEnsData
+} from './types';
+import {
+  SSXLogFields,
+  SSXEventLogTypes,
+  ssxLog,
+  SSXEnsResolveOptions,
+  SSXEnsData,
+  getProvider,
+  ssxResolveEns
+} from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
 /**
@@ -375,6 +388,17 @@ export class SSXServer {
   }
 }
 
-export { SSXLogFields, SSXEventLogTypes };
 export * from "@spruceid/ssx-core/dist/types";
-export * from "./types";
+export {
+  SSXLogFields,
+  SSXEventLogTypes
+};
+export {
+  SSXSessionCRUDConfig,
+  SSXSessionData,
+  SSXEnsData,
+  SSXServerConfig,
+  SSXServerConfig as SSXConfig,
+  SSXServerProviders,
+  SSXServerProviders as SSXProviders
+} from './types';

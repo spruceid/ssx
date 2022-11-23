@@ -5,13 +5,13 @@ import { SSXRPCProvider, SSXMetricsProvider } from '@spruceid/ssx-core';
 /** Configuration interface for ssx-server */
 export interface SSXServerConfig {
   /** Connection to a cryptographic keypair and/or network. */
-  providers?: SSXProviders;
+  providers?: SSXServerProviders;
   /** Enable lookup for delegations in the DelegateRegistry SC*/
   daoLogin?: boolean;
 }
 
 /** SSX web3 configuration settings */
-export interface SSXProviders {
+export interface SSXServerProviders {
   /** JSON RPC provider configurations */
   rpc?: SSXRPCProvider;
   /** Metrics service configurations  */
@@ -39,7 +39,7 @@ export interface SSXSessionCRUDConfig {
   delete: <T>(key: any, opts?: Record<string, any>) => Promise<T>
 }
 
-export interface ISSXEnsData {
+export interface SSXEnsData {
   ensName?: string | null,
   ensAvatarUrl?: string | null
 }
@@ -48,5 +48,5 @@ export interface SSXSessionData {
   siweMessage: SiweMessage,
   signature: string,
   daoLogin: boolean,
-  ens: ISSXEnsData
+  ens: SSXEnsData
 }
