@@ -45,6 +45,10 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-loader": "^9.3.0",
+    "eth-testing": "^1.1.0",
+    "ts-node": "^10.8.0"
   }
 }
