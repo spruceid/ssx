@@ -30,7 +30,7 @@ Refactor code to avoid duplication and improve performance.
 - Exports `SSXProviders` (deprecated) and `SSXClientProviders`;
 - Exports `SSXSession` (deprecated) and `SSXClientSession`;
 - Removes all utils functions. They were moved to `ssx-core`;
-- Optimize `try/catch` blocks;
+- Optimizes `try/catch` blocks;
 - Updates `examples/ssx-test-dapp` to support ENS resolution from `examples/ssx-test-serverless-dynamodb-api`.
 
 ## @spruceid/ssx-react changes:
@@ -39,7 +39,7 @@ Refactor code to avoid duplication and improve performance.
 ## @spruceid/ssx-gnosis-extension changes: 
 - Adds `@spruceid/ssx-core` as a dependency;
 - Adds types from `ssx-core` to all SSX related variables;
-- Optimize `try/catch` blocks.
+- Optimizes `try/catch` blocks.
 
 ## @spruceid/ssx-server changes: 
 - Adds `@spruceid/ssx-core` as a dependency;
@@ -47,13 +47,14 @@ Refactor code to avoid duplication and improve performance.
 - Exports `SSXConfig` (deprecated) and `SSXServerConfig`;
 - Exports `SSXProviders` (deprecated) and `SSXServerProviders`;
 - Removes all utils functions. They were moved to `ssx-core`;
-- Optimize `try/catch` blocks.
+- Optimizes `try/catch` blocks.
 
 ## @spruceid/ssx-serverless changes: 
 - Adds `@spruceid/ssx-core` as a dependency; 
 - Removes some types and interfaces declarations. They were moved to `ssx-core`;
 - Removes all utils functions. They were moved to `ssx-core`;
-- Optimize `try/catch` blocks;
+- Optimizes `try/catch` blocks;
+- Changes axios version to `"^0.27.2"`;
 - Updates `examples/ssx-test-serverless-dynamodb-api` to resolve ENS accorddly with the request params and fixes the `/ssx-login` JSON response.
 
 
