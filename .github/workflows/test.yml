@@ -25,9 +25,7 @@ jobs:
       - if: ${{ matrix.node-version == '18.x' }}
         name: Get Coverage for badge
         run: |
-          SUMMARY="$(yarn test | tail -2 | head -1)"
-          TOKENS=($SUMMARY)
-          echo "COVERAGE=$(echo ${TOKENS[2]})" >> $GITHUB_ENV
+          echo "COVERAGE=$(echo $(yarn test | tail -3 | head -1 | sed -n -e 's/^Lines[ ]*: \(.*%\).*/\1/p'))" >> $GITHUB_ENV
           REF=${{ github.ref }}
           echo "github.ref: $REF"
           IFS='/' read -ra PATHS <<< "$REF"
