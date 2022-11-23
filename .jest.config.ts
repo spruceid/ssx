@@ -15,7 +15,7 @@ export default async (): Promise<Config> => ({
   coverageProvider: "v8",
   testEnvironment: "node",
   coverageDirectory: "coverage",
-  coverageReporters: ["json", "lcov"],
+  coverageReporters: ["json", "lcov", "text-summary"],
   projects: [
     {
       displayName: SSXSDK.name,

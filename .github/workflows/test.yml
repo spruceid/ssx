@@ -25,7 +25,7 @@ jobs:
       - if: ${{ matrix.node-version == '18.x' }}
         name: Get Coverage for badge
         run: |
-          SUMMARY="$(yarn test -- --coverageReporters='text-summary' | tail -2 | head -1)"
+          SUMMARY="$(yarn test | tail -2 | head -1)"
           TOKENS=($SUMMARY)
           echo "COVERAGE=$(echo ${TOKENS[2]})" >> $GITHUB_ENV
           REF=${{ github.ref }}
