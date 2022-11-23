@@ -1,8 +1,4 @@
 const { generateTestingUtils } = require('eth-testing');
-const { TextEncoder, TextDecoder } = require('util');
-
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
 
 const { SSX } = require('../src');
 
@@ -10,7 +6,7 @@ const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
 beforeAll(() => {
   // Manually inject the mocked provider in the window as MetaMask does
-  global.window.ethereum = testingUtils.getProvider();
+  (global.window as any).ethereum = testingUtils.getProvider();
 });
 
 afterEach(() => {
