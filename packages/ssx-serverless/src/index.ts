@@ -398,7 +398,9 @@ export {
   SSXSessionData,
   SSXEnsData,
   SSXServerConfig,
+  /** @deprecated use SSXServerConfig field instead */
   SSXServerConfig as SSXConfig,
   SSXServerProviders,
+  /** @deprecated use SSXServerProviders field instead */
   SSXServerProviders as SSXProviders
 } from './types';
