@@ -42,17 +42,17 @@ test("Instantiate SSX with providers.web3.driver", () => {
 
 // test('Sign-in with Ethereum', () => {
 //   // TODO: sign request with mock provider
-//   // expect(async () => {
-//   //   const config = {
-//   //     providers: {
-//   //       web3: {
-//   //         driver: testingUtils.getProvider(),
-//   //       },
-//   //     },
-//   //   };
-//   //   const ssx = new SSX(config);
-//   //   await ssx.signIn();
-//   // }).not.toThrowError();
+//   expect(async () => {
+//     const config = {
+//       providers: {
+//         web3: {
+//           driver: provider,
+//         },
+//       },
+//     };
+//     const ssx = new SSX(config);
+//     await ssx.signIn();
+//   }).not.toThrowError();
 // });
 
 // test('Throw Error if Ethereum Wallet isn\'t found', () => {
