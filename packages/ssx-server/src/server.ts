@@ -21,13 +21,15 @@ import { EventEmitter } from 'events';
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object and works
  * with various middleware libraries to add authentication and metrics to your server.
- *
- **/
+ */
 export class SSXServer extends EventEmitter {
+  /** SSXServerConfig object. */
   private _config: SSXServerConfig;
+  /** Axios instance */
   private _api: AxiosInstance;
+  /** RPC provider. */
   public provider: ethers.providers.BaseProvider;
-  /** session is a configured instance of express-session middleware */
+  /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
 
   constructor(config: SSXServerConfig = {}) {
@@ -58,14 +60,20 @@ export class SSXServer extends EventEmitter {
     }
   }
 
-  /** Set default values for optional configurations */
-  private _setDefaults = () => {
+  /** 
+   * Sets default values for optional configurations
+   */
+  private _setDefaults = (): void => {
     this._config = {};
     this._config.providers = {};
     this._config.useSecureCookies = process.env.NODE_ENV === 'production';
   };
 
-  /** Registers a new event to the API */
+  /** 
+   * Registers a new event to the API 
+   * @param data - SSXLogFields object.
+   * @returns True (success) or false (fail).
+   */
   public log = async (data: SSXLogFields): Promise<boolean> => {
     return ssxLog(this._api, this._config.providers?.metrics?.apiKey, data);
   };
@@ -81,6 +89,12 @@ export class SSXServer extends EventEmitter {
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
    * If the message is verified, a session token is generated and returned.
+   * @param siwe - SIWE Message.
+   * @param signature - The signature of the SIWE message.
+   * @param daoLogin - Whether or not daoLogin is enabled.
+   * @param resolveEns - Resolve ENS settings.
+   * @param nonce - nonce string.
+   * @returns Request data with SSX Server Session.
    */
   public login = async (
     siwe: SiweMessage | string,
@@ -186,6 +200,8 @@ export class SSXServer extends EventEmitter {
   /**
    * Logs out the user by deleting the session.
    * Currently this is a no-op.
+   * @param destroySession - Method to remove session from storage.
+   * @returns Promise with true (success) or false (fail).
    */
   public logout = async (
     destroySession?: () => Promise<any>,
@@ -193,6 +209,10 @@ export class SSXServer extends EventEmitter {
     return destroySession?.();
   };
 
+  /**
+   * Gets Express Session config params to configure the session.
+   * @returns Session options.
+   */
   public getExpressSessionConfig = (): SessionOptions => {
     return {
       ...this.getDefaultExpressSessionConfig(),
@@ -203,6 +223,10 @@ export class SSXServer extends EventEmitter {
     };
   };
 
+  /**
+   * Gets default Express Session Config.
+   * @returns Default session options
+   */
   private getDefaultExpressSessionConfig = (): SessionOptions => ({
     name: 'ssx-session-storage',
     secret: this._config.signingKey,
