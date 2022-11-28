@@ -1,8 +1,32 @@
-steps:
-  - uses: actions/checkout@master
-  - uses: codecov/codecov-action@v3
-    with:
-      files: ./coverage/coverage-final.json
-      flags: unittests
-      fail_ci_if_error: true
-      verbose: true
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: |
+          yarn
+          yarn test
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          name: Push coverage results
+          fail_ci_if_error: true
+          verbose: true
