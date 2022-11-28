@@ -14,7 +14,10 @@
     "src": "src"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "doc": "yarn doc:extractor && yarn doc:documenter",
+    "doc:extractor": "api-extractor run",
+    "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-core"
   },
   "engines": {
     "node": ">=16.13.0"
@@ -30,6 +33,8 @@
     "siwe": "^2.1.2"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.19.4",
+    "@microsoft/api-extractor": "^7.29.2",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
