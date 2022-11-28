@@ -1,7 +1,3 @@
-<!-- Change the ## to your pull request number -->
-
-![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/w4ll3/cce754d3a08b2a2402c54cb47d493944/raw/ssx__pull_##.json)
-
 # Description
 
 Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change.
