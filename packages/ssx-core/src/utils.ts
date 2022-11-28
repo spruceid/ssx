@@ -16,8 +16,9 @@ import {
 } from './types';
 import { ethers, getDefaultProvider } from 'ethers';
 
-/**
- * Returns an ethers provider based on the RPC configuration
+/** 
+ * @param rpc - SSXRPCProvider
+ * @returns an ethers provider based on the RPC configuration. 
  */
 export const getProvider = (rpc?: SSXRPCProvider): ethers.providers.BaseProvider => {
   if(!rpc) {

@@ -18,12 +18,18 @@ export interface SSXClientConfig {
 
 /** Representation of an active SSXSession. */
 export type SSXClientSession = {
+    /** User address */
     address: string;
+    /** User address without delegation */
     walletAddress: string;
     chainId: number;
+    /** Key to identify the session */
     sessionKey: string;
+    /** The message that can be obtained by SiweMessage.prepareMessage() */
     siwe: string;
+    /** The signature of the siwe message */
     signature: string;
+    /** ENS data supported by SSX */
     ens?: SSXEnsData;
 };
 
@@ -78,18 +84,31 @@ export interface SSXEnsConfig {
 
 /** Interface to an intermediate SSX state: connected, but not signed-in. */
 export interface ISSXConnected {
+    /** Instance of SSXSessionBuilder. */
     builder: ssxSession.SSXSessionBuilder;
+    /** SSXConfig object. */
     config: SSXClientConfig;
+    /** List of enabled extensions. */
     extensions: SSXExtension[];
+    /** Web3 provider. */
     provider: ethers.providers.Web3Provider;
+    /** Promise that is initialized on construction to run the "afterConnect" methods of extensions. */
     afterConnectHooksPromise: Promise<void>;
+    /** Method to verify if extension is enabled. */
     isExtensionEnabled: (namespace: string) => boolean;
+    /** Axios instance. */
     api?: AxiosInstance;
+    /** Method to apply the "afterConnect" methods and the delegated capabilities of the extensions. */
     applyExtensions: () => Promise<void>;
+    /** Method to apply the "afterSignIn" methods of the extensions. */
     afterSignIn: (session: SSXClientSession) => Promise<void>;
+    /** Method to request nonce from server. */
     ssxServerNonce: (params: Record<string, any>) => Promise<string>;
+    /** Method to request sign in from server and return session. */
     ssxServerLogin: (session: SSXClientSession) => Promise<any>;
+    /** Method to request the user to sign in. */
     signIn: () => Promise<SSXClientSession>;
+    /** Method to request the user to sign out. */
     signOut: (session: SSXClientSession) => Promise<void>
 }
 

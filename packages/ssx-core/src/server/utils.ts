@@ -4,6 +4,10 @@ import { SSXLogFields } from "./types";
 /**
  * Abstracts the fetch API to append correct headers, host and parse
  * responses to JSON for POST requests.
+ * @param api - Axios Instance.
+ * @param route -  Request route.
+ * @param body - Request body.
+ * @returns True (success) or false (error).
  */
 export const ssxPost = (
     api: AxiosInstance,
@@ -19,7 +23,13 @@ export const ssxPost = (
         });
 };
 
-/** Registers a new event to the API */
+/** 
+ * Registers a new event to the API.
+ * @param api - Axios Instance.
+ * @param apiKey - SSX Platform API Key.
+ * @param data - SSXLogFields to log.
+ * @returns True (success) or false (error).
+ */
 export const ssxLog = async (
     api: AxiosInstance,
     apiKey: string,

@@ -14,14 +14,13 @@ export interface SSXServerConfig {
   useSecureCookies?: boolean;
 }
 
-/** SSX web3 configuration settings */
+/** SSX web3 configuration settings. */
 export interface SSXServerProviders {
-  /** JSON RPC provider configurations */
+  /** JSON RPC provider configurations. */
   rpc?: SSXRPCProvider;
-  // TODO(w4ll3): doc
-  /** */
+  /** SSX Session Store configuration settings. */
   sessionConfig?: Partial<SSXSessionStoreConfig>;
-  /** Metrics service configurations  */
+  /** Metrics service configurations. */
   metrics?: SSXMetricsProvider;
 }
 
@@ -33,20 +32,19 @@ export interface SSXSessionStoreConfig {
   store?: (session: any) => Store;
 }
 
-/** SSX Redis Session Store Provider settings */
+/** SSX Redis Session Store Provider settings. */
 export type SSXRedisSessionStoreProvider = {
   service: 'redis';
   redisUrl: string;
 };
 
-/** SSX Express Session Store Provider settings */
+/** SSX Express Session Store Provider settings. */
 export type SSXExpressSessionStoreProvider = {
   service: 'express';
-  // TODO(w4ll3): add app type and/or change config
   config?: SessionOptions;
 };
 
-/** SSX Metrics Provider settings */
+/** SSX Metrics Provider settings. */
 export type SSXMetricsProvider = {
   service: 'ssx';
   apiKey: string;
@@ -64,30 +62,30 @@ export interface SSXCookieOptions extends CookieOptions {
   sameSite: boolean | 'lax' | 'strict' | 'none' | undefined;
   /** Whether or not cookies should be signed. Recommended true for production.
    * Set to true by providing a signing key. If false, cookies can be tampered
-   * with on the client */
+   * with on the client. */
   signed: boolean;
 }
 
-/** Allowed fields for an SSX Log */
+/** Allowed fields for an SSX Log. */
 export interface SSXLogFields {
-  /** Unique identifier for the user, formatted as a DID */
+  /** Unique identifier for the user, formatted as a DID. */
   userId: string;
-  /** RFC-3339 time of resource generation, defaults to now */
+  /** RFC-3339 time of resource generation, defaults to now. */
   timestamp?: string;
-  /** Type of content being logged */
+  /** Type of content being logged. */
   type: SSXEventLogTypes;
-  /** Any JSON stringifiable structure to be logged */
+  /** Any JSON stringifiable structure to be logged. */
   content: string | Record<string, any>;
 }
 
-/** Available SSX Log Types */
+/** Available SSX Log Types. */
 export enum SSXEventLogTypes {
-  /** Login type definition */
+  /** Login type definition. */
   LOGIN = 'ssx-login',
-  /** Logout type definition */
+  /** Logout type definition. */
   // LOGOUT = "ssx-logout",
-  /** Logging type definition */
+  /** Logging type definition. */
   // LOG = "LOG",
-  /** Event type definition */
+  /** Event type definition. */
   // EVENT = "event",
 }
