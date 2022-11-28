@@ -2,23 +2,23 @@ import { useContext, createContext, useState, useEffect, ReactNode } from 'react
 import { SSX, SSXClientConfig } from "@spruceid/ssx";
 import { useSigner } from 'wagmi';
 
-/** Props for SSX Provider */
+/** Props for SSX Provider. */
 export interface SSXProviderProps {
-  /** Optional SSX configuration, used for instantiating an SSX Instance */
+  /** Optional SSX configuration, used for instantiating an SSX Instance. */
   ssxConfig?: SSXClientConfig;
-  /** Provider child nodes, for rendering*/
+  /** Provider child nodes, for rendering. */
   children: ReactNode;
 }
 
-/** Interface for contents provided to the Hook */
+/** Interface for contents provided to the Hook. */
 export interface SSXContextInterface {
-  /** SSX Instance */
+  /** SSX Instance. */
   ssx: SSX | undefined;
-  /** SSX Instance loading state */
+  /** SSX Instance loading state. */
   ssxLoaded: boolean;
 }
 
-/** Default, uninitialized context */
+/** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {
   ssx: undefined,
   ssxLoaded: false,
@@ -26,7 +26,7 @@ const defaultContext: SSXContextInterface = {
 
 const SSXContext = createContext(defaultContext);
 
-/** SSX Provider Component */
+/** SSX Provider Component. */
 export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
   const { data: signer, isSuccess: signerLoaded } = (typeof window !== 'undefined' && useSigner()) || { data: undefined, isSuccess: false };
   const [ssx, setSSX] = useState<SSX>();
@@ -66,7 +66,7 @@ export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
   );
 }
 
-/** Hook for accessing SSX instance and state */
+/** Hook for accessing SSX instance and state. */
 export const useSSX = (): SSXContextInterface => {
   return useContext(SSXContext);
 };
