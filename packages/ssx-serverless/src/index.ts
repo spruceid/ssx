@@ -22,19 +22,20 @@ import { ethers, utils } from 'ethers';
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object to add 
  * authentication and metrics to your server.
- *
- **/
+ */
 export class SSXServer {
+  /** SSXServerConfig object. */
   private _config: SSXServerConfig = {};
+  /** Axios instance. */
   private _api: AxiosInstance;
-  /** EthersJS provider */
+  /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
-  /** Definition of CRUD functions for sessions */
+  /** Definition of CRUD functions for sessions. */
   public session: SSXSessionCRUDConfig;
 
   /**
-   * @param config - Base configuration of the SSXServer
-   * @param session - CRUD definition for session operations
+   * @param config - Base configuration of the SSXServer.
+   * @param session - CRUD definition for session operations.
    * @example
    * ```
    * const ssx = new SSXServer({
@@ -79,7 +80,11 @@ export class SSXServer {
     this.provider = getProvider(config.providers?.rpc);
   }
 
-  /** Registers a new event to the API */
+  /** 
+   * Registers a new event to the API.
+   * @param data - SSXLogFields JSON.
+   * @returns Promise with true (success) or false (fail).
+   */
   public log = async (data: SSXLogFields): Promise<boolean> => {
     this._api;
     return ssxLog(this._api, this._config.providers?.metrics?.apiKey ?? '', data);
@@ -93,13 +98,19 @@ export class SSXServer {
    */
   public generateNonce = generateNonce;
 
-  /** Tries to update the session to store the new nonce */
+  /** 
+   * Tries to update the session to store the new nonce.
+   * @param sessionKey - Session identifier.
+   * @param value - Value to update statement.
+   * @param opts - Optional parameters.
+   * @returns Object with update result.
+   */
   private updateSessionNonce = async (
-    /* The session with this key will be updated */
+    /* The session with this key will be updated. */
     sessionKey: string,
-    /** Value for the update statement */
+    /** Value for the update statement. */
     value: any,
-    /* Optional parameters to be passed to session.update */
+    /* Optional parameters to be passed to session.update. */
     opts: any
   ): Promise<{
     success: boolean;
@@ -120,11 +131,16 @@ export class SSXServer {
     };
   };
 
-  /** Tries to create a session to store and store a nonce */
+  /** 
+   * Tries to create a session to store and store a nonce.
+   * @param value - Value for the create statement.
+   * @param opts - Optional parameters.
+   * @returns Object with create result.
+   */
   private createSessionNonce = async (
     /** Value for the create statement */
     value: any,
-    /* Optional parameters to be passed to session.create */
+    /* Optional parameters to be passed to session.create. */
     opts: any
   ): Promise<{
     success: boolean;
@@ -148,18 +164,20 @@ export class SSXServer {
   /**
    * Generates a nonce and stores it in the current session
    * if a sessionKey is provided or creates a new one if not.
+   * @param getNonceOpts - Optional params to configure session management.
+   * @returns Promise with nonce and database result.
    */
   public getNonce = async (
     getNonceOpts?: {
-      /* If provided the session with this key will be updated */
+      /* If provided the session with this key will be updated. */
       sessionKey?: any,
-      /* A function that will return the value for the update statement */
+      /* A function that will return the value for the update statement. */
       generateUpdateValue?: (nonce: string) => any,
-      /* A function that will return the value for the create statement */
+      /* A function that will return the value for the create statement. */
       generateCreateValue?: (nonce: string) => any,
-      /* Optional parameters to be passed to session.create */
+      /* Optional parameters to be passed to session.create. */
       createOpts?: Record<string, any>,
-      /* Optional parameters to be passed to session.update */
+      /* Optional parameters to be passed to session.update. */
       updateOpts?: Record<string, any>,
     }): Promise<{ nonce: string, dbResult: any }> => {
     const nonce = generateNonce();
@@ -197,29 +215,29 @@ export class SSXServer {
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
    * If the message is verified, a session token is generated and returned.
-   * @param siwe - Object containing the siwe fields or EIP-4361 message
-   * @param signature - Signature of the EIP-4361 message
-   * @param sessionKey - Key used to index user's session
-   * @param signInOpts - Additional options to customize sign-in behavior
-   * @returns Object containing information about the session
+   * @param siwe - Object containing the siwe fields or EIP-4361 message.
+   * @param signature - Signature of the EIP-4361 message.
+   * @param sessionKey - Key used to index user's session.
+   * @param signInOpts - Additional options to customize sign-in behavior.
+   * @returns Object containing information about the session.
    */
   public signIn = async (
     siwe: SiweMessage | string,
     signature: string,
-    /* Session key to be used in session lookup */
+    /* Session key to be used in session lookup. */
     sessionKey: any,
     signInOpts: {
-      /* Enables lookup for delegations */
+      /* Enables lookup for delegations. */
       daoLogin?: boolean,
-      /* Enables ENS Domain resolution */
+      /* Enables ENS Domain resolution. */
       resolveEnsDomain?: boolean,
-      /* Enables ENS Avatar resolution */
+      /* Enables ENS Avatar resolution. */
       resolveEnsAvatar?: boolean,
-      /* Optional parameters to be passed to session.retrieve */
+      /* Optional parameters to be passed to session.retrieve. */
       retrieveOpts?: Record<string, any>,
-      /* A function that will return the value for the update statement */
+      /* A function that will return the value for the update statement. */
       generateUpdateValue?: (sessionData: SSXSessionData) => any,
-      /* Optional parameters to be passed to session.create */
+      /* Optional parameters to be passed to session.create. */
       updateOpts?: Record<string, any>,
     },
   ): Promise<SSXSessionData> => {
@@ -333,10 +351,10 @@ export class SSXServer {
   };
 
   /**
-   * Calls the delete function to delete the user's session
-   * @param sessionKey - Key used to index sessions
+   * Calls the delete function to delete the user's session.
+   * @param sessionKey - Key used to index sessions.
    * @param deleteOpts - Additional options to be passed to the seeion.delete function.
-   * @returns The result of session.delete<T>
+   * @returns The result of session.delete<T>.
    * @example
    * signOut<boolean>("0x9D85ca56217D2bb651b00f15e694EB7E713637D4")
    */
@@ -353,7 +371,7 @@ export class SSXServer {
    * @param sessionKey - Key used to index sessions.
    * @param getSSXDataFromSession - Function that will parse the resolved value from 
    * session into SSXSessionData if the a custom session structure is being used.
-   * @returns SSXSessionData
+   * @returns SSXSessionData.
    */
   public me = async (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => {
     const dbResult = await this.session.retrieve(sessionKey);
