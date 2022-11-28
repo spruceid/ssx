@@ -9,17 +9,24 @@ import {
   Contract, Event, providers, utils,
 } from 'ethers';
 
+/** Contract Addresses by network. */
 const CONTRACT_ADDRESS = {
   mainnet: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
   rinkeby: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
   goerli: '0x469788fE6E9E9681C6ebF3bF78e7Fd26Fc015446',
 };
 
+/** Contract definition for SetDelegate and ClearDelegate events. */
 const CONTRACT_ABI = [
   'event SetDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
   'event ClearDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
 ];
 
+/** 
+ * Gets network name based on chainId.
+ * @param chainId - chain identifier.
+ * @returns Network name.
+ */
 const getNetworkName = (chainId: number): string => {
   switch (chainId) {
     case 1:
@@ -33,12 +40,24 @@ const getNetworkName = (chainId: number): string => {
   }
 };
 
+
+/**
+ * Gets contract address.
+ * @param provider - RPC provider.
+ * @returns Contract address.
+ */
 const getContractAddress = async (
   provider: providers.Provider,
 ): Promise<string> => provider
   .getNetwork()
   .then(({ chainId }) => CONTRACT_ADDRESS[getNetworkName(chainId)]);
 
+/**
+ * Gets Gnosis delegation history events for an address.
+ * @param address - User address.
+ * @param provider - RPC provider.
+ * @returns List of delegation blocks.
+ */
 export const getGnosisDelegationHistoryEventsFor = async (
   address: string,
   provider: providers.Provider,
@@ -70,6 +89,12 @@ export const getGnosisDelegationHistoryEventsFor = async (
   ]).then((e) => e.flat().sort((a, b) => a.blockNumber - b.blockNumber));
 };
 
+/**
+ * Gets delegators for an address.
+ * @param address - User address.
+ * @param provider - RPC provider.
+ * @returns List of delegators for an address.
+ */
 export const gnosisDelegatorsFor = async (
   address: string,
   provider: providers.Provider,
@@ -102,6 +127,13 @@ export const gnosisDelegatorsFor = async (
   );
 };
 
+/**
+ * Verifies if address if delegate of delegator.
+ * @param delegateAddress - Delegate address.
+ * @param delegator - Delegator address.
+ * @param provider - RPC provider.
+ * @returns True (if is delegate) or false (on the contrary).
+ */
 export const addressIsDelegateOf = async (
   delegateAddress: string,
   delegator: string,
@@ -111,6 +143,14 @@ export const addressIsDelegateOf = async (
   return delegators.includes(delegator);
 };
 
+/**
+ * Giving a message, verifies if the address is a delegee. 
+ * @param params - Verify params.
+ * @param opts - Verify Options.
+ * @param message - SIWE Message.
+ * @param _
+ * @returns JSON with information about the delegations. 
+ */
 export const SiweGnosisVerify = async (
   params: VerifyParams,
   opts: VerifyOpts,
