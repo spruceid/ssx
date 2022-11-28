@@ -126,7 +126,7 @@ export class SSX {
   /**
    * Invalidates user's session.
    */
-  async signOut() {
+  async signOut(): Promise<void> {
     try {
       await this.connection.signOut(this.session);
     } catch (err) {
@@ -138,9 +138,15 @@ export class SSX {
     this.connection = null;
   }
 
-  /** Get the address that is connected and signed in. */
+  /** 
+   * Gets the address that is connected and signed in. 
+   * @returns Address.
+   */
   address: () => string | undefined = () => this.session?.address;
 
-  /** Get the chainId that the address is connected and signed in on. */
+  /** 
+   * Get the chainId that the address is connected and signed in on. 
+   * @returns chainId.
+   */
   chainId: () => number | undefined = () => this.session?.chainId;
 }

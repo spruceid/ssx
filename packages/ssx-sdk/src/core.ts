@@ -26,7 +26,10 @@ export class SSXInit {
     this.extensions.push(extension);
   }
 
-  /** Connect to the signing account using the configured provider. */
+  /** 
+   * Connect to the signing account using the configured provider. 
+   * @returns SSXConnected instance.
+   */
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
     let provider: ethers.providers.Web3Provider;
@@ -73,19 +76,26 @@ export class SSXInit {
 
 /** An intermediate SSX state: connected, but not signed-in. */
 export class SSXConnected implements ISSXConnected {
-  /** Promise that is initialized on construction of this class to run the "afterConnect" methods
+  /** 
+   * Promise that is initialized on construction of this class to run the "afterConnect" methods
    * of the extensions.
    */
   public afterConnectHooksPromise: Promise<void>;
 
+  /** Verifies if extension is enabled. */
   public isExtensionEnabled = (namespace: string) => this.extensions.filter((e) => e.namespace === namespace).length === 1;
 
+  /** Axios instance. */
   public api?: AxiosInstance;
 
   constructor(
+    /** Instance of SSXSessionBuilder */
     public builder: ssxSession.SSXSessionBuilder,
+    /** SSXConfig object. */
     public config: SSXClientConfig,
+    /** Enabled extensions. */
     public extensions: SSXExtension[],
+    /** RPC provider. */
     public provider: ethers.providers.Web3Provider,
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();
@@ -98,7 +108,6 @@ export class SSXConnected implements ISSXConnected {
   }
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
-
   public async applyExtensions(): Promise<void> {
     for (const extension of this.extensions) {
       if (extension.afterConnect) {
@@ -129,7 +138,10 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
-  /** Applies the "afterSignIn" methods of the extensions. */
+  /** 
+   * Applies the "afterSignIn" methods of the extensions. 
+   * @param session - SSXClientSession object.
+   */
   public async afterSignIn(session: SSXClientSession): Promise<void> {
     for (const extension of this.extensions) {
       if (extension.afterSignIn) {
@@ -138,6 +150,11 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
+  /** 
+   * Requests nonce from server. 
+   * @param params - Request params.
+   * @returns Promise with nonce.
+   */
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     if (this.api) {
       let nonce;
@@ -154,6 +171,11 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
+  /** 
+   * Requests sign in from server and returns session. 
+   * @param session - SSXClientSession object.
+   * @returns Promise with server session data.
+   */
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
     if (this.api) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
@@ -173,20 +195,19 @@ export class SSXConnected implements ISSXConnected {
         })
           .then((response) => response.data);
       } catch (error) {
-        // were do we log this error? ssx.log?
-        // show to user?
         console.error(error);
         throw error;
       }
     }
   }
 
-  /** Requests the user to sign in.
-     *
-     * Generates the SIWE message for this session, requests the configured
-     * Signer to sign the message, calls the "afterSignIn" methods of the
-     * extensions and returns the SSXClientSession object.
-     */
+  /** 
+   * Requests the user to sign in.
+   * Generates the SIWE message for this session, requests the configured
+   * Signer to sign the message, calls the "afterSignIn" methods of the
+   * extensions.
+   * @returns Promise with the SSXClientSession object.
+   */
   async signIn(): Promise<SSXClientSession> {
     await this.afterConnectHooksPromise;
 
@@ -233,6 +254,10 @@ export class SSXConnected implements ISSXConnected {
     return session;
   }
 
+  /** 
+   * Requests the user to sign out.
+   * @param session - SSXClientSession object.
+   */
   async signOut(session: SSXClientSession): Promise<void> {
     if (this.api) {
       try {
