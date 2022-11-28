@@ -36,7 +36,7 @@ test("Should not verify message when there is no delegation", async () => {
     )
     .catch(({ success, error }) => {
       expect(success).toBeFalsy();
-      expect(error).not.toBeNull();
+      expect(error).toBeNull();
       expect(error.type).toBe(
         "Given address is not registered at delegee list."
       );
