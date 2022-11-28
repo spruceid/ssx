@@ -43,7 +43,7 @@ const getNetworkName = (chainId: number): string => {
 
 /**
  * Gets contract address.
- * @param provider - RPC provider.
+ * @param provider - EthersJS provider.
  * @returns Contract address.
  */
 const getContractAddress = async (
@@ -55,7 +55,7 @@ const getContractAddress = async (
 /**
  * Gets Gnosis delegation history events for an address.
  * @param address - User address.
- * @param provider - RPC provider.
+ * @param provider - EthersJS provider.
  * @returns List of delegation blocks.
  */
 export const getGnosisDelegationHistoryEventsFor = async (
@@ -92,7 +92,7 @@ export const getGnosisDelegationHistoryEventsFor = async (
 /**
  * Gets delegators for an address.
  * @param address - User address.
- * @param provider - RPC provider.
+ * @param provider - EthersJS provider.
  * @returns List of delegators for an address.
  */
 export const gnosisDelegatorsFor = async (
@@ -131,7 +131,7 @@ export const gnosisDelegatorsFor = async (
  * Verifies if address if delegate of delegator.
  * @param delegateAddress - Delegate address.
  * @param delegator - Delegator address.
- * @param provider - RPC provider.
+ * @param provider - EthersJS provider.
  * @returns True (if is delegate) or false (on the contrary).
  */
 export const addressIsDelegateOf = async (

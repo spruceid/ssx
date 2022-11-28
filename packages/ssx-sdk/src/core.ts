@@ -95,7 +95,7 @@ export class SSXConnected implements ISSXConnected {
     public config: SSXClientConfig,
     /** Enabled extensions. */
     public extensions: SSXExtension[],
-    /** RPC provider. */
+    /** EthersJS provider. */
     public provider: ethers.providers.Web3Provider,
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();

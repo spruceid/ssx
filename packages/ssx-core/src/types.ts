@@ -12,7 +12,7 @@ export type SSXRPCProvider =
   | SSXAnkrProvider
   | SSXCustomProvider;
 
-/** Enum of supported RPC providers. */
+/** Enum of supported EthersJS providers. */
 export enum SSXRPCProviders {
   SSXAlchemyProvider = 'alchemy',
   SSXAnkrProvider = 'ankr',

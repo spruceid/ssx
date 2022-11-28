@@ -25,9 +25,9 @@ import { EventEmitter } from 'events';
 export class SSXServer extends EventEmitter {
   /** SSXServerConfig object. */
   private _config: SSXServerConfig;
-  /** Axios instance */
+  /** Axios instance. */
   private _api: AxiosInstance;
-  /** RPC provider. */
+  /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
