@@ -1,4 +1,4 @@
-[![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/w4ll3/cce754d3a08b2a2402c54cb47d493944/raw/ssx__heads_main.json)]
+[![codecov](https://codecov.io/gh/spruceid/ssx/branch/main/graph/badge.svg?token=JV205ZHO78)](https://codecov.io/gh/spruceid/ssx)
 
 # SSX
 
