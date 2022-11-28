@@ -17,7 +17,6 @@
     "postinstall": "npm run clean && npm run build",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "ci": "npm install && npm test",
     "test": "jest --config ./.jest.config.ts",
     "documentation": "lerna run doc && yarn documentation:reference",
     "documentation:reference": "node scripts/build-docs.js",
