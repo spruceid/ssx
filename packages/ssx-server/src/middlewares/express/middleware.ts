@@ -98,7 +98,6 @@ export const ssxMiddleware = (ssx: SSXServer) => {
           },
         );
       } catch (error) {
-        console.error(error);
       }
       const { success: verified, data } = siweMessageVerify;
       if (verified) {
