@@ -44,5 +44,8 @@
   },
   "peerDependencies": {
     "ethers": "^5.6.8"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
