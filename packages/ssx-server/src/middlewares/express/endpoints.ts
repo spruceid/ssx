@@ -77,6 +77,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
     req.session.ens = session.ens;
 
     res.status(200).json({ ...req.session });
+    return;
   });
 
   /**
