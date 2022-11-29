@@ -4,9 +4,9 @@
     "es2021": true,
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    // "eslint:recommended",
+    // "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
     // "plugin:prettier/recommended",
     "airbnb-base",
   ],
@@ -38,5 +38,6 @@
     "max-classes-per-file": "off",
     "no-plusplus": "off",
     "no-await-in-loop": "off",
+    "@typescript-eslint/no-empty-interface": "off",
   },
 }
