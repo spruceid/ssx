@@ -58,7 +58,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
         req.session.nonce,
       );
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
     
     const { success, error, session } = ssxLoginResponse;
