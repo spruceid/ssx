@@ -4,11 +4,9 @@
     "es2021": true,
   },
   "extends": [
-    // "eslint:recommended",
-    // "plugin:@typescript-eslint/recommended",
-    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    // "plugin:prettier/recommended",
-    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
   ],
   "ignorePatterns": [
     "examples/",
@@ -18,9 +16,7 @@
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    // "tsconfigRootDir": __dirname,
     "project": ["./tsconfig.json", "./packages/*/tsconfig.json"],
-
   },
   "plugins": [
     "@typescript-eslint",
