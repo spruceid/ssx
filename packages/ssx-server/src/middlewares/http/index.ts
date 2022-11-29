@@ -70,7 +70,6 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
             },
           );
         } catch (error) {
-          console.error(error);
         }
         const { success: verified, data } = siweMessageVerification;
         if (verified) {
