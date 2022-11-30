@@ -1,10 +1,7 @@
 /**
- * Instructions:
- * Command: node scripts/toggle-packages.js [local]
- * local: use local package versions
- * no local: use published package versions
- *
- * Example: node scripts/toggle-packages.js local
+ * Command line usage:
+ * `node scripts/toggle-packages.js` // use published package versions
+ * `node scripts/toggle-packages.js` local // use local package versions
  */
 const { readJSON, readdir, pathExists, writeJSON } = require('fs-extra');
 
