@@ -16,6 +16,9 @@
     "clean": "rimraf dist",
     "test": "jest"
   },
+  "dependencies": {
+    "@spruceid/ssx-core": "*"
+  },
   "peerDependencies": {
     "siwe": "^2.1.2",
     "ethers": "^5.7.1"
