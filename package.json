@@ -28,6 +28,7 @@
     "gnosis": "yarn workspace @spruceid/ssx-gnosis-extension",
     "sdk": "yarn workspace @spruceid/ssx",
     "react": "yarn workspace @spruceid/ssx-react",
+    "next": "yarn workspace @spruceid/ssx-next",
     "core": "yarn workspace @spruceid/ssx-core",
     "server": "yarn workspace @spruceid/ssx-server",
     "serverless": "yarn workspace @spruceid/ssx-serverless",
