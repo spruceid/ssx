@@ -1,7 +1,7 @@
 import { SSXServer } from '../../server';
 import { SiweMessage } from 'siwe';
 import { NextFunction, Request, Response } from 'express';
-import { SSXEnsData, SSXLogFields } from '../../types';
+import { SSXEnsData, SSXLogFields } from '@spruceid/ssx-core';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {
@@ -87,28 +87,28 @@ export const ssxMiddleware = (ssx: SSXServer) => {
     };
 
     if (req.session?.siwe) {
+      const { signature, siwe, daoLogin, nonce } = req.session;
+      let siweMessageVerify;
       try {
-        const { signature, siwe, daoLogin, nonce } = req.session;
-        const { success: verified, data } = await new SiweMessage(siwe).verify(
+        siweMessageVerify = await new SiweMessage(siwe).verify(
           { signature, nonce },
           {
             verificationFallback: daoLogin ? SiweGnosisVerify : null,
             provider: ssx.provider,
           },
         );
-
-        if (verified) {
-          req.ssx = {
-            ...req.ssx,
-            siwe: data,
-            verified,
-            userId: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
-          };
-        } else {
-          req.session.destroy(() => next());
-        }
       } catch (error) {
-        // ignore errors? Log them?
+      }
+      const { success: verified, data } = siweMessageVerify;
+      if (verified) {
+        req.ssx = {
+          ...req.ssx,
+          siwe: data,
+          verified,
+          userId: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
+        };
+      } else {
+        req.session.destroy(() => next());
       }
     }
     next();

@@ -77,10 +77,11 @@ const signIn: ValidatedEventAPIGatewayProxyEvent<typeof signInSchema> = async (e
     event.body.walletAddress,
     {
       daoLogin: true,
-      resolveEnsDomain: true,
-      resolveEnsAvatar: true,
+      resolveEnsDomain: (event.body.resolveEns as any).domain ?? false,
+      resolveEnsAvatar: (event.body.resolveEns as any).avatar ?? false,
     }
   )
+    .then((response) => formatJSONResponse(200, { ...response }))
     .catch(error => formatJSONResponse(500, { error }));
 };
 
