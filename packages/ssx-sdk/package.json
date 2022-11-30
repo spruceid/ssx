@@ -27,6 +27,7 @@
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
     "siwe": "^2.1.2",
+    "@spruceid/ssx-core": "*",
     "@spruceid/ssx-gnosis-extension": "*",
     "@spruceid/ssx-sdk-wasm": "0.1.2",
     "@types/lodash.merge": "^4.6.7",

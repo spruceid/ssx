@@ -4,12 +4,12 @@ import {
   SSXInit,
 } from './core';
 import {
-  SSXConfig,
-  SSXSession,
+  SSXClientConfig,
+  SSXClientSession,
   SSXRPCProviders,
   SSXEnsData,
   SSXEnsResolveOptions,
-} from './types';
+} from '@spruceid/ssx-core';
 
 declare global {
   interface Window {
@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-const SSX_DEFAULT_CONFIG: SSXConfig = {
+const SSX_DEFAULT_CONFIG: SSXClientConfig = {
   providers: {
     web3: {
       driver: globalThis.ethereum,
@@ -30,11 +30,11 @@ const SSX_DEFAULT_CONFIG: SSXConfig = {
  * A toolbox for user-controlled identity, credentials, storage and more.
  */
 export class SSX {
-  /** SSXSession builder. */
+  /** SSXClientSession builder. */
   private init: SSXInit;
 
   /** The session representation (once signed in). */
-  public session?: SSXSession;
+  public session?: SSXClientSession;
 
   /** Current connection of SSX */
   public connection?: SSXConnected;
@@ -42,7 +42,7 @@ export class SSX {
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
 
-  constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
+  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
     this.init = new SSXInit({ ...this.config, providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers } });
 
     if (this.config.enableDaoLogin) {
@@ -55,7 +55,7 @@ export class SSX {
    * Request the user to sign in, and start the session. 
    * @returns Object containing information about the session
    */
-  async signIn(): Promise<SSXSession> {
+  async signIn(): Promise<SSXClientSession> {
     try {
       this.connection = await this.init.connect();
     } catch (err) {
@@ -66,19 +66,19 @@ export class SSX {
 
     try {
       this.session = await this.connection.signIn();
-      if (this.config.resolveEns) {
-        if (this.config.resolveEns === true) {
-          this.session.ens = await this.resolveEns(this.session.address);
-        } else if (!this.config.resolveEns.resolveOnServer) {
-          this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
-        }
-      }
-      return this.session;
     } catch (err) {
       // Request to /ssx-login went wrong
       console.error(err);
       throw err;
     }
+    if (this.config.resolveEns) {
+      if (this.config.resolveEns === true) {
+        this.session.ens = await this.resolveEns(this.session.address);
+      } else if (!this.config.resolveEns.resolveOnServer) {
+        this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
+      }
+    }
+    return this.session;
   }
 
   /**
@@ -91,9 +91,9 @@ export class SSX {
     /** User address */
     address: string,
     resolveEnsOpts: SSXEnsResolveOptions = {
-        domain: true,
-        avatar: true
-      }
+      domain: true,
+      avatar: true
+    }
   ): Promise<SSXEnsData> {
     if (!address) {
       throw new Error('Missing address.');
@@ -126,21 +126,27 @@ export class SSX {
   /**
    * Invalidates user's session.
    */
-  async signOut() {
+  async signOut(): Promise<void> {
     try {
       await this.connection.signOut(this.session);
-      this.session = null;
-      this.connection = null;
     } catch (err) {
       // request to /ssx-logout went wrong
       console.error(err);
       throw err;
     }
+    this.session = null;
+    this.connection = null;
   }
 
-  /** Get the address that is connected and signed in. */
+  /** 
+   * Gets the address that is connected and signed in. 
+   * @returns Address.
+   */
   address: () => string | undefined = () => this.session?.address;
 
-  /** Get the chainId that the address is connected and signed in on. */
+  /** 
+   * Get the chainId that the address is connected and signed in on. 
+   * @returns chainId.
+   */
   chainId: () => number | undefined = () => this.session?.chainId;
 }

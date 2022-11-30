@@ -1,18 +1,30 @@
+import { ConfigOverrides, ISSXConnected, SSXExtension } from '@spruceid/ssx-core';
 import { providers } from 'ethers';
 import { gnosisDelegatorsFor } from './gnosis';
 
 declare global {
   interface Window { gnosisModal: IGnosisModal; }
 }
+
+/** Gnosis Modal Interface */
 interface IGnosisModal {
+  /** Method to close the modal. */
   closeModal: () => void;
+  /** Method to open modal. */
   openModal: () => Promise<void>;
+  /** Method to select delegation option on modal. */
   selectOption: (opt: any) => void;
+  /** Method to connect with selected option. */
   connect: () => Promise<void>;
 }
 
 const styles = '.ssx-gnosis-ssx-gnosis-modal--body{font-family:Satoshi;margin:0;background-color:#000}.ssx-gnosis-modal--container{display:flex;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;top:0;visibility:hidden;opacity:0;transition:all 0.3s ease}.ssx-gnosis-modal--container .ssx-gnosis-modal--backdrop{background:rgba(15,15,24,.6);position:fixed;width:100%;height:100%}.ssx-gnosis-modal--container.visible{opacity:1;visibility:visible}.ssx-gnosis-modal--container .ssx-gnosis-modal--content{max-width:100%;width:500px;position:fixed;top:calc((100vh - 550px - 120px)/2);transition:all 0.8s ease;z-index:9999}.ssx-gnosis-modal--header,.ssx-gnosis-modal--subheader,.ssx-gnosis-modal--footer{padding:1rem}.ssx-gnosis-modal--body{height:300px;overflow-y:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--option{font-size:16px;font-weight:400;padding:15px 30px;cursor:pointer}.ssx-gnosis-modal--body .ssx-gnosis-modal--info{width:100%;height:100%;display:flex;flex-wrap:wrap;text-align:center;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--info p{font-size:26px;font-weight:700;line-height:30px;margin-top:22px;margin-bottom:22px}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a{-webkit-appearance:button;-moz-appearance:button;appearance:button;text-decoration:none;cursor:pointer;border-radius:100px;width:174px;height:45px;font-size:16px;font-weight:700;line-height:25px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;margin:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{margin-right:12px}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader{width:100%;height:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{width:100px;height:100px}.ssx-gnosis-modal--header{display:flex;justify-content:space-between;align-items:center}.ssx-gnosis-modal--header .ssx-gnosis-modal--brand{display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.ssx-gnosis-modal--header h1{margin-left:12px;font-size:30px;line-height:46px;font-weight:900}.ssx-gnosis-modal--header button{font-size:20px;padding:12px;margin:0;height:40px;width:40px;border-radius:100px;border-style:none;cursor:pointer}.ssx-gnosis-modal--subheader{border-top-left-radius:20px;border-top-right-radius:20px;text-align:right}.ssx-gnosis-modal--subheader .ssx-gnosis-modal--results-counter{font-size:16px;font-weight:400;line-height:25.5px}.ssx-gnosis-modal--footer{text-align:right;border-bottom-left-radius:20px;border-bottom-right-radius:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}.ssx-gnosis-modal--btn{display:inline-block;border:0;cursor:pointer;font-size:16px;line-height:24.5px;font-weight:700;padding:11px 25px}.ssx-gnosis-modal--btn.disabled{cursor:not-allowed;opacity:.4}.ssx-gnosis-modal-rotating{animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-o-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-ms-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-moz-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-webkit-animation:ssx-gnosis-modal-rotating 0.7s linear infinite}@keyframes ssx-gnosis-modal-rotating{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}.ssx-gnosis-modal--theme-dark{color:#fff}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--header button{background:#fff;color:#000}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader,.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body{background-color:#293137}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a{background-color:#fff;color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{filter:brightness(0) saturate(100%) invert(30%) sepia(96%) saturate(1424%) hue-rotate(147deg) brightness(90%) contrast(101%)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{filter:invert(1)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-track{border-radius:20px;background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-thumb{border-radius:8px;background-color:#898f94}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar{background-color:#898f94;border-radius:20px;height:6px;width:6px}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option{background-color:transparent;border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option.selected{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option:hover{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader{border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{border-top:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.secondary{background:transparent;color:#ccc}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.primary{border-radius:8px;background:#656B6F;color:#fff}';
 
+
+/**
+ * Gets modal loader component.
+ * @returns Modal Loader HTML element.
+ */
 const getModalLoader = (): Element => {
   const loader = document.createElement("div");
   loader.classList.add("ssx-gnosis-modal--loader");
@@ -41,6 +53,10 @@ const getModalLoader = (): Element => {
   return loader;
 }
 
+/**
+ * Gets error component.
+ * @returns Modal Error HTML element.
+ */
 const getErrorModal = (): Element => {
   const info = document.createElement('div');
   info.classList.add('ssx-gnosis-modal--info');
@@ -108,6 +124,10 @@ const getErrorModal = (): Element => {
   return info;
 }
 
+/**
+ * Gets base modal component.
+ * @returns Base Modal HTML element.
+ */
 const getBaseModal = (): Element => {
   const container = document.createElement("div");
   container.classList.add("ssx-gnosis-modal--container", "ssx-gnosis-modal--theme-dark");
@@ -204,17 +224,29 @@ const getBaseModal = (): Element => {
 
   return container;
 }
-
-export class GnosisDelegation {
+/**
+ * GnosisDelegation is an SSX Extension to enable multisig login on SSX.
+ */
+export class GnosisDelegation implements SSXExtension {
+  /** Web3 Provider. */
   public web3provider: providers.Web3Provider;
+  /** Selected delegation option.  */
   public selectedOption: string = '';
-  private _proceed: (value: any | PromiseLike<any>) => void;
+  /** Continue with the SSX flow with a successfull promise. */
+  private _proceed: (value: ConfigOverrides | PromiseLike<ConfigOverrides>) => void;
+  /** Continue with the SSX flow with a rejected promise. */
   private _failure: (reason?: any) => void;
+  /** User address without delegation. */
   private _connectedAddress: string;
 
   namespace = "delegationRegistry";
 
-  async afterConnect(ssx: any): Promise<any> {
+  /**
+   * Executes extension logic.
+   * @param ssx - SSXConnected instance.
+   * @returns Promise with extension status.
+   */
+  async afterConnect(ssx: ISSXConnected): Promise<ConfigOverrides> {
     this.web3provider = ssx.provider;
     this._connectedAddress = await ssx.provider.getSigner().getAddress();
 
@@ -226,14 +258,17 @@ export class GnosisDelegation {
     };
 
     window.gnosisModal = gnosisModal;
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<ConfigOverrides>((resolve, reject) => {
       this.openModal();
       this._proceed = resolve;
       this._failure = reject;
     });
   }
 
-  openModal = async () => {
+  /**
+   * Opens GnosisModal.
+   */
+  openModal = async (): Promise<void> => {
     this.selectedOption = '';
     const {
       modal, modalBody, modalCounter, continueBtn,
@@ -284,6 +319,11 @@ export class GnosisDelegation {
       });
   };
 
+
+  /**
+   * Gets static HTML tags to build the main component.
+   * @returns JSON with static HTML tags.
+   */
   getTags = (): Record<string, Element> => {
     // append modal to the body
     const modalWrapper = document.createElement('div');
@@ -311,22 +351,37 @@ export class GnosisDelegation {
     };
   };
 
+  /**
+   * Gets delegators.
+   * @returns List of delegators.
+   */
   getOptions = async (): Promise<Array<string>> => gnosisDelegatorsFor(
     this._connectedAddress,
     this.web3provider,
   );
 
-  selectOption = (option) => {
+  /**
+   * Selects delegation option.
+   * @param option - Modal option.
+   */
+  selectOption = (option): void => {
     document.getElementById(`ssx-gnosis-modal--option-${this.selectedOption}`).classList.remove('selected');
     document.getElementById('ssx-gnosis-modal--continue-btn').classList.remove('disabled');
     this.selectedOption = option;
     document.getElementById(`ssx-gnosis-modal--option-${option}`).classList.add('selected');
   };
 
-  closeModal = () => {
+  /**
+   * Closes Modal.
+   */
+  closeModal = (): void => {
     document.getElementById('ssx-gnosis-modal--wrapper').remove();
   };
 
+  /**
+   * Confirm selection and continue SSX flow.
+   * @returns Promise void.
+   */
   connect = async (): Promise<void> => {
     if (!this.selectedOption.replace(/Yourself - /, '')) {
       this._failure(new Error("Invalid address selected."));

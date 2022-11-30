@@ -1,14 +1,14 @@
 {
-  "name": "@spruceid/ssx-serverless",
+  "name": "@spruceid/ssx-core",
   "version": "1.0.0",
-  "description": "Create SSX applications in serverless architectures",
+  "description": "SSX core library",
   "author": "Spruce Systems Inc.",
   "license": "Apache-2.0 OR MIT",
-  "homepage": "https://github.com/spruceid/ssx-serverless#readme",
+  "homepage": "https://github.com/spruceid/ssx/packages/ssx-core#readme",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bugs": {
-    "url": "https://github.com/spruceid/ssx-serverless/issues"
+    "url": "https://github.com/spruceid/ssx/issues"
   },
   "directories": {
     "src": "src"
@@ -17,7 +17,7 @@
     "build": "tsc",
     "doc": "yarn doc:extractor && yarn doc:documenter",
     "doc:extractor": "api-extractor run",
-    "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-serverless"
+    "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-core"
   },
   "engines": {
     "node": ">=16.13.0"
@@ -27,10 +27,10 @@
     "url": "git+https://github.com/spruceid/ssx.git"
   },
   "dependencies": {
-    "siwe": "^2.1.2",
-    "@spruceid/ssx-core": "*",
-    "@spruceid/ssx-gnosis-extension": "*",
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "siwe": "^2.1.2"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.19.4",
@@ -44,5 +44,8 @@
   },
   "peerDependencies": {
     "ethers": "^5.6.8"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
