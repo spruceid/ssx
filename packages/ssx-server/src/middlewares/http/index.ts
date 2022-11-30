@@ -42,7 +42,7 @@ function getBody(req: IncomingMessage): Promise<any> {
  */
 export const SSXHttpMiddleware = (ssx: SSXServer) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  return (requestListener = (req, res) => {}) => {
+  return (requestListener = (req, res) => { }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return async (req: IncomingMessage, res: ServerResponse) => {
       // session middleware
@@ -57,9 +57,10 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
       };
 
       if (req.session?.siwe) {
+        const { signature, siwe, daoLogin, nonce } = req.session;
+        let siweMessageVerification;
         try {
-          const { signature, siwe, daoLogin, nonce } = req.session;
-          const { success: verified, data } = await new SiweMessage(
+          siweMessageVerification = await new SiweMessage(
             siwe,
           ).verify(
             { signature, nonce },
@@ -68,19 +69,18 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
               provider: ssx.provider,
             },
           );
-
-          if (verified) {
-            req.ssx = {
-              ...req.ssx,
-              siwe: data,
-              verified,
-              userId: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
-            };
-          } else {
-            req.session.destroy(() => {});
-          }
         } catch (error) {
-          // ignore errors? Log them?
+        }
+        const { success: verified, data } = siweMessageVerification;
+        if (verified) {
+          req.ssx = {
+            ...req.ssx,
+            siwe: data,
+            verified,
+            userId: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
+          };
+        } else {
+          req.session.destroy(() => { });
         }
       }
 
@@ -117,6 +117,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
           body.siwe,
           body.signature,
           body.daoLogin,
+          body.resolveEns,
           req.session.nonce,
         );
 
@@ -135,7 +136,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ session: req.session }));
+        res.end(JSON.stringify({ ...req.session }));
       } else if (req.url === '/ssx-logout') {
         req.session.destroy(null);
         req.session = null;

@@ -1,27 +1,41 @@
-import { generateNonce, SiweError, SiweMessage, SiweResponse } from 'siwe';
+import { generateNonce, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXSessionCRUDConfig, SSXSessionData, SSXEnsData } from './types';
-import { getProvider } from './utils';
+import {
+  SSXServerConfig,
+  SSXSessionCRUDConfig,
+  SSXSessionData,
+  SSXEnsData as ISSXEnsData
+} from './types';
+import {
+  SSXLogFields,
+  SSXEventLogTypes,
+  ssxLog,
+  SSXEnsResolveOptions,
+  SSXEnsData,
+  getProvider,
+  ssxResolveEns
+} from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object to add 
  * authentication and metrics to your server.
- *
- **/
+ */
 export class SSXServer {
+  /** SSXServerConfig object. */
   private _config: SSXServerConfig = {};
+  /** Axios instance. */
   private _api: AxiosInstance;
-  /** EthersJS provider */
+  /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
-  /** Definition of CRUD functions for sessions */
+  /** Definition of CRUD functions for sessions. */
   public session: SSXSessionCRUDConfig;
 
   /**
-   * @param config - Base configuration of the SSXServer
-   * @param session - CRUD definition for session operations
+   * @param config - Base configuration of the SSXServer.
+   * @param session - CRUD definition for session operations.
    * @example
    * ```
    * const ssx = new SSXServer({
@@ -66,24 +80,14 @@ export class SSXServer {
     this.provider = getProvider(config.providers?.rpc);
   }
 
-  /**
-   * Abstracts the fetch API to append correct headers, host and parse
-   * responses to JSON for POST requests.
+  /** 
+   * Registers a new event to the API.
+   * @param data - SSXLogFields JSON.
+   * @returns Promise with true (success) or false (fail).
    */
-  private _post = (route: string, body: any): Promise<boolean> => {
-    return this._api
-      .post(route, typeof body === 'string' ? body : JSON.stringify(body))
-      .then((res) => res.status === 204)
-      .catch((e) => {
-        console.error(e);
-        return false;
-      });
-  };
-
-  /** Registers a new event to the API */
   public log = async (data: SSXLogFields): Promise<boolean> => {
-    if (!data.timestamp) { data.timestamp = new Date().toISOString() };
-    return !!this._config.providers?.metrics?.apiKey && this._post('/events', data);
+    this._api;
+    return ssxLog(this._api, this._config.providers?.metrics?.apiKey ?? '', data);
   };
 
   /**
@@ -94,33 +98,114 @@ export class SSXServer {
    */
   public generateNonce = generateNonce;
 
+  /** 
+   * Tries to update the session to store the new nonce.
+   * @param sessionKey - Session identifier.
+   * @param value - Value to update statement.
+   * @param opts - Optional parameters.
+   * @returns Object with update result.
+   */
+  private updateSessionNonce = async (
+    /* The session with this key will be updated. */
+    sessionKey: string,
+    /** Value for the update statement. */
+    value: any,
+    /* Optional parameters to be passed to session.update. */
+    opts: any
+  ): Promise<{
+    success: boolean;
+    dbResult: any;
+  }> => {
+    let dbResult;
+    try {
+      dbResult = await this.session.update(sessionKey, value, opts);
+    } catch (error) {
+      throw {
+        success: false,
+        dbResult: error
+      };
+    }
+    return {
+      success: true,
+      dbResult
+    };
+  };
+
+  /** 
+   * Tries to create a session to store and store a nonce.
+   * @param value - Value for the create statement.
+   * @param opts - Optional parameters.
+   * @returns Object with create result.
+   */
+  private createSessionNonce = async (
+    /** Value for the create statement */
+    value: any,
+    /* Optional parameters to be passed to session.create. */
+    opts: any
+  ): Promise<{
+    success: boolean;
+    dbResult: any;
+  }> => {
+    let dbResult;
+    try {
+      dbResult = await this.session.create(value, opts);
+    } catch (error) {
+      throw {
+        success: false,
+        dbResult: error
+      };
+    }
+    return {
+      success: true,
+      dbResult
+    };
+  };
+
   /**
    * Generates a nonce and stores it in the current session
    * if a sessionKey is provided or creates a new one if not.
+   * @param getNonceOpts - Optional params to configure session management.
+   * @returns Promise with nonce and database result.
    */
   public getNonce = async (
     getNonceOpts?: {
-      /* If provided the session with this key will be updated */
+      /* If provided the session with this key will be updated. */
       sessionKey?: any,
-      /* A function that will return the value for the update statement */
+      /* A function that will return the value for the update statement. */
       generateUpdateValue?: (nonce: string) => any,
-      /* A function that will return the value for the create statement */
+      /* A function that will return the value for the create statement. */
       generateCreateValue?: (nonce: string) => any,
-      /* Optional parameters to be passed to session.create */
+      /* Optional parameters to be passed to session.create. */
       createOpts?: Record<string, any>,
-      /* Optional parameters to be passed to session.update */
+      /* Optional parameters to be passed to session.update. */
       updateOpts?: Record<string, any>,
     }): Promise<{ nonce: string, dbResult: any }> => {
     const nonce = generateNonce();
 
     let dbResult;
     if (getNonceOpts) {
-      try {
+
+      let updateSessionResponse;
+      if (getNonceOpts?.sessionKey) {
         const updateValue = getNonceOpts.generateUpdateValue?.(nonce) ?? nonce;
-        dbResult = await this.session.update(getNonceOpts.sessionKey, updateValue, getNonceOpts?.updateOpts);
-      } catch (error) {
+        try {
+          updateSessionResponse = await this.updateSessionNonce(getNonceOpts?.sessionKey, updateValue, getNonceOpts?.updateOpts);
+        } catch (error) {
+          updateSessionResponse = error;
+        }
+      }
+      /* 
+        If I don't have a sessionKey (to update) 
+        OR
+        I have a sessionKey (to update) but the update returned success=false
+      */
+      if (!getNonceOpts.sessionKey || (getNonceOpts.sessionKey && !updateSessionResponse?.success)) {
         const createValue = getNonceOpts.generateCreateValue?.(nonce) ?? { nonce, address: getNonceOpts.sessionKey };
-        dbResult = await this.session.create(createValue, getNonceOpts?.createOpts);
+        try {
+          dbResult = (await this.createSessionNonce(createValue, getNonceOpts?.createOpts)).dbResult;
+        } catch (error) {
+          dbResult = error.dbResult;
+        }
       }
     }
 
@@ -130,29 +215,29 @@ export class SSXServer {
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
    * If the message is verified, a session token is generated and returned.
-   * @param siwe - Object containing the siwe fields or EIP-4361 message
-   * @param signature - Signature of the EIP-4361 message
-   * @param sessionKey - Key used to index user's session
-   * @param signInOpts - Additional options to customize sign-in behavior
-   * @returns Object containing information about the session
+   * @param siwe - Object containing the siwe fields or EIP-4361 message.
+   * @param signature - Signature of the EIP-4361 message.
+   * @param sessionKey - Key used to index user's session.
+   * @param signInOpts - Additional options to customize sign-in behavior.
+   * @returns Object containing information about the session.
    */
   public signIn = async (
     siwe: SiweMessage | string,
     signature: string,
-    /* Session key to be used in session lookup */
+    /* Session key to be used in session lookup. */
     sessionKey: any,
     signInOpts: {
-      /* Enables lookup for delegations */
+      /* Enables lookup for delegations. */
       daoLogin?: boolean,
-      /* Enables ENS Domain resolution */
+      /* Enables ENS Domain resolution. */
       resolveEnsDomain?: boolean,
-      /* Enables ENS Avatar resolution */
+      /* Enables ENS Avatar resolution. */
       resolveEnsAvatar?: boolean,
-      /* Optional parameters to be passed to session.retrieve */
+      /* Optional parameters to be passed to session.retrieve. */
       retrieveOpts?: Record<string, any>,
-      /* A function that will return the value for the update statement */
+      /* A function that will return the value for the update statement. */
       generateUpdateValue?: (sessionData: SSXSessionData) => any,
-      /* Optional parameters to be passed to session.create */
+      /* Optional parameters to be passed to session.create. */
       updateOpts?: Record<string, any>,
     },
   ): Promise<SSXSessionData> => {
@@ -179,24 +264,26 @@ export class SSXServer {
         throw error;
       });
 
-    let ens: SSXEnsData = {};
+    let ens: ISSXEnsData = {};
     let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+
+    if (signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar) {
+      const resolveEnsOpts = {
+        domain: signInOpts?.resolveEnsDomain,
+        avatar: signInOpts?.resolveEnsAvatar,
+      }
+      promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+    }
+
     try {
-      if (signInOpts?.resolveEnsDomain) {
-        promises.push(this.provider.lookupAddress(siweMessage.address))
-      }
-      if (signInOpts?.resolveEnsAvatar) {
-        promises.push(this.provider.getAvatar(siweMessage.address))
-      }
       siweMessageVerifyPromise = await Promise.all(promises)
-        .then(([siweMessageVerify, ensName, ensAvatarUrl]) => {
-          if (!signInOpts.resolveEnsDomain && signInOpts.resolveEnsAvatar) {
-            [ensName, ensAvatarUrl] = [undefined, ensName];
+        .then(([siweMessageVerify, ensData]) => {
+          if (ensData.domain) {
+            ens['ensName'] = ensData.domain;
           }
-          ens = {
-            ensName,
-            ensAvatarUrl,
-          };
+          if (ensData.avatarUrl) {
+            ens['ensAvatarUrl'] = ensData.avatarUrl;
+          }
           return siweMessageVerify;
         });
     } catch (error) {
@@ -214,45 +301,60 @@ export class SSXServer {
       ens
     };
 
+    const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
     try {
-      const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
       await this.session.update(sessionKey, updateValue, signInOpts?.updateOpts);
     } catch (error) {
       console.error(error);
       throw error;
     }
 
+    let smartContractWalletOrCustomMethod = false;
     try {
-      // TODO(w4ll3): Refactor this function.
+      // TODO: Refactor this function.
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
-      let smartContractWalletOrCustomMethod = false;
       smartContractWalletOrCustomMethod = !(
         utils.verifyMessage(siweMessage.prepareMessage(), signature) === siweMessage.address
       );
-
-      this.log({
-        userId: `did:pkh:eip155:${siweMessage.chainId}:${siweMessage.address}`,
-        type: SSXEventLogTypes.LOGIN,
-        content: {
-          signature,
-          siwe,
-          isGnosis: signInOpts?.daoLogin && smartContractWalletOrCustomMethod,
-        },
-      });
     } catch (error) {
       console.error(error);
     }
+
+    this.log({
+      userId: `did:pkh:eip155:${siweMessage.chainId}:${siweMessage.address}`,
+      type: SSXEventLogTypes.LOGIN,
+      content: {
+        signature,
+        siwe,
+        isGnosis: signInOpts?.daoLogin && smartContractWalletOrCustomMethod,
+      },
+    });
 
     return sessionData;
   };
 
   /**
-   * Calls the delete function to delete the user's session
-   * @param sessionKey - Key used to index sessions
+   * ENS data supported by SSX. 
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public resolveEns = async (
+    /* User Address */
+    address: string,
+    /* ENS resolution settings */
+    resolveEnsOpts?: SSXEnsResolveOptions
+  ): Promise<SSXEnsData> => {
+    return ssxResolveEns(this.provider, address, resolveEnsOpts)
+  };
+
+  /**
+   * Calls the delete function to delete the user's session.
+   * @param sessionKey - Key used to index sessions.
    * @param deleteOpts - Additional options to be passed to the seeion.delete function.
-   * @returns The result of session.delete<T>
+   * @returns The result of session.delete<T>.
    * @example
    * signOut<boolean>("0x9D85ca56217D2bb651b00f15e694EB7E713637D4")
    */
@@ -269,7 +371,7 @@ export class SSXServer {
    * @param sessionKey - Key used to index sessions.
    * @param getSSXDataFromSession - Function that will parse the resolved value from 
    * session into SSXSessionData if the a custom session structure is being used.
-   * @returns SSXSessionData
+   * @returns SSXSessionData.
    */
   public me = async (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => {
     const dbResult = await this.session.retrieve(sessionKey);
@@ -277,15 +379,21 @@ export class SSXServer {
       throw new Error('Unable to retrieve session.');
     }
     let session: SSXSessionData;
+    let castingError: any;
     try {
       session = dbResult as SSXSessionData;
     } catch (error) {
+      castingError = error;
+    }
+
+    if (!session) {
       if (!getSSXDataFromSession) {
-        console.error(error);
-        throw error;
+        console.error(castingError);
+        throw castingError;
       }
       session = getSSXDataFromSession(dbResult);
     }
+
     const siweMessage = new SiweMessage(session.siweMessage);
     await siweMessage.verify(
       { signature: session.signature },
@@ -298,5 +406,19 @@ export class SSXServer {
   }
 }
 
-export * from "./types";
-export * from "./utils";
+export * from "@spruceid/ssx-core/dist/types";
+export {
+  SSXLogFields,
+  SSXEventLogTypes
+};
+export {
+  SSXSessionCRUDConfig,
+  SSXSessionData,
+  SSXEnsData,
+  SSXServerConfig,
+  /** @deprecated use SSXServerConfig field instead */
+  SSXServerConfig as SSXConfig,
+  SSXServerProviders,
+  /** @deprecated use SSXServerProviders field instead */
+  SSXServerProviders as SSXProviders
+} from './types';

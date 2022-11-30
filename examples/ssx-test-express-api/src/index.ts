@@ -14,14 +14,14 @@ const ssx = new SSXServer({
   providers: {
     rpc: {
       service: SSXRPCProviders.SSXInfuraProvider,
-      network: SSXInfuraProviderNetworks.MAINNET,
+      network: SSXInfuraProviderNetworks.GOERLI,
       apiKey: process.env.INFURA_API_KEY ?? "",
     },
     metrics: {
       service: 'ssx',
       apiKey: process.env.SSX_API_TOKEN ?? ""
-    }
-  },
+    },
+  }
 });
 
 app.use(cors({

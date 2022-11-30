@@ -15,7 +15,12 @@ const getLines = (output, prefix = 'reference/ssx-sdk/', layer = 0) => {
 
 const generateReference = async () => {
   const output = {};
-  const dirs = [ './documentation/reference/ssx-sdk', './documentation/reference/ssx-server'];
+  const dirs = [
+    './documentation/reference/ssx-sdk',
+    './documentation/reference/ssx-core',
+    './documentation/reference/ssx-server',
+    './documentation/reference/ssx-serverless',
+  ];
   const docFiles = [ ...(await Promise.all(dirs.map(async dir => await readdir(dir)))) ].reduce((p, c) => [...p, ...c], []);
   
   for (const docFile of docFiles) {
@@ -47,6 +52,8 @@ const generateReference = async () => {
         if (!output[nameParts[0]][nameParts[1]][nameParts[2]]) {
           output[nameParts[0]][nameParts[1]][nameParts[2]] = {};
         }
+      } else if (nameParts.length > 3){
+        console.log("Error: Not all documentation is being generated. Missing: ", nameParts.join('.'));
       }
     } catch (err) {
       console.error(`Could not process ${docFile}: ${err}`);
@@ -56,13 +63,16 @@ const generateReference = async () => {
   const lines = [
     "## Reference",
     ...getLines({ 'ssx': output['ssx'] }),
+    ...getLines({ 'ssx-core': output['ssx-core']}, 'reference/ssx-core/'),
     ...getLines({ 'ssx-server': output['ssx-server']}, 'reference/ssx-server/'),
+    ...getLines({ 'ssx-serverless': output['ssx-serverless']}, 'reference/ssx-serverless/'),
   ];
 
   let reference = lines.join('\n');
   reference = reference.replace('* [ssx]', '* [SSX API Reference]');
+  reference = reference.replace('* [ssx-core]', '* [SSX Core API Reference]');
   reference = reference.replace('* [ssx-server]', '* [SSX Server API Reference]');
-
+  reference = reference.replace('* [ssx-serverless]', '* [SSX Serverless API Reference]');
   return reference;
 }
 
@@ -73,7 +83,9 @@ const generateSUMMARY = async () => {
 
   let reference = await generateReference();
   reference = reference.replace(/^\* \[ssx\]/, '* [SSX API Reference]');
+  reference = reference.replace(/^\* \[ssx-core\]/, '* [SSX Core API Reference]');
   reference = reference.replace(/^\* \[ssx-server\]/, '* [SSX Server API Reference]');
+  reference = reference.replace(/^\* \[ssx-serverless\]/, '* [SSX Serverless API Reference]');
   await writeFile('./documentation/SUMMARY.md', previous.concat(reference));
 }
 
