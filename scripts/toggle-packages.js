@@ -1,7 +1,7 @@
 /**
  * Command line usage:
  * `node scripts/toggle-packages.js` // use published package versions
- * `node scripts/toggle-packages.js` local // use local package versions
+ * `node scripts/toggle-packages.js local` // use local package versions
  */
 const { readJSON, readdir, pathExists, writeJSON } = require('fs-extra');
 
@@ -47,7 +47,7 @@ const getAllPackageJSON = async () => {
 };
 
 const updatePackageVersion = (packages, usePublishedVersion = true) => {
-  console.log('Using local package versions');
+   console.log(`Using ${usePublishedVersion ? 'remote': 'local'} package versions`);
   const packageNames = Object.keys(packages);
   for (const package in packages) {
     // in each package, check for package names
