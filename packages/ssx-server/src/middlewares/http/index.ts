@@ -42,7 +42,7 @@ function getBody(req: IncomingMessage): Promise<any> {
  */
 export const SSXHttpMiddleware = (ssx: SSXServer) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  return (requestListener = (req, res) => { }) => {
+  return (requestListener = (req, res) => {}) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return async (req: IncomingMessage, res: ServerResponse) => {
       // session middleware
@@ -60,17 +60,14 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
         const { signature, siwe, daoLogin, nonce } = req.session;
         let siweMessageVerification;
         try {
-          siweMessageVerification = await new SiweMessage(
-            siwe,
-          ).verify(
+          siweMessageVerification = await new SiweMessage(siwe).verify(
             { signature, nonce },
             {
               verificationFallback: daoLogin ? SiweGnosisVerify : null,
               provider: ssx.provider,
             },
           );
-        } catch (error) {
-        }
+        } catch (error) {}
         const { success: verified, data } = siweMessageVerification;
         if (verified) {
           req.ssx = {
@@ -80,7 +77,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
             userId: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
           };
         } else {
-          req.session.destroy(() => { });
+          req.session.destroy(() => {});
         }
       }
 

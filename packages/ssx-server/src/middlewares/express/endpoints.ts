@@ -48,7 +48,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
     }
 
     let ssxLoginResponse;
-    
+
     try {
       ssxLoginResponse = await ssx.login(
         req.body.siwe,
@@ -60,7 +60,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
-    
+
     const { success, error, session } = ssxLoginResponse;
 
     if (!success) {

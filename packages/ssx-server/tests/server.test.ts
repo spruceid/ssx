@@ -1,9 +1,5 @@
 import express, { Express } from 'express';
-import {
-  SSXExpressMiddleware,
-  SSXHttpMiddleware,
-  SSXServer
-} from '../src';
+import { SSXExpressMiddleware, SSXHttpMiddleware, SSXServer } from '../src';
 
 test('Instantiate ssx-server successfully', () => {
   expect(() => {

@@ -40,8 +40,10 @@ export type SSXEtherscanProvider = {
 };
 
 /* Type-Guard for SSXEtherScanProvider. */
-export const isSSXEtherscanProvider = (provider: SSXRPCProvider):
-  provider is SSXEtherscanProvider => provider.service === SSXRPCProviders.SSXEtherscanProvider;
+export const isSSXEtherscanProvider = (
+  provider: SSXRPCProvider
+): provider is SSXEtherscanProvider =>
+  provider.service === SSXRPCProviders.SSXEtherscanProvider;
 
 /** Enum of supported networks for Infura. */
 export enum SSXInfuraProviderNetworks {
@@ -72,8 +74,10 @@ export type SSXInfuraProvider = {
 };
 
 /* Type-Guard for SSXInfuraProvider. */
-export const isSSXInfuraProvider = (provider: SSXRPCProvider):
-  provider is SSXInfuraProvider => provider.service === SSXRPCProviders.SSXInfuraProvider;
+export const isSSXInfuraProvider = (
+  provider: SSXRPCProvider
+): provider is SSXInfuraProvider =>
+  provider.service === SSXRPCProviders.SSXInfuraProvider;
 
 /** Enum of supported networks for Alchemy. */
 export enum SSXAlchemyProviderNetworks {
@@ -98,8 +102,10 @@ export type SSXAlchemyProvider = {
 };
 
 /* Type-Guard for SSXAlchemyProvider. */
-export const isSSXAlchemyProvider = (provider: SSXRPCProvider):
-  provider is SSXAlchemyProvider => provider.service === SSXRPCProviders.SSXAlchemyProvider;
+export const isSSXAlchemyProvider = (
+  provider: SSXRPCProvider
+): provider is SSXAlchemyProvider =>
+  provider.service === SSXRPCProviders.SSXAlchemyProvider;
 
 /** Cloudflare provider settings. */
 export type SSXCloudflareProvider = {
@@ -107,8 +113,10 @@ export type SSXCloudflareProvider = {
 };
 
 /* Type-Guard for SSXCloudflareProvider. */
-export const isSSXCloudflareProvider = (provider: SSXRPCProvider):
-  provider is SSXCloudflareProvider => provider.service === SSXRPCProviders.SSXCloudflareProvider;
+export const isSSXCloudflareProvider = (
+  provider: SSXRPCProvider
+): provider is SSXCloudflareProvider =>
+  provider.service === SSXRPCProviders.SSXCloudflareProvider;
 
 /** Enum of supported networks for Pocket. */
 export enum SSXPocketProviderNetworks {
@@ -126,8 +134,10 @@ export type SSXPocketProvider = {
 };
 
 /** Type-Guard for SSXPocketProvider. */
-export const isSSXPocketProvider = (provider: SSXRPCProvider):
-  provider is SSXPocketProvider => provider.service === SSXRPCProviders.SSXPocketProvider;
+export const isSSXPocketProvider = (
+  provider: SSXRPCProvider
+): provider is SSXPocketProvider =>
+  provider.service === SSXRPCProviders.SSXPocketProvider;
 
 /** Enum of supported networks for Ankr. */
 export enum SSXAnkrProviderNetworks {
@@ -144,8 +154,10 @@ export type SSXAnkrProvider = {
 };
 
 /** Type-Guard for SSXAnkrProvider. */
-export const isSSXAnkrProvider = (provider: SSXRPCProvider):
-  provider is SSXAnkrProvider => provider.service === SSXRPCProviders.SSXAnkrProvider;
+export const isSSXAnkrProvider = (
+  provider: SSXRPCProvider
+): provider is SSXAnkrProvider =>
+  provider.service === SSXRPCProviders.SSXAnkrProvider;
 
 /** Custom provider settings. */
 export type SSXCustomProvider = {
@@ -155,8 +167,10 @@ export type SSXCustomProvider = {
 };
 
 /** Type-Guard for SSXCustomProvider. */
-export const isSSXCustomProvider = (provider: SSXRPCProvider):
-  provider is SSXCustomProvider => provider.service === SSXRPCProviders.SSXCustomProvider;
+export const isSSXCustomProvider = (
+  provider: SSXRPCProvider
+): provider is SSXCustomProvider =>
+  provider.service === SSXRPCProviders.SSXCustomProvider;
 
 /** Generic provider settings. */
 export type SSXGenericProvider = {
@@ -177,7 +191,7 @@ export interface SSXEnsResolveOptions {
 /** ENS data supported by SSX. */
 export interface SSXEnsData {
   /** ENS name/domain. */
-  domain?: string | null,
+  domain?: string | null;
   /** ENS avatar. */
-  avatarUrl?: string | null
+  avatarUrl?: string | null;
 }

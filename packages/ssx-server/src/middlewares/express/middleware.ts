@@ -97,8 +97,7 @@ export const ssxMiddleware = (ssx: SSXServer) => {
             provider: ssx.provider,
           },
         );
-      } catch (error) {
-      }
+      } catch (error) {}
       const { success: verified, data } = siweMessageVerify;
       if (verified) {
         req.ssx = {

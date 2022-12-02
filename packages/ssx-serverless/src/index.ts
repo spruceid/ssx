@@ -5,7 +5,7 @@ import {
   SSXServerConfig,
   SSXSessionCRUDConfig,
   SSXSessionData,
-  SSXEnsData as ISSXEnsData
+  SSXEnsData as ISSXEnsData,
 } from './types';
 import {
   SSXLogFields,
@@ -14,13 +14,13 @@ import {
   SSXEnsResolveOptions,
   SSXEnsData,
   getProvider,
-  ssxResolveEns
+  ssxResolveEns,
 } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
- * SSX-Server is the base class that takes in a configuration object to add 
+ * SSX-Server is the base class that takes in a configuration object to add
  * authentication and metrics to your server.
  */
 export class SSXServer {
@@ -54,10 +54,7 @@ export class SSXServer {
    * });
    * ```
    */
-  constructor(
-    config: SSXServerConfig,
-    session: SSXSessionCRUDConfig,
-  ) {
+  constructor(config: SSXServerConfig, session: SSXSessionCRUDConfig) {
     Object.assign(this._config, {
       ...config,
     });
@@ -80,14 +77,18 @@ export class SSXServer {
     this.provider = getProvider(config.providers?.rpc);
   }
 
-  /** 
+  /**
    * Registers a new event to the API.
    * @param data - SSXLogFields JSON.
    * @returns Promise with true (success) or false (fail).
    */
   public log = async (data: SSXLogFields): Promise<boolean> => {
     this._api;
-    return ssxLog(this._api, this._config.providers?.metrics?.apiKey ?? '', data);
+    return ssxLog(
+      this._api,
+      this._config.providers?.metrics?.apiKey ?? '',
+      data
+    );
   };
 
   /**
@@ -98,7 +99,7 @@ export class SSXServer {
    */
   public generateNonce = generateNonce;
 
-  /** 
+  /**
    * Tries to update the session to store the new nonce.
    * @param sessionKey - Session identifier.
    * @param value - Value to update statement.
@@ -122,16 +123,16 @@ export class SSXServer {
     } catch (error) {
       throw {
         success: false,
-        dbResult: error
+        dbResult: error,
       };
     }
     return {
       success: true,
-      dbResult
+      dbResult,
     };
   };
 
-  /** 
+  /**
    * Tries to create a session to store and store a nonce.
    * @param value - Value for the create statement.
    * @param opts - Optional parameters.
@@ -152,12 +153,12 @@ export class SSXServer {
     } catch (error) {
       throw {
         success: false,
-        dbResult: error
+        dbResult: error,
       };
     }
     return {
       success: true,
-      dbResult
+      dbResult,
     };
   };
 
@@ -167,29 +168,31 @@ export class SSXServer {
    * @param getNonceOpts - Optional params to configure session management.
    * @returns Promise with nonce and database result.
    */
-  public getNonce = async (
-    getNonceOpts?: {
-      /* If provided the session with this key will be updated. */
-      sessionKey?: any,
-      /* A function that will return the value for the update statement. */
-      generateUpdateValue?: (nonce: string) => any,
-      /* A function that will return the value for the create statement. */
-      generateCreateValue?: (nonce: string) => any,
-      /* Optional parameters to be passed to session.create. */
-      createOpts?: Record<string, any>,
-      /* Optional parameters to be passed to session.update. */
-      updateOpts?: Record<string, any>,
-    }): Promise<{ nonce: string, dbResult: any }> => {
+  public getNonce = async (getNonceOpts?: {
+    /* If provided the session with this key will be updated. */
+    sessionKey?: any;
+    /* A function that will return the value for the update statement. */
+    generateUpdateValue?: (nonce: string) => any;
+    /* A function that will return the value for the create statement. */
+    generateCreateValue?: (nonce: string) => any;
+    /* Optional parameters to be passed to session.create. */
+    createOpts?: Record<string, any>;
+    /* Optional parameters to be passed to session.update. */
+    updateOpts?: Record<string, any>;
+  }): Promise<{ nonce: string; dbResult: any }> => {
     const nonce = generateNonce();
 
     let dbResult;
     if (getNonceOpts) {
-
       let updateSessionResponse;
       if (getNonceOpts?.sessionKey) {
         const updateValue = getNonceOpts.generateUpdateValue?.(nonce) ?? nonce;
         try {
-          updateSessionResponse = await this.updateSessionNonce(getNonceOpts?.sessionKey, updateValue, getNonceOpts?.updateOpts);
+          updateSessionResponse = await this.updateSessionNonce(
+            getNonceOpts?.sessionKey,
+            updateValue,
+            getNonceOpts?.updateOpts
+          );
         } catch (error) {
           updateSessionResponse = error;
         }
@@ -199,10 +202,18 @@ export class SSXServer {
         OR
         I have a sessionKey (to update) but the update returned success=false
       */
-      if (!getNonceOpts.sessionKey || (getNonceOpts.sessionKey && !updateSessionResponse?.success)) {
-        const createValue = getNonceOpts.generateCreateValue?.(nonce) ?? { nonce, address: getNonceOpts.sessionKey };
+      if (
+        !getNonceOpts.sessionKey ||
+        (getNonceOpts.sessionKey && !updateSessionResponse?.success)
+      ) {
+        const createValue = getNonceOpts.generateCreateValue?.(nonce) ?? {
+          nonce,
+          address: getNonceOpts.sessionKey,
+        };
         try {
-          dbResult = (await this.createSessionNonce(createValue, getNonceOpts?.createOpts)).dbResult;
+          dbResult = (
+            await this.createSessionNonce(createValue, getNonceOpts?.createOpts)
+          ).dbResult;
         } catch (error) {
           dbResult = error.dbResult;
         }
@@ -210,7 +221,7 @@ export class SSXServer {
     }
 
     return { nonce, dbResult };
-  }
+  };
 
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
@@ -228,18 +239,18 @@ export class SSXServer {
     sessionKey: any,
     signInOpts: {
       /* Enables lookup for delegations. */
-      daoLogin?: boolean,
+      daoLogin?: boolean;
       /* Enables ENS Domain resolution. */
-      resolveEnsDomain?: boolean,
+      resolveEnsDomain?: boolean;
       /* Enables ENS Avatar resolution. */
-      resolveEnsAvatar?: boolean,
+      resolveEnsAvatar?: boolean;
       /* Optional parameters to be passed to session.retrieve. */
-      retrieveOpts?: Record<string, any>,
+      retrieveOpts?: Record<string, any>;
       /* A function that will return the value for the update statement. */
-      generateUpdateValue?: (sessionData: SSXSessionData) => any,
+      generateUpdateValue?: (sessionData: SSXSessionData) => any;
       /* Optional parameters to be passed to session.create. */
-      updateOpts?: Record<string, any>,
-    },
+      updateOpts?: Record<string, any>;
+    }
   ): Promise<SSXSessionData> => {
     let session: any;
     try {
@@ -251,33 +262,36 @@ export class SSXServer {
 
     const siweMessage = new SiweMessage(siwe);
 
-    let siweMessageVerifyPromise: any = siweMessage.verify(
-      { signature, nonce: session?.nonce },
-      {
-        verificationFallback: signInOpts?.daoLogin ? SiweGnosisVerify : undefined,
-        provider: this.provider,
-      },
-    )
+    let siweMessageVerifyPromise: any = siweMessage
+      .verify(
+        { signature, nonce: session?.nonce },
+        {
+          verificationFallback: signInOpts?.daoLogin
+            ? SiweGnosisVerify
+            : undefined,
+          provider: this.provider,
+        }
+      )
       .then(data => data)
       .catch(error => {
         console.error(error);
         throw error;
       });
 
-    let ens: ISSXEnsData = {};
-    let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+    const ens: ISSXEnsData = {};
+    const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
 
     if (signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar) {
       const resolveEnsOpts = {
         domain: signInOpts?.resolveEnsDomain,
         avatar: signInOpts?.resolveEnsAvatar,
-      }
+      };
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
 
     try {
-      siweMessageVerifyPromise = await Promise.all(promises)
-        .then(([siweMessageVerify, ensData]) => {
+      siweMessageVerifyPromise = await Promise.all(promises).then(
+        ([siweMessageVerify, ensData]) => {
           if (ensData.domain) {
             ens['ensName'] = ensData.domain;
           }
@@ -285,7 +299,8 @@ export class SSXServer {
             ens['ensAvatarUrl'] = ensData.avatarUrl;
           }
           return siweMessageVerify;
-        });
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -298,12 +313,17 @@ export class SSXServer {
       siweMessage,
       signature,
       daoLogin: !!signInOpts?.daoLogin,
-      ens
+      ens,
     };
 
-    const updateValue = signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
+    const updateValue =
+      signInOpts.generateUpdateValue?.(sessionData) ?? sessionData;
     try {
-      await this.session.update(sessionKey, updateValue, signInOpts?.updateOpts);
+      await this.session.update(
+        sessionKey,
+        updateValue,
+        signInOpts?.updateOpts
+      );
     } catch (error) {
       console.error(error);
       throw error;
@@ -316,7 +336,8 @@ export class SSXServer {
        *  enabled would make all the logs to be of Gnosis Type
        **/
       smartContractWalletOrCustomMethod = !(
-        utils.verifyMessage(siweMessage.prepareMessage(), signature) === siweMessage.address
+        utils.verifyMessage(siweMessage.prepareMessage(), signature) ===
+        siweMessage.address
       );
     } catch (error) {
       console.error(error);
@@ -336,7 +357,7 @@ export class SSXServer {
   };
 
   /**
-   * ENS data supported by SSX. 
+   * ENS data supported by SSX.
    * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
@@ -347,7 +368,7 @@ export class SSXServer {
     /* ENS resolution settings */
     resolveEnsOpts?: SSXEnsResolveOptions
   ): Promise<SSXEnsData> => {
-    return ssxResolveEns(this.provider, address, resolveEnsOpts)
+    return ssxResolveEns(this.provider, address, resolveEnsOpts);
   };
 
   /**
@@ -360,20 +381,22 @@ export class SSXServer {
    */
   public signOut = async <T>(
     sessionKey: any,
-    deleteOpts?: Record<string, any>,
+    deleteOpts?: Record<string, any>
   ): Promise<T> => {
     return await this.session.delete<T>(sessionKey, deleteOpts);
   };
 
-
   /**
-   * Returns the SSXSessionData if a the session still exists and is valid. 
+   * Returns the SSXSessionData if a the session still exists and is valid.
    * @param sessionKey - Key used to index sessions.
-   * @param getSSXDataFromSession - Function that will parse the resolved value from 
+   * @param getSSXDataFromSession - Function that will parse the resolved value from
    * session into SSXSessionData if the a custom session structure is being used.
    * @returns SSXSessionData.
    */
-  public me = async (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => {
+  public me = async (
+    sessionKey: any,
+    getSSXDataFromSession?: (session: any) => SSXSessionData
+  ) => {
     const dbResult = await this.session.retrieve(sessionKey);
     if (!dbResult) {
       throw new Error('Unable to retrieve session.');
@@ -398,19 +421,18 @@ export class SSXServer {
     await siweMessage.verify(
       { signature: session.signature },
       {
-        verificationFallback: this._config.daoLogin ? SiweGnosisVerify : undefined,
+        verificationFallback: this._config.daoLogin
+          ? SiweGnosisVerify
+          : undefined,
         provider: this.provider,
-      },
+      }
     );
     return session;
-  }
+  };
 }
 
-export * from "@spruceid/ssx-core/dist/types";
-export {
-  SSXLogFields,
-  SSXEventLogTypes
-};
+export * from '@spruceid/ssx-core/dist/types';
+export { SSXLogFields, SSXEventLogTypes };
 export {
   SSXSessionCRUDConfig,
   SSXSessionData,
@@ -420,5 +442,5 @@ export {
   SSXServerConfig as SSXConfig,
   SSXServerProviders,
   /** @deprecated use SSXServerProviders field instead */
-  SSXServerProviders as SSXProviders
+  SSXServerProviders as SSXProviders,
 } from './types';

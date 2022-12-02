@@ -1,8 +1,5 @@
 import { ethers } from 'ethers';
-import {
-  initialized,
-  ssxSession,
-} from '@spruceid/ssx-sdk-wasm';
+import { initialized, ssxSession } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
 import { generateNonce } from 'siwe';
@@ -11,7 +8,7 @@ import {
   SSXClientConfig,
   SSXEnsResolveOptions,
   ISSXConnected,
-  SSXExtension
+  SSXExtension,
 } from '@spruceid/ssx-core';
 
 /** Initializer for an SSXClientSession. */
@@ -19,15 +16,15 @@ export class SSXInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
-  constructor(private config?: SSXClientConfig) { }
+  constructor(private config?: SSXClientConfig) {}
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
     this.extensions.push(extension);
   }
 
-  /** 
-   * Connect to the signing account using the configured provider. 
+  /**
+   * Connect to the signing account using the configured provider.
    * @returns SSXConnected instance.
    */
   async connect(): Promise<SSXConnected> {
@@ -37,7 +34,9 @@ export class SSXInit {
     // eslint-disable-next-line no-underscore-dangle
     if (!this.config.providers.web3.driver?._isProvider) {
       try {
-        provider = new ethers.providers.Web3Provider(this.config.providers.web3.driver);
+        provider = new ethers.providers.Web3Provider(
+          this.config.providers.web3.driver
+        );
       } catch (err) {
         // Provider creation error
         console.error(err);
@@ -47,11 +46,15 @@ export class SSXInit {
       provider = this.config.providers.web3.driver;
     }
 
-    if (!this.config.providers.web3?.driver?.bridge?.includes('walletconnect')) {
+    if (
+      !this.config.providers.web3?.driver?.bridge?.includes('walletconnect')
+    ) {
       const connectedAccounts = await provider.listAccounts();
       if (connectedAccounts.length === 0) {
         try {
-          await provider.send('wallet_requestPermissions', [{ eth_accounts: {} }]);
+          await provider.send('wallet_requestPermissions', [
+            { eth_accounts: {} },
+          ]);
         } catch (err) {
           // Permission rejected error
           console.error(err);
@@ -62,8 +65,9 @@ export class SSXInit {
 
     let builder;
     try {
-      builder = await initialized
-        .then(() => new ssxSession.SSXSessionBuilder());
+      builder = await initialized.then(
+        () => new ssxSession.SSXSessionBuilder()
+      );
     } catch (err) {
       // SSX wasm related error
       console.error(err);
@@ -76,14 +80,15 @@ export class SSXInit {
 
 /** An intermediate SSX state: connected, but not signed-in. */
 export class SSXConnected implements ISSXConnected {
-  /** 
+  /**
    * Promise that is initialized on construction of this class to run the "afterConnect" methods
    * of the extensions.
    */
   public afterConnectHooksPromise: Promise<void>;
 
   /** Verifies if extension is enabled. */
-  public isExtensionEnabled = (namespace: string) => this.extensions.filter((e) => e.namespace === namespace).length === 1;
+  public isExtensionEnabled = (namespace: string) =>
+    this.extensions.filter(e => e.namespace === namespace).length === 1;
 
   /** Axios instance. */
   public api?: AxiosInstance;
@@ -96,7 +101,7 @@ export class SSXConnected implements ISSXConnected {
     /** Enabled extensions. */
     public extensions: SSXExtension[],
     /** EthersJS provider. */
-    public provider: ethers.providers.Web3Provider,
+    public provider: ethers.providers.Web3Provider
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();
     if (this.config.providers?.server?.host) {
@@ -131,15 +136,15 @@ export class SSXConnected implements ISSXConnected {
           this.builder.addTargetedActions(
             extension.namespace,
             target,
-            targetedActions[target],
+            targetedActions[target]
           );
         }
       }
     }
   }
 
-  /** 
-   * Applies the "afterSignIn" methods of the extensions. 
+  /**
+   * Applies the "afterSignIn" methods of the extensions.
    * @param session - SSXClientSession object.
    */
   public async afterSignIn(session: SSXClientSession): Promise<void> {
@@ -150,8 +155,8 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
-  /** 
-   * Requests nonce from server. 
+  /**
+   * Requests nonce from server.
    * @param params - Request params.
    * @returns Promise with nonce.
    */
@@ -171,29 +176,33 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
-  /** 
-   * Requests sign in from server and returns session. 
+  /**
+   * Requests sign in from server and returns session.
    * @param session - SSXClientSession object.
    * @returns Promise with server session data.
    */
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
     if (this.api) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
-      if (typeof this.config.resolveEns === 'object' && this.config.resolveEns.resolveOnServer) {
+      if (
+        typeof this.config.resolveEns === 'object' &&
+        this.config.resolveEns.resolveOnServer
+      ) {
         resolveEns = this.config.resolveEns.resolve;
       }
       try {
         // @TODO(w4ll3): figure out how to send a custom sessionKey
-        return this.api.post('/ssx-login', {
-          signature: session.signature,
-          siwe: session.siwe,
-          address: session.address,
-          walletAddress: session.walletAddress,
-          chainId: session.chainId,
-          daoLogin: this.isExtensionEnabled('delegationRegistry'),
-          resolveEns
-        })
-          .then((response) => response.data);
+        return this.api
+          .post('/ssx-login', {
+            signature: session.signature,
+            siwe: session.siwe,
+            address: session.address,
+            walletAddress: session.walletAddress,
+            chainId: session.chainId,
+            daoLogin: this.isExtensionEnabled('delegationRegistry'),
+            resolveEns,
+          })
+          .then(response => response.data);
       } catch (error) {
         console.error(error);
         throw error;
@@ -201,7 +210,7 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 
-  /** 
+  /**
    * Requests the user to sign in.
    * Generates the SIWE message for this session, requests the configured
    * Signer to sign the message, calls the "afterSignIn" methods of the
@@ -254,7 +263,7 @@ export class SSXConnected implements ISSXConnected {
     return session;
   }
 
-  /** 
+  /**
    * Requests the user to sign out.
    * @param session - SSXClientSession object.
    */

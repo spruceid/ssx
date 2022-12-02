@@ -1,12 +1,12 @@
-const { generateTestingUtils } = require("eth-testing");
-const { TextEncoder: TE, TextDecoder: TD } = require("util");
+const { generateTestingUtils } = require('eth-testing');
+const { TextEncoder: TE, TextDecoder: TD } = require('util');
 
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
-const { SSX } = require("../src");
+const { SSX } = require('../src');
 
-const testingUtils = generateTestingUtils({ providerType: "MetaMask" });
+const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
 beforeAll(() => {
   // Manually inject the mocked provider in the window as MetaMask does
@@ -17,13 +17,13 @@ afterEach(() => {
   testingUtils.clearAllMocks();
 });
 
-test("Instantiate SSX with window.ethereum", () => {
+test('Instantiate SSX with window.ethereum', () => {
   expect(() => {
     const ssx = new SSX();
   }).not.toThrowError();
 });
 
-test("Instantiate SSX with providers.web3.driver", () => {
+test('Instantiate SSX with providers.web3.driver', () => {
   expect(() => {
     const config = {
       providers: {
