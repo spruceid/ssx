@@ -5,6 +5,7 @@
   },
   "extends": [
     "eslint:recommended",
+    "eslint-config-prettier",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
   ],
