@@ -1,6 +1,6 @@
 {
   "name": "ssx",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "repository": "ssh://git@github.com:spruceid/ssx.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
@@ -17,8 +17,7 @@
     "postinstall": "npm run clean && npm run build",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "ci": "npm install && npm test",
-    "test": "lerna run test",
+    "test": "jest --config ./.jest.config.ts",
     "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "documentation": "lerna run doc && yarn documentation:reference",
@@ -40,7 +39,14 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.25.0",
+    "@types/jest": "^29.2.3",
     "concurrently": "^7.3.0",
+    "eth-testing": "^1.1.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.3.0",
+    "ts-node": "^10.8.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",

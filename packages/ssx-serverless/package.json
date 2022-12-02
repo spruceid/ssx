@@ -17,6 +17,7 @@
     "build": "tsc",
     "doc": "yarn doc:extractor && yarn doc:documenter",
     "doc:extractor": "api-extractor run",
+    "test": "jest",
     "doc:documenter": "api-documenter generate -i temp -o ../../documentation/reference/ssx-serverless"
   },
   "engines": {
@@ -37,6 +38,7 @@
     "@microsoft/api-extractor": "^7.29.2",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
+    "@types/node": "^18.0.0",
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.6.2",

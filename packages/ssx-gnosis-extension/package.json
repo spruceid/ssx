@@ -13,7 +13,8 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test": "jest"
   },
   "dependencies": {
     "@spruceid/ssx-core": "*"
