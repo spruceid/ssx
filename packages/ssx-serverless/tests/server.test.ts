@@ -61,7 +61,7 @@ test('Should call resolveEns successfuly', async () => {
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
   await expect(server.resolveEns('0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')).resolves.not.toThrow();
-});
+}, 20000);
 
 test('Should call getNonce without opts successfuly', async () => {
   const server = new SSXServer(
