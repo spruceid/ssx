@@ -222,7 +222,7 @@ export class SSXServer {
    * @returns Object containing information about the session.
    */
   public signIn = async (
-    siwe: SiweMessage | string,
+    siwe: Partial<SiweMessage> | string,
     signature: string,
     /* Session key to be used in session lookup. */
     sessionKey: any,
