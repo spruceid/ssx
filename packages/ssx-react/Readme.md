@@ -21,7 +21,7 @@ import { createClient, WagmiConfig } from 'wagmi';
 import { SSXProvider } from '@spruceid/ssx-react';
 
 const ssxConfig = {
- siweConfig: {
+  siweConfig: {
     statement: "Sign into my example dapp.",
   },
   providers: {
