@@ -3,7 +3,7 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules/", "dist/**/*"],
   "compilerOptions": {
-    "target": "ES5" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "ES2020" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "lib": [
       "es2019",
       "ES7",
