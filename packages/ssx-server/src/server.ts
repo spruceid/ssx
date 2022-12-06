@@ -9,7 +9,7 @@ import {
   SSXEnsResolveOptions,
   ssxLog,
   ssxResolveEns,
-  getProvider
+  getProvider,
 } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -33,7 +33,7 @@ export class SSXServer extends EventEmitter {
   public session: RequestHandler;
 
   constructor(config: SSXServerConfig = {}) {
-    super()
+    super();
     this._setDefaults();
 
     Object.assign(this._config, {
@@ -60,7 +60,7 @@ export class SSXServer extends EventEmitter {
     }
   }
 
-  /** 
+  /**
    * Sets default values for optional configurations
    */
   private _setDefaults = (): void => {
@@ -69,8 +69,8 @@ export class SSXServer extends EventEmitter {
     this._config.useSecureCookies = process.env.NODE_ENV === 'production';
   };
 
-  /** 
-   * Registers a new event to the API 
+  /**
+   * Registers a new event to the API
    * @param data - SSXLogFields object.
    * @returns True (success) or false (fail).
    */
@@ -97,7 +97,7 @@ export class SSXServer extends EventEmitter {
    * @returns Request data with SSX Server Session.
    */
   public login = async (
-    siwe: SiweMessage | string,
+    siwe: Partial<SiweMessage> | string,
     signature: string,
     daoLogin: boolean,
     resolveEns: boolean | SSXEnsResolveOptions,
@@ -107,21 +107,17 @@ export class SSXServer extends EventEmitter {
     error: SiweError;
     session: Partial<SessionData>;
   }> => {
-
     const siweMessage = new SiweMessage(siwe);
 
-    let siweMessageVerifyPromise: any = siweMessage.verify(
-      { signature, nonce },
-      {
-        verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
-        provider: this.provider,
-      },
-    )
-      .then(data => data)
-      .catch(error => {
-        console.error(error);
-        throw error;
-      });
+    let siweMessageVerifyPromise: any = siweMessage
+      .verify(
+        { signature, nonce },
+        {
+          verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
+          provider: this.provider,
+        },
+      )
+      .then((data) => data);
 
     let ens: SSXEnsData = {};
     let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
@@ -133,13 +129,15 @@ export class SSXServer extends EventEmitter {
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
     try {
-      siweMessageVerifyPromise = await Promise.all(promises)
-        .then(([siweMessageVerify, ensData]) => {
-          ens = ensData
+      siweMessageVerifyPromise = await Promise.all(promises).then(
+        ([siweMessageVerify, ensData]) => {
+          ens = ensData;
           return siweMessageVerify;
-        });
+        },
+      );
     } catch (error) {
       console.error(error);
+      throw error;
     }
 
     const { success, error, data } = siweMessageVerifyPromise;
@@ -155,6 +153,7 @@ export class SSXServer extends EventEmitter {
       );
     } catch (error) {
       console.error(error);
+      throw error;
     }
 
     const event = {
@@ -183,7 +182,7 @@ export class SSXServer extends EventEmitter {
   };
 
   /**
-   * ENS data supported by SSX. 
+   * ENS data supported by SSX.
    * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
@@ -192,9 +191,9 @@ export class SSXServer extends EventEmitter {
     /* User Address */
     address: string,
     /* ENS resolution settings */
-    resolveEnsOpts?: SSXEnsResolveOptions
+    resolveEnsOpts?: SSXEnsResolveOptions,
   ): Promise<SSXEnsData> => {
-    return ssxResolveEns(this.provider, address, resolveEnsOpts)
+    return ssxResolveEns(this.provider, address, resolveEnsOpts);
   };
 
   /**
