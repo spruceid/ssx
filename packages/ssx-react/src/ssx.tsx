@@ -1,5 +1,11 @@
-import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
-import { SSX, SSXClientConfig } from "@spruceid/ssx";
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
+import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
 
 /** Interface for SSX Web3 Provider. */
@@ -70,7 +76,7 @@ export const SSXProvider = ({
             driver: usingWagmi ? provider?.provider : provider,
             ...ssxConfig?.providers?.web3,
           },
-        }
+        },
       };
       const ssxInstance = new SSX(modifiedSSXConfig);
       setSSX(ssxInstance);
@@ -91,7 +97,7 @@ export const SSXProvider = ({
       {children}
     </SSXContext.Provider>
   );
-}
+};
 
 /** Hook for accessing SSX instance and state. */
 export const useSSX = (): SSXContextInterface => {
