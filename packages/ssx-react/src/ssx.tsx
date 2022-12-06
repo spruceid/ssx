@@ -7,7 +7,7 @@ export interface SSXWeb3Provider {
   /** web3 Provider. */
   provider: any;
   /** web3 Provider Loaded. */
-  providerLoaded: boolean;
+  providerLoaded?: boolean;
 }
 
 /** Props for SSX Provider. */
@@ -44,6 +44,7 @@ export const SSXProvider = ({
 }: SSXProviderProps) => {
   let provider, providerLoaded;
   let usingWagmi = false;
+
   if (web3Provider) {
     provider = web3Provider.provider;
     providerLoaded = web3Provider.providerLoaded || true;
