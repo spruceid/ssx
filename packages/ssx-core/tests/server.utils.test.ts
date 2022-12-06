@@ -1,12 +1,13 @@
-import axios from 'axios';
 import {
   SSXEventLogTypes,
   ssxLog,
 } from '../src';
 
-test('Should call ssxLog successfully', async () => {
+const mockAxios: any = jest.genMockFromModule('axios');
+mockAxios.create = jest.fn(() => mockAxios);
 
-  const api = axios.create({
+test('Should call ssxLog successfully', async () => {
+  const api = mockAxios.create({
     baseURL: 'https://api.ssx.id',
     headers: {
       Authorization: `Bearer `,
@@ -27,8 +28,7 @@ test('Should call ssxLog successfully', async () => {
 });
 
 test('Should fail calling ssxLog', async () => {
-
-  const api = axios.create({
+  const api = mockAxios.create({
     baseURL: 'https://api.ssx.id',
     headers: {
       Authorization: `Bearer `,
