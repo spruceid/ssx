@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { chain, configureChains, createClient, WagmiConfig, useSigner } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
@@ -49,13 +49,34 @@ const ssxConfig = {
   },
 };
 
+function SSXWithWeb3Provider({ children }: any) {
+  const { data: provider, isSuccess: providerLoaded } = (typeof window !== 'undefined' &&
+    useSigner()) || { data: undefined, isSuccess: false };
+
+  const web3Provider = {
+    provider: provider?.provider,
+    providerLoaded,
+  };
+
+  return (
+    <SSXProvider ssxConfig={ssxConfig} web3Provider={web3Provider}> 
+      {children}
+    </SSXProvider>
+  );
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <SSXProvider ssxConfig={ssxConfig}> 
+        <SSXWithWeb3Provider >
           <Component {...pageProps} />
-        </SSXProvider>
+        </SSXWithWeb3Provider>
+
+        {/* SSX Provider with default Wagmi usage */}
+        {/* <SSXProvider ssxConfig={ssxConfig}> 
+          <Component {...pageProps} />
+        </SSXProvider> */}
       </RainbowKitProvider>
     </WagmiConfig>
   );
