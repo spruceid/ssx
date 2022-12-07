@@ -159,7 +159,7 @@ export class SSXConnected implements ISSXConnected {
     if (this.api) {
       let nonce;
       try {
-        nonce = (await this.api.get('/ssx-nonce', { params })).data;
+        nonce = (await this.api.get(this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce', { params })).data;
       } catch (error) {
         console.error(error);
         throw error;
@@ -184,7 +184,7 @@ export class SSXConnected implements ISSXConnected {
       }
       try {
         // @TODO(w4ll3): figure out how to send a custom sessionKey
-        return this.api.post('/ssx-login', {
+        return this.api.post(this.config.providers?.server?.routes?.login ?? '/ssx-login', {
           signature: session.signature,
           siwe: session.siwe,
           address: session.address,
@@ -261,7 +261,7 @@ export class SSXConnected implements ISSXConnected {
   async signOut(session: SSXClientSession): Promise<void> {
     if (this.api) {
       try {
-        await this.api.post('/ssx-logout', { ...session });
+        await this.api.post(this.config.providers?.server?.routes?.logout ?? '/ssx-logout', { ...session });
       } catch (error) {
         console.error(error);
         throw error;

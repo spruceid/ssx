@@ -36,6 +36,23 @@ test("Instantiate SSX with providers.web3.driver", () => {
   }).not.toThrowError();
 });
 
+test('Should override paths successfully', async () => {
+  expect(() => {
+    const ssx = new SSX({
+      providers: {
+        server: {
+          host: 'http://localhost:3001',
+          endpoints: {
+            nonce: '/ssx-custom-nonce',
+            login: '/ssx-custom-login',
+            logout: '/ssx-custom-logout',
+          }
+        }
+      }
+    });
+  }).not.toThrowError();
+});
+
 // test('Connect to wallet', async () => {
 //   // TODO: expose wallet connection interface
 // });
