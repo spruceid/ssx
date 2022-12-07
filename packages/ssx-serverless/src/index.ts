@@ -278,8 +278,8 @@ export class SSXServer {
         throw error;
       });
 
-    let ens: ISSXEnsData = {};
-    let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+    const ens: ISSXEnsData = {};
+    const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
 
     if (signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar) {
       const resolveEnsOpts = {

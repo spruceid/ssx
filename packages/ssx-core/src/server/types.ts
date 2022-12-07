@@ -2,7 +2,6 @@ import { CookieOptions } from 'express';
 import { SessionOptions, Store } from 'express-session';
 import { SSXRPCProvider } from '../types';
 
-
 /** Configuration interface for ssx-server */
 export interface SSXServerConfig {
   /** A key used for signing cookies coming from the server. Providing this key enables signed cookies. */

@@ -25,7 +25,6 @@ const SIWE_MESSAGE = {
   expirationTime: '2100-01-07T14:31:43.952Z',
 };
 
-
 const SIGNATURE =
   '0xdc35c7f8ba2720df052e0092556456127f00f7707eaa8e3bbff7e56774e7f2e05a093cfc9e02964c33d86e8e066e221b7d153d27e5a2e97ccd5ca7d3f2ce06cb1b';
 
@@ -51,7 +50,7 @@ test('Should call ssxLog successfuly', async () => {
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
   await expect(
-    server.log({ content: '', type: SSXEventLogTypes.LOGIN, userId: '' }),
+    server.log({ content: '', type: SSXEventLogTypes.LOGIN, userId: '' })
   ).resolves.not.toThrow();
 });
 
@@ -60,7 +59,9 @@ test('Should call resolveEns successfuly', async () => {
     {},
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
-  await expect(server.resolveEns('0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')).resolves.not.toThrow();
+  await expect(
+    server.resolveEns('0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
+  ).resolves.not.toThrow();
 }, 20000);
 
 test('Should call getNonce without opts successfuly', async () => {
@@ -68,9 +69,7 @@ test('Should call getNonce without opts successfuly', async () => {
     {},
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
-  await expect(
-    server.getNonce(),
-  ).resolves.not.toThrow();
+  await expect(server.getNonce()).resolves.not.toThrow();
 });
 
 test('Should call create getNonce successfuly', async () => {
@@ -80,8 +79,8 @@ test('Should call create getNonce successfuly', async () => {
   );
   await expect(
     server.getNonce({
-      sessionKey: '...'
-    }),
+      sessionKey: '...',
+    })
   ).resolves.not.toThrow();
 });
 
@@ -90,9 +89,7 @@ test('Should call update getNonce successfuly', async () => {
     {},
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
-  await expect(
-    server.getNonce({}),
-  ).resolves.not.toThrow();
+  await expect(server.getNonce({})).resolves.not.toThrow();
 });
 
 test('Should call signIn successfuly', async () => {
@@ -101,14 +98,9 @@ test('Should call signIn successfuly', async () => {
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
   await expect(
-    server.signIn(
-      SIWE_MESSAGE,
-      SIGNATURE,
-      '...',
-      {
-        resolveEnsAvatar: true
-      }
-    ),
+    server.signIn(SIWE_MESSAGE, SIGNATURE, '...', {
+      resolveEnsAvatar: true,
+    })
   ).resolves.not.toThrow();
 }, 20000);
 
@@ -130,15 +122,12 @@ test('Should call me successfuly', async () => {
           siweMessage: SIWE_MESSAGE,
           signature: SIGNATURE,
           daoLogin: false,
-          ens: {}
+          ens: {},
         } as T;
       },
       update: _update,
-      delete: _delete
+      delete: _delete,
     }
   );
-  await expect(server.me(
-    '...',
-
-  )).resolves.not.toThrow();
+  await expect(server.me('...')).resolves.not.toThrow();
 });

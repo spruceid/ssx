@@ -8,15 +8,15 @@ const config = require('rc')('ssx', {
     rpc: {
       service: 'infura',
       network: 'homestead',
-      apiKey: ''
+      apiKey: '',
     },
     metrics: {
       service: 'ssx',
-      apiKey: ''
+      apiKey: '',
     },
   },
   listenPort: '8443',
-  accessControlAllowOrigin: 'http://localhost:3000'
+  accessControlAllowOrigin: 'http://localhost:3000',
 });
 
 const { SSXServer } = require('../dist/server');
@@ -26,10 +26,11 @@ const expressApp = require('express')();
 
 ssxServer.on('ssx-login', console.log);
 
-expressApp.use(require('cors')({
-  origin: config.accessControlAllowOrigin,
-  credentials: true
-}));
+expressApp.use(
+  require('cors')({
+    origin: config.accessControlAllowOrigin,
+    credentials: true,
+  }),
+);
 expressApp.use(SSXExpressMiddleware(ssxServer));
 expressApp.listen(parseInt(config.listenPort));
-

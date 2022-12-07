@@ -1,7 +1,4 @@
-import {
-  SSXEventLogTypes,
-  ssxLog,
-} from '../src';
+import { SSXEventLogTypes, ssxLog } from '../src';
 
 const axios: any = jest.genMockFromModule('axios');
 
@@ -17,14 +14,11 @@ test('Should call ssxLog successfully', async () => {
   });
 
   await expect(
-    ssxLog(
-      api,
-      '',
-      {
-        content: '',
-        type: SSXEventLogTypes.LOGIN,
-        userId: ''
-      }),
+    ssxLog(api, '', {
+      content: '',
+      type: SSXEventLogTypes.LOGIN,
+      userId: '',
+    })
   ).resolves.not.toThrow();
 });
 
@@ -38,13 +32,10 @@ test('Should fail calling ssxLog', async () => {
   });
 
   await expect(
-    ssxLog(
-      api,
-      '...',
-      {
-        content: '',
-        type: SSXEventLogTypes.LOGIN,
-        userId: ''
-      }),
+    ssxLog(api, '...', {
+      content: '',
+      type: SSXEventLogTypes.LOGIN,
+      userId: '',
+    })
   ).rejects.toThrow();
 });
