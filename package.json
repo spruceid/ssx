@@ -32,7 +32,7 @@
     "server": "yarn workspace @spruceid/ssx-server",
     "serverless": "yarn workspace @spruceid/ssx-serverless",
     "test-dapp": "yarn workspace ssx-test-dapp",
-    "react-dapp": "yarn workspace ssx-test-react-dapp",
+    "react-dapp": "yarn workspace ssx-test-wagmi-react-dapp",
     "express-api": "yarn workspace ssx-test-express-api",
     "http-api": "yarn workspace ssx-test-http-api",
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api"

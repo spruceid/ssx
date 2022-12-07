@@ -1,8 +1,5 @@
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
-import {
-  SSXConnected,
-  SSXInit,
-} from './core';
+import { SSXConnected, SSXInit } from './core';
 import {
   SSXClientConfig,
   SSXClientSession,
@@ -13,7 +10,7 @@ import {
 
 declare global {
   interface Window {
-    ethereum?: any
+    ethereum?: any;
   }
 }
 
@@ -43,7 +40,11 @@ export class SSX {
   public static RPCProviders = SSXRPCProviders;
 
   constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
-    this.init = new SSXInit({ ...this.config, providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers } });
+    this.init = new SSXInit({
+      ...this.config,
+      providers: { ...SSX_DEFAULT_CONFIG.providers,
+...this.config?.providers },
+    });
 
     if (this.config.enableDaoLogin) {
       const gnosis = new GnosisDelegation();
@@ -51,8 +52,8 @@ export class SSX {
     }
   }
 
-  /** 
-   * Request the user to sign in, and start the session. 
+  /**
+   * Request the user to sign in, and start the session.
    * @returns Object containing information about the session
    */
   async signIn(): Promise<SSXClientSession> {
@@ -75,14 +76,17 @@ export class SSX {
       if (this.config.resolveEns === true) {
         this.session.ens = await this.resolveEns(this.session.address);
       } else if (!this.config.resolveEns.resolveOnServer) {
-        this.session.ens = await this.resolveEns(this.session.address, this.config.resolveEns.resolve);
+        this.session.ens = await this.resolveEns(
+          this.session.address,
+          this.config.resolveEns.resolve
+        );
       }
     }
     return this.session;
   }
 
   /**
-   * ENS data supported by SSX. 
+   * ENS data supported by SSX.
    * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
@@ -92,33 +96,32 @@ export class SSX {
     address: string,
     resolveEnsOpts: SSXEnsResolveOptions = {
       domain: true,
-      avatar: true
+      avatar: true,
     }
   ): Promise<SSXEnsData> {
     if (!address) {
       throw new Error('Missing address.');
     }
-    let ens: SSXEnsData = {};
-    let promises: Array<Promise<any>> = [];
+    const ens: SSXEnsData = {};
+    const promises: Array<Promise<any>> = [];
     if (resolveEnsOpts?.domain) {
-      promises.push(this.connection.provider.lookupAddress(address))
+      promises.push(this.connection.provider.lookupAddress(address));
     }
     if (resolveEnsOpts?.avatar) {
-      promises.push(this.connection.provider.getAvatar(address))
+      promises.push(this.connection.provider.getAvatar(address));
     }
 
-    await Promise.all(promises)
-      .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
-          [domain, avatarUrl] = [undefined, domain];
-        }
-        if (domain) {
-          ens['domain'] = domain;
-        }
-        if (avatarUrl) {
-          ens['avatarUrl'] = avatarUrl;
-        }
-      });
+    await Promise.all(promises).then(([domain, avatarUrl]) => {
+      if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
+        [domain, avatarUrl] = [undefined, domain];
+      }
+      if (domain) {
+        ens['domain'] = domain;
+      }
+      if (avatarUrl) {
+        ens['avatarUrl'] = avatarUrl;
+      }
+    });
 
     return ens;
   }
@@ -138,14 +141,14 @@ export class SSX {
     this.connection = null;
   }
 
-  /** 
-   * Gets the address that is connected and signed in. 
+  /**
+   * Gets the address that is connected and signed in.
    * @returns Address.
    */
   address: () => string | undefined = () => this.session?.address;
 
-  /** 
-   * Get the chainId that the address is connected and signed in on. 
+  /**
+   * Get the chainId that the address is connected and signed in on.
    * @returns chainId.
    */
   chainId: () => number | undefined = () => this.session?.chainId;

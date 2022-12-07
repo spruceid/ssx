@@ -47,7 +47,9 @@ const getAllPackageJSON = async () => {
 };
 
 const updatePackageVersion = (packages, usePublishedVersion = true) => {
-   console.log(`Using ${usePublishedVersion ? 'remote': 'local'} package versions`);
+  console.log(
+    `Using ${usePublishedVersion ? 'remote' : 'local'} package versions`
+  );
   const packageNames = Object.keys(packages);
   for (const package in packages) {
     // in each package, check for package names
