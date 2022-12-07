@@ -10,3 +10,4 @@ export {
     /** @deprecated use SSXClientSession field instead */
     SSXClientSession as SSXSession,
 } from '@spruceid/ssx-core';
+export { SiweMessage } from 'siwe';

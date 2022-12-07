@@ -8,3 +8,4 @@ export {
     /** @deprecated use SSXServerProviders field instead */
     SSXServerProviders as SSXProviders
 } from '@spruceid/ssx-core';
+export { SiweMessage } from 'siwe';
