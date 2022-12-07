@@ -97,3 +97,15 @@ test('Should log out successfully', async () => {
 
   expect(res.statusCode).toEqual(204);
 });
+
+
+test('Should override paths successfully', async () => {
+  const server = new SSXServer();
+  expect(() => {
+    SSXExpressMiddleware(server, {
+      nonce: '/ssx-custom-nonce',
+      login: '/ssx-custom-login',
+      logout: '/ssx-custom-logout',
+    })
+  }).not.toThrowError();
+});
