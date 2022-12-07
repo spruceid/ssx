@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-gnosis-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A SSX extension that enables Gnosis Safe",
   "main": "dist/index.js",
   "repository": {

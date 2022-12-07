@@ -1,60 +1,8 @@
-# @spruceid/ssx-server
+# @spruceid/ssx-core
 
-## 1.1.0
+## 2.0.0
 
-### Minor Changes
-
-- 83c314c: Enable custom paths for endpoints on client and server.
-
-  ## @spruceid/ssx-core changes:
-
-  - Creates and exports `SSXServerRoutes` interface
-  - Adds `routes?: SSXServerRoutes` to `SSXClientConfig.providers.server`.
-
-  ## @spruceid/ssx changes:
-
-  Due to the change in `SSXClientConfig`, it now accepts the server's routes configuration:
-
-  ```
-  const ssx = new SSX({
-    providers: {
-      server: {
-          host: 'http://localhost:3001',
-          routes: {
-              nonce: '/ssx-custom-nonce',
-              login: '/ssx-custom-login',
-              logout: '/ssx-custom-logout',
-          }
-      }
-    }
-  });
-  ```
-
-  This is an optional configuration and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
-
-  ## @spruceid/ssx-server changes:
-
-  This now accepts the routes configuration when instantiating the middlewares as follows:
-
-  ```
-  const expressMiddleware = SSXExpressMiddleware(ssx, {
-      nonce: '/ssx-custom-nonce',
-      login: '/ssx-custom-login',
-      logout: '/ssx-custom-logout',
-    });
-
-  // or
-
-  const httpMiddleware = SSXHttpMiddleware(ssx, {
-      nonce: '/ssx-custom-nonce',
-      login: '/ssx-custom-login',
-      logout: '/ssx-custom-logout',
-    });
-  ```
-
-  The second parameter with the configuration object is optional and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
-
-### Patch Changes
+### Major Changes
 
 - c989838: Refactor code to avoid duplication and improve performance.
 
@@ -113,26 +61,54 @@
   - Changes axios version to `"^0.27.2"`;
   - Updates `examples/ssx-test-serverless-dynamodb-api` to resolve ENS accorddly with the request params and fixes the `/ssx-login` JSON response.
 
-- c66f308: Include and export `SiweMessage` from the `siwe` dependency.
-- Updated dependencies [c989838]
-- Updated dependencies [83c314c]
-  - @spruceid/ssx-core@2.0.0
-  - @spruceid/ssx-gnosis-extension@1.0.1
-
-## 1.0.0
-
-### Major Changes
-
-- f317c82: Public release of the SSX SDK
-
 ### Minor Changes
 
-- 1072382: Add ENS resolution feature to the client and server to allow the developer to choose where to resolve it.
-- Adds `ssx.resolveEns(...)` method to resolve ENS data;
-- Express and HTTP middlewares `/ssx-login` responses were updated. These requests were returning a session object with a session property. Now it returns a session object without the session property, but keeping all information;
-- Updates `ssx-test-express-api` and `ssx-test-http-api` to show how to use this feature.
+- 83c314c: Enable custom paths for endpoints on client and server.
 
-### Patch Changes
+  ## @spruceid/ssx-core changes:
 
-- Updated dependencies [f317c82]
-  - @spruceid/ssx-gnosis-extension@1.0.0
+  - Creates and exports `SSXServerRoutes` interface
+  - Adds `routes?: SSXServerRoutes` to `SSXClientConfig.providers.server`.
+
+  ## @spruceid/ssx changes:
+
+  Due to the change in `SSXClientConfig`, it now accepts the server's routes configuration:
+
+  ```
+  const ssx = new SSX({
+    providers: {
+      server: {
+          host: 'http://localhost:3001',
+          routes: {
+              nonce: '/ssx-custom-nonce',
+              login: '/ssx-custom-login',
+              logout: '/ssx-custom-logout',
+          }
+      }
+    }
+  });
+  ```
+
+  This is an optional configuration and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
+
+  ## @spruceid/ssx-server changes:
+
+  This now accepts the routes configuration when instantiating the middlewares as follows:
+
+  ```
+  const expressMiddleware = SSXExpressMiddleware(ssx, {
+      nonce: '/ssx-custom-nonce',
+      login: '/ssx-custom-login',
+      logout: '/ssx-custom-logout',
+    });
+
+  // or
+
+  const httpMiddleware = SSXHttpMiddleware(ssx, {
+      nonce: '/ssx-custom-nonce',
+      login: '/ssx-custom-login',
+      logout: '/ssx-custom-logout',
+    });
+  ```
+
+  The second parameter with the configuration object is optional and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
