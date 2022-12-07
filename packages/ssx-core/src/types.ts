@@ -1,6 +1,16 @@
 import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 
+/** Server endpoints configuration. */
+export interface SSXServerEndpoints {
+    /** Get nonce endpoint path. /ssx-nonce as default. */
+    nonce?: string;
+    /** Post login endpoint path. /ssx-login as default. */
+    login?: string;
+    /** Post logout endpoint path. /ssx-logout as default. */
+    logout?: string;
+}
+
 /** Supported provider types. */
 export type SSXRPCProvider =
   | SSXGenericProvider

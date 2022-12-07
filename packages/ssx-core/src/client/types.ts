@@ -2,7 +2,7 @@
 import { ssxSession } from '@spruceid/ssx-sdk-wasm';
 import { AxiosInstance } from 'axios';
 import { ethers } from 'ethers';
-import { SSXEnsData, SSXEnsResolveOptions, SSXRPCProvider } from '../types';
+import { SSXEnsData, SSXEnsResolveOptions, SSXRPCProvider, SSXServerEndpoints } from '../types';
 
 /** Core config for SSX. */
 export interface SSXClientConfig {
@@ -39,6 +39,8 @@ export type SSXServerHost = string;
 /** The ssx-powered server configuration settings */
 export type SSXProviderServer = {
     host: SSXServerHost;
+    /** Optional configuration for the server's endpoints. */
+    endpoints?: SSXServerEndpoints;
 };
 
 /** Web3 provider configuration settings */
