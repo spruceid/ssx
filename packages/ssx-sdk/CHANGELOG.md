@@ -1,5 +1,46 @@
 # @spruceid/ssx
 
+## 1.1.0
+
+### Minor Changes
+
+- 83c314c: Enable custom paths for endpoints on client and server.
+  Due to the change in `SSXClientConfig`, it now accepts the server's routes configuration:
+
+  ```
+  const ssx = new SSX({
+    providers: {
+      server: {
+          host: 'http://localhost:3001',
+          routes: {
+              nonce: '/ssx-custom-nonce',
+              login: '/ssx-custom-login',
+              logout: '/ssx-custom-logout',
+          }
+      }
+    }
+  });
+  ```
+
+  This is an optional configuration and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
+
+### Patch Changes
+
+- c989838: Refactor code to avoid duplication and improve performance.
+  - Adds `@spruceid/ssx-core` as a dependency;
+  - Removes all types and interfaces declarations. They were moved to `ssx-core`;
+  - Exports `SSXConfig` (deprecated) and `SSXClientConfig`;
+  - Exports `SSXProviders` (deprecated) and `SSXClientProviders`;
+  - Exports `SSXSession` (deprecated) and `SSXClientSession`;
+  - Removes all utils functions. They were moved to `ssx-core`;
+  - Optimizes `try/catch` blocks;
+  - Updates `examples/ssx-test-dapp` to support ENS resolution from `examples/ssx-test-serverless-dynamodb-api`.
+- c66f308: Include and export `SiweMessage` from the `siwe` dependency.
+- Updated dependencies [c989838]
+- Updated dependencies [83c314c]
+  - @spruceid/ssx-core@1.0.0
+  - @spruceid/ssx-gnosis-extension@1.1.0
+
 ## 1.0.0
 
 ### Major Changes
