@@ -81,3 +81,43 @@ test('Should log out successfully', async () => {
 
   expect(res.statusCode).toEqual(200);
 });
+
+describe('Should override all paths successfully', () => {
+  const ssx = new SSXServer({
+    signingKey: 'FAKESIGNINKEY',
+  });
+
+  const ssxMiddleware = SSXHttpMiddleware(ssx, {
+    nonce: '/ssx-custom-nonce',
+    login: '/ssx-custom-login',
+    logout: '/ssx-custom-logout',
+  });
+
+  const customApp = http.createServer(ssxMiddleware());
+  
+  test('Should get /ssx-custom-nonce successfully', async () => {
+    const res = await request(customApp)
+      .get('/ssx-custom-nonce');
+
+    expect(res.statusCode).toEqual(200);
+  });
+
+  test('Should post /ssx-custom-login fail expecting field signature', async () => {
+    const res = await request(customApp)
+      .post('/ssx-custom-login')
+      .send({
+        siwe: SIWE_MESSAGE,
+        daoLogin: false,
+        resolveEns: false
+      });
+
+    expect(res.statusCode).toEqual(422);
+  });
+
+  test('Should post /ssx-custom-logout successfully', async () => {
+    const res = await request(customApp)
+      .post('/ssx-custom-logout');
+
+    expect(res.statusCode).toEqual(200);
+  });
+});

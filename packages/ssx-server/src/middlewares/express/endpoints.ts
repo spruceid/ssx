@@ -1,8 +1,9 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServer } from '../../server';
+import { SSXServerRoutes } from '@spruceid/ssx-core';
 
-const ssxEndpoints = (ssx: SSXServer) => {
+const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRoutes) => {
   const router = express.Router();
 
   /**
@@ -14,7 +15,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.get('/ssx-nonce', function (req: Request, res: Response): void {
+  router.get(routes?.nonce ?? '/ssx-nonce', function (req: Request, res: Response): void {
     req.session.nonce = ssx.generateNonce();
     req.session.save(() => res.status(200).send(req.session.nonce));
   });
@@ -29,7 +30,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.post('/ssx-login', async function (req: Request, res: Response) {
+  router.post(routes?.login ?? '/ssx-login', async function (req: Request, res: Response) {
     if (!req.body) {
       res.status(422).json({ message: 'Expected body.' });
       return;
@@ -48,7 +49,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
     }
 
     let ssxLoginResponse;
-    
+
     try {
       ssxLoginResponse = await ssx.login(
         req.body.siwe,
@@ -60,7 +61,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
-    
+
     const { success, error, session } = ssxLoginResponse;
 
     if (!success) {
@@ -86,7 +87,7 @@ const ssxEndpoints = (ssx: SSXServer) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.post('/ssx-logout', async function (req: Request, res: Response) {
+  router.post(routes?.logout ?? '/ssx-logout', async function (req: Request, res: Response) {
     try {
       req.session.destroy(null);
     } catch (error) {
