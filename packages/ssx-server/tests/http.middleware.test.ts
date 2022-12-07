@@ -1,8 +1,5 @@
-import http from "http";
-import {
-  SSXHttpMiddleware,
-  SSXServer,
-} from '../src';
+import http from 'http';
+import { SSXHttpMiddleware, SSXServer } from '../src';
 import request from 'supertest';
 
 const SIWE_MESSAGE = {
@@ -31,53 +28,44 @@ beforeAll(() => {
 });
 
 test('Should get nonce successfully', async () => {
-  const res = await request(app)
-    .get('/ssx-nonce');
+  const res = await request(app).get('/ssx-nonce');
 
   expect(res.statusCode).toEqual(200);
 });
 
 test('Should log in fail expecting field signature', async () => {
-  const res = await request(app)
-    .post('/ssx-login')
-    .send({
-      siwe: SIWE_MESSAGE,
-      daoLogin: false,
-      resolveEns: false
-    });
+  const res = await request(app).post('/ssx-login').send({
+    siwe: SIWE_MESSAGE,
+    daoLogin: false,
+    resolveEns: false,
+  });
 
   expect(res.statusCode).toEqual(422);
 });
 
 test('Should log in fail expecting field siwe', async () => {
-  const res = await request(app)
-    .post('/ssx-login')
-    .send({
-      signature: SIGNATURE,
-      daoLogin: false,
-      resolveEns: false
-    });
+  const res = await request(app).post('/ssx-login').send({
+    signature: SIGNATURE,
+    daoLogin: false,
+    resolveEns: false,
+  });
 
   expect(res.statusCode).toEqual(422);
 });
 
 test('Should log in fail expecting field nonce in session', async () => {
-  const res = await request(app)
-    .post('/ssx-login')
-    .send({
-      siwe: SIWE_MESSAGE,
-      signature: SIGNATURE,
-      daoLogin: false,
-      resolveEns: false
-    });
+  const res = await request(app).post('/ssx-login').send({
+    siwe: SIWE_MESSAGE,
+    signature: SIGNATURE,
+    daoLogin: false,
+    resolveEns: false,
+  });
 
   expect(res.statusCode).toEqual(422);
 });
 
-
 test('Should log out successfully', async () => {
-  const res = await request(app)
-    .post('/ssx-logout');
+  const res = await request(app).post('/ssx-logout');
 
   expect(res.statusCode).toEqual(200);
 });
@@ -94,29 +82,25 @@ describe('Should override all paths successfully', () => {
   });
 
   const customApp = http.createServer(ssxMiddleware());
-  
+
   test('Should get /ssx-custom-nonce successfully', async () => {
-    const res = await request(customApp)
-      .get('/ssx-custom-nonce');
+    const res = await request(customApp).get('/ssx-custom-nonce');
 
     expect(res.statusCode).toEqual(200);
   });
 
   test('Should post /ssx-custom-login fail expecting field signature', async () => {
-    const res = await request(customApp)
-      .post('/ssx-custom-login')
-      .send({
-        siwe: SIWE_MESSAGE,
-        daoLogin: false,
-        resolveEns: false
-      });
+    const res = await request(customApp).post('/ssx-custom-login').send({
+      siwe: SIWE_MESSAGE,
+      daoLogin: false,
+      resolveEns: false,
+    });
 
     expect(res.statusCode).toEqual(422);
   });
 
   test('Should post /ssx-custom-logout successfully', async () => {
-    const res = await request(customApp)
-      .post('/ssx-custom-logout');
+    const res = await request(customApp).post('/ssx-custom-logout');
 
     expect(res.statusCode).toEqual(200);
   });
