@@ -28,7 +28,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "siwe": "^2.1.2",
     "@spruceid/ssx-core": "1.0.0",
-    "@spruceid/ssx-gnosis-extension": "*",
+    "@spruceid/ssx-gnosis-extension": "1.0.1",
     "@spruceid/ssx-sdk-wasm": "0.1.2",
     "@types/lodash.merge": "^4.6.7",
     "assert": "^2.0.0",
