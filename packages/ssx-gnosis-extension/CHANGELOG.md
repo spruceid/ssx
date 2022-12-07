@@ -1,8 +1,8 @@
 # @spruceid/ssx-gnosis-extension
 
-## 1.0.1
+## 1.1.0
 
-### Patch Changes
+### Minor Changes
 
 - c989838: Refactor code to avoid duplication and improve performance.
   - Adds `@spruceid/ssx-core` as a dependency;
