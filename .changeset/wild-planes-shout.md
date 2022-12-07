@@ -7,17 +7,17 @@
 Enable custom paths for endpoints on client and server.
 
 ## @spruceid/ssx-core changes: 
-- Creates and exports `SSXServerEndpoints` interface
-- Adds `endpoints?: SSXServerEndpoints` to `SSXClientConfig.providers.server`.
+- Creates and exports `SSXServerRoutes` interface
+- Adds `routes?: SSXServerRoutes` to `SSXClientConfig.providers.server`.
 
 ## @spruceid/ssx changes: 
-Due to the change in `SSXClientConfig`, it now accepts the server endpoint configuration:
+Due to the change in `SSXClientConfig`, it now accepts the server's routes configuration:
 ```
 const ssx = new SSX({
   providers: {
     server: {
         host: 'http://localhost:3001',
-        endpoints: {
+        routes: {
             nonce: '/ssx-custom-nonce',
             login: '/ssx-custom-login',
             logout: '/ssx-custom-logout',
@@ -29,7 +29,7 @@ const ssx = new SSX({
 This is an optional configuration and the default values are: `nonce: '/ssx-nonce'`, `login: '/ssx-login'`, `logout: '/ssx-logout'`. It isn't necessary to override all of them, you can only override one of them.
 
 ## @spruceid/ssx-server changes: 
-This now accepts the endpoint configuration when instantiating the middlewares as follows:
+This now accepts the routes configuration when instantiating the middlewares as follows:
 ```
 const expressMiddleware = SSXExpressMiddleware(ssx, { 
     nonce: '/ssx-custom-nonce', 

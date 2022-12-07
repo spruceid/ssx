@@ -2,7 +2,7 @@ import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 
 /** Server endpoints configuration. */
-export interface SSXServerEndpoints {
+export interface SSXServerRoutes {
     /** Get nonce endpoint path. /ssx-nonce as default. */
     nonce?: string;
     /** Post login endpoint path. /ssx-login as default. */

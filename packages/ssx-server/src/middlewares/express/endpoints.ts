@@ -1,9 +1,9 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServer } from '../../server';
-import { SSXServerEndpoints } from '@spruceid/ssx-core';
+import { SSXServerRoutes } from '@spruceid/ssx-core';
 
-const ssxEndpoints = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
+const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRoutes) => {
   const router = express.Router();
 
   /**
@@ -15,7 +15,7 @@ const ssxEndpoints = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.get(endpoints?.nonce ?? '/ssx-nonce', function (req: Request, res: Response): void {
+  router.get(routes?.nonce ?? '/ssx-nonce', function (req: Request, res: Response): void {
     req.session.nonce = ssx.generateNonce();
     req.session.save(() => res.status(200).send(req.session.nonce));
   });
@@ -30,7 +30,7 @@ const ssxEndpoints = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.post(endpoints?.login ?? '/ssx-login', async function (req: Request, res: Response) {
+  router.post(routes?.login ?? '/ssx-login', async function (req: Request, res: Response) {
     if (!req.body) {
       res.status(422).json({ message: 'Expected body.' });
       return;
@@ -87,7 +87,7 @@ const ssxEndpoints = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
    * @param {Request} req
    * @param {Response} res
    */
-  router.post(endpoints?.logout ?? '/ssx-logout', async function (req: Request, res: Response) {
+  router.post(routes?.logout ?? '/ssx-logout', async function (req: Request, res: Response) {
     try {
       req.session.destroy(null);
     } catch (error) {

@@ -2,7 +2,7 @@ import bodyParser from 'body-parser';
 import ssxEndpoints from './endpoints';
 import { ssxMiddleware, SSXAuthenticated } from './middleware';
 import { SSXServer } from '../../server';
-import { SSXServerEndpoints } from '@spruceid/ssx-core';
+import { SSXServerRoutes } from '@spruceid/ssx-core';
 
 /**
  * This middleware function has two key functions:
@@ -11,12 +11,12 @@ import { SSXServerEndpoints } from '@spruceid/ssx-core';
  *
  * @param ssx - The SSX server instance.
  */
-const SSXExpressMiddleware = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
+const SSXExpressMiddleware = (ssx: SSXServer, routes?: SSXServerRoutes) => {
   return [
     ssx.session,
     bodyParser.json(),
     ssxMiddleware(ssx),
-    ssxEndpoints(ssx, endpoints),
+    ssxEndpoints(ssx, routes),
   ];
 };
 export { SSXExpressMiddleware, SSXAuthenticated };

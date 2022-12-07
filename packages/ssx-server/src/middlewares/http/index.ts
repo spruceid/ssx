@@ -4,7 +4,7 @@ import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { SSXServer } from '../../server';
 import { SSXRequestObject } from '../express/middleware';
-import { SSXServerEndpoints } from '@spruceid/ssx-core';
+import { SSXServerRoutes } from '@spruceid/ssx-core';
 
 declare module 'http' {
   interface IncomingMessage {
@@ -41,7 +41,7 @@ function getBody(req: IncomingMessage): Promise<any> {
  * @param ssx - The SSX server instance.
  * @returns requestListener: function (req: Request, res: Response) =\> (req: IncomingMessage, res: ServerResponse)
  */
-export const SSXHttpMiddleware = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
+export const SSXHttpMiddleware = (ssx: SSXServer, routes?: SSXServerRoutes) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   return (requestListener = (req, res) => { }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,11 +86,11 @@ export const SSXHttpMiddleware = (ssx: SSXServer, endpoints?: SSXServerEndpoints
       }
 
       // ssx endpoints
-      if (req.url === (endpoints?.nonce ?? '/ssx-nonce')) {
+      if (req.url === (routes?.nonce ?? '/ssx-nonce')) {
         req.session.nonce = ssx.generateNonce();
         res.statusCode = 200;
         res.end(req.session.nonce);
-      } else if (req.url === (endpoints?.login ?? '/ssx-login')) {
+      } else if (req.url === (routes?.login ?? '/ssx-login')) {
         // get body data
         const body = await getBody(req);
         if (!body) {
@@ -138,7 +138,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer, endpoints?: SSXServerEndpoints
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ ...req.session }));
-      } else if (req.url === (endpoints?.logout ?? '/ssx-logout')) {
+      } else if (req.url === (routes?.logout ?? '/ssx-logout')) {
         req.session.destroy(null);
         req.session = null;
         await req.ssx.logout();
