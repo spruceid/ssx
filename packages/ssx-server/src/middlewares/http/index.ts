@@ -4,6 +4,7 @@ import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { SSXServer } from '../../server';
 import { SSXRequestObject } from '../express/middleware';
+import { SSXServerEndpoints } from '@spruceid/ssx-core';
 
 declare module 'http' {
   interface IncomingMessage {
@@ -40,7 +41,7 @@ function getBody(req: IncomingMessage): Promise<any> {
  * @param ssx - The SSX server instance.
  * @returns requestListener: function (req: Request, res: Response) =\> (req: IncomingMessage, res: ServerResponse)
  */
-export const SSXHttpMiddleware = (ssx: SSXServer) => {
+export const SSXHttpMiddleware = (ssx: SSXServer, endpoints?: SSXServerEndpoints) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   return (requestListener = (req, res) => { }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,11 +86,11 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
       }
 
       // ssx endpoints
-      if (req.url === '/ssx-nonce') {
+      if (req.url === (endpoints?.nonce ?? '/ssx-nonce')) {
         req.session.nonce = ssx.generateNonce();
         res.statusCode = 200;
         res.end(req.session.nonce);
-      } else if (req.url === '/ssx-login') {
+      } else if (req.url === (endpoints?.login ?? '/ssx-login')) {
         // get body data
         const body = await getBody(req);
         if (!body) {
@@ -137,7 +138,7 @@ export const SSXHttpMiddleware = (ssx: SSXServer) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ ...req.session }));
-      } else if (req.url === '/ssx-logout') {
+      } else if (req.url === (endpoints?.logout ?? '/ssx-logout')) {
         req.session.destroy(null);
         req.session = null;
         await req.ssx.logout();
