@@ -14,8 +14,8 @@
 
 - Updated dependencies [c989838]
 - Updated dependencies [83c314c]
-  - @spruceid/ssx-core@2.0.0
-  - @spruceid/ssx-gnosis-extension@1.0.1
+  - @spruceid/ssx-core@1.0.0
+  - @spruceid/ssx-gnosis-extension@1.1.0
 
 ## 1.0.0
 

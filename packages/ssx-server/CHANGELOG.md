@@ -38,7 +38,7 @@
 - c66f308: Include and export `SiweMessage` from the `siwe` dependency.
 - Updated dependencies [c989838]
 - Updated dependencies [83c314c]
-  - @spruceid/ssx-core@2.0.0
+  - @spruceid/ssx-core@1.0.0
   - @spruceid/ssx-gnosis-extension@1.0.1
 
 ## 1.0.0
