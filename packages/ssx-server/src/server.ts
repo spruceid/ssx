@@ -120,7 +120,7 @@ export class SSXServer extends EventEmitter {
       .then((data) => data);
 
     let ens: SSXEnsData = {};
-    let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+    const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
     if (resolveEns) {
       let resolveEnsOpts;
       if (resolveEns !== true) {
@@ -216,7 +216,7 @@ export class SSXServer extends EventEmitter {
     return {
       ...this.getDefaultExpressSessionConfig(),
       ...this._config.providers?.sessionConfig?.sessionOptions,
-      ...(!!this._config.providers?.sessionConfig?.store
+      ...(this._config.providers?.sessionConfig?.store
         ? { store: this._config.providers?.sessionConfig?.store(session) }
         : {}),
     };
