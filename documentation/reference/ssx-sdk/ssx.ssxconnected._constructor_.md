@@ -9,7 +9,11 @@ Constructs a new instance of the `SSXConnected` class
 <b>Signature:</b>
 
 ```typescript
-constructor(builder: ssxSession.SSXSessionBuilder, config: SSXConfig, extensions: SSXExtension[], provider: ethers.providers.Web3Provider);
+constructor(
+    builder: ssxSession.SSXSessionBuilder, 
+    config: SSXClientConfig, 
+    extensions: SSXExtension[], 
+    provider: ethers.providers.Web3Provider);
 ```
 
 ## Parameters
@@ -17,7 +21,7 @@ constructor(builder: ssxSession.SSXSessionBuilder, config: SSXConfig, extensions
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  builder | ssxSession.SSXSessionBuilder |  |
-|  config | [SSXConfig](./ssx.ssxconfig.md) |  |
+|  config | [SSXClientConfig](./ssx.ssxclientconfig.md) |  |
 |  extensions | [SSXExtension](./ssx.ssxextension.md)<!-- -->\[\] |  |
 |  provider | ethers.providers.Web3Provider |  |
 

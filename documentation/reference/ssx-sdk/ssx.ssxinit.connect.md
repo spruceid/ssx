@@ -15,3 +15,5 @@ connect(): Promise<SSXConnected>;
 
 Promise&lt;[SSXConnected](./ssx.ssxconnected.md)<!-- -->&gt;
 
+SSXConnected instance.
+

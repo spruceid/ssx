@@ -11,11 +11,11 @@ Generates a nonce and stores it in the current session if a sessionKey is provid
 ```typescript
 getNonce: (getNonceOpts?: {
         sessionKey?: any;
-        generateUpdateValue?: ((nonce: string) => any) | undefined;
-        generateCreateValue?: ((nonce: string) => any) | undefined;
-        createOpts?: Record<string, any> | undefined;
-        updateOpts?: Record<string, any> | undefined;
-    } | undefined) => Promise<{
+        generateUpdateValue?: (nonce: string) => any;
+        generateCreateValue?: (nonce: string) => any;
+        createOpts?: Record<string, any>;
+        updateOpts?: Record<string, any>;
+    }) => Promise<{
         nonce: string;
         dbResult: any;
     }>;

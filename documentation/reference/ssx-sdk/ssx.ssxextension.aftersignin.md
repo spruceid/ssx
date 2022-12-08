@@ -9,14 +9,14 @@ Hook to run after SSX has signed in.
 <b>Signature:</b>
 
 ```typescript
-afterSignIn?(session: SSXSession): Promise<void>;
+afterSignIn?(session: SSXClientSession): Promise<void>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  session | [SSXSession](./ssx.ssxsession.md) |  |
+|  session | [SSXClientSession](./ssx.ssxclientsession.md) |  |
 
 <b>Returns:</b>
 

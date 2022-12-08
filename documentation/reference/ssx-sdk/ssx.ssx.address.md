@@ -4,7 +4,7 @@
 
 ## SSX.address property
 
-Get the address that is connected and signed in.
+Gets the address that is connected and signed in.
 
 <b>Signature:</b>
 

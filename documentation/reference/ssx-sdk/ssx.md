@@ -10,48 +10,66 @@
 |  --- | --- |
 |  [SSX](./ssx.ssx.md) | <p>SSX: Self-sovereign anything.</p><p>A toolbox for user-controlled identity, credentials, storage and more.</p> |
 |  [SSXConnected](./ssx.ssxconnected.md) | An intermediate SSX state: connected, but not signed-in. |
-|  [SSXInit](./ssx.ssxinit.md) | Initializer for an SSXSession. |
+|  [SSXInit](./ssx.ssxinit.md) | Initializer for an SSXClientSession. |
 
 ## Enumerations
 
 |  Enumeration | Description |
 |  --- | --- |
-|  [SSXAlchemyProviderNetworks](./ssx.ssxalchemyprovidernetworks.md) | Enum of supported networks for Alchemy |
-|  [SSXAnkrProviderNetworks](./ssx.ssxankrprovidernetworks.md) | Enum of supported networks for Ankr |
-|  [SSXEtherscanProviderNetworks](./ssx.ssxetherscanprovidernetworks.md) | Enum of supported networks for Etherscan |
-|  [SSXInfuraProviderNetworks](./ssx.ssxinfuraprovidernetworks.md) | Enum of supported networks for Infura |
-|  [SSXPocketProviderNetworks](./ssx.ssxpocketprovidernetworks.md) | Enum of supported networks for Pocket |
-|  [SSXRPCProviders](./ssx.ssxrpcproviders.md) | Enum of supported RPC providers |
-|  [StorageModule](./ssx.storagemodule.md) | Selection and configuration of the storage module. |
-|  [StorageType](./ssx.storagetype.md) | Supported storage types. |
+|  [SSXAlchemyProviderNetworks](./ssx.ssxalchemyprovidernetworks.md) | Enum of supported networks for Alchemy. |
+|  [SSXAnkrProviderNetworks](./ssx.ssxankrprovidernetworks.md) | Enum of supported networks for Ankr. |
+|  [SSXEtherscanProviderNetworks](./ssx.ssxetherscanprovidernetworks.md) | Enum of supported networks for Etherscan. |
+|  [SSXInfuraProviderNetworks](./ssx.ssxinfuraprovidernetworks.md) | Enum of supported networks for Infura. |
+|  [SSXPocketProviderNetworks](./ssx.ssxpocketprovidernetworks.md) | Enum of supported networks for Pocket. |
+|  [SSXRPCProviders](./ssx.ssxrpcproviders.md) | Enum of supported EthersJS providers. |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
+|  [ISSXConnected](./ssx.issxconnected.md) | Interface to an intermediate SSX state: connected, but not signed-in. |
 |  [SiweConfig](./ssx.siweconfig.md) | Optional session configuration for the SIWE message. |
+|  [SSXClientConfig](./ssx.ssxclientconfig.md) | Core config for SSX. |
+|  [SSXClientProviders](./ssx.ssxclientproviders.md) | SSX web3 configuration settings |
 |  [SSXConfig](./ssx.ssxconfig.md) | Core config for SSX. |
+|  [SSXEnsConfig](./ssx.ssxensconfig.md) | ENS options supported by SSX. |
+|  [SSXEnsData](./ssx.ssxensdata.md) | ENS data supported by SSX. |
+|  [SSXEnsResolveOptions](./ssx.ssxensresolveoptions.md) | ENS options supported by SSX. |
 |  [SSXExtension](./ssx.ssxextension.md) | Interface for an extension to SSX. |
 |  [SSXProviders](./ssx.ssxproviders.md) | SSX web3 configuration settings |
 |  [SSXProviderWeb3](./ssx.ssxproviderweb3.md) | Web3 provider configuration settings |
-|  [Storage\_2](./ssx.storage_2.md) | A Storage module. |
+|  [SSXServerRoutes](./ssx.ssxserverroutes.md) | Server endpoints configuration. |
+
+## Variables
+
+|  Variable | Description |
+|  --- | --- |
+|  [isSSXAlchemyProvider](./ssx.isssxalchemyprovider.md) |  |
+|  [isSSXAnkrProvider](./ssx.isssxankrprovider.md) | Type-Guard for SSXAnkrProvider. |
+|  [isSSXCloudflareProvider](./ssx.isssxcloudflareprovider.md) |  |
+|  [isSSXCustomProvider](./ssx.isssxcustomprovider.md) | Type-Guard for SSXCustomProvider. |
+|  [isSSXEtherscanProvider](./ssx.isssxetherscanprovider.md) |  |
+|  [isSSXInfuraProvider](./ssx.isssxinfuraprovider.md) |  |
+|  [isSSXPocketProvider](./ssx.isssxpocketprovider.md) | Type-Guard for SSXPocketProvider. |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
 |  [ConfigOverrides](./ssx.configoverrides.md) | Overrides for the session configuration. |
-|  [ExtraFields](./ssx.extrafields.md) |  |
-|  [ServerHost](./ssx.serverhost.md) | The URL of the server running ssx-server. Providing this field enables SIWE server communication |
-|  [SSXAlchemyProvider](./ssx.ssxalchemyprovider.md) | Alchemy provider settings |
-|  [SSXAnkrProvider](./ssx.ssxankrprovider.md) | Ankr provider settings |
-|  [SSXCloudflareProvider](./ssx.ssxcloudflareprovider.md) | Cloudflare provider settings |
-|  [SSXCustomProvider](./ssx.ssxcustomprovider.md) | Custom provider settings |
-|  [SSXEtherscanProvider](./ssx.ssxetherscanprovider.md) | Etherscan provider settings |
-|  [SSXInfuraProvider](./ssx.ssxinfuraprovider.md) | Infura provider settings |
-|  [SSXInfuraProviderProjectSettings](./ssx.ssxinfuraproviderprojectsettings.md) | Infura provider project settings |
-|  [SSXPocketProvider](./ssx.ssxpocketprovider.md) | Pocket provider settings |
+|  [ExtraFields](./ssx.extrafields.md) | Extra SIWE fields. |
+|  [SSXAlchemyProvider](./ssx.ssxalchemyprovider.md) | Alchemy provider settings. |
+|  [SSXAnkrProvider](./ssx.ssxankrprovider.md) | Ankr provider settings. |
+|  [SSXClientSession](./ssx.ssxclientsession.md) | Representation of an active SSXSession. |
+|  [SSXCloudflareProvider](./ssx.ssxcloudflareprovider.md) | Cloudflare provider settings. |
+|  [SSXCustomProvider](./ssx.ssxcustomprovider.md) | Custom provider settings. |
+|  [SSXEtherscanProvider](./ssx.ssxetherscanprovider.md) | Etherscan provider settings. |
+|  [SSXGenericProvider](./ssx.ssxgenericprovider.md) | Generic provider settings. |
+|  [SSXInfuraProvider](./ssx.ssxinfuraprovider.md) | Infura provider settings. |
+|  [SSXInfuraProviderProjectSettings](./ssx.ssxinfuraproviderprojectsettings.md) | Infura provider project settings. |
+|  [SSXPocketProvider](./ssx.ssxpocketprovider.md) | Pocket provider settings. |
 |  [SSXProviderServer](./ssx.ssxproviderserver.md) | The ssx-powered server configuration settings |
-|  [SSXRPCProvider](./ssx.ssxrpcprovider.md) |  |
+|  [SSXRPCProvider](./ssx.ssxrpcprovider.md) | Supported provider types. |
+|  [SSXServerHost](./ssx.ssxserverhost.md) | The URL of the server running ssx-server. Providing this field enables SIWE server communication |
 |  [SSXSession](./ssx.ssxsession.md) | Representation of an active SSXSession. |
 

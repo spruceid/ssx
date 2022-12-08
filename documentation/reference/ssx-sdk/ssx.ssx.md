@@ -24,15 +24,17 @@ export declare class SSX
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [address](./ssx.ssx.address.md) |  | () =&gt; string \| undefined | Get the address that is connected and signed in. |
+|  [address](./ssx.ssx.address.md) |  | () =&gt; string \| undefined | Gets the address that is connected and signed in. |
 |  [chainId](./ssx.ssx.chainid.md) |  | () =&gt; number \| undefined | Get the chainId that the address is connected and signed in on. |
 |  [connection?](./ssx.ssx.connection.md) |  | [SSXConnected](./ssx.ssxconnected.md) | <i>(Optional)</i> Current connection of SSX |
 |  [RPCProviders](./ssx.ssx.rpcproviders.md) | <code>static</code> | typeof [SSXRPCProviders](./ssx.ssxrpcproviders.md) | Supported RPC Providers |
+|  [session?](./ssx.ssx.session.md) |  | [SSXClientSession](./ssx.ssxclientsession.md) | <i>(Optional)</i> The session representation (once signed in). |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [resolveEns(address, resolveEnsOpts)](./ssx.ssx.resolveens.md) |  | ENS data supported by SSX. |
 |  [signIn()](./ssx.ssx.signin.md) |  | Request the user to sign in, and start the session. |
-|  [signOut()](./ssx.ssx.signout.md) |  |  |
+|  [signOut()](./ssx.ssx.signout.md) |  | Invalidates user's session. |
 

@@ -4,7 +4,7 @@
 
 ## SSXServer.session property
 
-Definition of CRUD functions for sessions
+Definition of CRUD functions for sessions.
 
 <b>Signature:</b>
 

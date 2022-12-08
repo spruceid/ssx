@@ -10,8 +10,9 @@ The ssx-powered server configuration settings
 
 ```typescript
 export declare type SSXProviderServer = {
-    host: ServerHost;
+    host: SSXServerHost;
+    routes?: SSXServerRoutes;
 };
 ```
-<b>References:</b> [ServerHost](./ssx.serverhost.md)
+<b>References:</b> [SSXServerHost](./ssx.ssxserverhost.md)<!-- -->, [SSXServerRoutes](./ssx.ssxserverroutes.md)
 

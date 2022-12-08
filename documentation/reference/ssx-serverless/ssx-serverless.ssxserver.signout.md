@@ -4,7 +4,7 @@
 
 ## SSXServer.signOut property
 
-Calls the delete function to delete the user's session
+Calls the delete function to delete the user's session.
 
 <b>Signature:</b>
 

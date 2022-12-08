@@ -17,5 +17,5 @@ export interface SSXServerConfig
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [daoLogin?](./ssx-serverless.ssxserverconfig.daologin.md) |  | boolean | <i>(Optional)</i> Enable lookup for delegations in the DelegateRegistry SC |
-|  [providers?](./ssx-serverless.ssxserverconfig.providers.md) |  | [SSXProviders](./ssx-serverless.ssxproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
+|  [providers?](./ssx-serverless.ssxserverconfig.providers.md) |  | [SSXServerProviders](./ssx-serverless.ssxserverproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
 

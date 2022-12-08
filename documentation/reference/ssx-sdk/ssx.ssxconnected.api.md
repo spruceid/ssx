@@ -4,6 +4,8 @@
 
 ## SSXConnected.api property
 
+Axios instance.
+
 <b>Signature:</b>
 
 ```typescript

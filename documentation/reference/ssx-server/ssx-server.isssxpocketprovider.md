@@ -4,6 +4,8 @@
 
 ## isSSXPocketProvider variable
 
+Type-Guard for SSXPocketProvider.
+
 <b>Signature:</b>
 
 ```typescript

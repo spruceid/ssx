@@ -4,17 +4,19 @@
 
 ## SSXConnected.signOut() method
 
+Requests the user to sign out.
+
 <b>Signature:</b>
 
 ```typescript
-signOut(session: SSXSession): Promise<void>;
+signOut(session: SSXClientSession): Promise<void>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  session | [SSXSession](./ssx.ssxsession.md) |  |
+|  session | [SSXClientSession](./ssx.ssxclientsession.md) | SSXClientSession object. |
 
 <b>Returns:</b>
 

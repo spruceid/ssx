@@ -4,7 +4,7 @@
 
 ## SSXRedisSessionStoreProvider type
 
-SSX Redis Session Store Provider settings
+SSX Redis Session Store Provider settings.
 
 <b>Signature:</b>
 

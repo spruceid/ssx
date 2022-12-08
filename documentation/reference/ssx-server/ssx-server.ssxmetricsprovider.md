@@ -4,7 +4,7 @@
 
 ## SSXMetricsProvider type
 
-SSX Metrics Provider settings
+SSX Metrics Provider settings.
 
 <b>Signature:</b>
 

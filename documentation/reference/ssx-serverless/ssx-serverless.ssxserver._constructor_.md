@@ -16,8 +16,8 @@ constructor(config: SSXServerConfig, session: SSXSessionCRUDConfig);
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | [SSXServerConfig](./ssx-serverless.ssxserverconfig.md) | Base configuration of the SSXServer |
-|  session | [SSXSessionCRUDConfig](./ssx-serverless.ssxsessioncrudconfig.md) | CRUD definition for session operations |
+|  config | [SSXServerConfig](./ssx-serverless.ssxserverconfig.md) | Base configuration of the SSXServer. |
+|  session | [SSXSessionCRUDConfig](./ssx-serverless.ssxsessioncrudconfig.md) | CRUD definition for session operations. |
 
 ## Example
 

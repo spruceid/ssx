@@ -4,6 +4,8 @@
 
 ## SSXRPCProvider type
 
+Supported provider types.
+
 <b>Signature:</b>
 
 ```typescript

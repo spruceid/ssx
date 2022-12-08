@@ -4,7 +4,7 @@
 
 ## SSXAlchemyProvider type
 
-Alchemy provider settings
+Alchemy provider settings.
 
 <b>Signature:</b>
 

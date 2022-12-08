@@ -4,7 +4,7 @@
 
 ## SSXServer.session property
 
-session is a configured instance of express-session middleware
+Session is a configured instance of express-session middleware.
 
 <b>Signature:</b>
 

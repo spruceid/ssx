@@ -4,7 +4,7 @@
 
 ## SSXEventLogTypes enum
 
-Available SSX Log Types
+Available SSX Log Types.
 
 <b>Signature:</b>
 
@@ -16,5 +16,5 @@ export declare enum SSXEventLogTypes
 
 |  Member | Value | Description |
 |  --- | --- | --- |
-|  LOGIN | <code>&quot;ssx-login&quot;</code> | Login type definition |
+|  LOGIN | <code>&quot;ssx-login&quot;</code> | Login type definition. |
 

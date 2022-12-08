@@ -4,14 +4,14 @@
 
 ## SSXAlchemyProvider type
 
-Alchemy provider settings
+Alchemy provider settings.
 
 <b>Signature:</b>
 
 ```typescript
 export declare type SSXAlchemyProvider = {
     service: SSXRPCProviders.SSXAlchemyProvider;
-    apiKey?: string | number;
+    apiKey?: string;
     network?: SSXAlchemyProviderNetworks;
 };
 ```

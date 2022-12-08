@@ -4,6 +4,8 @@
 
 ## SSXConnected.isExtensionEnabled property
 
+Verifies if extension is enabled.
+
 <b>Signature:</b>
 
 ```typescript

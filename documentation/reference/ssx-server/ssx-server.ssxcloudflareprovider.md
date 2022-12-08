@@ -4,7 +4,7 @@
 
 ## SSXCloudflareProvider type
 
-Cloudflare provider settings
+Cloudflare provider settings.
 
 <b>Signature:</b>
 

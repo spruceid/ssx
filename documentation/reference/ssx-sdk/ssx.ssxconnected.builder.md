@@ -4,6 +4,8 @@
 
 ## SSXConnected.builder property
 
+Instance of SSXSessionBuilder
+
 <b>Signature:</b>
 
 ```typescript

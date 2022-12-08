@@ -4,6 +4,8 @@
 
 ## SSXServer.getExpressSessionConfig property
 
+Gets Express Session config params to configure the session.
+
 <b>Signature:</b>
 
 ```typescript

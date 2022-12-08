@@ -4,6 +4,8 @@
 
 ## SSXConnected.extensions property
 
+Enabled extensions.
+
 <b>Signature:</b>
 
 ```typescript

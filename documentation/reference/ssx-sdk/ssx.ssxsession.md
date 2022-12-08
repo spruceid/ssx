@@ -9,12 +9,13 @@ Representation of an active SSXSession.
 <b>Signature:</b>
 
 ```typescript
-export declare type SSXSession = {
+export declare type SSXClientSession = {
     address: string;
     walletAddress: string;
     chainId: number;
     sessionKey: string;
     siwe: string;
     signature: string;
+    ens?: SSXEnsData;
 };
 ```

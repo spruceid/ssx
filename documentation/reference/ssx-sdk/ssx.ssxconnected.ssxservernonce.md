@@ -4,6 +4,8 @@
 
 ## SSXConnected.ssxServerNonce() method
 
+Requests nonce from server.
+
 <b>Signature:</b>
 
 ```typescript
@@ -14,9 +16,11 @@ ssxServerNonce(params: Record<string, any>): Promise<string>;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  params | Record&lt;string, any&gt; |  |
+|  params | Record&lt;string, any&gt; | Request params. |
 
 <b>Returns:</b>
 
 Promise&lt;string&gt;
+
+Promise with nonce.
 

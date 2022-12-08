@@ -4,6 +4,8 @@
 
 ## isSSXCustomProvider variable
 
+Type-Guard for SSXCustomProvider.
+
 <b>Signature:</b>
 
 ```typescript

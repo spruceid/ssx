@@ -4,16 +4,16 @@
 
 ## SSXConnected.signIn() method
 
-Requests the user to sign in.
-
-Generates the SIWE message for this session, requests the configured Signer to sign the message, calls the "afterSignIn" methods of the extensions and returns the SSXSession object.
+Requests the user to sign in. Generates the SIWE message for this session, requests the configured Signer to sign the message, calls the "afterSignIn" methods of the extensions.
 
 <b>Signature:</b>
 
 ```typescript
-signIn(): Promise<SSXSession>;
+signIn(): Promise<SSXClientSession>;
 ```
 <b>Returns:</b>
 
-Promise&lt;[SSXSession](./ssx.ssxsession.md)<!-- -->&gt;
+Promise&lt;[SSXClientSession](./ssx.ssxclientsession.md)<!-- -->&gt;
+
+Promise with the SSXClientSession object.
 

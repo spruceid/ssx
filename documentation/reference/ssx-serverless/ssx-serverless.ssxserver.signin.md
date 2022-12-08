@@ -9,12 +9,12 @@ Verifies the SIWE message, signature, and nonce for a sign-in request. If the me
 <b>Signature:</b>
 
 ```typescript
-signIn: (siwe: SiweMessage | string, signature: string, sessionKey: any, signInOpts: {
-        daoLogin?: boolean | undefined;
-        resolveEnsDomain?: boolean | undefined;
-        resolveEnsAvatar?: boolean | undefined;
-        retrieveOpts?: Record<string, any> | undefined;
-        generateUpdateValue?: ((sessionData: SSXSessionData) => any) | undefined;
-        updateOpts?: Record<string, any> | undefined;
+signIn: (siwe: Partial<SiweMessage> | string, signature: string, sessionKey: any, signInOpts: {
+        daoLogin?: boolean;
+        resolveEnsDomain?: boolean;
+        resolveEnsAvatar?: boolean;
+        retrieveOpts?: Record<string, any>;
+        generateUpdateValue?: (sessionData: SSXSessionData) => any;
+        updateOpts?: Record<string, any>;
     }) => Promise<SSXSessionData>;
 ```

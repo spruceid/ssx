@@ -4,7 +4,7 @@
 
 ## SSXAnkrProvider type
 
-Ankr provider settings
+Ankr provider settings.
 
 <b>Signature:</b>
 

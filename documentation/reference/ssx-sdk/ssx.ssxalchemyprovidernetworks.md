@@ -4,7 +4,7 @@
 
 ## SSXAlchemyProviderNetworks enum
 
-Enum of supported networks for Alchemy
+Enum of supported networks for Alchemy.
 
 <b>Signature:</b>
 

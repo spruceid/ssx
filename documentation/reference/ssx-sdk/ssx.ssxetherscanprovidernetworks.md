@@ -4,7 +4,7 @@
 
 ## SSXEtherscanProviderNetworks enum
 
-Enum of supported networks for Etherscan
+Enum of supported networks for Etherscan.
 
 <b>Signature:</b>
 

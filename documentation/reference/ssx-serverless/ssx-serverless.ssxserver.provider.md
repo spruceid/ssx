@@ -4,7 +4,7 @@
 
 ## SSXServer.provider property
 
-EthersJS provider
+EthersJS provider.
 
 <b>Signature:</b>
 

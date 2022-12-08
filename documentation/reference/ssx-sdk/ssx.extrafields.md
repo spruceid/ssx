@@ -4,6 +4,8 @@
 
 ## ExtraFields type
 
+Extra SIWE fields.
+
 <b>Signature:</b>
 
 ```typescript

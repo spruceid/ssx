@@ -4,19 +4,23 @@
 
 ## SSXConnected.ssxServerLogin() method
 
+Requests sign in from server and returns session.
+
 <b>Signature:</b>
 
 ```typescript
-ssxServerLogin(session: SSXSession): Promise<any>;
+ssxServerLogin(session: SSXClientSession): Promise<any>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  session | [SSXSession](./ssx.ssxsession.md) |  |
+|  session | [SSXClientSession](./ssx.ssxclientsession.md) | SSXClientSession object. |
 
 <b>Returns:</b>
 
 Promise&lt;any&gt;
+
+Promise with server session data.
 

@@ -4,7 +4,7 @@
 
 ## SSXExpressSessionStoreProvider type
 
-SSX Express Session Store Provider settings
+SSX Express Session Store Provider settings.
 
 <b>Signature:</b>
 

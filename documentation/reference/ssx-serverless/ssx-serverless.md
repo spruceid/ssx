@@ -14,22 +14,24 @@
 
 |  Enumeration | Description |
 |  --- | --- |
-|  [SSXAlchemyProviderNetworks](./ssx-serverless.ssxalchemyprovidernetworks.md) | Enum of supported networks for Alchemy |
-|  [SSXAnkrProviderNetworks](./ssx-serverless.ssxankrprovidernetworks.md) | Enum of supported networks for Ankr |
-|  [SSXEtherscanProviderNetworks](./ssx-serverless.ssxetherscanprovidernetworks.md) | Enum of supported networks for Etherscan |
-|  [SSXEventLogTypes](./ssx-serverless.ssxeventlogtypes.md) | Available SSX Log Types |
-|  [SSXInfuraProviderNetworks](./ssx-serverless.ssxinfuraprovidernetworks.md) | Enum of supported networks for Infura |
-|  [SSXPocketProviderNetworks](./ssx-serverless.ssxpocketprovidernetworks.md) | Enum of supported networks for Pocket |
-|  [SSXRPCProviders](./ssx-serverless.ssxrpcproviders.md) | Enum of supported RPC providers |
+|  [SSXAlchemyProviderNetworks](./ssx-serverless.ssxalchemyprovidernetworks.md) | Enum of supported networks for Alchemy. |
+|  [SSXAnkrProviderNetworks](./ssx-serverless.ssxankrprovidernetworks.md) | Enum of supported networks for Ankr. |
+|  [SSXEtherscanProviderNetworks](./ssx-serverless.ssxetherscanprovidernetworks.md) | Enum of supported networks for Etherscan. |
+|  [SSXEventLogTypes](./ssx-serverless.ssxeventlogtypes.md) | Available SSX Log Types. |
+|  [SSXInfuraProviderNetworks](./ssx-serverless.ssxinfuraprovidernetworks.md) | Enum of supported networks for Infura. |
+|  [SSXPocketProviderNetworks](./ssx-serverless.ssxpocketprovidernetworks.md) | Enum of supported networks for Pocket. |
+|  [SSXRPCProviders](./ssx-serverless.ssxrpcproviders.md) | Enum of supported EthersJS providers. |
 
 ## Interfaces
 
 |  Interface | Description |
 |  --- | --- |
 |  [SSXEnsData](./ssx-serverless.ssxensdata.md) |  |
-|  [SSXLogFields](./ssx-serverless.ssxlogfields.md) | Allowed fields for an SSX Log |
-|  [SSXProviders](./ssx-serverless.ssxproviders.md) | SSX web3 configuration settings |
+|  [SSXEnsResolveOptions](./ssx-serverless.ssxensresolveoptions.md) | ENS options supported by SSX. |
+|  [SSXLogFields](./ssx-serverless.ssxlogfields.md) | Allowed fields for an SSX Log. |
 |  [SSXServerConfig](./ssx-serverless.ssxserverconfig.md) | Configuration interface for ssx-server |
+|  [SSXServerProviders](./ssx-serverless.ssxserverproviders.md) | SSX web3 configuration settings |
+|  [SSXServerRoutes](./ssx-serverless.ssxserverroutes.md) | Server endpoints configuration. |
 |  [SSXSessionCRUDConfig](./ssx-serverless.ssxsessioncrudconfig.md) | Type definition for CRUD session functions |
 |  [SSXSessionData](./ssx-serverless.ssxsessiondata.md) |  |
 
@@ -37,28 +39,26 @@
 
 |  Variable | Description |
 |  --- | --- |
-|  [getProvider](./ssx-serverless.getprovider.md) | Returns an ethers provider based on the RPC configuration |
 |  [isSSXAlchemyProvider](./ssx-serverless.isssxalchemyprovider.md) |  |
-|  [isSSXAnkrProvider](./ssx-serverless.isssxankrprovider.md) |  |
+|  [isSSXAnkrProvider](./ssx-serverless.isssxankrprovider.md) | Type-Guard for SSXAnkrProvider. |
 |  [isSSXCloudflareProvider](./ssx-serverless.isssxcloudflareprovider.md) |  |
-|  [isSSXCustomProvider](./ssx-serverless.isssxcustomprovider.md) |  |
+|  [isSSXCustomProvider](./ssx-serverless.isssxcustomprovider.md) | Type-Guard for SSXCustomProvider. |
 |  [isSSXEtherscanProvider](./ssx-serverless.isssxetherscanprovider.md) |  |
 |  [isSSXInfuraProvider](./ssx-serverless.isssxinfuraprovider.md) |  |
-|  [isSSXPocketProvider](./ssx-serverless.isssxpocketprovider.md) |  |
+|  [isSSXPocketProvider](./ssx-serverless.isssxpocketprovider.md) | Type-Guard for SSXPocketProvider. |
 
 ## Type Aliases
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [SSXAlchemyProvider](./ssx-serverless.ssxalchemyprovider.md) | Alchemy provider settings |
-|  [SSXAnkrProvider](./ssx-serverless.ssxankrprovider.md) | Ankr provider settings |
-|  [SSXCloudflareProvider](./ssx-serverless.ssxcloudflareprovider.md) | Cloudflare provider settings |
-|  [SSXCustomProvider](./ssx-serverless.ssxcustomprovider.md) | Custom provider settings |
-|  [SSXEtherscanProvider](./ssx-serverless.ssxetherscanprovider.md) | Etherscan provider settings |
-|  [SSXGenericProvider](./ssx-serverless.ssxgenericprovider.md) | Generic provider settings |
-|  [SSXInfuraProvider](./ssx-serverless.ssxinfuraprovider.md) | Infura provider settings |
-|  [SSXInfuraProviderProjectSettings](./ssx-serverless.ssxinfuraproviderprojectsettings.md) | Infura provider project settings |
-|  [SSXMetricsProvider](./ssx-serverless.ssxmetricsprovider.md) | SSX Metrics Provider settings |
-|  [SSXPocketProvider](./ssx-serverless.ssxpocketprovider.md) | Pocket provider settings |
-|  [SSXRPCProvider](./ssx-serverless.ssxrpcprovider.md) |  |
+|  [SSXAlchemyProvider](./ssx-serverless.ssxalchemyprovider.md) | Alchemy provider settings. |
+|  [SSXAnkrProvider](./ssx-serverless.ssxankrprovider.md) | Ankr provider settings. |
+|  [SSXCloudflareProvider](./ssx-serverless.ssxcloudflareprovider.md) | Cloudflare provider settings. |
+|  [SSXCustomProvider](./ssx-serverless.ssxcustomprovider.md) | Custom provider settings. |
+|  [SSXEtherscanProvider](./ssx-serverless.ssxetherscanprovider.md) | Etherscan provider settings. |
+|  [SSXGenericProvider](./ssx-serverless.ssxgenericprovider.md) | Generic provider settings. |
+|  [SSXInfuraProvider](./ssx-serverless.ssxinfuraprovider.md) | Infura provider settings. |
+|  [SSXInfuraProviderProjectSettings](./ssx-serverless.ssxinfuraproviderprojectsettings.md) | Infura provider project settings. |
+|  [SSXPocketProvider](./ssx-serverless.ssxpocketprovider.md) | Pocket provider settings. |
+|  [SSXRPCProvider](./ssx-serverless.ssxrpcprovider.md) | Supported provider types. |
 

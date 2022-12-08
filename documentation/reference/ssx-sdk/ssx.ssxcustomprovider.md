@@ -4,7 +4,7 @@
 
 ## SSXCustomProvider type
 
-Custom provider settings
+Custom provider settings.
 
 <b>Signature:</b>
 

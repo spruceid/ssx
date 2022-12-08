@@ -11,5 +11,5 @@ This function returns another function that can take an event listen as a parame
 <b>Signature:</b>
 
 ```typescript
-SSXHttpMiddleware: (ssx: SSXServer) => (requestListener?: (req: any, res: any) => void) => (req: IncomingMessage, res: ServerResponse) => Promise<ServerResponse<IncomingMessage>>
+SSXHttpMiddleware: (ssx: SSXServer, routes?: SSXServerRoutes) => (requestListener?: (req: any, res: any) => void) => (req: IncomingMessage, res: ServerResponse) => Promise<ServerResponse<IncomingMessage>>
 ```

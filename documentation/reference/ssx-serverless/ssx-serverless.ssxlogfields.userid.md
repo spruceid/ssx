@@ -4,7 +4,7 @@
 
 ## SSXLogFields.userId property
 
-Unique identifier for the user, formatted as a DID
+Unique identifier for the user, formatted as a DID.
 
 <b>Signature:</b>
 
