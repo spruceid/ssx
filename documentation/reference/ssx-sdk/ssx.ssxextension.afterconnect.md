@@ -9,14 +9,14 @@ Hook to run after SSX has connected to the user's wallet. This can return an obj
 <b>Signature:</b>
 
 ```typescript
-afterConnect?(ssx: SSXConnected): Promise<ConfigOverrides>;
+afterConnect?(ssx: ISSXConnected): Promise<ConfigOverrides>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  ssx | [SSXConnected](./ssx.ssxconnected.md) |  |
+|  ssx | [ISSXConnected](./ssx.issxconnected.md) |  |
 
 <b>Returns:</b>
 

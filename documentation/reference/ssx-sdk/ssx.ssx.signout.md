@@ -4,6 +4,8 @@
 
 ## SSX.signOut() method
 
+Invalidates user's session.
+
 <b>Signature:</b>
 
 ```typescript

@@ -4,14 +4,14 @@
 
 ## SSXPocketProvider type
 
-Pocket provider settings
+Pocket provider settings.
 
 <b>Signature:</b>
 
 ```typescript
 export declare type SSXPocketProvider = {
     service: SSXRPCProviders.SSXPocketProvider;
-    apiKey?: string | number;
+    apiKey?: string;
     network?: SSXPocketProviderNetworks;
 };
 ```

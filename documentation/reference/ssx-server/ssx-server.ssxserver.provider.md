@@ -4,8 +4,10 @@
 
 ## SSXServer.provider property
 
+EthersJS provider.
+
 <b>Signature:</b>
 
 ```typescript
-provider: ethers.providers.Provider;
+provider: ethers.providers.BaseProvider;
 ```

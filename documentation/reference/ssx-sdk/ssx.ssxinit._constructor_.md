@@ -9,12 +9,12 @@ Constructs a new instance of the `SSXInit` class
 <b>Signature:</b>
 
 ```typescript
-constructor(config?: SSXConfig);
+constructor(config?: SSXClientConfig);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | [SSXConfig](./ssx.ssxconfig.md) | <i>(Optional)</i> |
+|  config | [SSXClientConfig](./ssx.ssxclientconfig.md) | <i>(Optional)</i> |
 

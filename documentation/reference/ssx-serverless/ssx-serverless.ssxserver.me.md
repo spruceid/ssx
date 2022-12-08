@@ -9,5 +9,5 @@ Returns the SSXSessionData if a the session still exists and is valid.
 <b>Signature:</b>
 
 ```typescript
-me: (sessionKey: any, getSSXDataFromSession?: ((session: any) => SSXSessionData) | undefined) => Promise<SSXSessionData>;
+me: (sessionKey: any, getSSXDataFromSession?: (session: any) => SSXSessionData) => Promise<SSXSessionData>;
 ```

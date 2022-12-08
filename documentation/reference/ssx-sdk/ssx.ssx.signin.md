@@ -9,9 +9,11 @@ Request the user to sign in, and start the session.
 <b>Signature:</b>
 
 ```typescript
-signIn(): Promise<SSXSession>;
+signIn(): Promise<SSXClientSession>;
 ```
 <b>Returns:</b>
 
-Promise&lt;[SSXSession](./ssx.ssxsession.md)<!-- -->&gt;
+Promise&lt;[SSXClientSession](./ssx.ssxclientsession.md)<!-- -->&gt;
+
+Object containing information about the session
 

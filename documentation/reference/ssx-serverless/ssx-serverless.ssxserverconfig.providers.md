@@ -9,5 +9,5 @@ Connection to a cryptographic keypair and/or network.
 <b>Signature:</b>
 
 ```typescript
-providers?: SSXProviders;
+providers?: SSXServerProviders;
 ```

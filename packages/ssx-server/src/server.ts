@@ -1,8 +1,16 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
-import { SSXLogFields, SSXServerConfig, SSXEventLogTypes, SSXEnsData, SSXEnsResolveOptions } from './types';
-import { getProvider } from './utils';
+import {
+  SSXLogFields,
+  SSXServerConfig,
+  SSXEventLogTypes,
+  SSXEnsData,
+  SSXEnsResolveOptions,
+  ssxLog,
+  ssxResolveEns,
+  getProvider,
+} from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
@@ -13,17 +21,19 @@ import { EventEmitter } from 'events';
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object and works
  * with various middleware libraries to add authentication and metrics to your server.
- *
- **/
+ */
 export class SSXServer extends EventEmitter {
+  /** SSXServerConfig object. */
   private _config: SSXServerConfig;
+  /** Axios instance. */
   private _api: AxiosInstance;
+  /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
-  /** session is a configured instance of express-session middleware */
+  /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
 
   constructor(config: SSXServerConfig = {}) {
-    super()
+    super();
     this._setDefaults();
 
     Object.assign(this._config, {
@@ -50,32 +60,22 @@ export class SSXServer extends EventEmitter {
     }
   }
 
-  /** Set default values for optional configurations */
-  private _setDefaults = () => {
+  /**
+   * Sets default values for optional configurations
+   */
+  private _setDefaults = (): void => {
     this._config = {};
     this._config.providers = {};
     this._config.useSecureCookies = process.env.NODE_ENV === 'production';
   };
 
   /**
-   * Abstracts the fetch API to append correct headers, host and parse
-   * responses to JSON for POST requests.
+   * Registers a new event to the API
+   * @param data - SSXLogFields object.
+   * @returns True (success) or false (fail).
    */
-  private _post = (route: string, body: any): Promise<boolean> => {
-    return this._api
-      .post(route, typeof body === 'string' ? body : JSON.stringify(body))
-      .then((res) => res.status === 204)
-      .catch((e) => {
-        return false;
-      });
-  };
-
-  /** Registers a new event to the API */
   public log = async (data: SSXLogFields): Promise<boolean> => {
-    if (!data.timestamp) data.timestamp = new Date().toISOString();
-    return (
-      this._config.providers?.metrics?.apiKey && this._post('/events', data)
-    );
+    return ssxLog(this._api, this._config.providers?.metrics?.apiKey, data);
   };
 
   /**
@@ -89,9 +89,15 @@ export class SSXServer extends EventEmitter {
   /**
    * Verifies the SIWE message, signature, and nonce for a sign-in request.
    * If the message is verified, a session token is generated and returned.
+   * @param siwe - SIWE Message.
+   * @param signature - The signature of the SIWE message.
+   * @param daoLogin - Whether or not daoLogin is enabled.
+   * @param resolveEns - Resolve ENS settings.
+   * @param nonce - nonce string.
+   * @returns Request data with SSX Server Session.
    */
   public login = async (
-    siwe: SiweMessage | string,
+    siwe: Partial<SiweMessage> | string,
     signature: string,
     daoLogin: boolean,
     resolveEns: boolean | SSXEnsResolveOptions,
@@ -101,90 +107,82 @@ export class SSXServer extends EventEmitter {
     error: SiweError;
     session: Partial<SessionData>;
   }> => {
-    // TODO(w4ll3): Refactor this function.
-    let smartContractWalletOrCustomMethod = false;
-    try {
-      const siweMessage = new SiweMessage(siwe);
+    const siweMessage = new SiweMessage(siwe);
 
-      let siweMessageVerifyPromise: any = siweMessage.verify(
+    let siweMessageVerifyPromise: any = siweMessage
+      .verify(
         { signature, nonce },
         {
           verificationFallback: daoLogin ? SiweGnosisVerify : undefined,
           provider: this.provider,
         },
       )
-        .then(data => data)
-        .catch(error => {
-          console.error(error);
-          throw error;
-        });
+      .then((data) => data);
 
-      let ens: SSXEnsData = {};
-      let promises: Array<Promise<any>> = [siweMessageVerifyPromise];
-      if (resolveEns) {
-        let resolveEnsOpts;
-        if (resolveEns !== true) {
-          resolveEnsOpts = resolveEns;
-        }
-        promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+    let ens: SSXEnsData = {};
+    const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
+    if (resolveEns) {
+      let resolveEnsOpts;
+      if (resolveEns !== true) {
+        resolveEnsOpts = resolveEns;
       }
-      try {
-        siweMessageVerifyPromise = await Promise.all(promises)
-          .then(([siweMessageVerify, ensData]) => {
-            ens = ensData
-            return siweMessageVerify;
-          });
-      } catch (error) {
-        console.error(error);
-      }
+      promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
+    }
+    try {
+      siweMessageVerifyPromise = await Promise.all(promises).then(
+        ([siweMessageVerify, ensData]) => {
+          ens = ensData;
+          return siweMessageVerify;
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
 
-      const { success, error, data } = siweMessageVerifyPromise;
+    const { success, error, data } = siweMessageVerifyPromise;
 
+    let smartContractWalletOrCustomMethod = false;
+    try {
+      // TODO: Refactor this function.
       /** This addresses the cases where having DAOLogin
        *  enabled would make all the logs to be of Gnosis Type
        **/
       smartContractWalletOrCustomMethod = !(
         utils.verifyMessage(data.prepareMessage(), signature) === data.address
       );
-
-      const event = {
-        userId: `did:pkh:eip155:${data.chainId}:${data.address}`,
-        type: SSXEventLogTypes.LOGIN,
-        content: {
-          signature,
-          siwe,
-          isGnosis: daoLogin && smartContractWalletOrCustomMethod,
-        },
-      };
-
-      this.log(event);
-      this.emit(event.type, event);
-
-      return {
-        success,
-        error,
-        session: {
-          siwe: new SiweMessage(siwe),
-          signature: signature,
-          daoLogin: daoLogin,
-          ens,
-        },
-      };
-    } catch (e) {
-      return {
-        success: false,
-        error: e,
-        session: {
-          siwe: new SiweMessage(siwe),
-          signature: signature,
-          daoLogin: daoLogin,
-        },
-      };
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
+
+    const event = {
+      userId: `did:pkh:eip155:${data.chainId}:${data.address}`,
+      type: SSXEventLogTypes.LOGIN,
+      content: {
+        signature,
+        siwe,
+        isGnosis: daoLogin && smartContractWalletOrCustomMethod,
+      },
+    };
+
+    this.log(event);
+    this.emit(event.type, event);
+
+    return {
+      success,
+      error,
+      session: {
+        siwe: new SiweMessage(siwe),
+        signature: signature,
+        daoLogin: daoLogin,
+        ens,
+      },
+    };
   };
 
   /**
-   * ENS data supported by SSX. 
+   * ENS data supported by SSX.
    * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
@@ -192,47 +190,17 @@ export class SSXServer extends EventEmitter {
   public resolveEns = async (
     /* User Address */
     address: string,
-    resolveEnsOpts: {
-      /* Enables ENS domain/name resolution */
-      domain?: boolean,
-      /* Enables ENS avatar resolution */
-      avatar?: boolean,
-    } = {
-        domain: true,
-        avatar: true
-      }
+    /* ENS resolution settings */
+    resolveEnsOpts?: SSXEnsResolveOptions,
   ): Promise<SSXEnsData> => {
-    if (!address) {
-      throw new Error('Missing address.');
-    }
-    let ens: SSXEnsData = {};
-    let promises: Array<Promise<any>> = [];
-    if (resolveEnsOpts?.domain) {
-      promises.push(this.provider.lookupAddress(address))
-    }
-    if (resolveEnsOpts?.avatar) {
-      promises.push(this.provider.getAvatar(address))
-    }
-
-    await Promise.all(promises)
-      .then(([domain, avatarUrl]) => {
-        if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
-          [domain, avatarUrl] = [undefined, domain];
-        }
-        if (domain) {
-          ens['domain'] = domain;
-        }
-        if (avatarUrl) {
-          ens['avatarUrl'] = avatarUrl;
-        }
-      });
-
-    return ens;
-  }
+    return ssxResolveEns(this.provider, address, resolveEnsOpts);
+  };
 
   /**
    * Logs out the user by deleting the session.
    * Currently this is a no-op.
+   * @param destroySession - Method to remove session from storage.
+   * @returns Promise with true (success) or false (fail).
    */
   public logout = async (
     destroySession?: () => Promise<any>,
@@ -240,16 +208,24 @@ export class SSXServer extends EventEmitter {
     return destroySession?.();
   };
 
+  /**
+   * Gets Express Session config params to configure the session.
+   * @returns Session options.
+   */
   public getExpressSessionConfig = (): SessionOptions => {
     return {
       ...this.getDefaultExpressSessionConfig(),
       ...this._config.providers?.sessionConfig?.sessionOptions,
-      ...(!!this._config.providers?.sessionConfig?.store
+      ...(this._config.providers?.sessionConfig?.store
         ? { store: this._config.providers?.sessionConfig?.store(session) }
         : {}),
     };
   };
 
+  /**
+   * Gets default Express Session Config.
+   * @returns Default session options
+   */
   private getDefaultExpressSessionConfig = (): SessionOptions => ({
     name: 'ssx-session-storage',
     secret: this._config.signingKey,

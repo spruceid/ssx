@@ -4,7 +4,7 @@
 
 ## SSXLogFields.timestamp property
 
-RFC-3339 time of resource generation, defaults to now
+RFC-3339 time of resource generation, defaults to now.
 
 <b>Signature:</b>
 

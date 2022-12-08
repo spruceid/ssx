@@ -9,14 +9,14 @@ Applies the "afterSignIn" methods of the extensions.
 <b>Signature:</b>
 
 ```typescript
-afterSignIn(session: SSXSession): Promise<void>;
+afterSignIn(session: SSXClientSession): Promise<void>;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  session | [SSXSession](./ssx.ssxsession.md) |  |
+|  session | [SSXClientSession](./ssx.ssxclientsession.md) | SSXClientSession object. |
 
 <b>Returns:</b>
 

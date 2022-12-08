@@ -4,7 +4,7 @@
 
 ## SSXLogFields interface
 
-Allowed fields for an SSX Log
+Allowed fields for an SSX Log.
 
 <b>Signature:</b>
 
@@ -16,8 +16,8 @@ export interface SSXLogFields
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [content](./ssx-server.ssxlogfields.content.md) |  | string \| Record&lt;string, any&gt; | Any JSON stringifiable structure to be logged |
-|  [timestamp?](./ssx-server.ssxlogfields.timestamp.md) |  | string | <i>(Optional)</i> RFC-3339 time of resource generation, defaults to now |
-|  [type](./ssx-server.ssxlogfields.type.md) |  | [SSXEventLogTypes](./ssx-server.ssxeventlogtypes.md) | Type of content being logged |
-|  [userId](./ssx-server.ssxlogfields.userid.md) |  | string | Unique identifier for the user, formatted as a DID |
+|  [content](./ssx-server.ssxlogfields.content.md) |  | string \| Record&lt;string, any&gt; | Any JSON stringifiable structure to be logged. |
+|  [timestamp?](./ssx-server.ssxlogfields.timestamp.md) |  | string | <i>(Optional)</i> RFC-3339 time of resource generation, defaults to now. |
+|  [type](./ssx-server.ssxlogfields.type.md) |  | [SSXEventLogTypes](./ssx-server.ssxeventlogtypes.md) | Type of content being logged. |
+|  [userId](./ssx-server.ssxlogfields.userid.md) |  | string | Unique identifier for the user, formatted as a DID. |
 

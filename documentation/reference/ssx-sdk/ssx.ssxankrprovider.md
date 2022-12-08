@@ -4,14 +4,14 @@
 
 ## SSXAnkrProvider type
 
-Ankr provider settings
+Ankr provider settings.
 
 <b>Signature:</b>
 
 ```typescript
 export declare type SSXAnkrProvider = {
     service: SSXRPCProviders.SSXAnkrProvider;
-    apiKey?: string | number;
+    apiKey?: string;
     network?: SSXAnkrProviderNetworks;
 };
 ```

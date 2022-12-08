@@ -9,6 +9,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-      - name: Install dependencies, build and test
-        run: npm run ci
+          node-version: "18.x"
+      - name: Install dependencies and build packages
+        run: |
+          yarn
+          yarn test
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          name: Push coverage results
+          fail_ci_if_error: true
+          verbose: true

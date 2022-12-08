@@ -4,7 +4,7 @@
 
 ## SSXAnkrProviderNetworks enum
 
-Enum of supported networks for Ankr
+Enum of supported networks for Ankr.
 
 <b>Signature:</b>
 

@@ -4,7 +4,7 @@
 
 ## SSXInfuraProviderProjectSettings type
 
-Infura provider project settings
+Infura provider project settings.
 
 <b>Signature:</b>
 

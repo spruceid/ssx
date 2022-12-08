@@ -4,8 +4,10 @@
 
 ## SSXConnected.config property
 
+SSXConfig object.
+
 <b>Signature:</b>
 
 ```typescript
-config: SSXConfig;
+config: SSXClientConfig;
 ```

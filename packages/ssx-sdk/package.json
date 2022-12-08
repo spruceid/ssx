@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx",
-  "version": "0.1.1",
+  "version": "1.1.0",
   "description": "An identity solution that enables SSI to JS/TS dApps.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,7 +27,8 @@
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
     "siwe": "^2.1.2",
-    "@spruceid/ssx-gnosis-extension": "*",
+    "@spruceid/ssx-core": "1.0.0",
+    "@spruceid/ssx-gnosis-extension": "1.1.0",
     "@spruceid/ssx-sdk-wasm": "0.1.2",
     "@types/lodash.merge": "^4.6.7",
     "assert": "^2.0.0",
@@ -66,19 +67,12 @@
     "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "eth-testing": "^1.1.0",
     "gh-pages": "^4.0.0",
-    "jest": "^28.1.0",
-    "jest-environment-jsdom": "^28.1.0",
-    "ts-jest": "^28.0.3",
-    "ts-loader": "^9.3.0",
-    "ts-node": "^10.8.0",
     "typedoc": "^0.23.0",
     "typedoc-plugin-markdown": "^3.12.1",
     "typescript": "^4.7.2",
     "webpack": "^5.73.0",
-    "webpack-cli": "^4.9.2",
-    "wepack-cli": "^0.0.1-security"
+    "webpack-cli": "^4.9.2"
   },
   "files": [
     "dist"

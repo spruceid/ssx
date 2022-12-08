@@ -9,7 +9,7 @@ Core config for SSX.
 <b>Signature:</b>
 
 ```typescript
-export declare interface SSXConfig 
+export interface SSXClientConfig 
 ```
 
 ## Properties
@@ -17,7 +17,7 @@ export declare interface SSXConfig
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [enableDaoLogin?](./ssx.ssxconfig.enabledaologin.md) |  | boolean | <i>(Optional)</i> Whether or not daoLogin is enabled. |
-|  [providers?](./ssx.ssxconfig.providers.md) |  | [SSXProviders](./ssx.ssxproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
-|  [siweConfig?](./ssx.ssxconfig.siweconfig.md) |  | [SiweConfig](./ssx.siweconfig.md) | <i>(Optional)</i> Optional session configuration for the SIWE message. |
-|  [storage?](./ssx.ssxconfig.storage.md) |  | [StorageModule](./ssx.storagemodule.md) | <i>(Optional)</i> |
+|  [providers?](./ssx.ssxconfig.providers.md) |  | [SSXClientProviders](./ssx.ssxproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
+|  [resolveEns?](./ssx.ssxconfig.resolveens.md) |  | boolean \| SSXEnsConfig | <i>(Optional)</i> Whether or not ENS resolution is enabled. True means resolve all on client. |
+|  [siweConfig?](./ssx.ssxconfig.siweconfig.md) |  | SiweConfig | <i>(Optional)</i> Optional session configuration for the SIWE message. |
 

@@ -4,7 +4,7 @@
 
 ## SSXGenericProvider type
 
-Generic provider settings
+Generic provider settings.
 
 <b>Signature:</b>
 

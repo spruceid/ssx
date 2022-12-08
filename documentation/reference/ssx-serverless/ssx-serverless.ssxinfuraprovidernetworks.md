@@ -4,7 +4,7 @@
 
 ## SSXInfuraProviderNetworks enum
 
-Enum of supported networks for Infura
+Enum of supported networks for Infura.
 
 <b>Signature:</b>
 

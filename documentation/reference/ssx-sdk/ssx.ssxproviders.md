@@ -9,14 +9,14 @@ SSX web3 configuration settings
 <b>Signature:</b>
 
 ```typescript
-export declare interface SSXProviders 
+export interface SSXClientProviders 
 ```
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [rpc?](./ssx.ssxproviders.rpc.md) |  | [SSXRPCProvider](./ssx.ssxrpcprovider.md) | <i>(Optional)</i> JSON RPC provider configurations |
-|  [server?](./ssx.ssxproviders.server.md) |  | [SSXProviderServer](./ssx.ssxproviderserver.md) | <i>(Optional)</i> Optional reference to server running ssx-server. Providing this field enables communication with ssx-server |
-|  [web3?](./ssx.ssxproviders.web3.md) |  | [SSXProviderWeb3](./ssx.ssxproviderweb3.md) | <i>(Optional)</i> Web3 wallet provider |
+|  [rpc?](./ssx.ssxproviders.rpc.md) |  | SSXRPCProvider | <i>(Optional)</i> JSON RPC provider configurations |
+|  [server?](./ssx.ssxproviders.server.md) |  | SSXProviderServer | <i>(Optional)</i> Optional reference to server running ssx-server. Providing this field enables communication with ssx-server |
+|  [web3?](./ssx.ssxproviders.web3.md) |  | SSXProviderWeb3 | <i>(Optional)</i> Web3 wallet provider |
 

@@ -4,10 +4,12 @@
 
 ## SSXRPCProvider type
 
+Supported provider types.
+
 <b>Signature:</b>
 
 ```typescript
-export declare type SSXRPCProvider = SSXEtherscanProvider | SSXInfuraProvider | SSXAlchemyProvider | SSXCloudflareProvider | SSXPocketProvider | SSXAnkrProvider | SSXCustomProvider;
+export declare type SSXRPCProvider = SSXGenericProvider | SSXEtherscanProvider | SSXInfuraProvider | SSXAlchemyProvider | SSXCloudflareProvider | SSXPocketProvider | SSXAnkrProvider | SSXCustomProvider;
 ```
-<b>References:</b> [SSXEtherscanProvider](./ssx.ssxetherscanprovider.md)<!-- -->, [SSXInfuraProvider](./ssx.ssxinfuraprovider.md)<!-- -->, [SSXAlchemyProvider](./ssx.ssxalchemyprovider.md)<!-- -->, [SSXCloudflareProvider](./ssx.ssxcloudflareprovider.md)<!-- -->, [SSXPocketProvider](./ssx.ssxpocketprovider.md)<!-- -->, [SSXAnkrProvider](./ssx.ssxankrprovider.md)<!-- -->, [SSXCustomProvider](./ssx.ssxcustomprovider.md)
+<b>References:</b> [SSXGenericProvider](./ssx.ssxgenericprovider.md)<!-- -->, [SSXEtherscanProvider](./ssx.ssxetherscanprovider.md)<!-- -->, [SSXInfuraProvider](./ssx.ssxinfuraprovider.md)<!-- -->, [SSXAlchemyProvider](./ssx.ssxalchemyprovider.md)<!-- -->, [SSXCloudflareProvider](./ssx.ssxcloudflareprovider.md)<!-- -->, [SSXPocketProvider](./ssx.ssxpocketprovider.md)<!-- -->, [SSXAnkrProvider](./ssx.ssxankrprovider.md)<!-- -->, [SSXCustomProvider](./ssx.ssxcustomprovider.md)
 

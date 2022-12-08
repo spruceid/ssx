@@ -4,7 +4,7 @@
 
 ## SSXLogFields.type property
 
-Type of content being logged
+Type of content being logged.
 
 <b>Signature:</b>
 

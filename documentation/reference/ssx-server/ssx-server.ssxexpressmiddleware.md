@@ -9,5 +9,5 @@ This middleware function has two key functions: 1. It provides 3 endpoints for t
 <b>Signature:</b>
 
 ```typescript
-SSXExpressMiddleware: (ssx: SSXServer) => import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>[]
+SSXExpressMiddleware: (ssx: SSXServer, routes?: SSXServerRoutes) => import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>[]
 ```

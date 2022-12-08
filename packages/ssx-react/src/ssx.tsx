@@ -1,24 +1,40 @@
-import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
-import { SSX, SSXConfig } from "@spruceid/ssx";
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
+import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
 
-/** Props for SSX Provider */
-export interface SSXProviderProps {
-  /** Optional SSX configuration, used for instantiating an SSX Instance */
-  ssxConfig?: SSXConfig;
-  /** Provider child nodes, for rendering*/
-  children: ReactNode;
+/** Interface for SSX Web3 Provider. */
+export interface SSXWeb3Provider {
+  /** web3 Provider. */
+  provider: any;
+  /** web3 Provider Loaded. */
+  providerLoaded?: boolean;
 }
 
-/** Interface for contents provided to the Hook */
+/** Props for SSX Provider. */
+export interface SSXProviderProps {
+  /** Optional SSX configuration, used for instantiating an SSX Instance. */
+  ssxConfig?: SSXClientConfig;
+  /** Provider child nodes, for rendering. */
+  children: ReactNode;
+  /** Optional SSX Signer. Will . */
+  web3Provider?: SSXWeb3Provider;
+}
+
+/** Interface for contents provided to the Hook. */
 export interface SSXContextInterface {
-  /** SSX Instance */
+  /** SSX Instance. */
   ssx: SSX | undefined;
-  /** SSX Instance loading state */
+  /** SSX Instance loading state. */
   ssxLoaded: boolean;
 }
 
-/** Default, uninitialized context */
+/** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {
   ssx: undefined,
   ssxLoaded: false,
@@ -26,9 +42,26 @@ const defaultContext: SSXContextInterface = {
 
 const SSXContext = createContext(defaultContext);
 
-/** SSX Provider Component */
-export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
-  const { data: signer, isSuccess: signerLoaded } = (typeof window !== 'undefined' && useSigner()) || { data: undefined, isSuccess: false };
+/** SSX Provider Component. */
+export const SSXProvider = ({
+  ssxConfig,
+  children,
+  web3Provider,
+}: SSXProviderProps) => {
+  let provider, providerLoaded;
+  let usingWagmi = false;
+
+  if (web3Provider) {
+    provider = web3Provider.provider;
+    providerLoaded = web3Provider.providerLoaded || true;
+  } else {
+    // assume using wagmi.sh if no provider is provided
+    usingWagmi = true;
+    ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
+      'undefined' &&
+      useSigner()) || { data: undefined, isSuccess: false });
+  }
+
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
@@ -40,19 +73,19 @@ export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
         providers: {
           ...ssxConfig?.providers,
           web3: {
-            driver: signer?.provider,
+            driver: usingWagmi ? provider?.provider : provider,
             ...ssxConfig?.providers?.web3,
           },
-        }
+        },
       };
       const ssxInstance = new SSX(modifiedSSXConfig);
       setSSX(ssxInstance);
       setSSXLoaded(true);
     }
-    if (signerLoaded && signer) {
+    if (providerLoaded && provider) {
       initializeSSX();
     }
-  }, [signer, signerLoaded, ssxConfig]);
+  }, [provider, providerLoaded, ssxConfig]);
 
   const SSXProviderValue: SSXContextInterface = {
     ssx,
@@ -64,9 +97,9 @@ export const SSXProvider = ({ ssxConfig, children }: SSXProviderProps) => {
       {children}
     </SSXContext.Provider>
   );
-}
+};
 
-/** Hook for accessing SSX instance and state */
+/** Hook for accessing SSX instance and state. */
 export const useSSX = (): SSXContextInterface => {
   return useContext(SSXContext);
 };

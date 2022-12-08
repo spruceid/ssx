@@ -4,6 +4,8 @@
 
 ## isSSXAnkrProvider variable
 
+Type-Guard for SSXAnkrProvider.
+
 <b>Signature:</b>
 
 ```typescript

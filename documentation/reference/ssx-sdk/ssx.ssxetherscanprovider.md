@@ -4,14 +4,14 @@
 
 ## SSXEtherscanProvider type
 
-Etherscan provider settings
+Etherscan provider settings.
 
 <b>Signature:</b>
 
 ```typescript
 export declare type SSXEtherscanProvider = {
     service: SSXRPCProviders.SSXEtherscanProvider;
-    apiKey?: string | number;
+    apiKey?: string;
     network?: SSXEtherscanProviderNetworks;
 };
 ```

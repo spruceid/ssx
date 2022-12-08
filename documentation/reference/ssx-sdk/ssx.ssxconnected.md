@@ -9,8 +9,9 @@ An intermediate SSX state: connected, but not signed-in.
 <b>Signature:</b>
 
 ```typescript
-export declare class SSXConnected 
+export declare class SSXConnected implements ISSXConnected 
 ```
+<b>Implements:</b> [ISSXConnected](./ssx.issxconnected.md)
 
 ## Constructors
 
@@ -23,12 +24,12 @@ export declare class SSXConnected
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [afterConnectHooksPromise](./ssx.ssxconnected.afterconnecthookspromise.md) |  | Promise&lt;void&gt; | Promise that is initialized on construction of this class to run the "afterConnect" methods of the extensions. |
-|  [api?](./ssx.ssxconnected.api.md) |  | AxiosInstance | <i>(Optional)</i> |
-|  [builder](./ssx.ssxconnected.builder.md) |  | ssxSession.SSXSessionBuilder |  |
-|  [config](./ssx.ssxconnected.config.md) |  | [SSXConfig](./ssx.ssxconfig.md) |  |
-|  [extensions](./ssx.ssxconnected.extensions.md) |  | [SSXExtension](./ssx.ssxextension.md)<!-- -->\[\] |  |
-|  [isExtensionEnabled](./ssx.ssxconnected.isextensionenabled.md) |  | (namespace: string) =&gt; boolean |  |
-|  [provider](./ssx.ssxconnected.provider.md) |  | ethers.providers.Web3Provider |  |
+|  [api?](./ssx.ssxconnected.api.md) |  | AxiosInstance | <i>(Optional)</i> Axios instance. |
+|  [builder](./ssx.ssxconnected.builder.md) |  | ssxSession.SSXSessionBuilder | Instance of SSXSessionBuilder |
+|  [config](./ssx.ssxconnected.config.md) |  | [SSXClientConfig](./ssx.ssxclientconfig.md) | SSXConfig object. |
+|  [extensions](./ssx.ssxconnected.extensions.md) |  | [SSXExtension](./ssx.ssxextension.md)<!-- -->\[\] | Enabled extensions. |
+|  [isExtensionEnabled](./ssx.ssxconnected.isextensionenabled.md) |  | (namespace: string) =&gt; boolean | Verifies if extension is enabled. |
+|  [provider](./ssx.ssxconnected.provider.md) |  | ethers.providers.Web3Provider | EthersJS provider. |
 
 ## Methods
 
@@ -36,8 +37,8 @@ export declare class SSXConnected
 |  --- | --- | --- |
 |  [afterSignIn(session)](./ssx.ssxconnected.aftersignin.md) |  | Applies the "afterSignIn" methods of the extensions. |
 |  [applyExtensions()](./ssx.ssxconnected.applyextensions.md) |  | Applies the "afterConnect" methods and the delegated capabilities of the extensions. |
-|  [signIn()](./ssx.ssxconnected.signin.md) |  | <p>Requests the user to sign in.</p><p>Generates the SIWE message for this session, requests the configured Signer to sign the message, calls the "afterSignIn" methods of the extensions and returns the SSXSession object.</p> |
-|  [signOut(session)](./ssx.ssxconnected.signout.md) |  |  |
-|  [ssxServerLogin(session)](./ssx.ssxconnected.ssxserverlogin.md) |  |  |
-|  [ssxServerNonce(params)](./ssx.ssxconnected.ssxservernonce.md) |  |  |
+|  [signIn()](./ssx.ssxconnected.signin.md) |  | Requests the user to sign in. Generates the SIWE message for this session, requests the configured Signer to sign the message, calls the "afterSignIn" methods of the extensions. |
+|  [signOut(session)](./ssx.ssxconnected.signout.md) |  | Requests the user to sign out. |
+|  [ssxServerLogin(session)](./ssx.ssxconnected.ssxserverlogin.md) |  | Requests sign in from server and returns session. |
+|  [ssxServerNonce(params)](./ssx.ssxconnected.ssxservernonce.md) |  | Requests nonce from server. |
 

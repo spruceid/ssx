@@ -4,7 +4,7 @@
 
 ## SSXLogFields.content property
 
-Any JSON stringifiable structure to be logged
+Any JSON stringifiable structure to be logged.
 
 <b>Signature:</b>
 

@@ -4,7 +4,7 @@
 
 ## SSXServer.log property
 
-Registers a new event to the API
+Registers a new event to the API.
 
 <b>Signature:</b>
 

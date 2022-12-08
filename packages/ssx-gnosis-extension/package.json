@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-gnosis-extension",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "A SSX extension that enables Gnosis Safe",
   "main": "dist/index.js",
   "repository": {
@@ -13,7 +13,11 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@spruceid/ssx-core": "1.0.0"
   },
   "peerDependencies": {
     "siwe": "^2.1.2",

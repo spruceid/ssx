@@ -18,7 +18,10 @@ function AccountInfo({ address, session }) {
       </h2>
       {
         session?.ens &&
-          (session?.ens.domain || session?.ens.avatarUrl) ?
+          (
+            session?.ens.domain || session?.ens.avatarUrl ||
+            session?.ens.ensName || session?.ens.ensAvatarUrl
+          ) ?
           <div>
             <b className='AccountInfo-label'>
               ENS
@@ -26,18 +29,18 @@ function AccountInfo({ address, session }) {
             <br />
             <div className='AccountInfo-container'>
               {
-                session.ens.avatarUrl ?
+                session.ens.avatarUrl || session.ens.ensAvatarUrl ?
                   <img
                     className='AccountInfo-avatar'
-                    src={session.ens.avatarUrl}
+                    src={session.ens.avatarUrl ?? session.ens.ensAvatarUrl}
                     alt='ENS avatar'
                   /> :
                   null
               }
               {
-                session.ens.domain ?
+                session.ens.domain || session.ens.ensName ?
                   <code className='AccountInfo-value'>
-                    {session.ens.domain}
+                    {session.ens.domain || session.ens.ensName}
                   </code> :
                   null
               }

@@ -4,7 +4,7 @@
 
 ## SSXInfuraProvider type
 
-Infura provider settings
+Infura provider settings.
 
 <b>Signature:</b>
 

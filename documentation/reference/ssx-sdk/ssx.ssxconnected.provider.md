@@ -4,6 +4,8 @@
 
 ## SSXConnected.provider property
 
+EthersJS provider.
+
 <b>Signature:</b>
 
 ```typescript

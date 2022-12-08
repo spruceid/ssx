@@ -4,7 +4,7 @@
 
 ## SSXPocketProvider type
 
-Pocket provider settings
+Pocket provider settings.
 
 <b>Signature:</b>
 

@@ -16,7 +16,7 @@ export interface SSXServerConfig
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [providers?](./ssx-server.ssxserverconfig.providers.md) |  | [SSXProviders](./ssx-server.ssxproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
+|  [providers?](./ssx-server.ssxserverconfig.providers.md) |  | [SSXServerProviders](./ssx-server.ssxserverproviders.md) | <i>(Optional)</i> Connection to a cryptographic keypair and/or network. |
 |  [signingKey?](./ssx-server.ssxserverconfig.signingkey.md) |  | string | <i>(Optional)</i> A key used for signing cookies coming from the server. Providing this key enables signed cookies. |
 |  [useSecureCookies?](./ssx-server.ssxserverconfig.usesecurecookies.md) |  | boolean | <i>(Optional)</i> Changes cookie attributes. Determines whether or not server cookies require HTTPS and sets the SameSite attribute to 'lax'. Defaults to false |
 

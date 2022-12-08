@@ -4,7 +4,7 @@
 
 ## SSXEtherscanProvider type
 
-Etherscan provider settings
+Etherscan provider settings.
 
 <b>Signature:</b>
 

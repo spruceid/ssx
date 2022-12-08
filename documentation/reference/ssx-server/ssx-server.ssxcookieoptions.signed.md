@@ -4,7 +4,7 @@
 
 ## SSXCookieOptions.signed property
 
-Whether or not cookies should be signed. Recommended true for production. Set to true by providing a signing key. If false, cookies can be tampered with on the client
+Whether or not cookies should be signed. Recommended true for production. Set to true by providing a signing key. If false, cookies can be tampered with on the client.
 
 <b>Signature:</b>
 

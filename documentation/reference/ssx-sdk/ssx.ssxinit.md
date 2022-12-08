@@ -4,7 +4,7 @@
 
 ## SSXInit class
 
-Initializer for an SSXSession.
+Initializer for an SSXClientSession.
 
 <b>Signature:</b>
 

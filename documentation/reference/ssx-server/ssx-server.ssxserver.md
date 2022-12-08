@@ -24,10 +24,11 @@ export declare class SSXServer extends EventEmitter
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [generateNonce](./ssx-server.ssxserver.generatenonce.md) |  | () =&gt; string | Generates a nonce for use in the SSX client libraries. Nonce is a random string that is used to prevent replay attacks. Wraps the generateNonce function from the SIWE library. |
-|  [getExpressSessionConfig](./ssx-server.ssxserver.getexpresssessionconfig.md) |  | () =&gt; SessionOptions |  |
+|  [getExpressSessionConfig](./ssx-server.ssxserver.getexpresssessionconfig.md) |  | () =&gt; SessionOptions | Gets Express Session config params to configure the session. |
 |  [log](./ssx-server.ssxserver.log.md) |  | (data: [SSXLogFields](./ssx-server.ssxlogfields.md)<!-- -->) =&gt; Promise&lt;boolean&gt; | Registers a new event to the API |
-|  [login](./ssx-server.ssxserver.login.md) |  | (siwe: SiweMessage \| string, signature: string, daoLogin: boolean, nonce: string) =&gt; Promise&lt;{ success: boolean; error: SiweError; session: Partial&lt;SessionData&gt;; }&gt; | Verifies the SIWE message, signature, and nonce for a sign-in request. If the message is verified, a session token is generated and returned. |
+|  [login](./ssx-server.ssxserver.login.md) |  | (siwe: Partial&lt;SiweMessage&gt; \| string, signature: string, daoLogin: boolean, resolveEns: boolean \| [SSXEnsResolveOptions](./ssx-server.ssxensresolveoptions.md)<!-- -->, nonce: string) =&gt; Promise&lt;{ success: boolean; error: SiweError; session: Partial&lt;SessionData&gt;; }&gt; | Verifies the SIWE message, signature, and nonce for a sign-in request. If the message is verified, a session token is generated and returned. |
 |  [logout](./ssx-server.ssxserver.logout.md) |  | (destroySession?: () =&gt; Promise&lt;any&gt;) =&gt; Promise&lt;boolean&gt; | Logs out the user by deleting the session. Currently this is a no-op. |
-|  [provider](./ssx-server.ssxserver.provider.md) |  | ethers.providers.Provider |  |
-|  [session](./ssx-server.ssxserver.session.md) |  | RequestHandler | session is a configured instance of express-session middleware |
+|  [provider](./ssx-server.ssxserver.provider.md) |  | ethers.providers.BaseProvider | EthersJS provider. |
+|  [resolveEns](./ssx-server.ssxserver.resolveens.md) |  | (address: string, resolveEnsOpts?: [SSXEnsResolveOptions](./ssx-server.ssxensresolveoptions.md)<!-- -->) =&gt; Promise&lt;[SSXEnsData](./ssx-server.ssxensdata.md)<!-- -->&gt; | ENS data supported by SSX. |
+|  [session](./ssx-server.ssxserver.session.md) |  | RequestHandler | Session is a configured instance of express-session middleware. |
 

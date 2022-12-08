@@ -4,7 +4,7 @@
 
 ## SSXRPCProviders enum
 
-Enum of supported RPC providers
+Enum of supported EthersJS providers.
 
 <b>Signature:</b>
 

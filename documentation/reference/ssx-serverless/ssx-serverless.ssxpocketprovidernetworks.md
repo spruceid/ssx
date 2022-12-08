@@ -4,7 +4,7 @@
 
 ## SSXPocketProviderNetworks enum
 
-Enum of supported networks for Pocket
+Enum of supported networks for Pocket.
 
 <b>Signature:</b>
 

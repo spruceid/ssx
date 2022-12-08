@@ -9,7 +9,7 @@ Verifies the SIWE message, signature, and nonce for a sign-in request. If the me
 <b>Signature:</b>
 
 ```typescript
-login: (siwe: SiweMessage | string, signature: string, daoLogin: boolean, nonce: string) => Promise<{
+login: (siwe: Partial<SiweMessage> | string, signature: string, daoLogin: boolean, resolveEns: boolean | SSXEnsResolveOptions, nonce: string) => Promise<{
         success: boolean;
         error: SiweError;
         session: Partial<SessionData>;
