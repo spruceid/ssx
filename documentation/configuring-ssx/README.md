@@ -19,7 +19,8 @@ SSX enables an easy way for users to sign in on behalf of a Gnosis Safe multisig
       enableDaoLogin: true,
     });
     await ssx.signIn();
-};</code></pre>
+};
+</code></pre>
 
 ### Customizing Fields in the SIWE Message
 
@@ -80,7 +81,8 @@ const ssx = new SSX({
  const ensData = await ssx.resolveEns("0xADDRESS", {
     domain: false,
     avatar: true,
-  });</code></pre>
+  });
+</code></pre>
 
 #### [siweConfig](broken-reference)
 
@@ -110,11 +112,24 @@ const ssx = new SSX({
 
 #### [providers.server](broken-reference)
 
-The server field is an optional reference to a corresponding server running `ssx-server`. Providing these fields enables automatic communication with the server to establish sessions upon successful SIWE signing. For more information on configuring `ssx-server`, check out the [readme-1.md](../readme-1.md "mention"):
+The server field is an optional reference to a corresponding server running `ssx-server`. Providing the `host` field enables automatic communication with the server to establish sessions upon successful SIWE signing.&#x20;
+
+`ssx` and `ssx-server` have default paths configured for the endpoints (`nonce: '/ssx-nonce'`, `login: '/ssx-login'` and `logout: '/ssx-logout'`), but you can override it by providing the property `routes`. It isn't necessary to override all of them, you can only override one of them.
+
+For more information on configuring `ssx-server`, check out the [readme-1.md](../readme-1.md "mention"):
 
 ```javascript
 const ssx = new SSX({
-    providers: { server: { host: "http://localhost:3001" } }
+    providers: { 
+        server: { 
+            host: 'http://localhost:3001' 
+            routes: {
+                nonce: '/ssx-custom-nonce',
+                login: '/ssx-custom-login',
+                logout: '/ssx-custom-logout',
+            }
+        } 
+    }
 });
 ```
 

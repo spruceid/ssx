@@ -91,4 +91,10 @@ const ssx = new SSXServer({
 
 // const app = express();
 app.use(SSXExpressMiddleware(ssx));
+/* It's possible to override the routes by passing a second parameter:
+app.use(SSXExpressMiddleware(ssx, {
+  nonce: '/ssx-custom-nonce',
+  login: '/ssx-custom-login',
+  logout: '/ssx-custom-logout',
+})); */
 ```

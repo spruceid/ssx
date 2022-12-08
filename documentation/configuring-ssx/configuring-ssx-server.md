@@ -21,6 +21,12 @@ const ssx = new SSXServer({
 });
 
 const ssxMiddleware = SSXHttpMiddleware(ssx);
+/* It's possible to override the routes by passing a second parameter:
+const ssxMiddleware = SSXHttpMiddleware(ssx, {
+  nonce: '/ssx-custom-nonce',
+  login: '/ssx-custom-login',
+  logout: '/ssx-custom-logout',
+}); */
 
 const processRequest = async (req: IncomingMessage, res: ServerResponse) => { ... };
 
