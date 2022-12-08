@@ -10,8 +10,8 @@ SSX is a library that enables you to easily integrate [Sign-In with Ethereum](ht
 
 To hop right in, check out our Quickstart guide:
 
-{% content-ref url="readme-1.md" %}
-[readme-1.md](readme-1.md)
+{% content-ref url="ssx-quickstart.md" %}
+[ssx-quickstart.md](ssx-quickstart.md)
 {% endcontent-ref %}
 
 ### **How Does it Work?**

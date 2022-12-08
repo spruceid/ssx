@@ -1,7 +1,7 @@
 # Table of contents
 
 * [SSX](README.md)
-* [⚡ SSX Quickstart](readme-1.md)
+* [⚡ SSX Quickstart](ssx-quickstart.md)
 * [🛠 Configuring SSX](configuring-ssx/README.md)
   * [Configuring SSX Server](configuring-ssx/configuring-ssx-server.md)
   * [Configuring SSX with React](configuring-ssx/configuring-ssx-with-react.md)
@@ -16,6 +16,7 @@
 * [Moving From SIWE to SSX](appendix/moving-from-siwe-to-ssx.md)
 
 ## Reference
+
 * [SSX API Reference](reference/ssx-sdk/ssx.md)
   * [configoverrides](reference/ssx-sdk/ssx.configoverrides.md)
   * [extrafields](reference/ssx-sdk/ssx.extrafields.md)
@@ -42,7 +43,7 @@
     * [ssxservernonce](reference/ssx-sdk/ssx.issxconnected.ssxservernonce.md)
   * [siweconfig](reference/ssx-sdk/ssx.siweconfig.md)
   * [ssx](reference/ssx-sdk/ssx.ssx.md)
-    * [_constructor_](reference/ssx-sdk/ssx.ssx._constructor_.md)
+    * [constructor](reference/ssx-sdk/ssx.ssx.\_constructor\_.md)
     * [address](reference/ssx-sdk/ssx.ssx.address.md)
     * [chainid](reference/ssx-sdk/ssx.ssx.chainid.md)
     * [connection](reference/ssx-sdk/ssx.ssx.connection.md)
@@ -72,7 +73,7 @@
     * [resolveens](reference/ssx-sdk/ssx.ssxconfig.resolveens.md)
     * [siweconfig](reference/ssx-sdk/ssx.ssxconfig.siweconfig.md)
   * [ssxconnected](reference/ssx-sdk/ssx.ssxconnected.md)
-    * [_constructor_](reference/ssx-sdk/ssx.ssxconnected._constructor_.md)
+    * [constructor](reference/ssx-sdk/ssx.ssxconnected.\_constructor\_.md)
     * [afterconnecthookspromise](reference/ssx-sdk/ssx.ssxconnected.afterconnecthookspromise.md)
     * [aftersignin](reference/ssx-sdk/ssx.ssxconnected.aftersignin.md)
     * [api](reference/ssx-sdk/ssx.ssxconnected.api.md)
@@ -110,7 +111,7 @@
   * [ssxinfuraprovidernetworks](reference/ssx-sdk/ssx.ssxinfuraprovidernetworks.md)
   * [ssxinfuraproviderprojectsettings](reference/ssx-sdk/ssx.ssxinfuraproviderprojectsettings.md)
   * [ssxinit](reference/ssx-sdk/ssx.ssxinit.md)
-    * [_constructor_](reference/ssx-sdk/ssx.ssxinit._constructor_.md)
+    * [constructor](reference/ssx-sdk/ssx.ssxinit.\_constructor\_.md)
     * [connect](reference/ssx-sdk/ssx.ssxinit.connect.md)
     * [extend](reference/ssx-sdk/ssx.ssxinit.extend.md)
   * [ssxpocketprovider](reference/ssx-sdk/ssx.ssxpocketprovider.md)
@@ -282,7 +283,7 @@
   * [ssxrpcprovider](reference/ssx-server/ssx-server.ssxrpcprovider.md)
   * [ssxrpcproviders](reference/ssx-server/ssx-server.ssxrpcproviders.md)
   * [ssxserver](reference/ssx-server/ssx-server.ssxserver.md)
-    * [_constructor_](reference/ssx-server/ssx-server.ssxserver._constructor_.md)
+    * [constructor](reference/ssx-server/ssx-server.ssxserver.\_constructor\_.md)
     * [generatenonce](reference/ssx-server/ssx-server.ssxserver.generatenonce.md)
     * [getexpresssessionconfig](reference/ssx-server/ssx-server.ssxserver.getexpresssessionconfig.md)
     * [log](reference/ssx-server/ssx-server.ssxserver.log.md)
@@ -343,7 +344,7 @@
   * [ssxrpcprovider](reference/ssx-serverless/ssx-serverless.ssxrpcprovider.md)
   * [ssxrpcproviders](reference/ssx-serverless/ssx-serverless.ssxrpcproviders.md)
   * [ssxserver](reference/ssx-serverless/ssx-serverless.ssxserver.md)
-    * [_constructor_](reference/ssx-serverless/ssx-serverless.ssxserver._constructor_.md)
+    * [constructor](reference/ssx-serverless/ssx-serverless.ssxserver.\_constructor\_.md)
     * [generatenonce](reference/ssx-serverless/ssx-serverless.ssxserver.generatenonce.md)
     * [getnonce](reference/ssx-serverless/ssx-serverless.ssxserver.getnonce.md)
     * [log](reference/ssx-serverless/ssx-serverless.ssxserver.log.md)

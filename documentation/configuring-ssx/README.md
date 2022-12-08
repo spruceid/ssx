@@ -116,7 +116,7 @@ The server field is an optional reference to a corresponding server running `ssx
 
 `ssx` and `ssx-server` have default paths configured for the endpoints (`nonce: '/ssx-nonce'`, `login: '/ssx-login'` and `logout: '/ssx-logout'`), but you can override it by providing the property `routes`. It isn't necessary to override all of them, you can only override one of them.
 
-For more information on configuring `ssx-server`, check out the [readme-1.md](../readme-1.md "mention"):
+For more information on configuring `ssx-server`, check out the [ssx-quickstart.md](../ssx-quickstart.md "mention"):
 
 ```javascript
 const ssx = new SSX({
