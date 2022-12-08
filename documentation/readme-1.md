@@ -55,9 +55,8 @@ const signIn = async () => {
         server: { host: process.env.SERVER_URL },
       },
     });
-    await ssx.signIn();
-    const userAddress = ssx.address();
-    const session = ssx.session;
+    const { success, error, session } = await ssx.signIn();
+    const { address, siwe, signature, ens: { domain } } = session;
 };
 ```
 
