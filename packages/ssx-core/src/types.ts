@@ -1,6 +1,13 @@
 import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 
+/** SSX Route Configuration
+ *  This configuration is used to override the default endpoint paths.
+ * The config options here are a subset of the
+ * [AxiosRequestConfig](https://axios-http.com/docs/req_config).
+ * This type does not explicitly extend AxiosRequestConfig,
+ * but those options are supported by the client.
+ */
 export interface SSXRouteConfig {
   /** Endpoint path. */
   url: string;
