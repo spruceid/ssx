@@ -9,6 +9,7 @@ import {
   SSXEnsResolveOptions,
   ISSXConnected,
   SSXExtension,
+  isSSXRouteConfig,
 } from '@spruceid/ssx-core';
 
 /** Initializer for an SSXClientSession. */
@@ -168,13 +169,12 @@ siweConfig: { ...overrides?.siwe } };
       try {
         const route =
           this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
-        const requestConfig =
-          typeof route === 'string'
-            ? {
-                method: 'get',
-                url: route,
-              }
-            : route;
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'get',
+              url: route,
+            };
 
         nonce = (
           await this.api.request({
@@ -210,13 +210,12 @@ siweConfig: { ...overrides?.siwe } };
       try {
         const route =
           this.config.providers?.server?.routes?.login ?? '/ssx-login';
-        const requestConfig =
-          typeof route === 'string'
-            ? {
-                method: 'post',
-                url: route,
-              }
-            : route;
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'post',
+              url: route,
+            };
 
         const data = {
           signature: session.signature,
@@ -303,13 +302,12 @@ siweConfig: { ...overrides?.siwe } };
       try {
         const route =
           this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
-        const requestConfig =
-          typeof route === 'string'
-            ? {
-                method: 'post',
-                url: route,
-              }
-            : route;
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'post',
+              url: route,
+            };
         const data = { ...session };
 
         await this.api.request({

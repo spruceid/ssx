@@ -15,6 +15,11 @@ export interface SSXRouteConfig {
   method: 'get' | 'post' | 'put' | 'delete';
 }
 
+/** Type-Guard for SSXRouteConfig. */
+export const isSSXRouteConfig = (
+  config: SSXRouteConfig | string
+): config is SSXRouteConfig => typeof config === 'object';
+
 /** Server endpoints configuration. */
 export interface SSXServerRoutes {
   /** Get nonce endpoint path. /ssx-nonce as default. */
@@ -23,6 +28,16 @@ export interface SSXServerRoutes {
   login?: string | SSXRouteConfig;
   /** Post logout endpoint path. /ssx-logout as default. */
   logout?: string | SSXRouteConfig;
+}
+
+/** Server endpoints name configuration. */
+export interface SSXServerRouteNames {
+  /** Get nonce endpoint path. /ssx-nonce as default. */
+  nonce?: string;
+  /** Post login endpoint path. /ssx-login as default. */
+  login?: string;
+  /** Post logout endpoint path. /ssx-logout as default. */
+  logout?: string;
 }
 
 /** Supported provider types. */
