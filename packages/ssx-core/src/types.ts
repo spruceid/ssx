@@ -1,14 +1,19 @@
 import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 
+export interface SSXRouteConfig {
+  route: string;
+  method: 'get' | 'post' | 'put' | 'delete';
+}
+
 /** Server endpoints configuration. */
 export interface SSXServerRoutes {
   /** Get nonce endpoint path. /ssx-nonce as default. */
-  nonce?: string;
+  nonce?: string | SSXRouteConfig;
   /** Post login endpoint path. /ssx-login as default. */
-  login?: string;
+  login?: string | SSXRouteConfig;
   /** Post logout endpoint path. /ssx-logout as default. */
-  logout?: string;
+  logout?: string | SSXRouteConfig;
 }
 
 /** Supported provider types. */
