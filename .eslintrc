@@ -23,7 +23,6 @@
   ],
   "root": true,
   "rules": {
-    "object-property-newline": "error",
     "import/prefer-default-export": "off",
     "no-promise-executor-return": "warn",
     "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
@@ -35,5 +34,6 @@
     "no-plusplus": "off",
     "no-await-in-loop": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    
   },
 }

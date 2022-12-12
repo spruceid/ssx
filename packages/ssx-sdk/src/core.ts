@@ -118,8 +118,7 @@ export class SSXConnected implements ISSXConnected {
     for (const extension of this.extensions) {
       if (extension.afterConnect) {
         const overrides = await extension.afterConnect(this);
-        this.config = { ...this.config,
-siweConfig: { ...overrides?.siwe } };
+        this.config = { ...this.config, siweConfig: { ...overrides?.siwe } };
       }
 
       if (extension.namespace && extension.defaultActions) {
