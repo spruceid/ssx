@@ -6,7 +6,6 @@
 
 - b25cbde: Update the `SSXServerRoutes` type to accept a route configuration compatible with [Axios Request Config](SSXServerRoutes) to allow for more complex server configurations.
 - Updated dependencies [b25cbde]
-- Updated dependencies [b25cbde]
   - @spruceid/ssx-core@1.0.1
   - @spruceid/ssx-gnosis-extension@1.1.1
 

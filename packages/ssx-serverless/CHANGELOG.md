@@ -5,7 +5,6 @@
 ### Patch Changes
 
 - Updated dependencies [b25cbde]
-- Updated dependencies [b25cbde]
   - @spruceid/ssx-core@1.0.1
   - @spruceid/ssx-gnosis-extension@1.1.1
 

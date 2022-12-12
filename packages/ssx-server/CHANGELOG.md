@@ -6,7 +6,6 @@
 
 - b25cbde: Updated `SSXServerRoutes` type to `SSXServerRouteNames` to reflect usage in ssx-server
 - Updated dependencies [b25cbde]
-- Updated dependencies [b25cbde]
   - @spruceid/ssx-core@1.0.1
 
 ## 1.1.0
