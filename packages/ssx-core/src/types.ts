@@ -2,7 +2,9 @@ import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 
 export interface SSXRouteConfig {
-  route: string;
+  /** Endpoint path. */
+  url: string;
+  /** Endpoint request method. */
   method: 'get' | 'post' | 'put' | 'delete';
 }
 

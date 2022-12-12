@@ -117,7 +117,8 @@ export class SSXConnected implements ISSXConnected {
     for (const extension of this.extensions) {
       if (extension.afterConnect) {
         const overrides = await extension.afterConnect(this);
-        this.config = { ...this.config, siweConfig: { ...overrides?.siwe } };
+        this.config = { ...this.config,
+siweConfig: { ...overrides?.siwe } };
       }
 
       if (extension.namespace && extension.defaultActions) {
@@ -163,12 +164,23 @@ export class SSXConnected implements ISSXConnected {
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     if (this.api) {
       let nonce;
+
       try {
+        const route =
+          this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
+        const request =
+          typeof route === 'string'
+            ? {
+                method: 'get',
+                url: route,
+              }
+            : route;
+
         nonce = (
-          await this.api.get(
-            this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce',
-            { params }
-          )
+          await this.api.request({
+            ...request,
+            params,
+          })
         ).data;
       } catch (error) {
         console.error(error);
