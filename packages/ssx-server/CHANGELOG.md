@@ -1,5 +1,14 @@
 # @spruceid/ssx-server
 
+## 1.1.1
+
+### Patch Changes
+
+- b25cbde: Updated `SSXServerRoutes` type to `SSXServerRouteNames` to reflect usage in ssx-server
+- Updated dependencies [b25cbde]
+- Updated dependencies [b25cbde]
+  - @spruceid/ssx-core@1.0.1
+
 ## 1.1.0
 
 ### Minor Changes
@@ -28,6 +37,7 @@
 ### Patch Changes
 
 - c989838: Refactor code to avoid duplication and improve performance.
+
   - Adds `@spruceid/ssx-core` as a dependency;
   - Removes all types and interfaces declarations. They were moved to `ssx-core`;
   - Exports `SSXConfig` (deprecated) and `SSXServerConfig`;

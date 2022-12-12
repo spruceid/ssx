@@ -1,5 +1,12 @@
 # @spruceid/ssx-react
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [b25cbde]
+  - @spruceid/ssx@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
@@ -9,6 +16,7 @@
 ### Patch Changes
 
 - c989838: Refactor code to avoid duplication and improve performance.
+
   - Updates `ssxConfig?: SSXConfig;` on `SSXProviderProps` to `ssxConfig?: SSXClientConfig;` (non breaking change).
 
 - Updated dependencies [c989838]

@@ -1,10 +1,20 @@
 # @spruceid/ssx-serverless
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [b25cbde]
+- Updated dependencies [b25cbde]
+  - @spruceid/ssx-core@1.0.1
+  - @spruceid/ssx-gnosis-extension@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
 
 - c989838: Refactor code to avoid duplication and improve performance.
+
   - Adds `@spruceid/ssx-core` as a dependency;
   - Removes some types and interfaces declarations. They were moved to `ssx-core`;
   - Removes all utils functions. They were moved to `ssx-core`;
