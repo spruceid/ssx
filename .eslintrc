@@ -1,31 +1,29 @@
 {
   "env": {
     "browser": true,
-    "es2021": true,
+    "es2021": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
+    "plugin:prettier/recommended"
   ],
-  "ignorePatterns": [
-    "examples/",
-    "packages/create-ssx-dapp/",
-  ],
+  "ignorePatterns": ["examples/", "packages/create-ssx-dapp/"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": ["./tsconfig.json", "./packages/*/tsconfig.json"],
+    "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
   },
-  "plugins": [
-    "@typescript-eslint",
-  ],
+  "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": {
     "import/prefer-default-export": "off",
     "no-promise-executor-return": "warn",
-    "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ],
     "no-use-before-define": "warn",
     "import/extensions": "off",
     "import/no-unresolved": "off",
@@ -33,7 +31,6 @@
     "max-classes-per-file": "off",
     "no-plusplus": "off",
     "no-await-in-loop": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    
-  },
+    "@typescript-eslint/no-empty-interface": "off"
+  }
 }
