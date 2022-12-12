@@ -168,7 +168,7 @@ siweConfig: { ...overrides?.siwe } };
       try {
         const route =
           this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
-        const request =
+        const requestConfig =
           typeof route === 'string'
             ? {
                 method: 'get',
@@ -178,7 +178,7 @@ siweConfig: { ...overrides?.siwe } };
 
         nonce = (
           await this.api.request({
-            ...request,
+            ...requestConfig,
             params,
           })
         ).data;
@@ -208,16 +208,30 @@ siweConfig: { ...overrides?.siwe } };
         resolveEns = this.config.resolveEns.resolve;
       }
       try {
+        const route =
+          this.config.providers?.server?.routes?.login ?? '/ssx-login';
+        const requestConfig =
+          typeof route === 'string'
+            ? {
+                method: 'post',
+                url: route,
+              }
+            : route;
+
+        const data = {
+          signature: session.signature,
+          siwe: session.siwe,
+          address: session.address,
+          walletAddress: session.walletAddress,
+          chainId: session.chainId,
+          daoLogin: this.isExtensionEnabled('delegationRegistry'),
+          resolveEns,
+        };
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api
-          .post(this.config.providers?.server?.routes?.login ?? '/ssx-login', {
-            signature: session.signature,
-            siwe: session.siwe,
-            address: session.address,
-            walletAddress: session.walletAddress,
-            chainId: session.chainId,
-            daoLogin: this.isExtensionEnabled('delegationRegistry'),
-            resolveEns,
+          .request({
+            ...requestConfig,
+            data,
           })
           .then(response => response.data);
       } catch (error) {
@@ -287,10 +301,21 @@ siweConfig: { ...overrides?.siwe } };
   async signOut(session: SSXClientSession): Promise<void> {
     if (this.api) {
       try {
-        await this.api.post(
-          this.config.providers?.server?.routes?.logout ?? '/ssx-logout',
-          { ...session }
-        );
+        const route =
+          this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
+        const requestConfig =
+          typeof route === 'string'
+            ? {
+                method: 'post',
+                url: route,
+              }
+            : route;
+        const data = { ...session };
+
+        await this.api.request({
+          ...requestConfig,
+          data,
+        });
       } catch (error) {
         console.error(error);
         throw error;
