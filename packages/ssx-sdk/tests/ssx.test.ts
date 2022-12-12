@@ -53,6 +53,49 @@ test('Should override paths successfully', async () => {
   }).not.toThrowError();
 });
 
+test('Should override paths with SSXRouteConfig successfully', async () => {
+  expect(() => {
+    const ssx = new SSX({
+      providers: {
+        server: {
+          host: 'http://localhost:3001',
+          endpoints: {
+            nonce: { url: '/ssx-custom-nonce', method: 'post' },
+            login: { url: '/ssx-custom-login', method: 'post' },
+            logout: { url: '/ssx-custom-logout', method: 'post' },
+          },
+        },
+      },
+    });
+  }).not.toThrowError();
+});
+
+test('Should accept axios request config options successfully', async () => {
+  expect(() => {
+    const ssx = new SSX({
+      providers: {
+        server: {
+          host: 'http://localhost:3001',
+          endpoints: {
+            nonce: {
+              url: '/ssx-custom-nonce',
+              method: 'post',
+              headers: { 'X-Requested-With': 'XMLHttpRequest' },
+              transformRequest: [
+                function (data, headers) {
+                  // Do whatever you want to transform the data
+                  console.log('Test: transformRequest', data, headers);
+                  return data;
+                },
+              ],
+            },
+          },
+        },
+      },
+    });
+  }).not.toThrowError();
+});
+
 // test('Connect to wallet', async () => {
 //   // TODO: expose wallet connection interface
 // });
