@@ -93,6 +93,7 @@ test('Should call update getNonce successfuly', async () => {
 });
 
 test('Should call signIn successfuly', async () => {
+  jest.setTimeout(30000);
   const server = new SSXServer(
     {},
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
