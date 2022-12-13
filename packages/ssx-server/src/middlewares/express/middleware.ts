@@ -88,12 +88,13 @@ export const ssxMiddleware = (ssx: SSXServer) => {
 
     if (req.session?.siwe) {
       const { signature, siwe, daoLogin, nonce } = req.session;
-      const { success: verified, data } = await new SiweMessage(siwe).verify(
-        { signature, nonce },
-        {
-          verificationFallback: daoLogin ? SiweGnosisVerify : null,
-          provider: ssx.provider,
-        },
+      const { success: verified, data } = await new SiweMessage(siwe)
+        .verify(
+          { signature, nonce },
+          {
+            verificationFallback: daoLogin ? SiweGnosisVerify : null,
+            provider: ssx.provider,
+          },
         )
         .then((data) => ({ success: true, data }))
         .catch((error) => ({ success: false, error, data: null }));
