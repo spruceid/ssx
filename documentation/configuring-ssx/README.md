@@ -133,6 +133,24 @@ const ssx = new SSX({
 });
 ```
 
+Additionally, you can override the configuration of the API Request for any of the routes. This allows you make any custom request to an endpoint to get the nonce, login, or logout.&#x20;
+
+```javascript
+const ssx = new SSX({
+    providers: { 
+        server: { 
+            host: 'http://localhost:3001' 
+            routes: {
+                nonce:  {
+                    url: '/ssx-custom-nonce',
+                    method: 'post'
+                }
+            }
+        } 
+    }
+});
+```
+
 #### [providers.rpc](../reference/ssx-sdk/ssx.ssxrpcprovider.md)
 
 SSX Server supports all JSON RPC providers that are currently supported by [`ethers`](https://docs.ethers.io/v5/api/providers/api-providers/#api-providers), requiring only the credentials from the desired provider to instantiate it. The SSX library provides valid enumerated options for various RPC providers, but developers can also just use the valid strings, as seen below. A list of supported RPC providers can be found [here](../reference/ssx-sdk/ssx.ssxrpcproviders.md).
