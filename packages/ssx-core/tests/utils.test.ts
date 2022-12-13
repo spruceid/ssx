@@ -3,6 +3,8 @@ import {
   SSXRPCProvider,
   SSXRPCProviders,
   ssxResolveEns,
+  ssxResolveLens,
+  SSXInfuraProviderNetworks,
 } from '../src';
 
 const ssxRPCProviders: Record<string, SSXRPCProvider> = {
@@ -157,3 +159,62 @@ test('Should resolve ENS domain and avatar successfully', async () => {
     })
   ).resolves.not.toThrow();
 }, 10000);
+
+test('Should fail requesting Lens profile', async () => {
+  const provider = getProvider({
+    service: SSXRPCProviders.SSXInfuraProvider,
+    network: SSXInfuraProviderNetworks.POLYGON,
+  });
+
+  await expect(
+    ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF111')
+  ).rejects.toThrow();
+});
+
+test('Should resolve Lens profile on Mainnet with a message advertising about the network', async () => {
+  const provider = getProvider(ssxRPCProviders.infura);
+
+  await expect(
+    ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
+  ).resolves.toEqual(`Can not resolve Lens to 0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1 on network 'homestead'. Please use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`);
+});
+
+test('Should resolve Lens profile on Polygon Mainnet successfully', async () => {
+  const provider = getProvider({
+    service: SSXRPCProviders.SSXInfuraProvider,
+    network: SSXInfuraProviderNetworks.POLYGON,
+  });
+
+  await expect(
+    ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
+  ).resolves.toEqual(
+    expect.objectContaining({
+      items: [],
+      pageInfo: {
+        prev: '{"offset":0}',
+        next: '{"offset":0}',
+        totalCount: 0,
+      }
+    })
+  );
+});
+
+test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
+  const provider = getProvider({
+    service: SSXRPCProviders.SSXInfuraProvider,
+    network: SSXInfuraProviderNetworks.POLYGON_MUMBAI,
+  });
+
+  await expect(
+    ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
+  ).resolves.toEqual(
+    expect.objectContaining({
+      items: [],
+      pageInfo: {
+        prev: '{"offset":0}',
+        next: '{"offset":0}',
+        totalCount: 0,
+      }
+    })
+  );
+});
