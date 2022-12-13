@@ -123,6 +123,10 @@ const LENS_API_LINKS = {
 /**
  * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
  * limited by 10. To get other pages you must to pass the pageCursor parameter.
+ * 
+ * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+ * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+ *  
  * @param address - Ethereum User address.
  * @param pageCursor - Page cursor used to paginate the request. Default to 
  * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
