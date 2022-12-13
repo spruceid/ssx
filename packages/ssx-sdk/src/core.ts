@@ -9,6 +9,7 @@ import {
   SSXEnsResolveOptions,
   ISSXConnected,
   SSXExtension,
+  isSSXRouteConfig,
 } from '@spruceid/ssx-core';
 
 /** Initializer for an SSXClientSession. */
@@ -163,12 +164,22 @@ export class SSXConnected implements ISSXConnected {
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     if (this.api) {
       let nonce;
+
       try {
+        const route =
+          this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'get',
+              url: route,
+            };
+
         nonce = (
-          await this.api.get(
-            this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce',
-            { params }
-          )
+          await this.api.request({
+            ...requestConfig,
+            params,
+          })
         ).data;
       } catch (error) {
         console.error(error);
@@ -196,16 +207,29 @@ export class SSXConnected implements ISSXConnected {
         resolveEns = this.config.resolveEns.resolve;
       }
       try {
+        const route =
+          this.config.providers?.server?.routes?.login ?? '/ssx-login';
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'post',
+              url: route,
+            };
+
+        const data = {
+          signature: session.signature,
+          siwe: session.siwe,
+          address: session.address,
+          walletAddress: session.walletAddress,
+          chainId: session.chainId,
+          daoLogin: this.isExtensionEnabled('delegationRegistry'),
+          resolveEns,
+        };
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api
-          .post(this.config.providers?.server?.routes?.login ?? '/ssx-login', {
-            signature: session.signature,
-            siwe: session.siwe,
-            address: session.address,
-            walletAddress: session.walletAddress,
-            chainId: session.chainId,
-            daoLogin: this.isExtensionEnabled('delegationRegistry'),
-            resolveEns,
+          .request({
+            ...requestConfig,
+            data,
           })
           .then(response => response.data);
       } catch (error) {
@@ -275,10 +299,20 @@ export class SSXConnected implements ISSXConnected {
   async signOut(session: SSXClientSession): Promise<void> {
     if (this.api) {
       try {
-        await this.api.post(
-          this.config.providers?.server?.routes?.logout ?? '/ssx-logout',
-          { ...session }
-        );
+        const route =
+          this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
+        const requestConfig = isSSXRouteConfig(route)
+          ? route
+          : {
+              method: 'post',
+              url: route,
+            };
+        const data = { ...session };
+
+        await this.api.request({
+          ...requestConfig,
+          data,
+        });
       } catch (error) {
         console.error(error);
         throw error;

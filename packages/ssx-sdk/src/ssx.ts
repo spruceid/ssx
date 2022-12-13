@@ -42,8 +42,7 @@ export class SSX {
   constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
     this.init = new SSXInit({
       ...this.config,
-      providers: { ...SSX_DEFAULT_CONFIG.providers,
-...this.config?.providers },
+      providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers },
     });
 
     if (this.config.enableDaoLogin) {

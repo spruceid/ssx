@@ -1,9 +1,9 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServer } from '../../server';
-import { SSXServerRoutes } from '@spruceid/ssx-core';
+import { SSXServerRouteNames } from '@spruceid/ssx-core';
 
-const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRoutes) => {
+const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRouteNames) => {
   const router = express.Router();
 
   /**
