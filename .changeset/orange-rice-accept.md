@@ -2,4 +2,4 @@
 '@spruceid/ssx-server': patch
 ---
 
-Enabled `suppressExceptions` to provent verification errors from cause middleware crashes
+Improved promise resolution to the verification of the Siwe Message, preventing potential exceptions coming from the middleware.
