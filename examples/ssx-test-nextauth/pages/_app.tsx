@@ -6,6 +6,7 @@ import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
+import { SessionProvider } from "next-auth/react";
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
   throw new Error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
@@ -54,7 +55,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <SSXProvider ssxConfig={ssxConfig}> 
-          <Component {...pageProps} />
+          <SessionProvider session={pageProps.session} refetchInterval={0}>
+            <Component {...pageProps} />
+          </SessionProvider>
         </SSXProvider>
       </RainbowKitProvider>
     </WagmiConfig>
