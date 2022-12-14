@@ -62,6 +62,7 @@ const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRouteNames) => {
           req.body.daoLogin,
           req.body.resolveEns,
           req.session.nonce,
+          req.body.resolveLens,
         );
       } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -81,6 +82,7 @@ const ssxEndpoints = (ssx: SSXServer, routes?: SSXServerRouteNames) => {
       req.session.signature = session.signature;
       req.session.daoLogin = session.daoLogin;
       req.session.ens = session.ens;
+      req.session.lens = session.lens;
 
       res.status(200).json({ ...req.session });
       return;
