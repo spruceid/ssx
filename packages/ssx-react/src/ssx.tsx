@@ -7,6 +7,12 @@ import {
 } from 'react';
 import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
+import { getCsrfToken, signIn, signOut } from 'next-auth/react';
+import type {
+  SignInOptions,
+  SignOutParams,
+  SignInAuthorizationParams,
+} from 'next-auth/react';
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -32,12 +38,21 @@ export interface SSXContextInterface {
   ssx: SSX | undefined;
   /** SSX Instance loading state. */
   ssxLoaded: boolean;
+  /** NextAuth Sign In function. */
+  signIn?: (
+    options?: SignInOptions,
+    authorizationParams?: SignInAuthorizationParams
+  ) => Promise<any>;
+  /** NextAuth Sign Out function. */
+  signOut?: (options?: SignOutParams) => Promise<any>;
 }
 
 /** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {
   ssx: undefined,
   ssxLoaded: false,
+  signIn: undefined,
+  signOut: undefined,
 };
 
 const SSXContext = createContext(defaultContext);
@@ -65,11 +80,39 @@ export const SSXProvider = ({
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
+  const nextSignIn = async (
+    options?: SignInOptions,
+    authorizationParams?: SignInAuthorizationParams
+  ) => {
+    if (ssxLoaded) {
+      // const csrfToken = await getCsrfToken();
+      // inject nonce into siweConfig
+      const { siwe, signature } = await ssx?.signIn();
+      return signIn(
+        'credentials',
+        { message: siwe, signature, ...options },
+        authorizationParams
+      );
+    }
+  };
+  const nextSignOut = async (options?: SignOutParams) => {
+    if (ssxLoaded) {
+      await ssx?.signOut();
+      return signOut(options);
+    }
+  };
+
   useEffect(() => {
     async function initializeSSX() {
       const { SSX } = await import('@spruceid/ssx');
+      const csrfToken = await getCsrfToken();
+
       const modifiedSSXConfig = {
         ...ssxConfig,
+        siweConfig: {
+          ...ssxConfig?.siweConfig,
+          nonce: csrfToken,
+        },
         providers: {
           ...ssxConfig?.providers,
           web3: {
@@ -90,6 +133,8 @@ export const SSXProvider = ({
   const SSXProviderValue: SSXContextInterface = {
     ssx,
     ssxLoaded,
+    signIn: nextSignIn,
+    signOut: nextSignOut,
   };
 
   return (
