@@ -162,19 +162,19 @@ export class SSXConnected implements ISSXConnected {
    * @returns Promise with nonce.
    */
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
-    if (this.api) {
+    const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
+    const requestConfig = isSSXRouteConfig(route)
+      ? route
+      : {
+          method: 'get',
+          url: route,
+        };
+    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
+
+    if (this.api && !skipRequest) {
       let nonce;
 
       try {
-        const route =
-          this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'get',
-              url: route,
-            };
-
         nonce = (
           await this.api.request({
             ...requestConfig,
@@ -198,7 +198,16 @@ export class SSXConnected implements ISSXConnected {
    * @returns Promise with server session data.
    */
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
-    if (this.api) {
+    const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
+    const requestConfig = isSSXRouteConfig(route)
+      ? route
+      : {
+          method: 'post',
+          url: route,
+        };
+    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
+
+    if (this.api && !skipRequest) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
       if (
         typeof this.config.resolveEns === 'object' &&
@@ -207,15 +216,6 @@ export class SSXConnected implements ISSXConnected {
         resolveEns = this.config.resolveEns.resolve;
       }
       try {
-        const route =
-          this.config.providers?.server?.routes?.login ?? '/ssx-login';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'post',
-              url: route,
-            };
-
         const data = {
           signature: session.signature,
           siwe: session.siwe,
@@ -297,16 +297,19 @@ export class SSXConnected implements ISSXConnected {
    * @param session - SSXClientSession object.
    */
   async signOut(session: SSXClientSession): Promise<void> {
-    if (this.api) {
+    // get request configuration
+    const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
+    const requestConfig = isSSXRouteConfig(route)
+      ? route
+      : {
+          method: 'post',
+          url: route,
+        };
+    // check if we should skip the server request
+    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
+
+    if (this.api && !skipRequest) {
       try {
-        const route =
-          this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'post',
-              url: route,
-            };
         const data = { ...session };
 
         await this.api.request({

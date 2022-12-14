@@ -13,6 +13,8 @@ export interface SSXRouteConfig {
   url: string;
   /** Endpoint request method. */
   method: 'get' | 'post' | 'put' | 'delete';
+  /** Skip Request. Prevents SSX from making a request to hit this endpoint */
+  skipRequest: boolean;
 }
 
 /** Type-Guard for SSXRouteConfig. */
