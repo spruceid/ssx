@@ -1,5 +1,5 @@
 import { SiweMessage } from 'siwe';
-import { SSXRPCProvider, SSXMetricsProvider } from '@spruceid/ssx-core';
+import { SSXRPCProvider, SSXMetricsProvider, SSXLensProfilesResponse } from '@spruceid/ssx-core';
 
 // TODO: unify with ssx-server
 /** Configuration interface for ssx-server */
@@ -49,4 +49,5 @@ export interface SSXSessionData {
   signature: string;
   daoLogin: boolean;
   ens: SSXEnsData;
+  lens: string | SSXLensProfilesResponse;
 }

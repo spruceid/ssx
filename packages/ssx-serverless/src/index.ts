@@ -15,6 +15,8 @@ import {
   SSXEnsData,
   getProvider,
   ssxResolveEns,
+  SSXLensProfilesResponse,
+  ssxResolveLens,
 } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 
@@ -244,6 +246,8 @@ export class SSXServer {
       resolveEnsDomain?: boolean;
       /* Enables ENS Avatar resolution. */
       resolveEnsAvatar?: boolean;
+      /* Enables Lens profiles resolution. */
+      resolveLens?: boolean;
       /* Optional parameters to be passed to session.retrieve. */
       retrieveOpts?: Record<string, any>;
       /* A function that will return the value for the update statement. */
@@ -278,10 +282,11 @@ export class SSXServer {
         throw error;
       });
 
-    const ens: ISSXEnsData = {};
     const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
 
-    if (signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar) {
+    let ens: ISSXEnsData = {};
+    const resolveEns = signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar;
+    if (resolveEns) {
       const resolveEnsOpts = {
         domain: signInOpts?.resolveEnsDomain,
         avatar: signInOpts?.resolveEnsAvatar,
@@ -289,13 +294,23 @@ export class SSXServer {
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
 
+    let lens: string | SSXLensProfilesResponse;
+    const resolveLens = signInOpts?.resolveLens;
+    if (resolveLens) {
+      promises.push(this.resolveLens(siweMessage.address));
+    }
+
     try {
       siweMessageVerifyPromise = await Promise.all(promises).then(
-        ([siweMessageVerify, ensData]) => {
-          if (ensData.domain) {
+        ([siweMessageVerify, ensData, lensData]) => {
+          if (!resolveEns && resolveLens) {
+            [ensData, lensData] = [undefined, ensData];
+          }
+          lens = lensData;
+          if (ensData?.domain) {
             ens['ensName'] = ensData.domain;
           }
-          if (ensData.avatarUrl) {
+          if (ensData?.avatarUrl) {
             ens['ensAvatarUrl'] = ensData.avatarUrl;
           }
           return siweMessageVerify;
@@ -314,6 +329,7 @@ export class SSXServer {
       signature,
       daoLogin: !!signInOpts?.daoLogin,
       ens,
+      lens,
     };
 
     const updateValue =
@@ -370,6 +386,28 @@ export class SSXServer {
   ): Promise<SSXEnsData> => {
     return ssxResolveEns(this.provider, address, resolveEnsOpts);
   };
+
+  /**
+ * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+ * limited by 10. To get other pages you must to pass the pageCursor parameter.
+ * 
+ * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+ * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+ *  
+ * @param address - Ethereum User address.
+ * @param pageCursor - Page cursor used to paginate the request. Default to 
+ * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+ * information.
+ * @returns Object containing Lens profiles items and pagination info.
+ */
+  async resolveLens(
+    /* Ethereum User Address. */
+    address: string,
+    /* Page cursor used to paginate the request. Default to first page. */
+    pageCursor: string = "{}"
+  ): Promise<string | SSXLensProfilesResponse> {
+    return ssxResolveLens(this.provider, address, pageCursor);
+  }
 
   /**
    * Calls the delete function to delete the user's session.
