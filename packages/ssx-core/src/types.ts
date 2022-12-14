@@ -237,9 +237,9 @@ export interface SSXEnsData {
 
 /** Lens profiles page info */
 export interface SSXLensProfilesPageInfo {
-  /** Cursor to previous page, e.g. '{"offset":0}'. */
+  /** Cursor to previous page, e.g. '\{"offset":0\}'. */
   prev: string;
-  /** Cursor to next page, e.g. '{"offset":10}'. */
+  /** Cursor to next page, e.g. '\{"offset":10\}'. */
   next: string;
   /** Total profiles available to retrieve. */
   totalCount: number;
