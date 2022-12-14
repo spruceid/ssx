@@ -151,6 +151,10 @@ const ssx = new SSX({
 });
 ```
 
+{% hint style="info" %}
+For issues talking to custom endpoints, the options available in the [Axios Request Config](https://axios-http.com/docs/req\_config) are valid configuration options and can be used to modify the requests that ssx sends.
+{% endhint %}
+
 #### [providers.rpc](../reference/ssx-sdk/ssx.ssxrpcprovider.md)
 
 SSX Server supports all JSON RPC providers that are currently supported by [`ethers`](https://docs.ethers.io/v5/api/providers/api-providers/#api-providers), requiring only the credentials from the desired provider to instantiate it. The SSX library provides valid enumerated options for various RPC providers, but developers can also just use the valid strings, as seen below. A list of supported RPC providers can be found [here](../reference/ssx-sdk/ssx.ssxrpcproviders.md).
