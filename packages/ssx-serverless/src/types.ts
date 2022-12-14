@@ -49,5 +49,5 @@ export interface SSXSessionData {
   signature: string;
   daoLogin: boolean;
   ens: SSXEnsData;
-  lens: string | SSXLensProfilesResponse;
+  lens?: string | SSXLensProfilesResponse;
 }
