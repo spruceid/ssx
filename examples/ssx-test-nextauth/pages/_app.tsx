@@ -5,9 +5,9 @@ import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import { SSXProvider } from '@spruceid/ssx-react';
+import { SSXProvider, SSXNextRoutConfig } from '@spruceid/ssx-react';
 import { getCsrfToken, SessionProvider, signIn, signOut } from "next-auth/react";
-import { SSXClientSession } from '@spruceid/ssx';
+// import { SSXClientSession } from '@spruceid/ssx';
 
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
@@ -46,32 +46,13 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
+const { server } = SSXNextRoutConfig();
 const ssxConfig = {
   siweConfig: {
     domain: "localhost:3000",
   },
   providers: { 
-    server: { 
-        host: '/api/auth',
-        routes: {
-            nonce: { 
-              customOperation: async () => await getCsrfToken(),
-            },
-            login: {
-              customOperation: async (session: SSXClientSession) => {
-                const callbackUrl = "/protected";
-                const { siwe, signature, } = session;
-                return signIn("credentials", { message: siwe , redirect: false, signature, callbackUrl });
-              }
-            },
-            logout: {
-              customOperation: async (data: any) => { 
-                console.log(" logout customOperation");
-                return signOut(data);
-              },
-            }
-        }
-    } 
+    server,
 }
 
 };

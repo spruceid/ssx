@@ -87,11 +87,7 @@ const Header = () => {
           SIWE
         </button>
       )}
-      {!session && (
-        <button style={{ backgroundColor: "gray", padding: "12px" }} onClick={handleLoginSSX} disabled={!ssxLoaded}>
-          SSX Login
-        </button>
-      )}
+      
       {session?.user && (
         <button
           onClick={(e) => {

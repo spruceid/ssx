@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@spruceid/ssx-core": "1.0.1"
+    "@spruceid/ssx-core": "*"
   },
   "peerDependencies": {
     "siwe": "^2.1.2",

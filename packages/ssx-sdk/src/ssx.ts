@@ -55,7 +55,7 @@ export class SSX {
    * Request the user to sign in, and start the session.
    * @returns Object containing information about the session
    */
-  async signIn(): Promise<SSXClientSession> {
+  public async signIn(): Promise<SSXClientSession> {
     try {
       this.connection = await this.init.connect();
     } catch (err) {
@@ -90,7 +90,7 @@ export class SSX {
    * @param resolveEnsOpts - Options to resolve ENS.
    * @returns Object containing ENS data.
    */
-  async resolveEns(
+  public async resolveEns(
     /** User address */
     address: string,
     resolveEnsOpts: SSXEnsResolveOptions = {
@@ -128,7 +128,7 @@ export class SSX {
   /**
    * Invalidates user's session.
    */
-  async signOut(): Promise<void> {
+  public async signOut(): Promise<void> {
     try {
       await this.connection.signOut(this.session);
     } catch (err) {
@@ -144,11 +144,11 @@ export class SSX {
    * Gets the address that is connected and signed in.
    * @returns Address.
    */
-  address: () => string | undefined = () => this.session?.address;
+  public address: () => string | undefined = () => this.session?.address;
 
   /**
    * Get the chainId that the address is connected and signed in on.
    * @returns chainId.
    */
-  chainId: () => number | undefined = () => this.session?.chainId;
+  public chainId: () => number | undefined = () => this.session?.chainId;
 }

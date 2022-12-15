@@ -1,5 +1,5 @@
 {
-  "name": "ssx-test-react-dapp",
+  "name": "ssx-test-nextauth",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -10,9 +10,7 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.2",
-    "@spruceid/ssx-react": "1.1.0",
-    "@spruceid/ssx-server": "1.1.0",
-    "@spruceid/ssx": "1.1.0",
+    "@spruceid/ssx-react": "*",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "next-auth": "^4.10.3",

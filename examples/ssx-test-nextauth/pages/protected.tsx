@@ -5,12 +5,13 @@ import { useSSX } from "@spruceid/ssx-react";
 
 
 export default function Protected() {
-    const { data: session, status } = useSession()
+    const { data: session, status } = useSession();
     const { ssx, ssxLoaded } = useSSX();
 
     const signOut = () => {
+        console.log("signout")
+        console.log(ssx)
         ssx?.signOut();
-
     }
     
     console.log(status);
@@ -35,7 +36,8 @@ export default function Protected() {
         <div className={styles.container}>
             <h2 className={styles.title}>Protected Page</h2>
             <p className={styles.description}>
-            You are Authenticated
+            You are Authenticated as <br/>
+            {session?.user?.name}
             </p>
             <button onClick={signOut} disabled={!ssxLoaded}>Log Out</button>
         </div>
