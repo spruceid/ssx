@@ -1,14 +1,20 @@
 import React from "react";
 import styles from '../styles/Protected.module.css'
-import { useSession, getSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
+import { useSSX } from "@spruceid/ssx-react";
 
 
 export default function Protected() {
     const { data: session, status } = useSession()
+    const { ssx, ssxLoaded } = useSSX();
 
-    console.log(session);
-    console.log(status);
+    const signOut = () => {
+        ssx?.signOut();
+
+    }
     
+    console.log(status);
+
     if (status === "loading") {
         <div className={styles.container}>
             <h2 className={styles.title}>Protected Page</h2>
@@ -25,12 +31,13 @@ export default function Protected() {
         </div>)
       }
       
-    return(
+    return (
         <div className={styles.container}>
             <h2 className={styles.title}>Protected Page</h2>
             <p className={styles.description}>
             You are Authenticated
             </p>
+            <button onClick={signOut} disabled={!ssxLoaded}>Log Out</button>
         </div>
     )
 }

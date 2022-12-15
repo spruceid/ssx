@@ -17,7 +17,9 @@ export interface SSXRouteConfig {
   /** Custom Operation.
    * Replace the ssx function called with a function of your own
    **/
-  customOperation?(params: SSXClientSession | Record<string, any> | any ): Promise<any>;
+  customOperation?(
+    params: SSXClientSession | Record<string, any> | any
+  ): Promise<any>;
 }
 
 /** Type-Guard for SSXRouteConfig. */

@@ -50,11 +50,11 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
          const { siwe, signature, daoLogin, ens } = session;
          if(!siwe) return null;
 
-         // check domain 
-         const nextAuthUrl = new URL(process.env.DOMAIN as string);
-         if (siwe.domain !== nextAuthUrl.host) {
-            return null;
-         }
+        //  // check domain 
+        //  const nextAuthUrl = new URL(process.env.DOMAIN as string);
+        //  if (siwe.domain !== nextAuthUrl.host) {
+        //     return null;
+        //  }
   
         console.log("success: ", success);
         if (success) {
