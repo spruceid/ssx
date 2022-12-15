@@ -1,5 +1,12 @@
 # @spruceid/ssx-core
 
+## 1.0.1
+
+### Patch Changes
+
+- b25cbde: Updated `SSXServerRoutes` type to `SSXServerRouteNames` to reflect usage in ssx-server
+- b25cbde: Update the `SSXServerRoutes` type to accept a route configuration compatible with [Axios Request Config](SSXServerRoutes) to allow for more complex server configurations.
+
 ## 1.0.0
 
 Initial Release
