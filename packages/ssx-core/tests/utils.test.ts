@@ -176,7 +176,7 @@ test('Should resolve Lens profile on Mainnet with a message advertising about th
 
   await expect(
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
-  ).resolves.toEqual(`Can't resolve Lens to 0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1 on network 'homestead'. Please use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`);
+  ).resolves.toEqual(`Can't resolve Lens to 0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1 on network 'homestead'. Use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`);
 }, 10000);
 
 test('Should resolve Lens profile on Polygon Mainnet successfully', async () => {
@@ -189,11 +189,10 @@ test('Should resolve Lens profile on Polygon Mainnet successfully', async () => 
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
   ).resolves.toEqual(
     expect.objectContaining({
-      items: [],
       pageInfo: {
         prev: '{"offset":0}',
-        next: '{"offset":0}',
-        totalCount: 0,
+        next: '{"offset":1}',
+        totalCount: 1,
       }
     })
   );
@@ -209,7 +208,6 @@ test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
   ).resolves.toEqual(
     expect.objectContaining({
-      items: [],
       pageInfo: {
         prev: '{"offset":0}',
         next: '{"offset":0}',

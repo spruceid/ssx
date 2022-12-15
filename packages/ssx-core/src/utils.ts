@@ -149,7 +149,7 @@ export const ssxResolveLens = async (
   const apiURL: string | null = LENS_API_LINKS[networkName];
 
   if(!apiURL) {
-    return `Can't resolve Lens to ${address} on network '${networkName}'. Please use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`;
+    return `Can't resolve Lens to ${address} on network '${networkName}'. Use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`;
   }
 
   let lens: { data: { profiles: SSXLensProfilesResponse } };
