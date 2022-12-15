@@ -166,17 +166,23 @@ export class SSXConnected implements ISSXConnected {
     const requestConfig = isSSXRouteConfig(route)
       ? route
       : {
-          method: 'get',
           url: route,
+          customOperation: undefined,
         };
-    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
 
-    if (this.api && !skipRequest) {
+    const { customOperation } = requestConfig;
+    if (customOperation) {
+      return customOperation(params);
+    }
+
+    if (this.api) {
       let nonce;
 
       try {
         nonce = (
           await this.api.request({
+            method: 'get',
+            url: '/ssx-nonce',
             ...requestConfig,
             params,
           })
@@ -202,12 +208,16 @@ export class SSXConnected implements ISSXConnected {
     const requestConfig = isSSXRouteConfig(route)
       ? route
       : {
-          method: 'post',
           url: route,
+          customOperation: undefined,
         };
-    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
+    const { customOperation } = requestConfig;
 
-    if (this.api && !skipRequest) {
+    if (customOperation) {
+      return customOperation(session);
+    }
+
+    if (this.api) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
       if (
         typeof this.config.resolveEns === 'object' &&
@@ -228,6 +238,8 @@ export class SSXConnected implements ISSXConnected {
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api
           .request({
+            method: 'post',
+            url: '/ssx-login',
             ...requestConfig,
             data,
           })
@@ -302,17 +314,23 @@ export class SSXConnected implements ISSXConnected {
     const requestConfig = isSSXRouteConfig(route)
       ? route
       : {
-          method: 'post',
           url: route,
+          customOperation: undefined,
         };
-    // check if we should skip the server request
-    const skipRequest = isSSXRouteConfig(route) ? route.skipRequest : false;
+    // check if we should run a custom operation instead
+    const { customOperation } = requestConfig;
 
-    if (this.api && !skipRequest) {
+    if (customOperation) {
+      return customOperation(session);
+    }
+
+    if (this.api) {
       try {
         const data = { ...session };
 
         await this.api.request({
+          method: 'post',
+          url: '/ssx-logout',
           ...requestConfig,
           data,
         });

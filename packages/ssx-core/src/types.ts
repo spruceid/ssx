@@ -1,5 +1,6 @@
 import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
+import { SSXClientSession } from './client';
 
 /** SSX Route Configuration
  *  This configuration is used to override the default endpoint paths.
@@ -10,11 +11,13 @@ import { ConnectionInfo } from 'ethers/lib/utils';
  */
 export interface SSXRouteConfig {
   /** Endpoint path. */
-  url: string;
+  url?: string;
   /** Endpoint request method. */
-  method: 'get' | 'post' | 'put' | 'delete';
-  /** Skip Request. Prevents SSX from making a request to hit this endpoint */
-  skipRequest: boolean;
+  method?: 'get' | 'post' | 'put' | 'delete';
+  /** Custom Operation.
+   * Replace the ssx function called with a function of your own
+   **/
+  customOperation?(params: SSXClientSession | Record<string, any> | any ): Promise<any>;
 }
 
 /** Type-Guard for SSXRouteConfig. */
