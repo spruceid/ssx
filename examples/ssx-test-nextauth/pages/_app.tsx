@@ -6,8 +6,7 @@ import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider, SSXNextRoutConfig } from '@spruceid/ssx-react';
-import { getCsrfToken, SessionProvider, signIn, signOut } from "next-auth/react";
-// import { SSXClientSession } from '@spruceid/ssx';
+import { SessionProvider} from "next-auth/react";
 
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
@@ -53,8 +52,7 @@ const ssxConfig = {
   },
   providers: { 
     server,
-}
-
+  },
 };
 
 function MyApp({ Component, pageProps }: any) {
