@@ -10,19 +10,19 @@ import {
   ssxLog,
   ssxResolveEns,
   getProvider,
+  SSXServerBaseClass,
 } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
 import { RequestHandler } from 'express';
-import { EventEmitter } from 'events';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object and works
  * with various middleware libraries to add authentication and metrics to your server.
  */
-export class SSXServer extends EventEmitter {
+export class SSXServer extends SSXServerBaseClass {
   /** SSXServerConfig object. */
   private _config: SSXServerConfig;
   /** Axios instance. */
