@@ -99,9 +99,9 @@ export enum SSXEventLogTypes {
  */
 export abstract class SSXServerBaseClass extends EventEmitter {
   /** SSXServerConfig object. */
-  private _config;
+  protected _config;
   /** Axios instance. */
-  private _api;
+  protected _api;
   /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
@@ -109,7 +109,7 @@ export abstract class SSXServerBaseClass extends EventEmitter {
   /**
    * Sets default values for optional configurations
    */
-  private _setDefaults;
+  protected _setDefaults;
   /**
    * Registers a new event to the API
    * @param data - SSXLogFields object.
@@ -170,6 +170,6 @@ export abstract class SSXServerBaseClass extends EventEmitter {
    * Gets default Express Session Config.
    * @returns Default session options
    */
-  private getDefaultExpressSessionConfig;
+  protected getDefaultExpressSessionConfig;
 }
 //# sourceMappingURL=server.d.ts.map

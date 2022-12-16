@@ -1,1 +1,5 @@
-export { SSXHttpMiddleware, SSXExpressMiddleware, SSXAuthenticated } from "@spruceid/ssx-server-middleware"
+export {
+  SSXHttpMiddleware,
+  SSXExpressMiddleware,
+  SSXAuthenticated,
+} from '@spruceid/ssx-server-middleware';
