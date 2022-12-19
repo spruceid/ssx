@@ -5,8 +5,10 @@ import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import { SSXProvider, SSXNextRoutConfig } from '@spruceid/ssx-react';
-import { SessionProvider} from "next-auth/react";
+import { SSXProvider } from '@spruceid/ssx-react';
+// import { SSXNextRouteConfig } from '@spruceid/ssx-react';
+import { SSXNextRouteConfig } from './ssx-frontend';
+import { SessionProvider } from "next-auth/react";
 
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
@@ -45,7 +47,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const { server } = SSXNextRoutConfig();
+const { server } = SSXNextRouteConfig();
 const ssxConfig = {
   siweConfig: {
     domain: "localhost:3000",
