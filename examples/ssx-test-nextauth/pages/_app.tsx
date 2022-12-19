@@ -9,7 +9,7 @@ import { SSXProvider } from '@spruceid/ssx-react';
 // import { SSXProvider } from './ssx-frontend';
 // @Juliano1612
 // import { SSXNextRouteConfig } from '@spruceid/ssx-react';
-import { SSXNextRouteConfig } from './ssx-frontend';
+import { SSXNextRouteConfig } from '../lib/ssx-frontend';
 import { SessionProvider } from "next-auth/react";
 
 
