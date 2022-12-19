@@ -4,6 +4,33 @@
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.js",
+      "default": "./dist/index.js"
+    },
+    "./next/backend": {
+      "types": "./dist/next/backend.d.js",
+      "default": "./dist/next/backend.js"
+    },
+    "./next/frontend": {
+      "types": "./dist/next/frontend.d.js",
+      "default": "./dist/next/frontend.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "next/backend": [
+        "dist/next/backend.d.ts"
+      ],
+      "next/frontend": [
+        "dist/next/frontend.d.ts"
+      ]
+    }
+  },
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com:spruceid/ssx.git"
@@ -32,6 +59,7 @@
   },
   "files": [
     "tsconfig.json",
-    "dist"
+    "dist",
+    "next"
   ]
 }

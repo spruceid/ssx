@@ -1,2 +1,2 @@
 export { SSXNextAuth } from "./backend";
-export { SSXNextRouteConfig } from "./frontend";
+export { SSXNextAuthRouteConfig } from "./frontend";

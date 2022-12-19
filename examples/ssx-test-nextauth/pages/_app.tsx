@@ -8,8 +8,8 @@ import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
 // import { SSXProvider } from './ssx-frontend';
 // @Juliano1612
-// import { SSXNextRouteConfig } from '@spruceid/ssx-react';
-import { SSXNextRouteConfig } from '../lib/ssx-frontend';
+import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next/frontend';
+// import { SSXNextAuthRouteConfig } from '../lib/ssx-frontend';
 import { SessionProvider } from "next-auth/react";
 
 
@@ -49,7 +49,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const { server } = SSXNextRouteConfig();
+const { server } = SSXNextAuthRouteConfig();
 const ssxConfig = {
   siweConfig: {
     domain: "localhost:3000",

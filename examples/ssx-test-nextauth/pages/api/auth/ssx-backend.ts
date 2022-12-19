@@ -48,10 +48,11 @@ export const SSXNextAuth = (
       );
       const { siwe, signature, daoLogin, ens } = session;
       if (!siwe) return null;
-
-      //  // check domain
+        
+       // check domain
       //  const nextAuthUrl = new URL(process.env.DOMAIN as string);
       //  if (siwe.domain !== nextAuthUrl.host) {
+      //   console.log("mismatched domain")
       //     return null;
       //  }
 
