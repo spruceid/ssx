@@ -19,7 +19,6 @@ export const SSXNextAuthRouteConfig = () => {
   };
   const logout = {
     customOperation: async (data: any) => {
-      console.log(' logout customOperation');
       return signOut(data);
     },
   };

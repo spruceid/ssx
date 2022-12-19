@@ -10,6 +10,7 @@
   "compilerOptions": {
     "outDir": "./dist", /* Specify an output folder for all emitted files. */
     "target": "es6",
-    "moduleResolution": "node16" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "jsx": "react",
+    "moduleResolution": "node16",
   }
 }

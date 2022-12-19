@@ -7,12 +7,14 @@ import {
 } from 'react';
 import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
+/** Approach B */
 import { getCsrfToken, signIn, signOut } from 'next-auth/react';
 import type {
   SignInOptions,
   SignOutParams,
   SignInAuthorizationParams,
 } from 'next-auth/react';
+/** Approach B */
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -38,6 +40,7 @@ export interface SSXContextInterface {
   ssx: SSX | undefined;
   /** SSX Instance loading state. */
   ssxLoaded: boolean;
+  /** Approach B */
   /** NextAuth Sign In function. */
   signIn?: (
     options?: SignInOptions,
@@ -45,14 +48,17 @@ export interface SSXContextInterface {
   ) => Promise<any>;
   /** NextAuth Sign Out function. */
   signOut?: (options?: SignOutParams) => Promise<any>;
+  /** Approach B */
 }
 
 /** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {
   ssx: undefined,
   ssxLoaded: false,
+  /** Approach B */
   signIn: undefined,
   signOut: undefined,
+  /** Approach B */
 };
 
 const SSXContext = createContext(defaultContext);
@@ -80,6 +86,8 @@ export const SSXProvider = ({
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
+      /** Approach B */
+
   const nextSignIn = async (
     options?: SignInOptions,
     authorizationParams?: SignInAuthorizationParams
@@ -101,6 +109,8 @@ export const SSXProvider = ({
       return signOut(options);
     }
   };
+      /** Approach B */
+
 
   useEffect(() => {
     async function initializeSSX() {
@@ -133,8 +143,10 @@ export const SSXProvider = ({
   const SSXProviderValue: SSXContextInterface = {
     ssx,
     ssxLoaded,
+    /** Approach B */
     signIn: nextSignIn,
     signOut: nextSignOut,
+    /** Approach B */
   };
 
   return (

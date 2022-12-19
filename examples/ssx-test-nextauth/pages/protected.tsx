@@ -9,8 +9,6 @@ export default function Protected() {
     const { ssx, ssxLoaded } = useSSX();
 
     const signOut = () => {
-        console.log("signout")
-        console.log(ssx)
         ssx?.signOut();
     }
     
