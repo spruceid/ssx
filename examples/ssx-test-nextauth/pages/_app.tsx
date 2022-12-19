@@ -6,6 +6,8 @@ import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
+// import { SSXProvider } from './ssx-frontend';
+// @Juliano1612
 // import { SSXNextRouteConfig } from '@spruceid/ssx-react';
 import { SSXNextRouteConfig } from './ssx-frontend';
 import { SessionProvider } from "next-auth/react";
