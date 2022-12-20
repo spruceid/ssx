@@ -23,9 +23,9 @@
     "ssx-server": "bin/ssx-server.js"
   },
   "dependencies": {
-    "@spruceid/ssx-core": "*",
-    "@spruceid/ssx-gnosis-extension": "*",
-    "@spruceid/ssx-server-middleware": "*",
+    "@spruceid/ssx-core": "1.0.1",
+    "@spruceid/ssx-gnosis-extension": "1.1.1",
+    "@spruceid/ssx-server-middleware": "1.0.0",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
