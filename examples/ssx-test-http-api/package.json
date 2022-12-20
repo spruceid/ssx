@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@spruceid/ssx-server": "1.1.1",
+    "@spruceid/ssx-server": "*",
     "connect-redis": "^6.1.3",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.9",
