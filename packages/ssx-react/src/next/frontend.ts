@@ -1,6 +1,7 @@
 import { getCsrfToken, signIn, signOut } from 'next-auth/react';
 import { SSXClientSession } from '@spruceid/ssx';
 
+/** Approach A */
 export const SSXNextAuthRouteConfig = () => {
   const nonce = {
     customOperation: async () => await getCsrfToken(),
