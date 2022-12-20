@@ -2,6 +2,7 @@
  * Command line usage:
  * `node scripts/toggle-packages.js` // use published package versions
  * `node scripts/toggle-packages.js local` // use local package versions
+ * `node scripts/toggle-packages.js local examples` // use local package versions, update examples
  */
 const { readJSON, readdir, pathExists, writeJSON } = require('fs-extra');
 
@@ -12,7 +13,7 @@ const writePackages = async packages => {
   }
 };
 
-const getAllPackageJSON = async () => {
+const getAllPackageJSON = async (includeExamples=false) => {
   // read package.json
   const packageList = [];
   const packages = {};
@@ -26,7 +27,8 @@ const getAllPackageJSON = async () => {
       packageList.push(
         ...dirs.map(dir => `${currentWorkspace}${dir}/package.json`)
       );
-    } else {
+    } else if (workspace.includes('examples/') && includeExamples) {
+      // only include packages/* and examples/* for now
       packageList.push(`${workspace}/package.json`);
     }
   }
@@ -67,7 +69,8 @@ const updatePackageVersion = (packages, usePublishedVersion = true) => {
 
 const main = async () => {
   const usePublishedVersion = !process.argv.includes('local');
-  const packages = await getAllPackageJSON();
+  const includeExamples = process.argv.includes('examples');
+  const packages = await getAllPackageJSON(includeExamples);
   const updatedPackages = updatePackageVersion(packages, usePublishedVersion);
   writePackages(updatedPackages);
 };
