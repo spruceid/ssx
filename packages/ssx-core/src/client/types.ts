@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import {
   SSXEnsData,
   SSXEnsResolveOptions,
+  SSXLensProfilesResponse,
   SSXRPCProvider,
   SSXServerRoutes,
 } from '../types';
@@ -19,6 +20,8 @@ export interface SSXClientConfig {
   siweConfig?: SiweConfig;
   /** Whether or not ENS resolution is enabled. True means resolve all on client. */
   resolveEns?: boolean | SSXEnsConfig;
+  /** Whether or not Lens resolution is enabled. True means resolve on client. */
+  resolveLens?: boolean | 'onServer';
 }
 
 /** Representation of an active SSXSession. */
@@ -36,6 +39,8 @@ export type SSXClientSession = {
   signature: string;
   /** ENS data supported by SSX */
   ens?: SSXEnsData;
+  /** Lens Profiles */
+  lens?: string | SSXLensProfilesResponse;
 };
 
 /** The URL of the server running ssx-server. Providing this field enables SIWE server communication */
@@ -70,7 +75,7 @@ export interface SSXClientProviders {
 }
 
 /** Optional session configuration for the SIWE message. */
-export interface SiweConfig extends Partial<ssxSession.SiweConfig> {}
+export interface SiweConfig extends Partial<ssxSession.SiweConfig> { }
 
 /** Extra SIWE fields. */
 export type ExtraFields = ssxSession.ExtraFields;
