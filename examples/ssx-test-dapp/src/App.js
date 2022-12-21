@@ -48,6 +48,55 @@ function AccountInfo({ address, session }) {
           </div> :
           null
       }
+      {
+        session?.lens ?
+          typeof session.lens !== 'string' ?
+            session.lens.items.length > 0 ?
+              (
+                <div>
+                  <b className='AccountInfo-label'>
+                    Lens
+                    {session.lens.pageInfo.totalCount > 10 ? <small>&nbsp;(listing first 10)</small> : null}
+                  </b>
+                  <br />
+                  {
+                    session.lens.items.map((profile, i) => (
+                      <div key={i} className='AccountInfo-container'>
+                        {
+                          profile.picture?.original?.url ?
+                            <img
+                              className='AccountInfo-avatar'
+                              src={profile.picture?.original?.url}
+                              alt='Lens avatar'
+                            /> :
+                            null
+                        }
+                        {
+                          profile.handle ?
+                            <code className='AccountInfo-value'>
+                              {profile.handle}
+                            </code> :
+                            null
+                        }
+                      </div>
+                    ))
+                  }
+                </div>
+              ) :
+              null :
+            <div>
+              <b className='AccountInfo-label'>
+                Lens
+              </b>
+              <div className='AccountInfo-container'>
+                <code className='AccountInfo-value'>
+                  {session.lens}
+                </code>
+              </div>
+            </div>
+          :
+          null
+      }
       <p>
         <b className='AccountInfo-label'>
           Address
@@ -70,6 +119,7 @@ function App() {
   const [enableDaoLogin, setDaoLogin] = useState('Off');
   const [server, setServer] = useState('Off');
   const [resolveEns, setResolveEns] = useState('Off');
+  const [resolveLens, setResolveLens] = useState('Off');
   const [siweConfig, setSiweConfig] = useState('Off');
   const [infuraId, setInfuraId] = useState('');
   const [host, setHost] = useState('');
@@ -157,6 +207,13 @@ function App() {
             avatar: resolveEnsAvatar === 'On'
           }
         }
+      }
+    }
+
+    if (resolveLens === 'On' || resolveLens === 'onServer') {
+      ssxConfig = {
+        ...ssxConfig,
+        resolveLens: resolveLens === 'On' ? true : resolveLens
       }
     }
 
@@ -256,6 +313,19 @@ function App() {
                   options={['On', 'Off']}
                   value={resolveEns}
                   onChange={setResolveEns}
+                />
+              </div>
+            </div>
+            <div className='Dropdown-item'>
+              <span className='Dropdown-item-name'>
+                resolveLens
+              </span>
+              <div className='Dropdown-item-options'>
+                <RadioGroup
+                  name='resolveLens'
+                  options={['On', 'Off', 'onServer']}
+                  value={resolveLens}
+                  onChange={setResolveLens}
                 />
               </div>
             </div>

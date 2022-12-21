@@ -79,6 +79,7 @@ const signIn: ValidatedEventAPIGatewayProxyEvent<typeof signInSchema> = async (e
       daoLogin: true,
       resolveEnsDomain: (event.body.resolveEns as any).domain ?? false,
       resolveEnsAvatar: (event.body.resolveEns as any).avatar ?? false,
+      resolveLens: event.body.resolveLens as boolean,
     }
   )
     .then((response) => formatJSONResponse(200, { ...response }))

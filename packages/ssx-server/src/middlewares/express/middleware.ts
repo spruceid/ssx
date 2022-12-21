@@ -1,7 +1,7 @@
 import { SSXServer } from '../../server';
 import { SiweMessage } from 'siwe';
 import { NextFunction, Request, Response } from 'express';
-import { SSXEnsData, SSXLogFields } from '@spruceid/ssx-core';
+import { SSXEnsData, SSXLensProfilesResponse, SSXLogFields } from '@spruceid/ssx-core';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {
@@ -25,6 +25,8 @@ declare module 'express-session' {
     daoLogin: boolean;
     /** If enable ENS resolution */
     ens?: SSXEnsData;
+    /** If enable ENS resolution */
+    lens?: string | SSXLensProfilesResponse;
   }
 }
 
@@ -95,6 +97,7 @@ export const ssxMiddleware = (ssx: SSXServer) => {
             verificationFallback: daoLogin ? SiweGnosisVerify : null,
             provider: ssx.provider,
           },
+
         )
         .then((data) => ({ success: true, data }))
         .catch((error) => ({ success: false, error, data: null }));

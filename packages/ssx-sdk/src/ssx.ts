@@ -6,6 +6,9 @@ import {
   SSXRPCProviders,
   SSXEnsData,
   SSXEnsResolveOptions,
+  ssxResolveEns,
+  ssxResolveLens,
+  SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
 
 declare global {
@@ -71,16 +74,40 @@ export class SSX {
       console.error(err);
       throw err;
     }
+    const promises = [];
+
+    let resolveEnsOnClient = false;
     if (this.config.resolveEns) {
       if (this.config.resolveEns === true) {
-        this.session.ens = await this.resolveEns(this.session.address);
+        resolveEnsOnClient = true;
+        promises.push(this.resolveEns(this.session.address));
       } else if (!this.config.resolveEns.resolveOnServer) {
-        this.session.ens = await this.resolveEns(
+        resolveEnsOnClient = true;
+
+        promises.push(this.resolveEns(
           this.session.address,
           this.config.resolveEns.resolve
-        );
+        ));
       }
     }
+
+    const resolveLensOnClient = (this.config.resolveLens === true);
+    if (resolveLensOnClient) {
+      promises.push(this.resolveLens(this.session.address))
+    }
+
+    await Promise.all(promises).then(([ens, lens]) => {
+      if (!resolveEnsOnClient && resolveLensOnClient) {
+        [ens, lens] = [undefined, ens];
+      }
+      if (ens) {
+        this.session.ens = ens;
+      }
+      if (lens) {
+        this.session.lens = lens;
+      }
+    });
+
     return this.session;
   }
 
@@ -98,31 +125,29 @@ export class SSX {
       avatar: true,
     }
   ): Promise<SSXEnsData> {
-    if (!address) {
-      throw new Error('Missing address.');
-    }
-    const ens: SSXEnsData = {};
-    const promises: Array<Promise<any>> = [];
-    if (resolveEnsOpts?.domain) {
-      promises.push(this.connection.provider.lookupAddress(address));
-    }
-    if (resolveEnsOpts?.avatar) {
-      promises.push(this.connection.provider.getAvatar(address));
-    }
+    return ssxResolveEns(this.connection.provider, address, resolveEnsOpts);
+  }
 
-    await Promise.all(promises).then(([domain, avatarUrl]) => {
-      if (!resolveEnsOpts?.domain && resolveEnsOpts?.avatar) {
-        [domain, avatarUrl] = [undefined, domain];
-      }
-      if (domain) {
-        ens['domain'] = domain;
-      }
-      if (avatarUrl) {
-        ens['avatarUrl'] = avatarUrl;
-      }
-    });
-
-    return ens;
+  /**
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * limited by 10. To get other pages you must to pass the pageCursor parameter.
+   * 
+   * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+   * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+   *  
+   * @param address - Ethereum User address.
+   * @param pageCursor - Page cursor used to paginate the request. Default to 
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * information.
+   * @returns Object containing Lens profiles items and pagination info.
+   */
+  async resolveLens(
+    /* Ethereum User Address. */
+    address: string,
+    /* Page cursor used to paginate the request. Default to first page. */
+    pageCursor: string = "{}"
+  ): Promise<string | SSXLensProfilesResponse> {
+    return ssxResolveLens(this.connection.provider, address, pageCursor);
   }
 
   /**

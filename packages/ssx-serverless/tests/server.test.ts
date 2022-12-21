@@ -103,7 +103,7 @@ test('Should call signIn successfuly', async () => {
       resolveEnsAvatar: true,
     })
   ).resolves.not.toThrow();
-}, 20000);
+}, 30000);
 
 test('Should call signOut successfuly', async () => {
   const server = new SSXServer(
