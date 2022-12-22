@@ -1,4 +1,4 @@
-import { SSXEventLogTypes, ssxLog } from '../src';
+import { SSXEventLogTypes, ssxLog } from '../src/server';
 
 const axios: any = jest.genMockFromModule('axios');
 
