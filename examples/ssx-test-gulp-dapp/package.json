@@ -1,0 +1,33 @@
+{
+  "name": "ssx-react-typescript-gulp",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.17",
+    "@types/react": "^16.4.18",
+    "@types/react-dom": "^16.0.9",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "gulp": "^4.0.0",
+    "jsx": "^0.9.89",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
+    "tsify": "^4.0.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@spruceid/ssx": "*"
+  }
+}
