@@ -7,14 +7,14 @@ import {
 } from 'react';
 import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
-/** Approach B */
-import { getCsrfToken, signIn, signOut } from 'next-auth/react';
-import type {
-  SignInOptions,
-  SignOutParams,
-  SignInAuthorizationParams,
-} from 'next-auth/react';
-/** Approach B */
+// /** Approach B */
+// import { getCsrfToken, signIn, signOut } from 'next-auth/react';
+// import type {
+//   SignInOptions,
+//   SignOutParams,
+//   SignInAuthorizationParams,
+// } from 'next-auth/react';
+// /** Approach B */
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -40,25 +40,25 @@ export interface SSXContextInterface {
   ssx: SSX | undefined;
   /** SSX Instance loading state. */
   ssxLoaded: boolean;
-  /** Approach B */
-  /** NextAuth Sign In function. */
-  signIn?: (
-    options?: SignInOptions,
-    authorizationParams?: SignInAuthorizationParams
-  ) => Promise<any>;
-  /** NextAuth Sign Out function. */
-  signOut?: (options?: SignOutParams) => Promise<any>;
-  /** Approach B */
+  // /** Approach B */
+  // /** NextAuth Sign In function. */
+  // signIn?: (
+  //   options?: SignInOptions,
+  //   authorizationParams?: SignInAuthorizationParams
+  // ) => Promise<any>;
+  // /** NextAuth Sign Out function. */
+  // signOut?: (options?: SignOutParams) => Promise<any>;
+  // /** Approach B */
 }
 
 /** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {
   ssx: undefined,
   ssxLoaded: false,
-  /** Approach B */
-  signIn: undefined,
-  signOut: undefined,
-  /** Approach B */
+  // /** Approach B */
+  // signIn: undefined,
+  // signOut: undefined,
+  // /** Approach B */
 };
 
 const SSXContext = createContext(defaultContext);
@@ -86,42 +86,41 @@ export const SSXProvider = ({
   const [ssx, setSSX] = useState<SSX>();
   const [ssxLoaded, setSSXLoaded] = useState(false);
 
-      /** Approach B */
+  // /** Approach B */
 
-  const nextSignIn = async (
-    options?: SignInOptions,
-    authorizationParams?: SignInAuthorizationParams
-  ) => {
-    if (ssxLoaded) {
-      // const csrfToken = await getCsrfToken();
-      // inject nonce into siweConfig
-      const { siwe, signature } = await ssx?.signIn();
-      return signIn(
-        'credentials',
-        { message: siwe, signature, ...options },
-        authorizationParams
-      );
-    }
-  };
-  const nextSignOut = async (options?: SignOutParams) => {
-    if (ssxLoaded) {
-      await ssx?.signOut();
-      return signOut(options);
-    }
-  };
-      /** Approach B */
-
+  // const nextSignIn = async (
+  //   options?: SignInOptions,
+  //   authorizationParams?: SignInAuthorizationParams
+  // ) => {
+  //   if (ssxLoaded) {
+  //     // const csrfToken = await getCsrfToken();
+  //     // inject nonce into siweConfig
+  //     const { siwe, signature } = await ssx?.signIn();
+  //     return signIn(
+  //       'credentials',
+  //       { message: siwe, signature, ...options },
+  //       authorizationParams
+  //     );
+  //   }
+  // };
+  // const nextSignOut = async (options?: SignOutParams) => {
+  //   if (ssxLoaded) {
+  //     await ssx?.signOut();
+  //     return signOut(options);
+  //   }
+  // };
+  // /** Approach B */
 
   useEffect(() => {
     async function initializeSSX() {
       const { SSX } = await import('@spruceid/ssx');
-      const csrfToken = await getCsrfToken();
+      // const csrfToken = await getCsrfToken(); // Approach B
 
       const modifiedSSXConfig = {
         ...ssxConfig,
         siweConfig: {
           ...ssxConfig?.siweConfig,
-          nonce: csrfToken,
+          // nonce: csrfToken,  // Approach B
         },
         providers: {
           ...ssxConfig?.providers,
@@ -143,10 +142,10 @@ export const SSXProvider = ({
   const SSXProviderValue: SSXContextInterface = {
     ssx,
     ssxLoaded,
-    /** Approach B */
-    signIn: nextSignIn,
-    signOut: nextSignOut,
-    /** Approach B */
+    // /** Approach B */
+    // signIn: nextSignIn,
+    // signOut: nextSignOut,
+    // /** Approach B */
   };
 
   return (
