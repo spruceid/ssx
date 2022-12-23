@@ -9,6 +9,7 @@
   "workspaces": [
     "packages/*",
     "examples/ssx-test-dapp",
+    "examples/ssx-test-gulp-dapp",
     "examples/ssx-test-express-api",
     "examples/ssx-test-http-api",
     "examples/ssx-test-serverless-dynamodb-api"
