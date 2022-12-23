@@ -1,15 +1,12 @@
 {
-  "name": "ssx-react-typescript-gulp",
+  "name": "ssx-test-gulp-dapp",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "license": "ISC",
   "main": "index.js",
   "repository": {
-    "type": "git"
+    "url": "ssh://git@github.com:spruceid/ssx.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp app.build"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
