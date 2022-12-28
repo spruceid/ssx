@@ -3,7 +3,10 @@ import { Request, Response } from 'express';
 // import { SSXServer } from '../../server';
 import { SSXServerRouteNames, SSXServerBaseClass } from '@spruceid/ssx-core';
 
-const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRouteNames) => {
+const ssxEndpoints = (
+  ssx: SSXServerBaseClass,
+  routes?: SSXServerRouteNames
+) => {
   const router = express.Router();
 
   /**
@@ -20,7 +23,7 @@ const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRouteNames) => 
     function (req: Request, res: Response): void {
       req.session.nonce = ssx.generateNonce();
       req.session.save(() => res.status(200).send(req.session.nonce));
-    },
+    }
   );
 
   /**
@@ -62,7 +65,7 @@ const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRouteNames) => 
           req.body.daoLogin,
           req.body.resolveEns,
           req.session.nonce,
-          req.body.resolveLens,
+          req.body.resolveLens
         );
       } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -86,7 +89,7 @@ const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRouteNames) => 
 
       res.status(200).json({ ...req.session });
       return;
-    },
+    }
   );
 
   /**
@@ -110,7 +113,7 @@ const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRouteNames) => 
         res.status(500).json({ message: error.message });
       }
       res.status(204).send();
-    },
+    }
   );
 
   return router;

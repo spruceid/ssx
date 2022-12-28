@@ -138,7 +138,8 @@ export abstract class SSXServerBaseClass extends EventEmitter {
     signature: string,
     daoLogin: boolean,
     resolveEns: boolean | SSXEnsResolveOptions,
-    nonce: string
+    nonce: string,
+    resolveLens?: boolean
   ) => Promise<{
     success: boolean;
     error: SiweError;
