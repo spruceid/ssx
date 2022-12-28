@@ -9,6 +9,10 @@
       "types": "./dist/index.d.js",
       "default": "./dist/index.js"
     },
+    "./siwe": {
+      "types": "./dist/siwe.d.js",
+      "default": "./dist/siwe.js"
+    },
     "./next/backend": {
       "types": "./dist/next/backend.d.js",
       "default": "./dist/next/backend.js"
@@ -22,6 +26,9 @@
     "*": {
       "*": [
         "dist/index.d.ts"
+      ],
+      "siwe": [
+        "dist/siwe.d.ts"
       ],
       "next/backend": [
         "dist/next/backend.d.ts"

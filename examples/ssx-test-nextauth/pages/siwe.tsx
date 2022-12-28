@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import Head from 'next/head';
 import {  useSigner, useSignMessage } from "wagmi";
-import { SiweMessage } from "@spruceid/ssx-react";
+import { SiweMessage } from "@spruceid/ssx-react/siwe";
 import styles from '../styles/Home.module.css';
 
 
