@@ -18,7 +18,7 @@
     "postinstall": "npm run clean && npm run build",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "test": "jest --config ./.jest.config.ts",
+    "test": "jest --config ./.jest.config.ts --runInBand --detectOpenHandles --forceExit",
     "lint": "eslint . --ignore-path .gitignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "documentation": "lerna run doc && yarn documentation:reference",
