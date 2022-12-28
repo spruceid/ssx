@@ -164,10 +164,13 @@ export class SSXConnected implements ISSXConnected {
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
     const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
     const requestConfig = isSSXRouteConfig(route)
-      ? route
-      : {
-          url: route,
+      ? {
           customOperation: undefined,
+          ...route,
+        }
+      : {
+          customOperation: undefined,
+          url: route,
         };
 
     const { customOperation } = requestConfig;
@@ -206,10 +209,13 @@ export class SSXConnected implements ISSXConnected {
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
     const requestConfig = isSSXRouteConfig(route)
-      ? route
-      : {
-          url: route,
+      ? {
           customOperation: undefined,
+          ...route,
+        }
+      : {
+          customOperation: undefined,
+          url: route,
         };
     const { customOperation } = requestConfig;
 
@@ -312,10 +318,13 @@ export class SSXConnected implements ISSXConnected {
     // get request configuration
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
     const requestConfig = isSSXRouteConfig(route)
-      ? route
-      : {
-          url: route,
+      ? {
           customOperation: undefined,
+          ...route,
+        }
+      : {
+          customOperation: undefined,
+          url: route,
         };
     // check if we should run a custom operation instead
     const { customOperation } = requestConfig;

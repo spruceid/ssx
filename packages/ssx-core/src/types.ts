@@ -1,6 +1,7 @@
 import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 import { SSXClientSession } from './client';
+import type { AxiosRequestConfig } from 'axios';
 
 /** SSX Route Configuration
  *  This configuration is used to override the default endpoint paths.
@@ -24,17 +25,17 @@ export interface SSXRouteConfig {
 
 /** Type-Guard for SSXRouteConfig. */
 export const isSSXRouteConfig = (
-  config: SSXRouteConfig | string
-): config is SSXRouteConfig => typeof config === 'object';
+  config: SSXRouteConfig | AxiosRequestConfig | string
+): config is SSXRouteConfig | AxiosRequestConfig => typeof config === 'object';
 
 /** Server endpoints configuration. */
 export interface SSXServerRoutes {
   /** Get nonce endpoint path. /ssx-nonce as default. */
-  nonce?: string | SSXRouteConfig;
+  nonce?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
   /** Post login endpoint path. /ssx-login as default. */
-  login?: string | SSXRouteConfig;
+  login?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
   /** Post logout endpoint path. /ssx-logout as default. */
-  logout?: string | SSXRouteConfig;
+  logout?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
 }
 
 /** Server endpoints name configuration. */
