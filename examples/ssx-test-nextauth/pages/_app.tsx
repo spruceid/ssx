@@ -46,7 +46,7 @@ const wagmiClient = createClient({
 });
 
 const { server } = SSXNextAuthRouteConfig();
-const ssxConfig = {
+const ssxConfig: any = {
   siweConfig: {
     domain: "localhost:3000",
   },
