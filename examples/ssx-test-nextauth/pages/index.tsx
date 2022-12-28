@@ -11,6 +11,7 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState<string>();
 
   const handleSignIn = async () => {
+    console.log(ssx);
     await ssx?.signIn();
     setAddress(ssx?.address);
   };

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "rebuild": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint"
   },

@@ -17,6 +17,7 @@ const Home: NextPage = () => {
     useSigner()) || { data: undefined, isSuccess: false };
 
   const handleSignIn = async () => {
+    console.log(SiweMessage)
     try {
       // console.log(data)
       // ssx features
@@ -25,10 +26,10 @@ const Home: NextPage = () => {
       const callbackUrl = "/protected";
 
       const message = new SiweMessage({
-        domain: window?.location?.host,
+        domain: globalThis?.location?.host,
         address: await data?.getAddress(),
         statement: "Sign in with Ethereum",
-        uri: window?.location.origin,
+        uri: globalThis?.location.origin,
         version: "1",
         chainId: (data as any)?.provider?.network?.chainId,
         nonce: await getCsrfToken(),
