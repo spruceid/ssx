@@ -45,6 +45,8 @@
   "dependencies": {
     "@spruceid/ssx": "1.1.1",
     "@spruceid/ssx-server": "1.1.1",
+    "next": "^12.1.6",
+    "next-auth": "^4.10.3",
     "react": "^18.2.0"
   },
   "peerDependencies": {

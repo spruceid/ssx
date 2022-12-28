@@ -1,5 +1,5 @@
 import { getCsrfToken, signIn, signOut } from 'next-auth/react';
-import { SSXClientSession } from '@spruceid/ssx';
+import type { SSXClientSession } from '@spruceid/ssx';
 
 /** Approach A */
 export const SSXNextAuthRouteConfig = () => {

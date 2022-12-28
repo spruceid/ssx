@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getCsrfToken } from 'next-auth/react';
-import { SSXServer, SSXServerConfig } from '@spruceid/ssx-server';
+import { SSXServer } from '@spruceid/ssx-server';
+import type { SSXServerConfig } from '@spruceid/ssx-server';
 
 export const SSXNextAuth = (
   req: NextApiRequest,
