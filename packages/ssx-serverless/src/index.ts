@@ -8,9 +8,6 @@ import {
   SSXEnsData as ISSXEnsData,
 } from './types';
 import {
-  SSXLogFields,
-  SSXEventLogTypes,
-  ssxLog,
   SSXEnsResolveOptions,
   SSXEnsData,
   getProvider,
@@ -18,6 +15,11 @@ import {
   SSXLensProfilesResponse,
   ssxResolveLens,
 } from '@spruceid/ssx-core';
+import {
+  SSXLogFields,
+  SSXEventLogTypes,
+  ssxLog,
+} from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 
 /**
@@ -469,7 +471,8 @@ export class SSXServer {
   };
 }
 
-export * from '@spruceid/ssx-core/dist/types';
+export * from '@spruceid/ssx-core';
+export * from '@spruceid/ssx-core/server';
 export { SSXLogFields, SSXEventLogTypes };
 export {
   SSXSessionCRUDConfig,

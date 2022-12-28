@@ -1,5 +1,5 @@
 import { ethers, Wallet } from 'ethers';
-import { SiweError, SiweErrorType, SiweMessage } from 'siwe';
+import { SiweMessage } from 'siwe';
 import { SiweGnosisVerify, GnosisDelegation } from '../src';
 
 const provider = new ethers.providers.InfuraProvider(

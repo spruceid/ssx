@@ -6,7 +6,7 @@ import {
   SSXRPCProviders,
   SSXServer,
 } from '../src';
-import { SSXEventLogTypes } from '@spruceid/ssx-core';
+import { SSXEventLogTypes } from '@spruceid/ssx-core/server';
 
 jest.mock('@spruceid/ssx-core');
 

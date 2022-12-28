@@ -2,7 +2,7 @@ import {
   ConfigOverrides,
   ISSXConnected,
   SSXExtension,
-} from '@spruceid/ssx-core';
+} from '@spruceid/ssx-core/client';
 import { providers } from 'ethers';
 import { gnosisDelegatorsFor } from './gnosis';
 

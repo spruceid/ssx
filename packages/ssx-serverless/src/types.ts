@@ -1,5 +1,6 @@
 import { SiweMessage } from 'siwe';
-import { SSXRPCProvider, SSXMetricsProvider, SSXLensProfilesResponse } from '@spruceid/ssx-core';
+import { SSXRPCProvider, SSXLensProfilesResponse } from '@spruceid/ssx-core';
+import { SSXMetricsProvider } from '@spruceid/ssx-core/server';
 
 // TODO: unify with ssx-server
 /** Configuration interface for ssx-server */
