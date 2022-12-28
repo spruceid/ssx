@@ -17,7 +17,7 @@ export class SSXInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
-  constructor(private config?: SSXClientConfig) {}
+  constructor(private config?: SSXClientConfig) { }
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -231,6 +231,9 @@ export class SSXConnected implements ISSXConnected {
       ) {
         resolveEns = this.config.resolveEns.resolve;
       }
+
+      let resolveLens: boolean = this.config.resolveLens === 'onServer';
+
       try {
         const data = {
           signature: session.signature,
@@ -240,6 +243,7 @@ export class SSXConnected implements ISSXConnected {
           chainId: session.chainId,
           daoLogin: this.isExtensionEnabled('delegationRegistry'),
           resolveEns,
+          resolveLens,
         };
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api

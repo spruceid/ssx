@@ -242,3 +242,39 @@ export interface SSXEnsData {
   /** ENS avatar. */
   avatarUrl?: string | null;
 }
+
+/** Lens profiles page info */
+export interface SSXLensProfilesPageInfo {
+  /** Cursor to previous page, e.g. '\{"offset":0\}'. */
+  prev: string;
+  /** Cursor to next page, e.g. '\{"offset":10\}'. */
+  next: string;
+  /** Total profiles available to retrieve. */
+  totalCount: number;
+}
+
+/** Lens profiles item */
+export interface SSXLensProfileData {
+  id: string;
+  name: string | null;
+  bio: string | null;
+  attributes: Array<any>;
+  followNftAddress: string | null;
+  metadata: string | null;
+  isDefault: boolean;
+  picture: string | null;
+  handle: string | null;
+  coverPicture: string | null;
+  ownedBy: string | null;
+  dispatcher: any;
+  stats: any;
+  followModule: any;
+}
+
+/** Lens profiles. */
+export interface SSXLensProfilesResponse {
+  /** Lens profiles array. */
+  items: Array<SSXLensProfileData>;
+  /** Lens pagination info. */
+  pageInfo?: SSXLensProfilesPageInfo;
+}

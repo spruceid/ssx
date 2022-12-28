@@ -11,6 +11,8 @@ import {
   ssxResolveEns,
   getProvider,
   SSXServerBaseClass,
+  ssxResolveLens,
+  SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -94,6 +96,7 @@ export class SSXServer extends SSXServerBaseClass {
    * @param daoLogin - Whether or not daoLogin is enabled.
    * @param resolveEns - Resolve ENS settings.
    * @param nonce - nonce string.
+   * @param resolveLens - Resolve Lens settings.
    * @returns Request data with SSX Server Session.
    */
   public login = async (
@@ -102,6 +105,7 @@ export class SSXServer extends SSXServerBaseClass {
     daoLogin: boolean,
     resolveEns: boolean | SSXEnsResolveOptions,
     nonce: string,
+    resolveLens?: boolean,
   ): Promise<{
     success: boolean;
     error: SiweError;
@@ -128,10 +132,20 @@ export class SSXServer extends SSXServerBaseClass {
       }
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
+    
+    let lens: string | SSXLensProfilesResponse;
+    if (resolveLens) {
+      promises.push(this.resolveLens(siweMessage.address));
+    }
+
     try {
       siweMessageVerifyPromise = await Promise.all(promises).then(
-        ([siweMessageVerify, ensData]) => {
+        ([siweMessageVerify, ensData, lensData]) => {
+          if (!resolveEns && resolveLens) {
+            [ensData, lensData] = [undefined, ensData];
+          }
           ens = ensData;
+          lens = lensData;
           return siweMessageVerify;
         },
       );
@@ -177,6 +191,7 @@ export class SSXServer extends SSXServerBaseClass {
         signature: signature,
         daoLogin: daoLogin,
         ens,
+        lens,
       },
     };
   };
@@ -195,6 +210,28 @@ export class SSXServer extends SSXServerBaseClass {
   ): Promise<SSXEnsData> => {
     return ssxResolveEns(this.provider, address, resolveEnsOpts);
   };
+
+  /**
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * limited by 10. To get other pages you must to pass the pageCursor parameter.
+   * 
+   * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+   * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+   *  
+   * @param address - Ethereum User address.
+   * @param pageCursor - Page cursor used to paginate the request. Default to 
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * information.
+   * @returns Object containing Lens profiles items and pagination info.
+   */
+  async resolveLens(
+    /* Ethereum User Address. */
+    address: string,
+    /* Page cursor used to paginate the request. Default to first page. */
+    pageCursor: string = "{}"
+  ): Promise<string | SSXLensProfilesResponse> {
+    return ssxResolveLens(this.provider, address, pageCursor);
+  }
 
   /**
    * Logs out the user by deleting the session.

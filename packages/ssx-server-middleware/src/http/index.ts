@@ -116,6 +116,7 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
           body.daoLogin,
           body.resolveEns,
           req.session.nonce,
+          body.resolveLens,
         );
 
         if (!success) {
@@ -130,6 +131,8 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
         req.session.siwe = session.siwe;
         req.session.signature = session.signature;
         req.session.daoLogin = session.daoLogin;
+        req.session.ens = session.ens;
+        req.session.lens = session.lens;
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
