@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
 import Head from 'next/head';
 import {  useSigner, useSignMessage } from "wagmi";
-import { SiweMessage } from "siwe";
+import { SiweMessage } from "@spruceid/ssx-react";
 import styles from '../styles/Home.module.css';
 
 
@@ -23,13 +23,12 @@ const Home: NextPage = () => {
       const daoLogin = false;
       const resolveEns = false;
       const callbackUrl = "/protected";
-      
 
       const message = new SiweMessage({
-        domain: window.location.host,
+        domain: window?.location?.host,
         address: await data?.getAddress(),
         statement: "Sign in with Ethereum",
-        uri: window.location.origin,
+        uri: window?.location.origin,
         version: "1",
         chainId: (data as any)?.provider?.network?.chainId,
         nonce: await getCsrfToken(),
