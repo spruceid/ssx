@@ -2,18 +2,20 @@ import { generateNonce, SiweError, SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
 import {
-  SSXLogFields,
-  SSXServerConfig,
-  SSXEventLogTypes,
   SSXEnsData,
   SSXEnsResolveOptions,
-  ssxLog,
   ssxResolveEns,
   getProvider,
   SSXServerBaseClass,
   ssxResolveLens,
   SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
+import {
+  SSXLogFields,
+  SSXServerConfig,
+  SSXEventLogTypes,
+  ssxLog,
+} from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';

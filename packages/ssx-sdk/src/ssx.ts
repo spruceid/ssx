@@ -1,8 +1,6 @@
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 import { SSXConnected, SSXInit } from './core';
 import {
-  SSXClientConfig,
-  SSXClientSession,
   SSXRPCProviders,
   SSXEnsData,
   SSXEnsResolveOptions,
@@ -10,6 +8,10 @@ import {
   ssxResolveLens,
   SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
+import {
+  SSXClientConfig,
+  SSXClientSession,
+} from '@spruceid/ssx-core/client';
 
 declare global {
   interface Window {

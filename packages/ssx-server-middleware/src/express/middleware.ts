@@ -3,9 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import {
   SSXEnsData,
   SSXLensProfilesResponse,
-  SSXLogFields,
   SiweMessage,
 } from '@spruceid/ssx-core';
+import { SSXLogFields } from '@spruceid/ssx-core/server';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {

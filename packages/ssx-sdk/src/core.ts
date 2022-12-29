@@ -6,9 +6,11 @@ import { generateNonce } from 'siwe';
 import {
   SSXClientSession,
   SSXClientConfig,
-  SSXEnsResolveOptions,
   ISSXConnected,
   SSXExtension,
+} from '@spruceid/ssx-core/client';
+import {
+  SSXEnsResolveOptions,
   isSSXRouteConfig,
 } from '@spruceid/ssx-core';
 

@@ -1,7 +1,7 @@
 export * from './ssx';
 export * from './core';
-export * from '@spruceid/ssx-core/dist/client/types';
-export * from '@spruceid/ssx-core/dist/types';
+export * from '@spruceid/ssx-core/client';
+export * from '@spruceid/ssx-core';
 export {
   /** @deprecated use SSXClientConfig field instead */
   SSXClientConfig as SSXConfig,
@@ -9,5 +9,5 @@ export {
   SSXClientProviders as SSXProviders,
   /** @deprecated use SSXClientSession field instead */
   SSXClientSession as SSXSession,
-} from '@spruceid/ssx-core';
+} from '@spruceid/ssx-core/client';
 export { SiweMessage } from 'siwe';
