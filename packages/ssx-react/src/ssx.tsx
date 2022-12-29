@@ -2,6 +2,7 @@ import {
   useContext,
   createContext,
   useState,
+  useReducer,
   useEffect,
   ReactNode,
 } from 'react';
@@ -83,8 +84,57 @@ export const SSXProvider = ({
       useSigner()) || { data: undefined, isSuccess: false });
   }
 
-  const [ssx, setSSX] = useState<SSX>();
-  const [ssxLoaded, setSSXLoaded] = useState(false);
+  const [ssxState, setSSXState] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      ssx: undefined,
+      ssxLoaded: false,
+    }
+  );
+  const { ssx, ssxLoaded } = ssxState;
+  const setSSX = (ssx: SSX) => setSSXState({ ssx });
+  const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
+
+  // /** Approach B */
+  // const nextSignIn = async (
+  //   options?: SignInOptions,
+  //   authorizationParams?: SignInAuthorizationParams
+  // ) => {
+  //   if (ssxLoaded) {
+  //     const csrfToken = await getCsrfToken();
+  //     // inject nonce into siweConfig
+  //     const modifiedSSXConfig = {
+  //       ...ssxConfig,
+  //       siweConfig: {
+  //         ...ssxConfig?.siweConfig,
+  //         nonce: csrfToken,
+  //       },
+  //     };
+  //     const ssxInstance = new SSX(modifiedSSXConfig);
+  //     const { siwe, signature } = await ssxInstance.signIn();
+  //     return signIn(
+  //       'credentials',
+  //       { message: siwe, signature, ...options },
+  //       authorizationParams
+  //     );
+  //   }
+  // };
+  // const nextSignOut = async (options?: SignOutParams) => {
+  //   if (ssxLoaded) {
+  //     const csrfToken = await getCsrfToken();
+  //     // inject nonce into siweConfig
+  //     const modifiedSSXConfig = {
+  //       ...ssxConfig,
+  //       siweConfig: {
+  //         ...ssxConfig?.siweConfig,
+  //         nonce: csrfToken,
+  //       },
+  //     };
+  //     const ssxInstance = new SSX(modifiedSSXConfig);
+  //     await ssxInstance.signOut();
+  //     return signOut(options);
+  //   }
+  // };
 
   // /** Approach B */
 
