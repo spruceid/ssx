@@ -55,7 +55,6 @@ const ssxConfig: any = {
   },
 };
 
-console.log(ssxConfig);
 
 function MyApp({ Component, pageProps }: any) {
   return (

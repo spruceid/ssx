@@ -11,6 +11,7 @@
     "examples/ssx-test-dapp",
     "examples/ssx-test-express-api",
     "examples/ssx-test-http-api",
+    "examples/ssx-test-nextauth",
     "examples/ssx-test-serverless-dynamodb-api"
   ],
   "scripts": {
