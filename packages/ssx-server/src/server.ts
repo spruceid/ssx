@@ -6,7 +6,6 @@ import {
   SSXEnsResolveOptions,
   ssxResolveEns,
   getProvider,
-  SSXServerBaseClass,
   ssxResolveLens,
   SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
@@ -14,6 +13,7 @@ import {
   SSXLogFields,
   SSXServerConfig,
   SSXEventLogTypes,
+  SSXServerBaseClass,
   ssxLog,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';

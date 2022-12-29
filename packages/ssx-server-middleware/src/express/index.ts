@@ -1,7 +1,9 @@
 import bodyParser from 'body-parser';
 import ssxEndpoints from './endpoints';
 import { ssxMiddleware, SSXAuthenticated } from './middleware';
-import { SSXServerRouteNames, SSXServerBaseClass } from '@spruceid/ssx-core';
+import { SSXServerRouteNames } from '@spruceid/ssx-core';
+import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
+
 
 /**
  * This middleware function has two key functions:

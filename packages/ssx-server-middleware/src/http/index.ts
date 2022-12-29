@@ -3,7 +3,8 @@ import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { SSXRequestObject } from '../express/middleware';
-import { SSXServerRoutes, SSXServerBaseClass } from '@spruceid/ssx-core';
+import { SSXServerRoutes } from '@spruceid/ssx-core';
+import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 
 declare module 'http' {
   interface IncomingMessage {
