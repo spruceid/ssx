@@ -30,11 +30,11 @@
       "siwe": [
         "dist/siwe.d.ts"
       ],
-      "next/backend": [
-        "dist/next/backend.d.ts"
+      "next-auth/backend": [
+        "dist/next-auth/backend.d.ts"
       ],
-      "next/frontend": [
-        "dist/next/frontend.d.ts"
+      "next-auth/frontend": [
+        "dist/next-auth/frontend.d.ts"
       ]
     }
   },
