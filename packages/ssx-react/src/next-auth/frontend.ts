@@ -1,9 +1,9 @@
-import { getCsrfToken, signIn, signOut, SignOutParams } from 'next-auth/react';
+import { getCsrfToken, signIn, SignInOptions } from 'next-auth/react';
 import type { SSXClientSession } from '@spruceid/ssx';
 
 interface SSXNextAuthRouteConfig {
   getCsrfTokenParams?: any;
-  signOutParams?: SignOutParams;
+  signInOptions?: SignInOptions;
 }
 
 /** Approach A */
@@ -15,13 +15,12 @@ export const SSXNextAuthRouteConfig = (config?: SSXNextAuthRouteConfig) => {
   };
   const login = {
     customOperation: async (session: SSXClientSession) => {
-      const callbackUrl = '/protected';
       const { siwe, signature } = session;
       return signIn('credentials', {
         message: siwe,
         redirect: false,
         signature,
-        callbackUrl,
+        ...config?.signInOptions,
       });
     },
   };

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { SSXNextAuth } from "@spruceid/ssx-react/next/backend";
+import { SSXNextAuth } from "@spruceid/ssx-react/next-auth/backend";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const ssxConfig = {};
