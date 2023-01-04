@@ -5,13 +5,11 @@ import type { SSXClientSession } from '@spruceid/ssx';
 export const SSXNextAuthRouteConfig = () => {
   const nonce = {
     customOperation: async () => { 
-      console.log("SSXNextAuthRouteConfig: nonce")
       return await getCsrfToken();
     },
   };
   const login = {
     customOperation: async (session: SSXClientSession) => {
-      console.log("SSXNextAuthRouteConfig: login")
       const callbackUrl = '/protected';
       const { siwe, signature } = session;
       return signIn('credentials', {
@@ -24,7 +22,6 @@ export const SSXNextAuthRouteConfig = () => {
   };
   const logout = {
     customOperation: async (data: any) => {
-      console.log("SSXNextAuthRouteConfig: logout")
       return signOut(data);
     },
   };
