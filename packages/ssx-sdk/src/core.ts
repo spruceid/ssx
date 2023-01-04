@@ -177,7 +177,6 @@ export class SSXConnected implements ISSXConnected {
 
     const { customOperation } = requestConfig;
     if (customOperation) {
-      console.log("Using custom operation for 'nonce' request.");
       return customOperation(params);
     }
 
@@ -223,7 +222,6 @@ export class SSXConnected implements ISSXConnected {
     const { customOperation } = requestConfig;
 
     if (customOperation) {
-      console.log('customOperation: login');
       return customOperation(session);
     }
 
@@ -338,7 +336,6 @@ export class SSXConnected implements ISSXConnected {
     const { customOperation } = requestConfig;
 
     if (customOperation) {
-      console.log('customOperation: logout')
       return customOperation(session);
     }
 
