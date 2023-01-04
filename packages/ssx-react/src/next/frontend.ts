@@ -1,11 +1,16 @@
-import { getCsrfToken, signIn, signOut } from 'next-auth/react';
+import { getCsrfToken, signIn, signOut, SignOutParams } from 'next-auth/react';
 import type { SSXClientSession } from '@spruceid/ssx';
 
+interface SSXNextAuthRouteConfig {
+  getCsrfTokenParams?: any;
+  signOutParams?: SignOutParams;
+}
+
 /** Approach A */
-export const SSXNextAuthRouteConfig = () => {
+export const SSXNextAuthRouteConfig = (config?: SSXNextAuthRouteConfig) => {
   const nonce = {
     customOperation: async () => {
-      return await getCsrfToken();
+      return await getCsrfToken(config?.getCsrfTokenParams);
     },
   };
   const login = {
@@ -21,9 +26,12 @@ export const SSXNextAuthRouteConfig = () => {
     },
   };
   const logout = {
-    customOperation: async (data: any) => {
-      return signOut(data);
-    },
+    // customOperation: async (data?: any) => {
+    //   console.log("customOperation: logout")
+    //   return signOut(config?.signOutParams);
+    // },
+    url: '/signout',
+    method: 'POST',
   };
 
   const routes = { nonce, login, logout };

@@ -1,6 +1,5 @@
 import express from 'express';
 import { Request, Response } from 'express';
-// import { SSXServer } from '../../server';
 import { SSXServerRouteNames } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 

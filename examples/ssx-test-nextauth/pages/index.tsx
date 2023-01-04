@@ -2,18 +2,19 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useState } from 'react';
 import Head from 'next/head';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useSSX } from "@spruceid/ssx-react";
 import styles from '../styles/Home.module.css';
 
 
 const Home: NextPage = () => {
   const { ssx, ssxLoaded } = useSSX();
+  const router = useRouter();
   const [address, setAddress] = useState<string>();
 
   const handleSignIn = async () => {
-    console.log(ssx);
     await ssx?.signIn();
-    setAddress(ssx?.address);
+    router.push('/protected');
   };
 
   return (

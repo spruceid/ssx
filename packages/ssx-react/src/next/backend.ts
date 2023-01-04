@@ -33,9 +33,6 @@ export const SSXNextAuth = (
 
   const authorize = async credentials => {
     try {
-      console.log('authorize');
-      console.log(credentials);
-
       const ssx = new SSXServer(ssxConfig);
       const nonce = await getCsrfToken({ req });
 
@@ -56,7 +53,6 @@ export const SSXNextAuth = (
       //     return null;
       //  }
 
-      console.log('success: ', success);
       if (success) {
         return {
           id: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
