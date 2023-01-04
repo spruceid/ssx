@@ -15,7 +15,6 @@ export default function Protected() {
         router.push('/')
     }
     
-    console.log(status);
 
     if (status === "loading") {
         <div className={styles.container}>

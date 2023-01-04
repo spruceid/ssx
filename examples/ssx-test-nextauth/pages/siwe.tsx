@@ -17,9 +17,7 @@ const Home: NextPage = () => {
     useSigner()) || { data: undefined, isSuccess: false };
 
   const handleSignIn = async () => {
-    console.log(SiweMessage)
     try {
-      // console.log(data)
       // ssx features
       const daoLogin = false;
       const resolveEns = false;
@@ -38,7 +36,7 @@ const Home: NextPage = () => {
       signIn("credentials", { message: message.prepareMessage() , redirect: false, signature, daoLogin, resolveEns, callbackUrl });
       setAddress(await data?.getAddress());
     } catch (error) {
-      console.log(error)
+      console.error(error)
       window.alert(error);
     }
   };

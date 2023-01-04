@@ -26,10 +26,6 @@ export const SSXNextAuthRouteConfig = (config?: SSXNextAuthRouteConfig) => {
     },
   };
   const logout = {
-    // customOperation: async (data?: any) => {
-    //   console.log("customOperation: logout")
-    //   return signOut(config?.signOutParams);
-    // },
     url: '/signout',
     method: 'POST',
   };

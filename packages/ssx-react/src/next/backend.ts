@@ -63,23 +63,17 @@ export const SSXNextAuth = (
         };
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return null;
     }
     return null;
   };
 
   const session = async sessionData => {
-    console.log('session');
-    console.log(sessionData);
     const { session, user, token } = sessionData;
-    console.log(user);
-    // session.address = token.sub;
     if (session.user) {
       session.user.name = token.sub;
     }
-    // session.ssx = "ssx";
-    // session.userId =`did:pkh:eip155:${siwe.chainId}:${siwe.address}`;
 
     return session;
   };
