@@ -13,13 +13,13 @@
       "types": "./dist/siwe.d.js",
       "default": "./dist/siwe.js"
     },
-    "./next/backend": {
-      "types": "./dist/next/backend.d.js",
-      "default": "./dist/next/backend.js"
+    "./next-auth/backend": {
+      "types": "./dist/next-auth/backend.d.js",
+      "default": "./dist/next-auth/backend.js"
     },
-    "./next/frontend": {
-      "types": "./dist/next/frontend.d.js",
-      "default": "./dist/next/frontend.js"
+    "./next-auth/frontend": {
+      "types": "./dist/next-auth/frontend.d.js",
+      "default": "./dist/next-auth/frontend.js"
     }
   },
   "typesVersions": {
