@@ -4,7 +4,7 @@ import type { SSXClientSession } from '@spruceid/ssx';
 /** Approach A */
 export const SSXNextAuthRouteConfig = () => {
   const nonce = {
-    customOperation: async () => { 
+    customOperation: async () => {
       return await getCsrfToken();
     },
   };
