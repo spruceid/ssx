@@ -10,7 +10,7 @@ import { SessionProvider } from "next-auth/react";
 
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
-  throw new Error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
+  console.error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
