@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getCsrfToken } from 'next-auth/react';
 import { SSXServer } from '@spruceid/ssx-server';
-import type { SSXServerConfig } from '@spruceid/ssx-server';
-
 export const SSXNextAuth = (
   req: NextApiRequest,
   res: NextApiResponse,
-  ssxConfig: SSXServerConfig = {}
+  ssx: SSXServer
 ) => {
   const credentials = {
     message: {
@@ -33,7 +31,6 @@ export const SSXNextAuth = (
 
   const authorize = async credentials => {
     try {
-      const ssx = new SSXServer(ssxConfig);
       const nonce = await getCsrfToken({ req });
 
       // validate signature, nonce and ssx config options
