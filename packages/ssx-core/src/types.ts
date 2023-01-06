@@ -18,7 +18,7 @@ export interface SSXRouteConfig {
   /** Custom Operation.
    * Replace the ssx function called with a function of your own
    **/
-  customOperation?(
+  customAPIOperation?(
     params: SSXClientSession | Record<string, any> | any
   ): Promise<any>;
 }

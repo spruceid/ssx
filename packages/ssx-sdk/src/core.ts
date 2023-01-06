@@ -167,17 +167,17 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           ...route,
         }
       : {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           url: route,
         };
 
-    const { customOperation } = requestConfig;
-    if (customOperation) {
-      return customOperation(params);
+    const { customAPIOperation } = requestConfig;
+    if (customAPIOperation) {
+      return customAPIOperation(params);
     }
 
     if (this.api) {
@@ -212,17 +212,17 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           ...route,
         }
       : {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           url: route,
         };
-    const { customOperation } = requestConfig;
+    const { customAPIOperation } = requestConfig;
 
-    if (customOperation) {
-      return customOperation(session);
+    if (customAPIOperation) {
+      return customAPIOperation(session);
     }
 
     if (this.api) {
@@ -325,18 +325,18 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           ...route,
         }
       : {
-          customOperation: undefined,
+          customAPIOperation: undefined,
           url: route,
         };
     // check if we should run a custom operation instead
-    const { customOperation } = requestConfig;
+    const { customAPIOperation } = requestConfig;
 
-    if (customOperation) {
-      return customOperation(session);
+    if (customAPIOperation) {
+      return customAPIOperation(session);
     }
 
     if (this.api) {

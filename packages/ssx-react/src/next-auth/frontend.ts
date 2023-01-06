@@ -9,12 +9,12 @@ interface SSXNextAuthRouteConfig {
 /** Approach A */
 export const SSXNextAuthRouteConfig = (config?: SSXNextAuthRouteConfig) => {
   const nonce = {
-    customOperation: async () => {
+    customAPIOperation: async () => {
       return await getCsrfToken(config?.getCsrfTokenParams);
     },
   };
   const login = {
-    customOperation: async (session: SSXClientSession) => {
+    customAPIOperation: async (session: SSXClientSession) => {
       const { siwe, signature } = session;
       return signIn('credentials', {
         message: siwe,
