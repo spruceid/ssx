@@ -25,7 +25,7 @@
   "dependencies": {
     "@spruceid/ssx-core": "1.0.1",
     "@spruceid/ssx-gnosis-extension": "1.1.1",
-    "@spruceid/ssx-server-middleware": "1.0.0",
+    "@spruceid/ssx-server-middleware": "*",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
