@@ -164,21 +164,30 @@ export class SSXConnected implements ISSXConnected {
    * @returns Promise with nonce.
    */
   public async ssxServerNonce(params: Record<string, any>): Promise<string> {
+    const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
+    const requestConfig = isSSXRouteConfig(route)
+      ? {
+          customAPIOperation: undefined,
+          ...route,
+        }
+      : {
+          customAPIOperation: undefined,
+          url: route,
+        };
+
+    const { customAPIOperation } = requestConfig;
+    if (customAPIOperation) {
+      return customAPIOperation(params);
+    }
+
     if (this.api) {
       let nonce;
 
       try {
-        const route =
-          this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'get',
-              url: route,
-            };
-
         nonce = (
           await this.api.request({
+            method: 'get',
+            url: '/ssx-nonce',
             ...requestConfig,
             params,
           })
@@ -200,6 +209,22 @@ export class SSXConnected implements ISSXConnected {
    * @returns Promise with server session data.
    */
   public async ssxServerLogin(session: SSXClientSession): Promise<any> {
+    const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
+    const requestConfig = isSSXRouteConfig(route)
+      ? {
+          customAPIOperation: undefined,
+          ...route,
+        }
+      : {
+          customAPIOperation: undefined,
+          url: route,
+        };
+    const { customAPIOperation } = requestConfig;
+
+    if (customAPIOperation) {
+      return customAPIOperation(session);
+    }
+
     if (this.api) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
       if (
@@ -212,15 +237,6 @@ export class SSXConnected implements ISSXConnected {
       let resolveLens: boolean = this.config.resolveLens === 'onServer';
 
       try {
-        const route =
-          this.config.providers?.server?.routes?.login ?? '/ssx-login';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'post',
-              url: route,
-            };
-
         const data = {
           signature: session.signature,
           siwe: session.siwe,
@@ -234,6 +250,8 @@ export class SSXConnected implements ISSXConnected {
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api
           .request({
+            method: 'post',
+            url: '/ssx-login',
             ...requestConfig,
             data,
           })
@@ -303,19 +321,31 @@ export class SSXConnected implements ISSXConnected {
    * @param session - SSXClientSession object.
    */
   async signOut(session: SSXClientSession): Promise<void> {
+    // get request configuration
+    const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
+    const requestConfig = isSSXRouteConfig(route)
+      ? {
+          customAPIOperation: undefined,
+          ...route,
+        }
+      : {
+          customAPIOperation: undefined,
+          url: route,
+        };
+    // check if we should run a custom operation instead
+    const { customAPIOperation } = requestConfig;
+
+    if (customAPIOperation) {
+      return customAPIOperation(session);
+    }
+
     if (this.api) {
       try {
-        const route =
-          this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
-        const requestConfig = isSSXRouteConfig(route)
-          ? route
-          : {
-              method: 'post',
-              url: route,
-            };
         const data = { ...session };
 
         await this.api.request({
+          method: 'post',
+          url: '/ssx-logout',
           ...requestConfig,
           data,
         });

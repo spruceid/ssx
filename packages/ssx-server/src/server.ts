@@ -13,24 +13,24 @@ import {
   SSXLogFields,
   SSXServerConfig,
   SSXEventLogTypes,
+  SSXServerBaseClass,
   ssxLog,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
 import { RequestHandler } from 'express';
-import { EventEmitter } from 'events';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
  * SSX-Server is the base class that takes in a configuration object and works
  * with various middleware libraries to add authentication and metrics to your server.
  */
-export class SSXServer extends EventEmitter {
+export class SSXServer extends SSXServerBaseClass {
   /** SSXServerConfig object. */
-  private _config: SSXServerConfig;
+  protected _config: SSXServerConfig;
   /** Axios instance. */
-  private _api: AxiosInstance;
+  protected _api: AxiosInstance;
   /** EthersJS provider. */
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
@@ -67,7 +67,7 @@ export class SSXServer extends EventEmitter {
   /**
    * Sets default values for optional configurations
    */
-  private _setDefaults = (): void => {
+  protected _setDefaults = (): void => {
     this._config = {};
     this._config.providers = {};
     this._config.useSecureCookies = process.env.NODE_ENV === 'production';
@@ -265,7 +265,7 @@ export class SSXServer extends EventEmitter {
    * Gets default Express Session Config.
    * @returns Default session options
    */
-  private getDefaultExpressSessionConfig = (): SessionOptions => ({
+  protected getDefaultExpressSessionConfig = (): SessionOptions => ({
     name: 'ssx-session-storage',
     secret: this._config.signingKey,
     resave: false,

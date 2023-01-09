@@ -1,6 +1,9 @@
-import { CookieOptions } from 'express';
-import { SessionOptions, Store } from 'express-session';
-import { SSXRPCProvider } from '../types';
+import { CookieOptions, RequestHandler } from 'express';
+import { SessionData, SessionOptions, Store } from 'express-session';
+import { SSXEnsData, SSXEnsResolveOptions, SSXRPCProvider } from '../types';
+import { EventEmitter } from 'events';
+import { ethers } from 'ethers';
+import { SiweMessage, SiweError } from 'siwe';
 
 /** Configuration interface for ssx-server */
 export interface SSXServerConfig {
@@ -88,3 +91,86 @@ export enum SSXEventLogTypes {
   /** Event type definition. */
   // EVENT = "event",
 }
+
+/**
+ * SSX-Server is a server-side library made to work with the SSX client libraries.
+ * SSX-Server is the base class that takes in a configuration object and works
+ * with various middleware libraries to add authentication and metrics to your server.
+ */
+export abstract class SSXServerBaseClass extends EventEmitter {
+  /** SSXServerConfig object. */
+  protected _config;
+  /** Axios instance. */
+  protected _api;
+  /** EthersJS provider. */
+  public provider: ethers.providers.BaseProvider;
+  /** Session is a configured instance of express-session middleware. */
+  public session: RequestHandler;
+  /**
+   * Sets default values for optional configurations
+   */
+  protected _setDefaults;
+  /**
+   * Registers a new event to the API
+   * @param data - SSXLogFields object.
+   * @returns True (success) or false (fail).
+   */
+  public log: (data: SSXLogFields) => Promise<boolean>;
+  /**
+   * Generates a nonce for use in the SSX client libraries.
+   * Nonce is a random string that is used to prevent replay attacks.
+   * Wraps the generateNonce function from the SIWE library.
+   * @returns A nonce string.
+   */
+  public generateNonce: () => string;
+  /**
+   * Verifies the SIWE message, signature, and nonce for a sign-in request.
+   * If the message is verified, a session token is generated and returned.
+   * @param siwe - SIWE Message.
+   * @param signature - The signature of the SIWE message.
+   * @param daoLogin - Whether or not daoLogin is enabled.
+   * @param resolveEns - Resolve ENS settings.
+   * @param nonce - nonce string.
+   * @returns Request data with SSX Server Session.
+   */
+  public login: (
+    siwe: Partial<SiweMessage> | string,
+    signature: string,
+    daoLogin: boolean,
+    resolveEns: boolean | SSXEnsResolveOptions,
+    nonce: string,
+    resolveLens?: boolean
+  ) => Promise<{
+    success: boolean;
+    error: SiweError;
+    session: Partial<SessionData>;
+  }>;
+  /**
+   * ENS data supported by SSX.
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public resolveEns: (
+    address: string,
+    resolveEnsOpts?: SSXEnsResolveOptions
+  ) => Promise<SSXEnsData>;
+  /**
+   * Logs out the user by deleting the session.
+   * Currently this is a no-op.
+   * @param destroySession - Method to remove session from storage.
+   * @returns Promise with true (success) or false (fail).
+   */
+  public logout: (destroySession?: () => Promise<any>) => Promise<boolean>;
+  /**
+   * Gets Express Session config params to configure the session.
+   * @returns Session options.
+   */
+  public getExpressSessionConfig: () => SessionOptions;
+  /**
+   * Gets default Express Session Config.
+   * @returns Default session options
+   */
+  protected getDefaultExpressSessionConfig;
+}
+//# sourceMappingURL=server.d.ts.map

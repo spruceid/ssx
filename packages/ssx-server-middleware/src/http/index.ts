@@ -2,14 +2,14 @@ import { SiweMessage } from 'siwe';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
-import { SSXServer } from '../../server';
 import { SSXRequestObject } from '../express/middleware';
 import { SSXServerRoutes } from '@spruceid/ssx-core';
+import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 
 declare module 'http' {
   interface IncomingMessage {
     sessionID: string;
-    ssx: SSXRequestObject & Omit<Partial<SSXServer>, 'log'>;
+    ssx: SSXRequestObject & Omit<Partial<SSXServerBaseClass>, 'log'>;
     session: Session & Partial<SessionData>;
   }
 }
@@ -41,7 +41,7 @@ function getBody(req: IncomingMessage): Promise<any> {
  * @param ssx - The SSX server instance.
  * @returns requestListener: function (req: Request, res: Response) =\> (req: IncomingMessage, res: ServerResponse)
  */
-export const SSXHttpMiddleware = (ssx: SSXServer, routes?: SSXServerRoutes) => {
+export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRoutes) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   return (requestListener = (req, res) => {}) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
