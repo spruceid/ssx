@@ -210,7 +210,7 @@ test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
     expect.objectContaining({
       pageInfo: {
         prev: '{"offset":0}',
-        next: '{"offset":0}',
+        next: null,
         totalCount: 0,
       }
     })
