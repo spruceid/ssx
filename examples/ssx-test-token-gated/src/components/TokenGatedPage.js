@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 import Title from './Title';
 import Button from './Button';
 import { Network, Alchemy } from "alchemy-sdk";
 import { useSSX } from '@spruceid/ssx-react';
+import {
+  useConnectModal,
+} from '@rainbow-me/rainbowkit';
 
 const ENS_CONTRACT = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85';
 
@@ -16,24 +19,34 @@ const alchemy = new Alchemy(alchemyConfig);
 
 const TokenGatedContent = () => {
   const [ownEnsName, setOwnEnsName] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const { ssx } = useSSX();
   const [address, setAddress] = useState('');
+  const { openConnectModal } = useConnectModal();
 
-  const ssxHandler = async () => {
-    setLoading(true);
-    try {
-      await ssx?.signIn();
-      const nfts = await alchemy.nft.getNftsForOwner(ssx?.address());
-      const ownENS = nfts.ownedNfts.filter(({ contract }) => contract.address === ENS_CONTRACT)?.length > 0;
-
-      setOwnEnsName(ownENS);
-      setAddress(ssx?.address());
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if(ssx) {
+      try {
+        ssx?.signIn().then(() => {
+          alchemy.nft.getNftsForOwner(ssx?.address()).then((nfts) => {
+            const ownENS = nfts.ownedNfts.filter(({ contract }) => contract.address === ENS_CONTRACT)?.length > 0;
+            setOwnEnsName(ownENS);
+            setAddress(ssx?.address());
+            setLoading(false);
+          });
+        });
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
     }
-    setLoading(false);
-  };
+  }, [ssx])
+
+  const handleClick = () => {
+    if (openConnectModal) {
+      openConnectModal();
+    }
+  }
 
   return (
     <div className='App'>
@@ -49,7 +62,7 @@ const TokenGatedContent = () => {
                 </> : <> No ENS name found.</> :
               <>
                 <Button
-                  onClick={ssxHandler}
+                  onClick={handleClick}
                   loading={loading}
                 >
                   SIGN-IN WITH ETHEREUM

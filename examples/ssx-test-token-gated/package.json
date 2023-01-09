@@ -17,15 +17,15 @@
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "web-vitals": "^2.1.4",
     "@rainbow-me/rainbowkit": "^0.7.2",
     "@spruceid/ssx-react": "file:../../packages/ssx-react/dist",
-    "wagmi": "0.7.0"
+    "wagmi": "0.7.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
