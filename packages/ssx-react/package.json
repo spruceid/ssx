@@ -4,22 +4,27 @@
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
   "exports": {
     ".": {
+      "default": "./dist/index.js",
       "types": "./dist/index.d.js",
-      "default": "./dist/index.js"
+      "module": "./dist/esm/index.js"
     },
     "./siwe": {
+      "default": "./dist/siwe.js",
       "types": "./dist/siwe.d.js",
-      "default": "./dist/siwe.js"
+      "module": "./dist/esm/siwe.js"
     },
     "./next-auth/backend": {
+      "default": "./dist/next-auth/backend.js",
       "types": "./dist/next-auth/backend.d.js",
-      "default": "./dist/next-auth/backend.js"
+      "module": "dist/esm/next-auth/backend.js"
     },
     "./next-auth/frontend": {
+      "default": "./dist/next-auth/frontend.js",
       "types": "./dist/next-auth/frontend.d.js",
-      "default": "./dist/next-auth/frontend.js"
+      "module": "./dist/esm/next-auth/frontend.d.js"
     }
   },
   "typesVersions": {
