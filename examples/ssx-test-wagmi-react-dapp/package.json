@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "rebuild": "rm -rf .next && next build",
+    "restart": "yarn rebuild && yarn start"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.8.1",
