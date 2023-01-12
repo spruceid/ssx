@@ -6,9 +6,9 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
-import { SSX, SSXClientConfig } from '@spruceid/ssx';
+import type { SSX, SSXClientConfig } from '@spruceid/ssx';
 // import { useSigner } from 'wagmi';
-// const { useSigner } = require('wagmi');
+
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
   /** web3 Provider. */
@@ -41,6 +41,7 @@ const defaultContext: SSXContextInterface = {
   ssxLoaded: false,
 };
 
+const clientRender = typeof window !== 'undefined';
 const SSXContext = createContext(defaultContext);
 
 /** SSX Provider Component. */
@@ -49,43 +50,48 @@ export const SSXProvider = ({
   children,
   web3Provider,
 }: SSXProviderProps) => {
-  let provider, providerLoaded;
+  // let provider, providerLoaded;
   const usingWagmi = !web3Provider;
 
+  const [provider, setProvider] = useState<any>(undefined);
+  const [providerLoaded, setProviderLoaded] = useState<boolean>(false);
+  const [SSXClass, setSSXClass] = useState<any>(undefined);
+
   if (web3Provider) {
-    provider = web3Provider.provider;
-    providerLoaded = web3Provider.providerLoaded || true;
-    // } else {
-    //   // assume using wagmi.sh if no provider is provided
-    //   usingWagmi = true;
-    //   ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
-    //     'undefined' &&
-    //     useSigner()) || { data: undefined, isSuccess: false });
+    setProvider(provider);
+    setProviderLoaded(web3Provider.providerLoaded || true);
   }
 
-  // const [ssxState, setSSXState] = useReducer(
-  //   (state, newState) => ({ ...state, ...newState }),
-  //   {
-  //     ssx: undefined,
-  //     ssxLoaded: false,
-  //   }
-  // );
-  // const { ssx, ssxLoaded } = ssxState;
-  // const setSSX = (ssx: SSX) => setSSXState({ ssx });
-  // const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
+  if (clientRender) {
+    import('wagmi').then(({ useSigner }) => {
+      console.log('wagmi');
+      console.log('useSigner', useSigner);
+
+      const { data, isSuccess } = useSigner();
+      setProvider(data?.provider);
+      setProviderLoaded(isSuccess);
+    });
+
+    import('@spruceid/ssx').then(({ SSX }) => {
+      console.log('@spruceid/ssx');
+      console.log('SSX', SSX);
+      setSSXClass(SSX);
+    });
+  }
 
   const [ssx, setSSX] = useState<SSX | undefined>(undefined);
   const [ssxLoaded, setSSXLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function initializeSSX() {
-      const { SSX } = await import('@spruceid/ssx');
-      if (usingWagmi) {
-        const { useSigner } = await import('wagmi');
-        ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
-          'undefined' &&
-          useSigner()) || { data: undefined, isSuccess: false });
-      }
+      // const { SSX } = await import('@spruceid/ssx');
+
+      // if (usingWagmi) {
+      //   const { useSigner } = await import('wagmi');
+      //   ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
+      //     'undefined' &&
+      //     useSigner()) || { data: undefined, isSuccess: false });
+      // }
 
       console.log('provider', provider);
       console.log('providerLoaded', providerLoaded);
@@ -97,12 +103,12 @@ export const SSXProvider = ({
         providers: {
           ...ssxConfig?.providers,
           web3: {
-            driver: usingWagmi ? provider?.provider : provider,
+            driver: provider,
             ...ssxConfig?.providers?.web3,
           },
         },
       };
-      const ssxInstance = new SSX(modifiedSSXConfig);
+      const ssxInstance = new SSXClass(modifiedSSXConfig);
       setSSX(ssxInstance);
       setSSXLoaded(true);
     }
@@ -111,7 +117,7 @@ export const SSXProvider = ({
     console.log("iniitalizing ssx")
     initializeSSX();
     console.log("ssx initialized")
-  }, [provider, providerLoaded, ssxConfig]);
+  }, [provider, providerLoaded, ssxConfig, SSXClass]);
 
   const SSXProviderValue: SSXContextInterface = {
     ssx,

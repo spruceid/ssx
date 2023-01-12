@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "rebuild": "rm -rf .next && next build",
+    "reset": "rm -rf .next && rm -rf node_modules && yarn",
+    "rebuild": "yarn reset && next build",
     "restart": "yarn rebuild && yarn start"
   },
   "dependencies": {
