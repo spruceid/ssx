@@ -4,21 +4,26 @@
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.js",
+      "module": "./dist/esm/index.js",
       "default": "./dist/index.js"
     },
     "./siwe": {
       "types": "./dist/siwe.d.js",
+      "module": "./dist/esm/siwe.js",
       "default": "./dist/siwe.js"
     },
     "./next-auth/backend": {
       "types": "./dist/next-auth/backend.d.js",
+      "module": "dist/esm/next-auth/backend.js",
       "default": "./dist/next-auth/backend.js"
     },
     "./next-auth/frontend": {
       "types": "./dist/next-auth/frontend.d.js",
+      "module": "./dist/esm/next-auth/frontend.d.js",
       "default": "./dist/next-auth/frontend.js"
     }
   },
@@ -47,7 +52,9 @@
   "license": "Apache-2.0 OR MIT",
   "private": false,
   "scripts": {
-    "build": "tsc --jsx react-jsx"
+    "build": "tsup",
+    "watch": "tsup --watch" 
+
   },
   "dependencies": {
     "@spruceid/ssx": "1.1.1",
@@ -63,7 +70,8 @@
   "devDependencies": {
     "@types/react": "^18.0.21",
     "typescript": "^4.8.4",
-    "wagmi": "^0.7.5",
+    "tsup": "^6.5.0",
+    "wagmi": "^0.10.7",
     "ethers": "^5.7.2"
   },
   "files": [
