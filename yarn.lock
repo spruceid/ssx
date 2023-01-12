@@ -3564,6 +3564,13 @@
   dependencies:
     keyvaluestorage-interface "^1.0.0"
 
+"@json-rpc-tools/types@^2.0.0-beta.0":
+  version "2.0.0-beta.12"
+  resolved "https://registry.npmjs.org/@json-rpc-tools/types/-/types-2.0.0-beta.12.tgz#358f77c48a844a3f55169c2db3b35c6af1cf4e8b"
+  integrity sha512-UM8w0RnD4DjYql/HlThe051ivW2Q8ulWarr7ux5Aas1UsOmcGQEg4slQo46p+BXgh1Nth7SHWS2tVnW/UUnCwQ==
+  dependencies:
+    keyvaluestorage-interface "^1.0.0"
+
 "@json-rpc-tools/utils@^1.7.6":
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/@json-rpc-tools/utils/-/utils-1.7.6.tgz#67f04987dbaa2e7adb6adff1575367b75a9a9ba1"
@@ -7065,6 +7072,14 @@
     "@web3modal/core" "2.0.0-rc.2"
     "@web3modal/ui" "2.0.0-rc.2"
 
+"@web3modal/standalone@2.0.0-rc.2":
+  version "2.0.0-rc.2"
+  resolved "https://registry.npmjs.org/@web3modal/standalone/-/standalone-2.0.0-rc.2.tgz#ca6637ad109b3a444cbc3e12189b99cb6255f4cf"
+  integrity sha512-wiUugFqyLu2DIZMKT+A7164pVCQKSEYv/4p2PhegrN5fXV6aRjd6uogdF4VRw89u3i/7CJ295vzaOBCpJA4nIw==
+  dependencies:
+    "@web3modal/core" "2.0.0-rc.2"
+    "@web3modal/ui" "2.0.0-rc.2"
+
 "@web3modal/ui@2.0.0-rc.2":
   version "2.0.0-rc.2"
   resolved "https://registry.npmjs.org/@web3modal/ui/-/ui-2.0.0-rc.2.tgz#5372d5c431a006fde04b6f7b9b4fcfea3de4a1d0"
@@ -9637,6 +9652,20 @@ cachedir@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/cachedir/-/cachedir-2.3.0.tgz#0c75892a052198f0b21c7c1804d8331edfcae0e8"
   integrity sha512-A+Fezp4zxnit6FanDmv9EqXNAi3vt9DWp51/71UEhXukb7QUuvtv9344h91dyAxuTLoSYJFU299qzR3tzwPAhw==
+
+caip-api@^2.0.0-beta.1:
+  version "2.0.0-beta.1"
+  resolved "https://registry.npmjs.org/caip-api/-/caip-api-2.0.0-beta.1.tgz#23877b880396f855fc2cd7892d02c597f2d62ba7"
+  integrity sha512-pwVXYfAIV3V0QhsKfvamIvsnn7lSmrotukmbXndOE2EsA0dos5W8MLadlpG2U+VSDghCVWI6cY9oJbBuXWj2gg==
+  dependencies:
+    "@json-rpc-tools/types" "^2.0.0-beta.0"
+    axios "^0.21.1"
+    caip "^0.9.2"
+
+caip@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.npmjs.org/caip/-/caip-0.9.2.tgz#6aec668e459dc3a1830530f7bb8d06f0044a5391"
+  integrity sha512-o4aIUSR9lkn7B9lIw8Xgkj+hDh+S1PtsBphoSqP2Dt95gRWPniaqEpnPwiUEhaPQr84JzWIEm4Cck3lMZtIkTA==
 
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
