@@ -1,0 +1,21 @@
+{
+  "name": "ssx-test-web3modal-v2-html",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@spruceid/ssx": "file:../../packages/ssx-sdk",
+    "@wagmi/core": "0.8.11",
+    "@web3modal/ethereum": "2.0.0-rc.2",
+    "@web3modal/html": "2.0.0-rc.2",
+    "ethers": "5.7.2"
+  },
+  "devDependencies": {
+    "vite": "4.0.4"
+  }
+}

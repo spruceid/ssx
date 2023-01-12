@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SSX } from '@spruceid/ssx';
 import Web3Modal from 'web3modal';
 import Header from './components/Header';
@@ -8,109 +8,16 @@ import RadioGroup from './components/RadioGroup';
 import Input from './components/Input';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Button from './components/Button';
+import AccountInfo from './components/AccountInfo';
+import { useWeb3Modal } from '@web3modal/react';
+import { useSigner } from 'wagmi';
 import './App.css';
 
-function AccountInfo({ address, session }) {
-  return (
-    <div className='AccountInfo'>
-      <h2 className='AccountInfo-h2'>
-        Account Info
-      </h2>
-      {
-        session?.ens &&
-          (
-            session?.ens.domain || session?.ens.avatarUrl ||
-            session?.ens.ensName || session?.ens.ensAvatarUrl
-          ) ?
-          <div>
-            <b className='AccountInfo-label'>
-              ENS
-            </b>
-            <br />
-            <div className='AccountInfo-container'>
-              {
-                session.ens.avatarUrl || session.ens.ensAvatarUrl ?
-                  <img
-                    className='AccountInfo-avatar'
-                    src={session.ens.avatarUrl ?? session.ens.ensAvatarUrl}
-                    alt='ENS avatar'
-                  /> :
-                  null
-              }
-              {
-                session.ens.domain || session.ens.ensName ?
-                  <code className='AccountInfo-value'>
-                    {session.ens.domain || session.ens.ensName}
-                  </code> :
-                  null
-              }
-            </div>
-          </div> :
-          null
-      }
-      {
-        session?.lens ?
-          typeof session.lens !== 'string' ?
-            session.lens.items.length > 0 ?
-              (
-                <div>
-                  <b className='AccountInfo-label'>
-                    Lens
-                    {session.lens.pageInfo.totalCount > 10 ? <small>&nbsp;(listing first 10)</small> : null}
-                  </b>
-                  <br />
-                  {
-                    session.lens.items.map((profile, i) => (
-                      <div key={i} className='AccountInfo-container'>
-                        {
-                          profile.picture?.original?.url ?
-                            <img
-                              className='AccountInfo-avatar'
-                              src={profile.picture?.original?.url}
-                              alt='Lens avatar'
-                            /> :
-                            null
-                        }
-                        {
-                          profile.handle ?
-                            <code className='AccountInfo-value'>
-                              {profile.handle}
-                            </code> :
-                            null
-                        }
-                      </div>
-                    ))
-                  }
-                </div>
-              ) :
-              null :
-            <div>
-              <b className='AccountInfo-label'>
-                Lens
-              </b>
-              <div className='AccountInfo-container'>
-                <code className='AccountInfo-value'>
-                  {session.lens}
-                </code>
-              </div>
-            </div>
-          :
-          null
-      }
-      <p>
-        <b className='AccountInfo-label'>
-          Address
-        </b>
-        <br />
-        <code className='AccountInfo-value'>
-          {address}
-        </code>
-      </p>
-    </div>
-  );
-};
 
 function App() {
+
+  const { open: openWeb3Modal } = useWeb3Modal();
+  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
 
   const [loading, setLoading] = useState(false);
 
@@ -138,7 +45,37 @@ function App() {
   const [resources, setResources] = useState('');
   const [statement, setStatement] = useState('');
 
+  const initSSX = async (signer) => {
+    if (signer) {
+      let ssxConfig = {
+        providers: {
+          web3: {
+            driver: signer.provider
+          }
+        }
+      };
+
+      const ssx = new SSX(ssxConfig);
+      try {
+        await ssx.signIn();
+        setSSX(ssx);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      setSSX(null);
+    }
+  };
+
+  useEffect(() => {
+    initSSX(signer)
+  }, [signer]);
+
   const ssxHandler = async () => {
+    if(provider === 'Web3Modal v2') {
+      return openWeb3Modal();
+    }
+
     setLoading(true);
     let ssxConfig = {};
 
@@ -228,224 +165,229 @@ function App() {
   };
 
   const ssxLogoutHandler = async () => {
+    if (provider === 'Web3Modal v2') {
+      return openWeb3Modal();
+    }
+
     ssxProvider.signOut();
     setSSX(null);
   };
 
   return (
     <div className='App'>
-      <Header />
-      <Title />
-
-      <div className='Content'>
-        <div className='Content-container'>
-          {
-            ssxProvider ?
-              <>
-                <Button
-                  onClick={ssxLogoutHandler}
-                  loading={loading}
-                >
-                  SIGN OUT
-                </Button>
-                <AccountInfo
-                  address={ssxProvider?.address()}
-                  session={ssxProvider?.session}
-                />
-              </> :
-              <>
-                <Button
-                  onClick={ssxHandler}
-                  loading={loading}
-                >
-                  SIGN-IN WITH ETHEREUM
-                </Button>
-              </>
-          }
-          <Dropdown label='Select Preference(s)'>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                Provider
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='provider'
-                  options={['MetaMask', 'Web3Modal', 'Web3Modal + WalletConnect']}
-                  value={provider}
-                  onChange={setProvider}
-                  inline={false}
-                />
+      
+        <Header />
+        <Title />
+        <div className='Content'>
+          <div className='Content-container'>
+            {
+              ssxProvider ?
+                <>
+                  <Button
+                    onClick={ssxLogoutHandler}
+                    loading={loading || wagmiIsLoading}
+                  >
+                    SIGN OUT
+                  </Button>
+                  <AccountInfo
+                    address={ssxProvider?.address()}
+                    session={ssxProvider?.session}
+                  />
+                </> :
+                <>
+                  <Button
+                    onClick={ssxHandler}
+                    loading={loading || wagmiIsLoading}
+                  >
+                    SIGN-IN WITH ETHEREUM
+                  </Button>
+                </>
+            }
+            <Dropdown label='Select Preference(s)'>
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  Provider
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='provider'
+                    options={['MetaMask', 'Web3Modal', 'Web3Modal + WalletConnect', 'Web3Modal v2']}
+                    value={provider}
+                    onChange={setProvider}
+                    inline={false}
+                  />
+                </div>
               </div>
-            </div>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                daoLogin
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='enableDaoLogin'
-                  options={['On', 'Off']}
-                  value={enableDaoLogin}
-                  onChange={setDaoLogin}
-                />
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  daoLogin
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='enableDaoLogin'
+                    options={['On', 'Off']}
+                    value={enableDaoLogin}
+                    onChange={setDaoLogin}
+                  />
+                </div>
               </div>
-            </div>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                Server
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='server'
-                  options={['On', 'Off']}
-                  value={server}
-                  onChange={setServer}
-                />
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  Server
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='server'
+                    options={['On', 'Off']}
+                    value={server}
+                    onChange={setServer}
+                  />
+                </div>
               </div>
-            </div>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                resolveEns
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='resolveEns'
-                  options={['On', 'Off']}
-                  value={resolveEns}
-                  onChange={setResolveEns}
-                />
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  resolveEns
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='resolveEns'
+                    options={['On', 'Off']}
+                    value={resolveEns}
+                    onChange={setResolveEns}
+                  />
+                </div>
               </div>
-            </div>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                resolveLens
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='resolveLens'
-                  options={['On', 'Off', 'onServer']}
-                  value={resolveLens}
-                  onChange={setResolveLens}
-                />
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  resolveLens
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='resolveLens'
+                    options={['On', 'Off', 'onServer']}
+                    value={resolveLens}
+                    onChange={setResolveLens}
+                  />
+                </div>
               </div>
-            </div>
-            <div className='Dropdown-item'>
-              <span className='Dropdown-item-name'>
-                siweConfig
-              </span>
-              <div className='Dropdown-item-options'>
-                <RadioGroup
-                  name='siweConfig'
-                  options={['On', 'Off']}
-                  value={siweConfig}
-                  onChange={setSiweConfig}
-                />
+              <div className='Dropdown-item'>
+                <span className='Dropdown-item-name'>
+                  siweConfig
+                </span>
+                <div className='Dropdown-item-options'>
+                  <RadioGroup
+                    name='siweConfig'
+                    options={['On', 'Off']}
+                    value={siweConfig}
+                    onChange={setSiweConfig}
+                  />
+                </div>
               </div>
-            </div>
-          </Dropdown>
-          {
-            provider === 'Web3Modal + WalletConnect' ?
-              <Input
-                label='Infura ID'
-                value={infuraId}
-                onChange={setInfuraId}
-              /> :
-              null
-          }
-          {
-            server === 'On' ?
-              <Input
-                label='Host'
-                value={host}
-                onChange={setHost}
-              /> :
-              null
-          }
-          {
-            resolveEns === 'On' ?
-              <>
-                <RadioGroup
-                  label='Resolve ENS on Server'
-                  name='resolveOnServer'
-                  options={['On', 'Off']}
-                  value={resolveOnServer}
-                  onChange={setResolveOnServer}
-                />
-                <RadioGroup
-                  label='Resolve ENS Domain'
-                  name='resolveEnsDomain'
-                  options={['On', 'Off']}
-                  value={resolveEnsDomain}
-                  onChange={setResolveEnsDomain}
-                />
-                <RadioGroup
-                  label='Resolve ENS Avatar'
-                  name='resolveEnsAvatar'
-                  options={['On', 'Off']}
-                  value={resolveEnsAvatar}
-                  onChange={setResolveEnsAvatar}
-                />
-              </> :
-              null
-          }
-          {
-            siweConfig === 'On' ?
-              <div>
+            </Dropdown>
+            {
+              provider === 'Web3Modal + WalletConnect' ?
                 <Input
-                  label='Address'
-                  value={address}
-                  onChange={setAddress}
-                />
+                  label='Infura ID'
+                  value={infuraId}
+                  onChange={setInfuraId}
+                /> :
+                null
+            }
+            {
+              server === 'On' ?
                 <Input
-                  label='Chain ID'
-                  value={chainId}
-                  onChange={setChainId}
-                />
-                <Input
-                  label='Domain'
-                  value={domain}
-                  onChange={setDomain}
-                />
-                <Input
-                  label='Nonce'
-                  value={nonce}
-                  onChange={setNonce}
-                />
-                <Input
-                  label='Issued At'
-                  value={issuedAt}
-                  onChange={setIssuedAt}
-                />
-                <Input
-                  label='Expiration Time'
-                  value={expirationTime}
-                  onChange={setExpirationTime}
-                />
-                <Input
-                  label='Request ID'
-                  value={requestId}
-                  onChange={setRequestId}
-                />
-                <Input
-                  label='Not Before'
-                  value={notBefore}
-                  onChange={setNotBefore}
-                />
-                <Input
-                  label='Resources'
-                  value={resources}
-                  onChange={setResources}
-                />
-                <Input
-                  label='Statement'
-                  value={statement}
-                  onChange={setStatement}
-                />
-              </div> :
-              null
-          }
+                  label='Host'
+                  value={host}
+                  onChange={setHost}
+                /> :
+                null
+            }
+            {
+              resolveEns === 'On' ?
+                <>
+                  <RadioGroup
+                    label='Resolve ENS on Server'
+                    name='resolveOnServer'
+                    options={['On', 'Off']}
+                    value={resolveOnServer}
+                    onChange={setResolveOnServer}
+                  />
+                  <RadioGroup
+                    label='Resolve ENS Domain'
+                    name='resolveEnsDomain'
+                    options={['On', 'Off']}
+                    value={resolveEnsDomain}
+                    onChange={setResolveEnsDomain}
+                  />
+                  <RadioGroup
+                    label='Resolve ENS Avatar'
+                    name='resolveEnsAvatar'
+                    options={['On', 'Off']}
+                    value={resolveEnsAvatar}
+                    onChange={setResolveEnsAvatar}
+                  />
+                </> :
+                null
+            }
+            {
+              siweConfig === 'On' ?
+                <div>
+                  <Input
+                    label='Address'
+                    value={address}
+                    onChange={setAddress}
+                  />
+                  <Input
+                    label='Chain ID'
+                    value={chainId}
+                    onChange={setChainId}
+                  />
+                  <Input
+                    label='Domain'
+                    value={domain}
+                    onChange={setDomain}
+                  />
+                  <Input
+                    label='Nonce'
+                    value={nonce}
+                    onChange={setNonce}
+                  />
+                  <Input
+                    label='Issued At'
+                    value={issuedAt}
+                    onChange={setIssuedAt}
+                  />
+                  <Input
+                    label='Expiration Time'
+                    value={expirationTime}
+                    onChange={setExpirationTime}
+                  />
+                  <Input
+                    label='Request ID'
+                    value={requestId}
+                    onChange={setRequestId}
+                  />
+                  <Input
+                    label='Not Before'
+                    value={notBefore}
+                    onChange={setNotBefore}
+                  />
+                  <Input
+                    label='Resources'
+                    value={resources}
+                    onChange={setResources}
+                  />
+                  <Input
+                    label='Statement'
+                    value={statement}
+                    onChange={setStatement}
+                  />
+                </div> :
+                null
+            }
+          </div>
         </div>
-      </div>
+
     </div>
   );
 }

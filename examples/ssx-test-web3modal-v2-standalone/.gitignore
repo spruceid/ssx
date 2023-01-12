@@ -1,0 +1,8 @@
+# yarn
+yarn-error.log
+
+# package directories
+node_modules
+
+# .envs
+.env
