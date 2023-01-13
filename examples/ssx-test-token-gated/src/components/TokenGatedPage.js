@@ -19,43 +19,46 @@ const alchemy = new Alchemy(alchemyConfig);
 
 const TokenGatedContent = () => {
   const [ownEnsName, setOwnEnsName] = useState(false);
-  const [loading, setLoading] = useState();
   const { ssx } = useSSX();
-  const [address, setAddress] = useState('');
   const { openConnectModal } = useConnectModal();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(ssx) {
-      try {
-        ssx?.signIn().then(() => {
-          alchemy.nft.getNftsForOwner(ssx?.address()).then((nfts) => {
-            const ownENS = nfts.ownedNfts.filter(({ contract }) => contract.address === ENS_CONTRACT)?.length > 0;
-            setOwnEnsName(ownENS);
-            setAddress(ssx?.address());
-            setLoading(false);
-          });
+    if (ssx && !loading && openConnectModal) {
+      ssx?.signIn()
+        .then(() => {
+          alchemy.nft.getNftsForOwner(ssx?.address())
+            .then((nfts) => {
+              const ownENS = nfts.ownedNfts
+                .filter(({ contract }) => contract.address === ENS_CONTRACT)?.length > 0;
+              setOwnEnsName(ownENS);
+              setLoading(false);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+          setOwnEnsName(false);
+          setLoading(false);
         });
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
     }
-  }, [ssx])
+  }, [ssx, openConnectModal]);
 
   const handleClick = () => {
     if (openConnectModal) {
       openConnectModal();
+      setLoading(true);
     }
   }
 
   return (
     <div className='App'>
+      {console.log('modal;', openConnectModal)}
       <Header />
       <Title />
       <div className='Content'>
         <div className='Content-container'>
           {
-            address ?
+            !openConnectModal && ownEnsName ?
               ownEnsName ?
                 <>
                   <img src='/own_ens.gif' alt='You own an ENS name.'></img>
@@ -63,7 +66,6 @@ const TokenGatedContent = () => {
               <>
                 <Button
                   onClick={handleClick}
-                  loading={loading}
                 >
                   SIGN-IN WITH ETHEREUM
                 </Button>
@@ -73,9 +75,8 @@ const TokenGatedContent = () => {
       </div>
       <br></br>
       {
-        address ?
-          ownEnsName ?
-            "You own an ENS name." : <></> : <></>
+        !openConnectModal && ownEnsName ?
+          "You own an ENS name." : <></>
       }
     </div>
   )
