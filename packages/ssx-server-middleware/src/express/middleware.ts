@@ -1,15 +1,17 @@
-import { SSXServer } from '../../server';
-import { SiweMessage } from 'siwe';
 import { NextFunction, Request, Response } from 'express';
-import { SSXEnsData, SSXLensProfilesResponse } from '@spruceid/ssx-core';
-import { SSXLogFields } from '@spruceid/ssx-core/server';
+import {
+  SSXEnsData,
+  SSXLensProfilesResponse,
+  SiweMessage,
+} from '@spruceid/ssx-core';
+import { SSXLogFields, SSXServerBaseClass } from '@spruceid/ssx-core/server';
 import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      ssx: SSXRequestObject & Omit<Partial<SSXServer>, 'log'>;
+      ssx: SSXRequestObject & Omit<Partial<SSXServerBaseClass>, 'log'>;
     }
   }
 }
@@ -79,10 +81,10 @@ export const SSXAuthenticated = (redirectURL?: string) => {
  * - signature: the signature of the client
  * - siwe: the siwe message of the client
  *
- * @param {SSXServer} ssx
+ * @param {SSXServerBaseClass} ssx
  * @returns {(req: Request, res: Response, next: NextFunction) => void}
  */
-export const ssxMiddleware = (ssx: SSXServer) => {
+export const ssxMiddleware = (ssx: SSXServerBaseClass) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     req.ssx = {
       ...ssx,
