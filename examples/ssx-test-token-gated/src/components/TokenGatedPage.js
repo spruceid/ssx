@@ -7,6 +7,7 @@ import { useSSX } from '@spruceid/ssx-react';
 import {
   useConnectModal,
 } from '@rainbow-me/rainbowkit';
+import { useSigner } from 'wagmi';
 
 const ENS_CONTRACT = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85';
 
@@ -22,10 +23,12 @@ const TokenGatedContent = () => {
   const { ssx } = useSSX();
   const { openConnectModal } = useConnectModal();
   const [loading, setLoading] = useState(false);
+  const { data: provider } = useSigner();
 
   useEffect(() => {
-    if (ssx && !loading && openConnectModal) {
-      ssx?.signIn()
+    if (ssx && loading) {
+      /* Sign-in with SSX whenever the button is pressed */
+      ssx.signIn()
         .then(() => {
           alchemy.nft.getNftsForOwner(ssx?.address())
             .then((nfts) => {
@@ -41,12 +44,20 @@ const TokenGatedContent = () => {
           setLoading(false);
         });
     }
-  }, [ssx, openConnectModal]);
+  }, [ssx, loading]);
+
+  useEffect(() => {
+    if (!provider) {
+      setOwnEnsName(false);
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [provider]);
 
   const handleClick = () => {
     if (openConnectModal) {
       openConnectModal();
-      setLoading(true);
     }
   }
 
@@ -58,8 +69,8 @@ const TokenGatedContent = () => {
       <div className='Content'>
         <div className='Content-container'>
           {
-            !openConnectModal && ownEnsName ?
-              ownEnsName ?
+            !openConnectModal && provider && !loading ?
+               ownEnsName ?
                 <>
                   <img src='/own_ens.gif' alt='You own an ENS name.'></img>
                 </> : <> No ENS name found.</> :
@@ -75,7 +86,7 @@ const TokenGatedContent = () => {
       </div>
       <br></br>
       {
-        !openConnectModal && ownEnsName ?
+        !openConnectModal && provider && !loading && ownEnsName ?
           "You own an ENS name." : <></>
       }
     </div>

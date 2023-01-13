@@ -1,14 +1,14 @@
 import './App.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { mainnet, goerli, configureChains, createClient, WagmiConfig } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import TokenGatedContent from './components/TokenGatedPage';
 import { SSXProvider } from '@spruceid/ssx-react';
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli],
+  [mainnet, goerli],
   [
     alchemyProvider({
       // This is Alchemy's default API key.
