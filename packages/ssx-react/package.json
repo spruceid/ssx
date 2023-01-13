@@ -47,7 +47,7 @@
     "type": "git",
     "url": "ssh://git@github.com:spruceid/ssx.git"
   },
-  "type": "commonjs",
+  "type": "module",
   "author": "Spruce Systems, Inc.",
   "license": "Apache-2.0 OR MIT",
   "private": false,
@@ -64,7 +64,7 @@
     "react": "^18.2.0"
   },
   "peerDependencies": {
-    "wagmi": "^0.7.5",
+    "wagmi": "0.10.10",
     "ethers": "^5.7.2"
   },
   "devDependencies": {

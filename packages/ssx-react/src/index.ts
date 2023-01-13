@@ -1,1 +1,1 @@
-export * from './ssx';
+export * from './ssx.js';

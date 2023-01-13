@@ -4470,10 +4470,10 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-wagmi@^0.10.7:
-  version "0.10.10"
-  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.10.10.tgz#30e6eff3e1f045f97478a293e0cfdefda8cc35f9"
-  integrity sha512-YChCEVXA+AMYdP0p4ds05CBGpM/jEiecCknoGsubq80qjv8M/qg658xbtLOSSpmt190mmkAzut0s2jZ2Hp615w==
+wagmi@0.10.10-cjs:
+  version "0.10.10-cjs"
+  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.10.10-cjs.tgz#ec4bdf1a478efd9c1491e292c880220633ff0247"
+  integrity sha512-o/RcNbSoqtwa4DeP6pj7LahyqYsIlIWPlod/eIj9GxTLYBtm1/xMSLy1yIL0PgukzPUuz3Jws7RLqygWgnd7KQ==
   dependencies:
     "@coinbase/wallet-sdk" "^3.6.0"
     "@tanstack/query-sync-storage-persister" "^4.14.5"
