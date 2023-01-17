@@ -30,7 +30,8 @@ const Main = () => {
           web3: {
             driver: signer.provider
           }
-        }
+        },
+        enableDaoLogin: true
       };
 
       const ssx = new SSX(ssxConfig);

@@ -31,7 +31,7 @@ const {
 })]);
 
 const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors: [...modalConnectors({
     appName: 'web3Modal',
     chains
@@ -63,7 +63,8 @@ const unwatch = watchSigner({},
           web3: {
             driver: signer.provider
           }
-        }
+        },
+        enableDaoLogin: true
       };
 
       const ssx = new SSX(ssxConfig);

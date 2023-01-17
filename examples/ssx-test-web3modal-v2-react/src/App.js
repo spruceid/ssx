@@ -39,7 +39,7 @@ const {
 })]);
 
 export const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors: modalConnectors({
     appName: 'web3Modal',
     chains

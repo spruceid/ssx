@@ -14,7 +14,8 @@ import {
   fantom,
   mainnet,
   optimism,
-  polygon
+  polygon, 
+  goerli,
 } from 'wagmi/chains';
 
 
@@ -26,7 +27,7 @@ if (!process.env.REACT_APP_PROJECT_ID) {
 export const projectId = process.env.REACT_APP_PROJECT_ID;
 
 // 2. Configure wagmi client
-const chains = [mainnet, polygon, optimism, arbitrum, avalanche, fantom, bsc];
+const chains = [mainnet, goerli, polygon, optimism, arbitrum, avalanche, fantom, bsc];
 
 const {
   provider
@@ -35,7 +36,7 @@ const {
 })]);
 
 export const wagmiClient = createClient({
-  autoConnect: true,
+  autoConnect: false,
   connectors: modalConnectors({
     appName: 'web3Modal',
     chains
