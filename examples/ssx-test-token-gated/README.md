@@ -2,6 +2,13 @@
 
 This example will show developers how to enable token-gated access in their dapp with SSX. Additionally, it will show a developer how to integrate and use RainbowKit in an SSX-powered dapp.
 
+To run the completed example:
+
+- Add your Alchemy API key to .env (see below)
+- Once SSX packages are installed (`yarn install` at ssx root folder), run `yarn install` and `yarn start` in this example directory.
+
+Read on to learn how to build the example from scratch using our create-ssx-dapp example.
+
 ## Create the dapp
 
 The initial setup will be done using SSX's dapp creation tool. Type the following in your terminal to get started:
