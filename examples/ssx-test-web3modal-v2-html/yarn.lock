@@ -905,10 +905,8 @@
   resolved "https://registry.npmjs.org/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.1.2.tgz#d28301d83b4b008247fef774a082c4c50bd3c4ee"
   integrity sha512-PuxRlyTlycXrTU11B22XcCz1PUU7p5krXxnb+ztPkgR3fAMP3ubENgoUyLllUJXxx2O/Jpne+0P9HIro+vilPg==
 
-"@spruceid/ssx@^1.1.1":
+"@spruceid/ssx@file:../../packages/ssx-sdk":
   version "1.1.1"
-  resolved "https://registry.npmjs.org/@spruceid/ssx/-/ssx-1.1.1.tgz#fb8bc32630c268c6c5548a8f21475a2770c1ccde"
-  integrity sha512-C+2HMoV8FmatDznNAnU+IPc+yrD+XfGAzp5Rj88aueK8hQOqWIZAUPM4whyEO0fn4StZ0YuFsT2i1MennfK9hQ==
   dependencies:
     "@metamask/detect-provider" "^1.2.0"
     "@spruceid/ssx-core" "1.0.1"

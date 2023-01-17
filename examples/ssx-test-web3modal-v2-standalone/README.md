@@ -15,9 +15,9 @@ npm install
 **Run**
 
 ``` bash
-yarn dev
+yarn start
 
 # or
 
-npm run dev
+npm run start
 ```
