@@ -4,26 +4,26 @@
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.cjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.js",
-      "module": "./dist/esm/index.js",
+      "module": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
     "./siwe": {
       "types": "./dist/siwe.d.js",
-      "module": "./dist/esm/siwe.js",
+      "module": "./dist/siwe.cjs",
       "default": "./dist/siwe.js"
     },
     "./next-auth/backend": {
       "types": "./dist/next-auth/backend.d.js",
-      "module": "dist/esm/next-auth/backend.js",
+      "module": "./dist/next-auth/backend.cjs",
       "default": "./dist/next-auth/backend.js"
     },
     "./next-auth/frontend": {
       "types": "./dist/next-auth/frontend.d.js",
-      "module": "./dist/esm/next-auth/frontend.d.js",
+      "module": "./dist/next-auth/frontend.d.cjs",
       "default": "./dist/next-auth/frontend.js"
     }
   },
@@ -59,19 +59,19 @@
   "dependencies": {
     "@spruceid/ssx": "1.1.1",
     "@spruceid/ssx-server": "1.1.1",
+    "@spruceid/ssx-wagmi": "*",
     "next": "^12.1.6",
     "next-auth": "^4.10.3",
     "react": "^18.2.0"
   },
   "peerDependencies": {
-    "wagmi": "0.10.10",
     "ethers": "^5.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.21",
     "typescript": "^4.8.4",
     "tsup": "^6.5.0",
-    "wagmi": "^0.10.7",
+    "wagmi": "^0.10.10",
     "ethers": "^5.7.2"
   },
   "files": [

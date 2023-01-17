@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from 'react';
 import type { SSX, SSXClientConfig } from '@spruceid/ssx';
-import { useSigner } from 'wagmi';
+import { useSigner } from '@spruceid/ssx-wagmi';
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {

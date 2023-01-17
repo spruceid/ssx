@@ -1,0 +1,28 @@
+{
+  "name": "@spruceid/ssx-wagmi",
+  "version": "0.1.0",
+  "description": "A wrapper to simplify wagmi imports into the SSX SDK",
+  "author": "Spruce Systems, Inc.",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsup",
+    "build2": "yarn clean && tsc --module commonjs --target es2018 --outDir dist/ src/index.ts --esModuleInterop",
+    "build3": "yarn clean && rollup src/index.ts --file dist/index.js --format cjs"
+  },
+  "dependencies": {
+    "wagmi": "^0.10.10",
+    "ethers" :"5.7.2"
+  },
+  "devDependencies": {
+    "tsup": "^6.5.0"
+  },
+  "type": "module",
+  "private": false
+}
