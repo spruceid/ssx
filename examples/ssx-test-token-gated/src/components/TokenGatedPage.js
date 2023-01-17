@@ -63,7 +63,6 @@ const TokenGatedContent = () => {
 
   return (
     <div className='App'>
-      {console.log('modal;', openConnectModal)}
       <Header />
       <Title />
       <div className='Content'>
