@@ -4,15 +4,15 @@
   "description": "A wrapper to simplify wagmi imports into the SSX SDK",
   "author": "Spruce Systems, Inc.",
   "license": "MIT",
+  "main": "dist/index.js",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "default": "./dist/index.js"
     }
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsup",
+    "build": "yarn clean && rollup -c",
     "build2": "yarn clean && tsc --module commonjs --target es2018 --outDir dist/ src/index.ts --esModuleInterop",
     "build3": "yarn clean && rollup src/index.ts --file dist/index.js --format cjs"
   },
@@ -21,7 +21,11 @@
     "ethers" :"5.7.2"
   },
   "devDependencies": {
-    "tsup": "^6.5.0"
+    "tsup": "^6.5.0",
+    "rollup": "^3.10.0",
+    "@rollup/plugin-node-resolve": "15.0.1",
+    "@rollup/plugin-typescript": "11.0.0",
+    "@rollup/plugin-commonjs": "24.0.0"
   },
   "type": "module",
   "private": false

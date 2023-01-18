@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 import type { SSX } from '@spruceid/ssx';
-import { useSigner } from 'ssx-wagmi';
-import { SSXContextInterface, SSXProviderProps } from './common';
+import { useSigner } from 'wagmi';
+import { SSXContextInterface, SSXProviderProps } from '../common';
 
 /** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {

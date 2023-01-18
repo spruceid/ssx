@@ -4,7 +4,7 @@ export default defineConfig({
   entry: ['src/**/*'],
   clean: true,
   format: ['esm', 'cjs'],
-  // legacyOutput: true,
+  legacyOutput: true,
   dts: {
     compilerOptions: {
       jsx: 'react-jsx',
