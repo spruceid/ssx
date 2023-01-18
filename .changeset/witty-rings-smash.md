@@ -1,5 +1,5 @@
 ---
-'@spruceid/ssx': patch
+'@spruceid/ssx': minor
 ---
 
 Adds Lens resolution feature to the client. This feature is available to Polygon Mainnet and Mumbai Testnet (visit (https://docs.lens.xyz/docs/api-links)[https://docs.lens.xyz/docs/api-links] for more information). 

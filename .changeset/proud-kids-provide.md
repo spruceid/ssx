@@ -1,5 +1,5 @@
 ---
-'@spruceid/ssx-serverless': patch
+'@spruceid/ssx-serverless': minor
 ---
 
 Adds Lens resolution feature to the server. This feature is available to Polygon Mainnet and Mumbai Testnet (visit (https://docs.lens.xyz/docs/api-links)[https://docs.lens.xyz/docs/api-links] for more information). 
