@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SSX } from '@spruceid/ssx';
 import Web3Modal from 'web3modal';
 import Header from './components/Header';
@@ -8,109 +8,16 @@ import RadioGroup from './components/RadioGroup';
 import Input from './components/Input';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Button from './components/Button';
+import AccountInfo from './components/AccountInfo';
+import { useWeb3Modal } from '@web3modal/react';
+import { useSigner } from 'wagmi';
 import './App.css';
 
-function AccountInfo({ address, session }) {
-  return (
-    <div className='AccountInfo'>
-      <h2 className='AccountInfo-h2'>
-        Account Info
-      </h2>
-      {
-        session?.ens &&
-          (
-            session?.ens.domain || session?.ens.avatarUrl ||
-            session?.ens.ensName || session?.ens.ensAvatarUrl
-          ) ?
-          <div>
-            <b className='AccountInfo-label'>
-              ENS
-            </b>
-            <br />
-            <div className='AccountInfo-container'>
-              {
-                session.ens.avatarUrl || session.ens.ensAvatarUrl ?
-                  <img
-                    className='AccountInfo-avatar'
-                    src={session.ens.avatarUrl ?? session.ens.ensAvatarUrl}
-                    alt='ENS avatar'
-                  /> :
-                  null
-              }
-              {
-                session.ens.domain || session.ens.ensName ?
-                  <code className='AccountInfo-value'>
-                    {session.ens.domain || session.ens.ensName}
-                  </code> :
-                  null
-              }
-            </div>
-          </div> :
-          null
-      }
-      {
-        session?.lens ?
-          typeof session.lens !== 'string' ?
-            session.lens.items.length > 0 ?
-              (
-                <div>
-                  <b className='AccountInfo-label'>
-                    Lens
-                    {session.lens.pageInfo.totalCount > 10 ? <small>&nbsp;(listing first 10)</small> : null}
-                  </b>
-                  <br />
-                  {
-                    session.lens.items.map((profile, i) => (
-                      <div key={i} className='AccountInfo-container'>
-                        {
-                          profile.picture?.original?.url ?
-                            <img
-                              className='AccountInfo-avatar'
-                              src={profile.picture?.original?.url}
-                              alt='Lens avatar'
-                            /> :
-                            null
-                        }
-                        {
-                          profile.handle ?
-                            <code className='AccountInfo-value'>
-                              {profile.handle}
-                            </code> :
-                            null
-                        }
-                      </div>
-                    ))
-                  }
-                </div>
-              ) :
-              null :
-            <div>
-              <b className='AccountInfo-label'>
-                Lens
-              </b>
-              <div className='AccountInfo-container'>
-                <code className='AccountInfo-value'>
-                  {session.lens}
-                </code>
-              </div>
-            </div>
-          :
-          null
-      }
-      <p>
-        <b className='AccountInfo-label'>
-          Address
-        </b>
-        <br />
-        <code className='AccountInfo-value'>
-          {address}
-        </code>
-      </p>
-    </div>
-  );
-};
 
 function App() {
+
+  const { open: openWeb3Modal } = useWeb3Modal();
+  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
 
   const [loading, setLoading] = useState(false);
 
@@ -138,30 +45,8 @@ function App() {
   const [resources, setResources] = useState('');
   const [statement, setStatement] = useState('');
 
-  const ssxHandler = async () => {
-    setLoading(true);
+  const getSSXConfig = () => {
     let ssxConfig = {};
-
-    if (provider !== 'MetaMask') {
-      let driver;
-      if (provider === 'Web3Modal') {
-        driver = await new Web3Modal().connect();
-      } else {
-        driver = await new Web3Modal({
-          providerOptions: {
-            walletconnect: {
-              package: WalletConnectProvider,
-              options: {
-                infuraId,
-              },
-            },
-          },
-        }).connect();
-      }
-      ssxConfig = {
-        providers: { web3: { driver } }
-      }
-    }
 
     if (server === 'On') {
       ssxConfig = {
@@ -217,6 +102,74 @@ function App() {
       }
     }
 
+    return ssxConfig;
+  };
+
+  const initSSX = async (signer) => {
+    if (signer) {
+      let ssxConfig = getSSXConfig();
+
+      ssxConfig = {
+        ...ssxConfig,
+        providers: {
+          ...ssxConfig.providers,
+          web3: {
+            driver: signer.provider
+          }
+        }
+      }
+
+      const ssx = new SSX(ssxConfig);
+      try {
+        await ssx.signIn();
+        setSSX(ssx);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      ssxProvider.signOut();
+      setSSX(null);
+    }
+  };
+
+  useEffect(() => {
+    initSSX(signer);
+    // eslint-disable-next-line
+  }, [signer]);
+
+  const ssxHandler = async () => {
+    if (provider === 'Web3Modal v2') {
+      return openWeb3Modal();
+    }
+
+    setLoading(true);
+    let ssxConfig = getSSXConfig();
+
+    if (provider !== 'MetaMask') {
+      let driver;
+      if (provider === 'Web3Modal') {
+        driver = await new Web3Modal().connect();
+      } else {
+        driver = await new Web3Modal({
+          providerOptions: {
+            walletconnect: {
+              package: WalletConnectProvider,
+              options: {
+                infuraId,
+              },
+            },
+          },
+        }).connect();
+      }
+      ssxConfig = {
+        ...ssxConfig,
+        providers: {
+          ...ssxConfig.providers,
+          web3: { driver }
+        }
+      }
+    }
+
     const ssx = new SSX(ssxConfig);
     try {
       await ssx.signIn();
@@ -228,15 +181,19 @@ function App() {
   };
 
   const ssxLogoutHandler = async () => {
+    if (provider === 'Web3Modal v2') {
+      return openWeb3Modal();
+    }
+
     ssxProvider.signOut();
     setSSX(null);
   };
 
   return (
     <div className='App'>
+
       <Header />
       <Title />
-
       <div className='Content'>
         <div className='Content-container'>
           {
@@ -244,7 +201,7 @@ function App() {
               <>
                 <Button
                   onClick={ssxLogoutHandler}
-                  loading={loading}
+                  loading={loading || wagmiIsLoading}
                 >
                   SIGN OUT
                 </Button>
@@ -256,7 +213,7 @@ function App() {
               <>
                 <Button
                   onClick={ssxHandler}
-                  loading={loading}
+                  loading={loading || wagmiIsLoading}
                 >
                   SIGN-IN WITH ETHEREUM
                 </Button>
@@ -270,7 +227,7 @@ function App() {
               <div className='Dropdown-item-options'>
                 <RadioGroup
                   name='provider'
-                  options={['MetaMask', 'Web3Modal', 'Web3Modal + WalletConnect']}
+                  options={['MetaMask', 'Web3Modal', 'Web3Modal + WalletConnect', 'Web3Modal v2']}
                   value={provider}
                   onChange={setProvider}
                   inline={false}
@@ -446,6 +403,7 @@ function App() {
           }
         </div>
       </div>
+
     </div>
   );
 }
