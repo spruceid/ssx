@@ -1,5 +1,23 @@
 # @spruceid/ssx-core
 
+## 1.1.0
+
+### Minor Changes
+
+- 6205fc4: Added support for customAPIOperations in the SSX server configuration. This allows for configurations that execute a function instead of making a request to the configured endpoint for any of the ssx endpoints (nonce, login, logout).
+- 24a7220: Adds Lens resolution feature to the client and server to allow the developer to choose where to resolve it. This feature is available to Polygon Mainnet and Mumbai Testnet (visit (https://docs.lens.xyz/docs/api-links)[https://docs.lens.xyz/docs/api-links] for more information).
+
+  - Creates and exports `SSXLensProfilesPageInfo`, `SSXLensProfileData`, and `SSXLensProfilesResponse` interfaces;
+  - Adds `resolveLens?: boolean | 'onServer'` property on `SSXClientConfig` interface;
+  - Adds `lens?: string | SSXLensProfilesResponse` property on `SSXClientSession` interface;
+  - Updates `ssxResolveEns` docstring;
+  - Creates and exports `ssxResolveLens` method to resolve Lens profiles;
+  - Adds tests to the Lens profiles resolution feature.
+
+### Patch Changes
+
+- 6205fc4: Extracted middleware logic to new ssx-server-middleware package. Moved `SSXServer` class interface to `ssx-core` and passed around implementation
+
 ## 1.0.1
 
 ### Patch Changes
