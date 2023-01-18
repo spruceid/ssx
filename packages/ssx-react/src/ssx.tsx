@@ -1,7 +1,38 @@
-import { useContext, createContext, useState, useEffect } from 'react';
-import type { SSX } from '@spruceid/ssx';
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
+import type { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'ssx-wagmi';
-import { SSXContextInterface, SSXProviderProps } from './common';
+
+/** Interface for SSX Web3 Provider. */
+export interface SSXWeb3Provider {
+  /** web3 Provider. */
+  provider: any;
+  /** web3 Provider Loaded. */
+  providerLoaded?: boolean;
+}
+
+/** Props for SSX Provider. */
+export interface SSXProviderProps {
+  /** Optional SSX configuration, used for instantiating an SSX Instance. */
+  ssxConfig?: SSXClientConfig;
+  /** Provider child nodes, for rendering. */
+  children: ReactNode;
+  /** Optional SSX Signer. Will . */
+  web3Provider?: SSXWeb3Provider;
+}
+
+/** Interface for contents provided to the Hook. */
+export interface SSXContextInterface {
+  /** SSX Instance. */
+  ssx: SSX | undefined;
+  /** SSX Instance loading state. */
+  ssxLoaded: boolean;
+}
 
 /** Default, uninitialized context. */
 const defaultContext: SSXContextInterface = {

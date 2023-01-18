@@ -5,9 +5,18 @@
   "author": "Spruce Systems, Inc.",
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.js",
       "default": "./dist/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ]
     }
   },
   "scripts": {
@@ -18,7 +27,7 @@
   },
   "dependencies": {
     "wagmi": "^0.10.10",
-    "ethers" :"5.7.2"
+    "ethers": "5.7.2"
   },
   "devDependencies": {
     "tsup": "^6.5.0",

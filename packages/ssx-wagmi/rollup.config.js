@@ -14,6 +14,6 @@ export default {
       browser: true,
     }),
     commonjs(),
-    // typescript(),
+    typescript(),
   ],
 };

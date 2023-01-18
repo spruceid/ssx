@@ -10,4 +10,5 @@ export default defineConfig({
       jsx: 'react-jsx',
     },
   },
+  external: ['ssx-wagmi'],
 });

@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "include": [
+      "src/**/*"
+    ],
+    
+    "compilerOptions": {
+      "outDir": "./dist", /* Specify an output folder for all emitted files. */
+      "target": "es6",
+    }
+  }
+  

@@ -13,7 +13,7 @@
   "directories": {
     "src": "src"
   },
-  "exports": { 
+  "exports": {
     ".": {
       "types": "./dist/index.d.js",
       "default": "./dist/index.js"
