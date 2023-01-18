@@ -1,6 +1,6 @@
 {
-  "name": "ssx-test-dapp",
-  "version": "0.0.3",
+  "name": "ssx-test-web3modal-v2-react",
+  "version": "1.0.0",
   "private": true,
   "repository": {
     "url": "ssh://git@github.com:spruceid/ssx.git"
@@ -10,7 +10,6 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
-    "@walletconnect/web3-provider": "^1.8.0",
     "@web3modal/ethereum": "2.0.0-rc.2",
     "@web3modal/react": "2.0.0-rc.2",
     "buffer": "^6.0.3",
@@ -23,8 +22,8 @@
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "wagmi": "0.10.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "wagmi": "0.10.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
