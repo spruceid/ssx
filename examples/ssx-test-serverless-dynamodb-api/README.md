@@ -69,7 +69,7 @@ Variables:
 ### GET `/dev/ssx-nonce`
 
 ```bash
-curl --location --request GET "http://localhost:3001/dev/ssx-nonce?address=${WALLET_ADDRESS}"
+curl --location --request GET "http://localhost:3001/dev/ssx-nonce?address=${ADDRESS}&walletAddress=${WALLET_ADDRESS}"
 ```
 
 Returns `200 Ok` on success, and a string with the nonce.
