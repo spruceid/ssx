@@ -5,7 +5,7 @@
 ### Minor Changes
 
 - 6205fc4: Added support for customAPIOperations in the SSX server configuration. This allows for configurations that execute a function instead of making a request to the configured endpoint for any of the ssx endpoints (nonce, login, logout).
-- 24a7220: Adds Lens resolution feature to the client and server to allow the developer to choose where to resolve it. This feature is available to Polygon Mainnet and Mumbai Testnet (visit (https://docs.lens.xyz/docs/api-links)[https://docs.lens.xyz/docs/api-links] for more information).
+- 24a7220: Adds Lens resolution feature to the client and server to allow the developer to choose where to resolve it. This feature is available to Polygon Mainnet and Mumbai Testnet (visit [https://docs.lens.xyz/docs/api-links](https://docs.lens.xyz/docs/api-links) for more information).
 
   - Creates and exports `SSXLensProfilesPageInfo`, `SSXLensProfileData`, and `SSXLensProfilesResponse` interfaces;
   - Adds `resolveLens?: boolean | 'onServer'` property on `SSXClientConfig` interface;
