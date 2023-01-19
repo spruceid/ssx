@@ -1,12 +1,8 @@
-import {
-  useContext,
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { useContext, createContext, useState, useEffect } from 'react';
+import { ReactNode } from 'react';
 import type { SSX, SSXClientConfig } from '@spruceid/ssx';
-import { useSigner } from 'wagmi';
+// import { SSXProviderProps, SSXContextInterface } from './common';
+// import { useSigner } from 'wagmi';
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -56,6 +52,17 @@ export const SSXProvider = ({
       provider = web3Provider.provider;
       providerLoaded = web3Provider.providerLoaded || true;
     } else {
+      let useSigner;
+      const isESM = process.versions.modules !== '0';
+      // const isESM = require.resolve.paths('wagmi');
+
+      if (isESM) {
+        // ESM module
+        ({ useSigner } = require('wagmi'));
+      } else {
+        // CJS module
+        ({ useSigner } = require('wagmi-cjs'));
+      }
       ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
         'undefined' &&
         useSigner()) || { data: undefined, isSuccess: false });
