@@ -1,5 +1,26 @@
 # @spruceid/ssx
 
+## 1.2.0
+
+### Minor Changes
+
+- 6205fc4: Added support for customAPIOperations in the SSX server configuration. This allows for configurations that execute a function instead of making a request to the configured endpoint for any of the ssx endpoints (nonce, login, logout).
+- d74757d: Updates the nonce request params to send the walletAddress. This change is required for early detection of a multisig login.
+- 24a7220: Adds Lens resolution feature to the client. This feature is available to Polygon Mainnet and Mumbai Testnet (visit [https://docs.lens.xyz/docs/api-links](https://docs.lens.xyz/docs/api-links) for more information).
+
+  - Adds Lens resolution configuration (`resolveLens: true | false | 'onServer'`) when creating a new `SSX` instance. This property isn't mandatory and the default value is `false`;
+  - Updates `ssx.signIn()` to resolve Lens data according to the `SSX` config. This method now sends `resolveLens` param to the `/ssx-login` request;
+  - Adds `ssx.resolveLens(...)` method to resolve Lens profiles on client;
+  - Updates `ssx-test-dapp` to show how to use this feature.
+
+### Patch Changes
+
+- Updated dependencies [6205fc4]
+- Updated dependencies [6205fc4]
+- Updated dependencies [24a7220]
+  - @spruceid/ssx-core@1.1.0
+  - @spruceid/ssx-gnosis-extension@1.1.2
+
 ## 1.1.1
 
 ### Patch Changes
