@@ -4,10 +4,9 @@ This example will show developers how to enable token-gated access in their dapp
 
 To run the completed example:
 
-- Add your Alchemy API key to .env (see below)
-- Once SSX packages are installed (`yarn install` at ssx root folder), run `yarn install` and `yarn start` in this example directory.
-
-Read on to learn how to build the example from scratch using our create-ssx-dapp example.
+Add your Alchemy API key to .env (see below).
+Once SSX packages are installed, run `yarn install` and `yarn start` in this example directory.
+Read on to learn how to build the example from our create-ssx-dapp example.
 
 ## Create the dapp
 
@@ -113,7 +112,7 @@ root.render(
 );
 ```
 
-At `src/App.tsx` some changes are required to hook SSX and RainbowKit. Head to the file and make the following changes:
+At `src/App.tsx` some changes are required to hook SSX and RainbowKit. Add the following imports and update the `App` component as the code bellow:
 
 ```tsx
 /* src/App.tsx */
@@ -122,6 +121,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
 import { useSSX } from '@spruceid/ssx-react';
 import { SSXClientSession } from '@spruceid/ssx';
+
+/*....*/
 
 function App() {
   /* SSX hook */
@@ -133,6 +134,7 @@ function App() {
   /* Some control variables */
   const [session, setSession] = useState<SSXClientSession>();
   const [loading, setLoading] = useState<boolean>(false);
+  const { data: provider } = useSigner();
 
   useEffect(() => {
     if (ssx && loading) {
@@ -155,6 +157,9 @@ function App() {
   useEffect(() => {
     if (!provider) {
       setSession(undefined);
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
   }, [provider]);
 
@@ -180,12 +185,12 @@ function App() {
       <div className="App-content">
         {!openConnectModal && provider ? (
           <>
-            <AccountInfo address={session.address} />
+            <AccountInfo address={session?.address} />
           </>
         ) : (
           <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
         )}
-        {openAccountModal && ownEnsName && provider ? (
+        {openAccountModal && provider ? (
           <button onClick={openAccountModal}>{session?.address}</button>
         ) : (
           <></>
@@ -194,6 +199,8 @@ function App() {
     </div>
   );
 }
+
+/*....*/
 ```
 
 You are now able to run `yarn start` and sign-in using RainbowKit.
@@ -270,7 +277,7 @@ function App() {
               setSession(session);
               setLoading(false);
 +           });
-+       })
+        })
         .catch((err) => {
           console.error(err);
 +         setOwnEnsName(false);
@@ -311,11 +318,10 @@ function App() {
       </div>
       <div className="App-content">
         {
--          session ?
 +          !openConnectModal && ownEnsName && provider ?
             <>
               <AccountInfo
-                address={session.address}
+                address={session?.address}
               />
             </> :
             <button onClick={handleClick}>
@@ -323,7 +329,7 @@ function App() {
             </button>
         }
         {
-          openAccountModal && ownEnsName && provider ?
++         openAccountModal && ownEnsName && provider ?
             <button onClick={openAccountModal}>
               {session?.address}
             </button>
