@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-serverless",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Create SSX applications in serverless architectures",
   "author": "Spruce Systems Inc.",
   "license": "Apache-2.0 OR MIT",
@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "siwe": "^2.1.2",
-    "@spruceid/ssx-core": "1.0.1",
-    "@spruceid/ssx-gnosis-extension": "1.1.1",
+    "@spruceid/ssx-core": "1.1.0",
+    "@spruceid/ssx-gnosis-extension": "1.1.2",
     "axios": "^0.27.2"
   },
   "devDependencies": {

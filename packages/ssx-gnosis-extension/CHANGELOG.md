@@ -1,5 +1,14 @@
 # @spruceid/ssx-gnosis-extension
 
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies [6205fc4]
+- Updated dependencies [6205fc4]
+- Updated dependencies [24a7220]
+  - @spruceid/ssx-core@1.1.0
+
 ## 1.1.1
 
 ### Patch Changes
