@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-server-middleware",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Spruce Systems, Inc.",
@@ -20,8 +20,8 @@
     "url": "ssh://git@github.com:spruceid/ssx.git"
   },
   "dependencies": {
-    "@spruceid/ssx-core": "1.0.1",
-    "@spruceid/ssx-gnosis-extension": "1.1.1",
+    "@spruceid/ssx-core": "1.1.0",
+    "@spruceid/ssx-gnosis-extension": "1.1.2",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
