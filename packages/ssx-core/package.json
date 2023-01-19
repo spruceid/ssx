@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-core",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "SSX core library",
   "author": "Spruce Systems Inc.",
   "license": "Apache-2.0 OR MIT",
@@ -13,7 +13,7 @@
   "directories": {
     "src": "src"
   },
-  "exports": { 
+  "exports": {
     ".": {
       "types": "./dist/index.d.js",
       "default": "./dist/index.js"
