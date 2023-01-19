@@ -1,4 +1,5 @@
-import { getCsrfToken, signIn, SignInOptions } from 'next-auth/react';
+import { getCsrfToken, signIn } from 'next-auth/react';
+import type { SignInOptions } from 'next-auth/react';
 import type { SSXClientSession } from '@spruceid/ssx';
 
 interface SSXNextAuthRouteConfig {

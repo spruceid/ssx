@@ -2,29 +2,29 @@
   "name": "@spruceid/ssx-react",
   "version": "1.1.1",
   "description": "SSX React Hooks",
-  "main": "dist/index.cjs.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "module": "dist/index.esm.js",
+  "module": "dist/esm/index.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.js",
-      "module": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "module": "./dist/esm/index.js",
+      "default": "./dist/index.js"
     },
     "./siwe": {
       "types": "./dist/siwe.d.js",
-      "module": "./dist/siwe.esm.js",
-      "require": "./dist/siwe.cjs.js"
+      "module": "./dist/esm/siwe.js",
+      "default": "./dist/siwe.js"
     },
     "./next-auth/backend": {
       "types": "./dist/next-auth/backend.d.js",
-      "module": "./dist/next-auth/backend.esm.js",
-      "require": "./dist/next-auth/backend.cjs.js"
+      "module": "./dist/esm/next-auth/backend.js",
+      "default": "./dist/next-auth/backend.js"
     },
     "./next-auth/frontend": {
       "types": "./dist/next-auth/frontend.d.js",
-      "module": "./dist/next-auth/frontend.esm.js",
-      "require": "./dist/next-auth/frontend.cjs.js"
+      "module": "./dist/esm/next-auth/frontend.d.js",
+      "default": "./dist/next-auth/frontend.js"
     }
   },
   "typesVersions": {

@@ -45,21 +45,21 @@ const ssxConfig = {
   },
 };
 
-// function SSXWithWeb3Provider({ children }: any) {
-//   const { data: provider, isSuccess: providerLoaded } = (typeof window !== 'undefined' &&
-//     useSigner()) || { data: undefined, isSuccess: false };
+function SSXWithWeb3Provider({ children }: any) {
+  const { data: provider, isSuccess: providerLoaded } = (typeof window !== 'undefined' &&
+    useSigner()) || { data: undefined, isSuccess: false };
 
-//   const web3Provider = {
-//     provider: provider?.provider,
-//     providerLoaded,
-//   };
+  const web3Provider = {
+    provider: provider?.provider,
+    providerLoaded,
+  };
 
-//   return (
-//     <SSXProvider ssxConfig={ssxConfig} web3Provider={web3Provider}> 
-//       {children}
-//     </SSXProvider>
-//   );
-// }
+  return (
+    <SSXProvider ssxConfig={ssxConfig} web3Provider={web3Provider}> 
+      {children}
+    </SSXProvider>
+  );
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

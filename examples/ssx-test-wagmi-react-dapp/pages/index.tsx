@@ -1,5 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useSSX } from "@spruceid/ssx-react";
+// import { useSSX } from "@spruceid/ssx-react";
 import { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -7,9 +7,9 @@ import styles from '../styles/Home.module.css';
 
 
 const Home: NextPage = () => {
-  const { ssx, ssxLoaded } = useSSX();
+  // const { ssx, ssxLoaded } = useSSX();
+  const ssx: any = {}, ssxLoaded = false;
   const [address, setAddress] = useState<string>();
-
 
   const handleSignIn = async () => {
     await ssx?.signIn();

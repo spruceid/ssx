@@ -11,6 +11,5 @@
     "outDir": "./dist", /* Specify an output folder for all emitted files. */
     "target": "es6",
     "jsx": "react-jsx",
-    "moduleResolution": "node16",
   }
 }
