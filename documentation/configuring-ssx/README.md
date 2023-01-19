@@ -54,7 +54,7 @@ const ssx = new SSX({
 });
 ```
 
-#### resolveEns
+#### [resolveEns](../reference/ssx-core/ssx-core.ssxclientconfig.resolveens.md)
 
 This is an optional field to enable ENS resolution when signing in. After the sign-in, the ENS data will be available with all other session data. `resolveEns` can be a boolean (default to false) or an object.&#x20;
 
@@ -82,6 +82,31 @@ const ssx = new SSX({
     domain: false,
     avatar: true,
   });
+</code></pre>
+
+#### resolveLens
+
+This is an optional field to enable Lens profile resolution when signing in. After a user signs-in, the Lens data will be available with all other session data. `resolveLens` can be a boolean (default to `false`) or `'onServer'`.&#x20;
+
+{% hint style="warning" %}
+This feature is available for **Polygon Mainnet** and **Mumbai Testnet.** Visit the [Lens docs](https://docs.lens.xyz/docs/api-links) for more information.
+{% endhint %}
+
+<pre class="language-javascript"><code class="lang-javascript"><strong>/* resolve Lens profiles on client */
+</strong><strong>const ssx = new SSX({
+</strong>  resolveLens: true
+});
+
+// OR
+
+/* resolve Lens profiles on server */
+const ssx = new SSX({
+  resolveLens: 'onServer'
+});
+
+/* You can resolve Lens profiles at any time even if you
+ * don't want to enable Lens resolution globally */
+ const lensProfiles = await ssx.resolveLens("0xADDRESS");
 </code></pre>
 
 #### [siweConfig](broken-reference)
