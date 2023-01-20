@@ -411,7 +411,7 @@ function App() {
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <span>SSX</span>
-        {openAccountModal && provider ? <ConnectButton /> : <></>}
++       {openAccountModal && ownEnsName && provider ? <ConnectButton /> : <></>}
       </div>
       <div className="App-title">
         <h1>SSX Example Dapp</h1>
