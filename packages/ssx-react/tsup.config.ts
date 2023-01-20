@@ -25,16 +25,16 @@ export default defineConfig([
   },
   {
     entry: [...entrypoints, 'src/index.cjs.ts'],
-    clean: true,
+    // clean: true,
     format: ['cjs'],
-    dts: {
-      compilerOptions: {
-        jsx: 'react-jsx',
-      },
-    },
+    // dts: {
+    //   compilerOptions: {
+    //     jsx: 'react-jsx',
+    //   },
+    // },
     outExtension({ format }) {
       return {
-        js: `.${format}.js`,
+        js: `.js`,
       };
     },
   },

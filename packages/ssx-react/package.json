@@ -14,17 +14,17 @@
     "./siwe": {
       "types": "./dist/siwe.d.js",
       "module": "./dist/siwe.esm.js",
-      "require": "./dist/siwe.cjs.js"
+      "require": "./dist/siwe.js"
     },
     "./next-auth/backend": {
       "types": "./dist/next-auth/backend.d.js",
       "module": "./dist/next-auth/backend.esm.js",
-      "require": "./dist/next-auth/backend.cjs.js"
+      "require": "./dist/next-auth/backend.js"
     },
     "./next-auth/frontend": {
       "types": "./dist/next-auth/frontend.d.js",
       "module": "./dist/next-auth/frontend.esm.js",
-      "require": "./dist/next-auth/frontend.cjs.js"
+      "require": "./dist/next-auth/frontend.js"
     }
   },
   "typesVersions": {
@@ -64,7 +64,7 @@
     "next": "^12.1.6",
     "next-auth": "^4.10.3",
     "react": "^18.2.0",
-    "wagmi-cjs": "npm:wagmi@0.10.11-cjs"
+    "wagmi-cjs": "npm:wagmi@0.10.10-cjs"
   },
   "peerDependencies": {
     "wagmi": "0.10.10",
