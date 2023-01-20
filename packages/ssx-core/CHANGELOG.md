@@ -1,5 +1,11 @@
 # @spruceid/ssx-core
 
+## 1.1.1
+
+### Patch Changes
+
+- Patch fix for build issue
+
 ## 1.1.0
 
 ### Minor Changes

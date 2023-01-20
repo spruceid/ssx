@@ -2,6 +2,7 @@
   "name": "ssx-test-gulp-dapp",
   "version": "1.0.0",
   "main": "index.js",
+  "private": true,
   "repository": {
     "url": "ssh://git@github.com:spruceid/ssx.git"
   },
