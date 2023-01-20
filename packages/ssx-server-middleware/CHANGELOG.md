@@ -1,5 +1,13 @@
 # @spruceid/ssx-server-middleware
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx-core@1.1.1
+  - @spruceid/ssx-gnosis-extension@1.1.3
+
 ## 1.0.0
 
 ### Major Changes
