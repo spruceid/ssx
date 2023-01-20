@@ -9,7 +9,7 @@
     "lint": "next lint",
     "reset": "rm -rf .next && rm -rf node_modules && yarn",
     "rebuild": "yarn reset && next build",
-    "restart": "yarn rebuild && yarn start"
+    "restart": "yarn rebuild && yarn dev"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.8.1",

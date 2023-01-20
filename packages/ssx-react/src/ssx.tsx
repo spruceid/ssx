@@ -1,4 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react';
+// import type { SSX } from '@spruceid/ssx';
+// import { SSXProviderProps, SSXContextInterface } from './common';
+// import { useSigner } from 'wagmi';
 import { ReactNode } from 'react';
 import type { SSX, SSXClientConfig } from '@spruceid/ssx';
 // import { SSXProviderProps, SSXContextInterface } from './common';
@@ -39,79 +42,72 @@ const defaultContext: SSXContextInterface = {
 const clientRender = typeof window !== 'undefined';
 const SSXContext = createContext(defaultContext);
 
-/** SSX Provider Component. */
-export const SSXProvider = ({
-  ssxConfig,
-  children,
-  web3Provider,
-}: SSXProviderProps) => {
-  let provider, providerLoaded;
+export const generateReactSSX = useSigner => {
+  console.log(useSigner);
+  /** SSX Provider Component. */
+  const SSXProvider = ({
+    ssxConfig,
+    children,
+    web3Provider,
+  }: SSXProviderProps) => {
+    let provider, providerLoaded;
 
-  if (clientRender) {
-    if (web3Provider) {
-      provider = web3Provider.provider;
-      providerLoaded = web3Provider.providerLoaded || true;
-    } else {
-      let useSigner;
-      const isESM = process.versions.modules !== '0';
-      // const isESM = require.resolve.paths('wagmi');
-
-      if (isESM) {
-        // ESM module
-        ({ useSigner } = require('wagmi'));
+    if (clientRender) {
+      if (web3Provider) {
+        provider = web3Provider.provider;
+        providerLoaded = web3Provider.providerLoaded || true;
       } else {
-        // CJS module
-        ({ useSigner } = require('wagmi-cjs'));
+        ({ data: provider, isSuccess: providerLoaded } = (clientRender &&
+          useSigner &&
+          useSigner()) || { data: undefined, isSuccess: false });
       }
-      ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
-        'undefined' &&
-        useSigner()) || { data: undefined, isSuccess: false });
     }
-  }
 
-  const [ssx, setSSX] = useState<SSX | undefined>(undefined);
-  const [ssxLoaded, setSSXLoaded] = useState<boolean>(false);
+    const [ssx, setSSX] = useState<SSX | undefined>(undefined);
+    const [ssxLoaded, setSSXLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function initializeSSX() {
-      const { SSX } = await import('@spruceid/ssx');
-      // console.log('provider', provider);
-      // console.log('providerLoaded', providerLoaded);
-      const modifiedSSXConfig = {
-        ...ssxConfig,
-        siweConfig: {
-          ...ssxConfig?.siweConfig,
-        },
-        providers: {
-          ...ssxConfig?.providers,
-          web3: {
-            driver: provider,
-            ...ssxConfig?.providers?.web3,
+    useEffect(() => {
+      async function initializeSSX() {
+        const { SSX } = await import('@spruceid/ssx');
+        // console.log('provider', provider);
+        // console.log('providerLoaded', providerLoaded);
+        const modifiedSSXConfig = {
+          ...ssxConfig,
+          siweConfig: {
+            ...ssxConfig?.siweConfig,
           },
-        },
-      };
+          providers: {
+            ...ssxConfig?.providers,
+            web3: {
+              driver: provider,
+              ...ssxConfig?.providers?.web3,
+            },
+          },
+        };
 
-      const ssxInstance = new SSX(modifiedSSXConfig);
-      setSSX(ssxInstance);
-      setSSXLoaded(true);
-    }
+        const ssxInstance = new SSX(modifiedSSXConfig);
+        setSSX(ssxInstance);
+        setSSXLoaded(true);
+      }
 
-    initializeSSX();
-  }, [provider, providerLoaded, ssxConfig]);
+      initializeSSX();
+    }, [provider, providerLoaded, ssxConfig]);
 
-  const SSXProviderValue: SSXContextInterface = {
-    ssx,
-    ssxLoaded,
+    const SSXProviderValue: SSXContextInterface = {
+      ssx,
+      ssxLoaded,
+    };
+
+    return (
+      <SSXContext.Provider value={SSXProviderValue}>
+        {children}
+      </SSXContext.Provider>
+    );
   };
 
-  return (
-    <SSXContext.Provider value={SSXProviderValue}>
-      {children}
-    </SSXContext.Provider>
-  );
-};
-
-/** Hook for accessing SSX instance and state. */
-export const useSSX = (): SSXContextInterface => {
-  return useContext(SSXContext);
+  /** Hook for accessing SSX instance and state. */
+  const useSSX = (): SSXContextInterface => {
+    return useContext(SSXContext);
+  };
+  return { SSXProvider, useSSX };
 };
