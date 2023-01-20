@@ -117,10 +117,18 @@ At `src/App.tsx` some changes are required to hook SSX and RainbowKit. Add the f
 ```tsx
 /* src/App.tsx */
 
+/* Add useEffect to the existing useState bracket */
+import { useEffect, useState } from 'react';
+
 import '@rainbow-me/rainbowkit/styles.css';
-import { useConnectModal, useAccountModal } from '@rainbow-me/rainbowkit';
+import {
+  useConnectModal,
+  useAccountModal,
+  ConnectButton,
+} from '@rainbow-me/rainbowkit';
 import { useSSX } from '@spruceid/ssx-react';
 import { SSXClientSession } from '@spruceid/ssx';
+import { useSigner } from 'wagmi';
 
 /*....*/
 
@@ -177,6 +185,7 @@ function App() {
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <span>SSX</span>
+        {openAccountModal && provider ? <ConnectButton /> : <></>}
       </div>
       <div className="App-title">
         <h1>SSX Example Dapp</h1>
@@ -185,15 +194,10 @@ function App() {
       <div className="App-content">
         {!openConnectModal && provider ? (
           <>
-            <AccountInfo address={session?.address} />
+            <AccountInfo address={`${session?.address}`} />
           </>
         ) : (
           <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
-        )}
-        {openAccountModal && provider ? (
-          <button onClick={openAccountModal}>{session?.address}</button>
-        ) : (
-          <></>
         )}
       </div>
     </div>
@@ -201,6 +205,100 @@ function App() {
 }
 
 /*....*/
+```
+
+To make things pretty replace `src/App.css` content with the code bellow:
+
+```css
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  height: 100vh;
+}
+
+.App-content button {
+  border: none;
+  width: 100%;
+  padding: 16px 24px;
+  color: white;
+  background: linear-gradient(107.8deg, #4c49e4 11.23%, #26c2f3 78.25%);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 150ms ease 0s;
+  margin: 16px 0px;
+}
+
+.App button:disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.App button:hover {
+  transform: scale(1.01);
+}
+
+.App-header {
+  width: calc(100% - 128px);
+  text-align: left;
+  padding: 16px 64px;
+  display: flex;
+  align-items: center;
+  background-color: #212121;
+}
+
+.App-header span {
+  font-weight: 600;
+  font-size: 32px;
+  margin-right: auto;
+}
+
+.App-title {
+  margin-top: auto;
+}
+
+.App-title h2 {
+  font-weight: 400;
+  font-size: 16px;
+  color: #667080;
+}
+
+.App-logo {
+  height: 40px;
+  pointer-events: none;
+  margin-right: 16px;
+}
+
+.App-content {
+  margin-bottom: auto;
+  width: 450px;
+  max-width: 100%;
+  background-color: rgba(39, 39, 39, 0.7);
+  backdrop-filter: blur(2px);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.App-content h1 {
+  font-size: 32px;
+  line-height: 48px;
+}
+
+.App-account-info {
+  margin-top: 16px;
+  padding: 16px 8px;
+  border: 1px solid #555555;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.App-account-info b {
+  color: #667080;
+}
 ```
 
 You are now able to run `yarn start` and sign-in using RainbowKit.
@@ -244,7 +342,7 @@ Make the following changes to `src/App.tsx` to add the logic to fetch tokens:
 +   /* This is the same you used previously for RainbowKit */
 +   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
 +   /* Change this to the appropiate network for your usecase */
-+   network: Network.ETH_GOERLI,
++   network: Network.ETH_MAINNET,
 + };
 
 + const alchemy = new Alchemy(alchemyConfig);
@@ -258,9 +356,12 @@ function App() {
   const { ssx } = useSSX();
   /* RainbowKit ConnectModal hook */
   const { openConnectModal } = useConnectModal();
+  /* RainbowKit Account modal hook */
+  const { openAccountModal } = useAccountModal();
   /* Some control variables */
-  const [session, setSession] = useState<SSXClientSession>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [session, setSession] = useState<SSXClientSession>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { data: provider } = useSigner();
 + const [ownEnsName, setOwnEnsName] = useState(false);
 
   useEffect(() => {
@@ -290,6 +391,9 @@ function App() {
   useEffect(() => {
     if (!provider) {
       setSession(undefined);
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
   }, [provider]);
 
@@ -305,42 +409,29 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <img
-          src={logo}
-          className="App-logo"
-          alt="logo"
-        />
+        <img src={logo} className="App-logo" alt="logo" />
         <span>SSX</span>
+        {openAccountModal && provider ? <ConnectButton /> : <></>}
       </div>
       <div className="App-title">
         <h1>SSX Example Dapp</h1>
         <h2>Connect and sign in with your Ethereum account</h2>
       </div>
       <div className="App-content">
-        {
-+          !openConnectModal && ownEnsName && provider ?
-            <>
-              <AccountInfo
-                address={session?.address}
-              />
-            </> :
-            <button onClick={handleClick}>
-              SIGN-IN WITH ETHEREUM
-            </button>
-        }
-        {
-+         openAccountModal && ownEnsName && provider ?
-            <button onClick={openAccountModal}>
-              {session?.address}
-            </button>
-            : <></>
-        }
++       {!openConnectModal && ownEnsName && provider ? (
+          <>
+            <AccountInfo address={`${session?.address}`} />
++           <br></br>
++           {!openConnectModal && ownEnsName && provider ? (
++             "You own an ENS name."
++           ) : (
++             <></>
++           )}
+          </>
+        ) : (
+          <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
+        )}
       </div>
-+     <br></br>
-+     {
-+       !openConnectModal && ownEnsName && provider ?
-+       "You own an ENS name." : <></>
-+     }
     </div>
   );
 }
