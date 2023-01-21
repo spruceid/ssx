@@ -63,7 +63,7 @@ const TokenGatedContent = () => {
 
   return (
     <div className='App'>
-      <Header />
+      <Header ownEnsName={ownEnsName} />
       <Title />
       <div className='Content'>
         <div className='Content-container'>
