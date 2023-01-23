@@ -425,7 +425,7 @@ function App() {
 +           {!openConnectModal && ownEnsName && provider ? (
 +             "You own an ENS name."
 +           ) : (
-+             <></>
++             <>"No ENS name found."</>
 +           )}
           </>
         ) : (
