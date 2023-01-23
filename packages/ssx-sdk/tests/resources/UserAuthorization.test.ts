@@ -1,7 +1,5 @@
 import { UserAuthorization } from '../../resources';
-import { generateTestingUtils } from 'eth-testing';
 
-const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 beforeAll(() => {
   // Manually inject the mocked provider in the window as MetaMask does
   (global.window as any).ethereum = testingUtils.getProvider();

@@ -6,7 +6,9 @@ interface IStorage {
   // updateStorage
 }
 
-class BrowserStorage implements IStorage {}
-class DataVault implements IStorage {}
+interface IDataVault extends IStorage {}
+
+class BrowserStorage implements IDataVault {}
+class DataVault implements IDataVault {}
 
 export { IStorage, BrowserStorage, DataVault };

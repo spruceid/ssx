@@ -1,10 +1,10 @@
-const { generateTestingUtils } = require('eth-testing');
-const { TextEncoder: TE, TextDecoder: TD } = require('util');
+import { generateTestingUtils } from 'eth-testing';
+import { TextEncoder as TE, TextDecoder as TD } from 'util';
 
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
-const { SSX } = require('../src');
+import { SSX } from '../src';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
