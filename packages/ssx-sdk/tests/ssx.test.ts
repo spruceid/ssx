@@ -23,6 +23,7 @@ test('Instantiate SSX with window.ethereum', () => {
   }).not.toThrowError();
 });
 
+// mock personal sign: https://github.com/VGLoic/eth-testing/blob/main/src/testing-utils/testing-utils.ts#L49
 test('Instantiate SSX with providers.web3.driver', () => {
   expect(() => {
     const config = {
