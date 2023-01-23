@@ -317,7 +317,7 @@ const alchemyConfig = {
   /* This is the same you used previously for RainbowKit */
   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
   /* Change this to the appropiate network for your usecase */
-  network: Network.ETH_GOERLI,
+  network: Network.ETH_MAINNET,
 };
 
 const alchemy = new Alchemy(alchemyConfig);
