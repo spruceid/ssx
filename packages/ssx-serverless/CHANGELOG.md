@@ -1,5 +1,30 @@
 # @spruceid/ssx-serverless
 
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx-core@1.1.1
+  - @spruceid/ssx-gnosis-extension@1.1.3
+
+## 1.2.0
+
+### Minor Changes
+
+- 24a7220: Adds Lens resolution feature to the server. This feature is available to Polygon Mainnet and Mumbai Testnet (visit [https://docs.lens.xyz/docs/api-links](https://docs.lens.xyz/docs/api-links) for more information).
+
+  - Adds `ssx.resolveLens(...)` method to resolve Lens profiles;
+  - Updates `ssx.signIn()` to accept `resolveLens?: boolean` as parameter and returns Lens profiles if `true`. This property isn't mandatory and the value is `false`;
+
+### Patch Changes
+
+- Updated dependencies [6205fc4]
+- Updated dependencies [6205fc4]
+- Updated dependencies [24a7220]
+  - @spruceid/ssx-core@1.1.0
+  - @spruceid/ssx-gnosis-extension@1.1.2
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @spruceid/ssx-react
 
+## 1.2.1
+
+### Patch Changes
+
+- Patch fix for build issue
+- Updated dependencies
+  - @spruceid/ssx@1.2.1
+  - @spruceid/ssx-server@1.2.1
+
+## 1.2.0
+
+### Minor Changes
+
+- 6205fc4: Added support for Next-Auth to `ssx-react`. This includes helper functions for configuring the frontend and backend components of an app using Next-Auth.
+
 ## 1.1.1
 
 ### Patch Changes
