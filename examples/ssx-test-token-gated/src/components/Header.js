@@ -1,21 +1,7 @@
-import { useAccountModal } from '@rainbow-me/rainbowkit';
-import { useEffect, useState } from 'react';
-import { useSigner } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import logo from '../logo.svg';
-import Button from './Button';
 
-const Header = () => {
-  const { openAccountModal } = useAccountModal();
-  const { data: provider } = useSigner();
-  const [address, setAddress] = useState('');
-
-  useEffect(() => {
-    if (provider) {
-      provider.getAddress().then(setAddress);
-    } else {
-      setAddress('');
-    }
-  }, [provider]);
+const Header = ({ ownEnsName }) => {
 
   return (
     <div className='Header'>
@@ -28,11 +14,9 @@ const Header = () => {
         SSX
       </span>
       {
-        provider && openAccountModal ?
+        ownEnsName ?
           <div className='Header-account'>
-            <Button onClick={() => openAccountModal()}>
-              {address}
-            </Button>
+            <ConnectButton />
           </div>
           : <></>
       }

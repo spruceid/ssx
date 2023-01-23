@@ -13,7 +13,7 @@ const ENS_CONTRACT = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85';
 
 const alchemyConfig = {
   apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-  network: Network.ETH_GOERLI,
+  network: Network.ETH_MAINNET,
 };
 
 const alchemy = new Alchemy(alchemyConfig);
@@ -63,8 +63,7 @@ const TokenGatedContent = () => {
 
   return (
     <div className='App'>
-      {console.log('modal;', openConnectModal)}
-      <Header />
+      <Header ownEnsName={ownEnsName} />
       <Title />
       <div className='Content'>
         <div className='Content-container'>
