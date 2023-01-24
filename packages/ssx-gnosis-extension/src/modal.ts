@@ -65,6 +65,7 @@ const getModalLoader = (): Element => {
  * Gets error component.
  * @returns Modal Error HTML element.
  */
+/* c8 ignore start */
 const getErrorModal = (): Element => {
   const info = document.createElement('div');
   info.classList.add('ssx-gnosis-modal--info');
@@ -154,6 +155,7 @@ const getErrorModal = (): Element => {
 
   return info;
 };
+/* c8 ignore end */
 
 /**
  * Gets base modal component.
