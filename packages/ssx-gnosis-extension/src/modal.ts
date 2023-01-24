@@ -12,6 +12,8 @@ declare global {
   }
 }
 
+let delegators: Array<string> = [];
+
 /** Gnosis Modal Interface */
 interface IGnosisModal {
   /** Method to close the modal. */
@@ -65,6 +67,7 @@ const getModalLoader = (): Element => {
  * Gets error component.
  * @returns Modal Error HTML element.
  */
+/* c8 ignore start */
 const getErrorModal = (): Element => {
   const info = document.createElement('div');
   info.classList.add('ssx-gnosis-modal--info');
@@ -154,6 +157,7 @@ const getErrorModal = (): Element => {
 
   return info;
 };
+/* c8 ignore end */
 
 /**
  * Gets base modal component.
@@ -345,7 +349,7 @@ export class GnosisDelegation implements SSXExtension {
     const modalBodyContent = document.createElement('div');
     await this.getOptions()
       .then(async options => {
-        // TODO(w4ll3): Uncomment once select Sign-in as DAO is implemented
+        delegators = options;
         this.selectedOption = `Yourself - ${this._connectedAddress}`;
         if (options.length === 0) {
           this.connect();
@@ -369,9 +373,8 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${
-              options.length > 1 ? 's' : ''
-            }`;
+            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
+              }`;
           })
           .catch(e => {
             console.error(e);
@@ -387,9 +390,8 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${
-              options.length > 1 ? 's' : ''
-            }`;
+            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
+              }`;
           });
       })
       .catch(e => {
@@ -469,14 +471,15 @@ export class GnosisDelegation implements SSXExtension {
    * @returns Promise void.
    */
   connect = async (): Promise<void> => {
-    if (!this.selectedOption.replace(/Yourself - /, '')) {
+    const option = this.selectedOption.replace(/Yourself - /, '');
+    if (!option || delegators.filter(delegator => option === delegator).length !== 1) {
       this._failure(new Error('Invalid address selected.'));
       this.closeModal();
       return;
     }
     this.closeModal();
     this._proceed({
-      siwe: { address: this.selectedOption.replace(/Yourself - /, '') },
+      siwe: { address: option },
     });
     return;
   };
