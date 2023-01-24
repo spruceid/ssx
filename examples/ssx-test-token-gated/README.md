@@ -428,7 +428,7 @@ function App() {
 +         <>
 +           <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
 +           <br></br>
-+             {!openConnectModal && !ownEnsName && provider ? (
++             {!openConnectModal && !ownEnsName && provider && !loading ? (
 +               "No ENS name found."
 +             ) : (
 +               <></>
