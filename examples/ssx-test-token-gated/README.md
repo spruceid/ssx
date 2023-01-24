@@ -422,14 +422,18 @@ function App() {
           <>
             <AccountInfo address={`${session?.address}`} />
 +           <br></br>
-+           {!openConnectModal && ownEnsName && provider ? (
-+             "You own an ENS name."
-+           ) : (
-+             <>"No ENS name found."</>
-+           )}
++           <>You own an ENS name.</>
           </>
         ) : (
-          <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
++         <>
++           <button onClick={handleClick}>SIGN-IN WITH ETHEREUM</button>
++           <br></br>
++             {!openConnectModal && !ownEnsName && provider ? (
++               "No ENS name found."
++             ) : (
++               <></>
++             )}
+          </>
         )}
       </div>
     </div>
