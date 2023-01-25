@@ -14,6 +14,7 @@
 
 * [DAO Login Workflow](appendix/dao-login-workflow.md)
 * [Moving From SIWE to SSX](appendix/moving-from-siwe-to-ssx.md)
+* [Using SSX with NextAuth](appendix/using-ssx-with-nextauth.md)
 
 ## Reference
 

@@ -1,6 +1,6 @@
 ---
 description: >-
-  An overview of what happens when a user Sign-in with Ethereum when powered by
+  An overview of what happens when a user Signs-in with Ethereum when powered by
   SSX
 ---
 
