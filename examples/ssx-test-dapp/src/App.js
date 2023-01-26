@@ -212,6 +212,7 @@ function App() {
               </> :
               <>
                 <Button
+                  id='connectButton'
                   onClick={ssxHandler}
                   loading={loading || wagmiIsLoading}
                 >
