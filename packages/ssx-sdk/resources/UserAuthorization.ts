@@ -21,7 +21,7 @@ import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 
 interface IUserAuthorization {
   /* properties */
-  // ethereumProvider
+  provider: ethers.providers.Web3Provider;
 
   /* createUserAuthorization */
   connect(): Promise<any>;
@@ -123,6 +123,9 @@ export class UserAuthorizationConnected implements ISSXConnected {
   /** Axios instance. */
   public api?: AxiosInstance;
 
+  /** Ethereum Provider */
+  public provider: ethers.providers.Web3Provider;
+
   constructor(
     /** Instance of SSXSessionBuilder */
     public builder: ssxSession.SSXSessionBuilder,
@@ -131,7 +134,7 @@ export class UserAuthorizationConnected implements ISSXConnected {
     /** Enabled extensions. */
     public extensions: SSXExtension[],
     /** EthersJS provider. */
-    public provider: ethers.providers.Web3Provider
+    public _provider: ethers.providers.Web3Provider
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();
     if (this.config.providers?.server?.host) {
@@ -140,6 +143,7 @@ export class UserAuthorizationConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
+    this.provider = _provider;
   }
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
@@ -395,7 +399,7 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
 };
 
 class UserAuthorization implements IUserAuthorization {
-  public ethereumProvider: any;
+  public provider: ethers.providers.Web3Provider;
 
   /** SSXClientSession builder. */
   private init: UserAuthorizationInit;
@@ -406,16 +410,20 @@ class UserAuthorization implements IUserAuthorization {
   /** Current connection of SSX */
   public connection?: UserAuthorizationConnected;
 
-  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
-      this.init = new UserAuthorizationInit({
-        ...this.config,
-        providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers },
-      });
-  
-      if (this.config.enableDaoLogin) {
-        const gnosis = new GnosisDelegation();
-        this.init.extend(gnosis);
-      }
+  /** The SSXClientConfig object. */
+  private config: SSXClientConfig;
+
+  constructor(private _config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
+    this.config = _config;
+    this.init = new UserAuthorizationInit({
+      ...this.config,
+      providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers },
+    });
+
+    if (this.config.enableDaoLogin) {
+      const gnosis = new GnosisDelegation();
+      this.init.extend(gnosis);
+    }
   }
 
   public async connect(): Promise<void> {
@@ -424,6 +432,7 @@ class UserAuthorization implements IUserAuthorization {
     }
     try {
       this.connection = await this.init.connect();
+      this.provider = this.connection.provider;
     } catch (err) {
       // ERROR:
       // Something went wrong when connecting or creating Session (wasm)
@@ -454,13 +463,13 @@ class UserAuthorization implements IUserAuthorization {
 
         promises.push(
           this.resolveEns(this.session.address, this.config.resolveEns.resolve)
-        ));
+        );
       }
     }
 
-    const resolveLensOnClient = (this.config.resolveLens === true);
+    const resolveLensOnClient = this.config.resolveLens === true;
     if (resolveLensOnClient) {
-      promises.push(this.resolveLens(this.session.address))
+      promises.push(this.resolveLens(this.session.address));
     }
 
     await Promise.all(promises).then(([ens, lens]) => {
@@ -496,15 +505,15 @@ class UserAuthorization implements IUserAuthorization {
   }
 
   /**
-   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
    * limited by 10. To get other pages you must to pass the pageCursor parameter.
-   * 
+   *
    * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
    * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
-   *  
+   *
    * @param address - Ethereum User address.
-   * @param pageCursor - Page cursor used to paginate the request. Default to 
-   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
@@ -512,7 +521,7 @@ class UserAuthorization implements IUserAuthorization {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = "{}"
+    pageCursor = '{}'
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.connection.provider, address, pageCursor);
   }

@@ -107,7 +107,7 @@ test('Should accept axios request config options successfully', async () => {
 //     const config = {
 //       providers: {
 //         web3: {
-//           driver: provider,
+//           driver: testingUtils.getProvider(),
 //         },
 //       },
 //     };

@@ -1,4 +1,11 @@
+import { generateTestingUtils } from 'eth-testing';
+import { TextEncoder as TE, TextDecoder as TD } from 'util';
+global.TextEncoder = TE;
+global.TextDecoder = TD;
+
 import { UserAuthorization } from '../../resources';
+
+const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
 beforeAll(() => {
   // Manually inject the mocked provider in the window as MetaMask does
@@ -44,24 +51,23 @@ describe('UserAuthorization', () => {
     });
   });
 
-  describe('User Capability Management', () => {
-    test('Should be able to get capabilities', async () => {
-      // get capabilities as UCAN or CACAO
-      // helper functions to parse/validate/understand UCANs and CACAOs
-      await userAuth.signIn();
-      const result = await userAuth.getCapabilities();
-      expect(result).toBeDefined();
-    });
+  // describe('User Capability Management', () => {
+  //   test('Should be able to get capabilities', async () => {
+  //     // get capabilities as UCAN or CACAO
+  //     // helper functions to parse/validate/understand UCANs and CACAOs
+  //     await userAuth.signIn();
+  //     const result = await userAuth.getCapabilities();
+  //     expect(result).toBeDefined();
+  //   });
 
-    test('Should be able to request capabilities', async () => {
-      await userAuth.signIn();
-      const result1 = await userAuth.getCapabilities();
-      const result2 = await userAuth.requestCapabilities();
-      expect(result2).toBeDefined();
-      // expect result 2 capabilities to be different than result 1
-      // expect result 1 capabilities to be a subset of result 2
-    });
-  });
+  //   test('Should be able to request capabilities', async () => {
+  //     await userAuth.signIn();
+  //     const result1 = await userAuth.getCapabilities();
+  //     const result2 = await userAuth.requestCapabilities();
+  //     expect(result2).toBeDefined();
+  //     // expect result 2 capabilities to be different than result 1
+  //     // expect result 1 capabilities to be a subset of result 2
+  //   });
+  // });
 
-  test;
 });

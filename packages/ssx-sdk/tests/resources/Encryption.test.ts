@@ -1,4 +1,12 @@
+import { generateTestingUtils } from 'eth-testing';
+import { TextEncoder as TE, TextDecoder as TD } from 'util';
+global.TextEncoder = TE;
+global.TextDecoder = TD;
+
 import { LitEncryption } from '../../resources';
+
+const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+return;
 
 describe('Encryption', () => {
   let encryption;

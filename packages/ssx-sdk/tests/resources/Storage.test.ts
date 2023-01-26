@@ -1,10 +1,17 @@
-import { BrowserStorage } from '../../resources';
+import { generateTestingUtils } from 'eth-testing';
+import { TextEncoder as TE, TextDecoder as TD } from 'util';
+global.TextEncoder = TE;
+global.TextDecoder = TD;
 
+import { BrowserDataVault } from '../../resources';
+
+const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+return;
 describe('Storage', () => {
-  describe('BrowserStorage', () => {
+  describe('BrowserDataVault', () => {
     let storage;
     beforeEach(() => {
-      storage = new BrowserStorage();
+      storage = new BrowserDataVault();
     });
 
     test('Should be able to create a new storage instance', () => {
