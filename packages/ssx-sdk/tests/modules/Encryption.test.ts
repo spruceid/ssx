@@ -3,7 +3,7 @@ import { TextEncoder as TE, TextDecoder as TD } from 'util';
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
-import { LitEncryption } from '../../resources';
+import { LitEncryption } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 return;

@@ -41,7 +41,7 @@ export default async (): Promise<Config> => ({
       },
       testMatch: [
         "<rootDir>/packages/ssx-sdk/tests/?(*.)+(spec|test).[jt]s?(x)",
-        "<rootDir>/packages/ssx-sdk/tests/resources/?(*.)+(spec|test).[jt]s?(x)",
+        "<rootDir>/packages/ssx-sdk/tests/modules/?(*.)+(spec|test).[jt]s?(x)",
       ],
     },
     {

@@ -3,7 +3,7 @@ import { TextEncoder as TE, TextDecoder as TD } from 'util';
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
-import { BrowserDataVault } from '../../resources';
+import { BrowserDataVault } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 return;

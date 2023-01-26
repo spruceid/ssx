@@ -38,7 +38,7 @@ interface IUserAuthorization {
 
 }
 
-export class UserAuthorizationInit {
+class UserAuthorizationInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
@@ -109,7 +109,7 @@ export class UserAuthorizationInit {
 }
 
 /** An intermediate SSX state: connected, but not signed-in. */
-export class UserAuthorizationConnected implements ISSXConnected {
+class UserAuthorizationConnected implements ISSXConnected {
   /**
    * Promise that is initialized on construction of this class to run the "afterConnect" methods
    * of the extensions.
@@ -399,16 +399,17 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
 };
 
 class UserAuthorization implements IUserAuthorization {
+  /** The Ethereum provider */
   public provider: ethers.providers.Web3Provider;
-
-  /** SSXClientSession builder. */
-  private init: UserAuthorizationInit;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
 
+  /** SSXClientSession builder. */
+  private init: UserAuthorizationInit;
+
   /** Current connection of SSX */
-  public connection?: UserAuthorizationConnected;
+  private connection?: UserAuthorizationConnected;
 
   /** The SSXClientConfig object. */
   private config: SSXClientConfig;
