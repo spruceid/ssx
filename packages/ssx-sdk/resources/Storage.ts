@@ -6,9 +6,14 @@ interface IStorage {
   // updateStorage
 }
 
-interface IDataVault extends IStorage {}
+interface IDataVault extends IStorage {
+  // unencrypted_createStorage
+  // createStorage: encrypted_createStorage
+  // unencrypted_getStorage
+  // getStorage: encrypted_getStorage
+}
 
-class BrowserStorage implements IDataVault {}
-class DataVault implements IDataVault {}
+class BrowserDataVault implements IDataVault {}
+class KeplerDataVault implements IDataVault {}
 
-export { IStorage, BrowserStorage, DataVault };
+export { IStorage, IDataVault, BrowserDataVault, KeplerDataVault };
