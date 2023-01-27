@@ -29,10 +29,10 @@ contract Post {
         postCount++;
 
         // Add the post to the mapping
-        posts[_postId] = PostStruct(_username, _postText, now);
+        posts[_postId] = PostStruct(_username, _postText, block.timestamp);
 
         // Emit the new post event
-        emit NewPost(_username, _postText, now);
+        emit NewPost(_username, _postText, block.timestamp);
     }
 
     function getPost(uint _postId) public view returns (address, string memory, uint) {
