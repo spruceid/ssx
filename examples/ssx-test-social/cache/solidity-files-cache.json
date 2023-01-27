@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/annaclaire/Documents/spruce/ssx/examples/ssx-test-social/contracts/Posts.sol": {
+      "lastModificationDate": 1674766264543,
+      "contentHash": "50b4d573b2cc67426ece87bbd82eddc8",
+      "sourceName": "contracts/Posts.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Post"
+      ]
+    }
+  }
+}
