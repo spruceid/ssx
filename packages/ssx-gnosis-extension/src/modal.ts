@@ -472,7 +472,7 @@ export class GnosisDelegation implements SSXExtension {
    */
   connect = async (): Promise<void> => {
     const option = this.selectedOption.replace(/Yourself - /, '');
-    if (!option || delegators.filter(delegator => option === delegator).length !== 1) {
+    if (!option || [...delegators, this._connectedAddress].filter(delegator => option === delegator).length !== 1) {
       this._failure(new Error('Invalid address selected.'));
       this.closeModal();
       return;
