@@ -43,7 +43,8 @@
     "http-api": "yarn workspace ssx-test-http-api",
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api",
     "start:test-dapp": "yarn test-dapp start",
-    "test:e2e": "start-server-and-test 'yarn start:test-dapp' http-get://localhost:3000 'SECRET_WORDS=\"test test test test test test test test test test test junk\" synpress run'"
+    "start:test-api": "yarn express-api start",
+    "test:e2e": "start-test 'yarn start:test-dapp' 3000 'yarn start:test-api' 3001 'SECRET_WORDS=\"test test test test test test test test test test test junk\" synpress run'"
   },
   "devDependencies": {
     "@changesets/cli": "^2.25.0",
