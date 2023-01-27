@@ -183,7 +183,7 @@ describe('SSX', () => {
         expect(confirmed).to.be.true;
       });
       cy.get('#userAddress', {
-        defaultCommandTimeout: 60000
+        timeout: 60000
       }).should(
         'have.text',
         '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
