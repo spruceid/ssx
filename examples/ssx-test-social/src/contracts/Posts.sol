@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-contract Post {
+contract Posts {
 
     // Event that is emitted when a new post is added
     event NewPost(address indexed username, string postText, uint timestamp);

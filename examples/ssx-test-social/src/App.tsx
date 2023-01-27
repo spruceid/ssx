@@ -3,32 +3,18 @@ import logo from './logo.svg';
 import { SSX } from '@spruceid/ssx';
 import './App.css';
 import getSSXConfig from './ssx.config';
+import AccountInfo from "./components/AccountInfo";
 
-function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
-  return (
-    <div className="App-account-info">
-      <h2>
-        Account Info
-      </h2>
-      {
-        address &&
-        <p>
-          <b>
-            Address
-          </b>
-          <br />
-          <code>
-            {address}
-          </code>
-        </p>
-      }
-    </div>
-  );
-};
+
 
 function App() {
 
   const [ssxProvider, setSSX] = useState<SSX | null>(null);
+  const API_KEY = process.env.API_KEY;
+  const PRIVATE_KEY = process.env.PRIVATE_KEY;
+  const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+  const contract = require("./artifacts/contracts/Posts.sol/Posts.json");
+  console.log(JSON.stringify(contract.abi));
 
   const ssxHandler = async () => {
     const ssxConfig = await getSSXConfig();

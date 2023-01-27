@@ -1,10 +1,9 @@
-import { ethers } from "hardhat";
 
 async function main() {
     const Posts = await ethers.getContractFactory("Posts");
  
     // Start deployment, returning a promise that resolves to a contract object
-    const posts = await Posts.deploy("Deploying posts");   
+    const posts = await Posts.deploy();   
     console.log("Contract deployed to address:", posts.address);
  }
  

@@ -11,3 +11,13 @@
 9. styling
 
 just for anna claire: need to read about alchemy, better understanding of ssx and providers architecture
+
+react architecture 
+
+APP 
+instantiate contract 
+1. feed
+    children
+    1. post 
+2. login 
+3. new post 
