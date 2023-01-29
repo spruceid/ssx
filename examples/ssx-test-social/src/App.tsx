@@ -6,6 +6,7 @@ import getSSXConfig from './ssx.config';
 import AccountInfo from "./components/AccountInfo";
 import { ethers } from "ethers"
 import Login from "./components/Login";
+import NewPost from "./components/NewPost";
 
 
 function App() {
@@ -32,6 +33,15 @@ function App() {
         <span>SSX</span>
       </div>
       <Login ssxProvider={ssxProvider} setSSX={setSSX}></Login>
+      <div className="newPost">
+        {
+        ssxProvider ? 
+        <>
+        <NewPost postsContract={PostsContract} setPosts={setPosts} posts={posts} ssxProvider={ssxProvider}></NewPost>
+        </> :
+        <div></div>          
+        }
+      </div>
     </div>
   );
 }
