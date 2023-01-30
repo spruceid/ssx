@@ -36,23 +36,28 @@ function App() {
   return (
     <PostContext.Provider value={{ ssxProvider, setSSXProvider, posts, setPosts }}>
       <div className='App'>
-        <Grid container spacing={1} justifyContent="flex-end">
-          <Grid item xs={2} >
-            <AccountInfo address={ssxProvider?.address() || ''} />
-            <Button variant="contained"
-              onClick={handleLogout}
-            >
-              LOG OUT
-            </Button>
-          </Grid>
-        </Grid>
+      {
+        ssxProvider ?
+        <>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
         <NewPost postContext={PostContext} />
-        <Button onClick={handleLogin}>
-          LOG IN TO CREATE POST
-        </Button>
-        <Feed postContext={PostContext} />
-      </div>
-    </PostContext.Provider>
+        <div style={{ width: 'auto', marginRight: '2rem',display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+        <AccountInfo address={ssxProvider?.address() || ''} />
+          <Button style={{width: "25rem"}} onClick={handleLogout}>LOG OUT</Button>
+        </div>
+        </div>
+        </> :
+        <>
+        <div style={{ width: 'auto', display: 'flex', justifyContent: 'center' }}>
+        <Button style={{width: "25rem"}} onClick={handleLogin}>
+        LOG IN TO CREATE POST
+      </Button>
+        </div>
+        </>
+      }
+      <Feed postContext={PostContext} />
+    </div>
+    </PostContext.Provider >
   );
 }
 

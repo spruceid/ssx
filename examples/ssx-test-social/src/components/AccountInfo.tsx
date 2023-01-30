@@ -1,23 +1,16 @@
+import { Box, Card, CardContent, Typography } from "@material-ui/core";
+
 function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
-    return (
-      <div className="App-account-info">
-        <h2>
-          Account Info
-        </h2>
-        {
-          address &&
-          <p>
-            <b>
-              Address
-            </b>
-            <br />
-            <code>
-              {address}
-            </code>
-          </p>
-        }
-      </div>
-    );
+  return (
+    <div>
+      <Card style={{ backgroundColor: "rgba(39, 39, 39, 0.7)", color: "white", width: "fit-content"}}>
+        <CardContent>
+          <Typography style={{ fontWeight: 'bold' }}>WALLET ADDRESS</Typography>
+          <Typography>{address}</Typography>
+        </CardContent>
+      </Card>
+    </div>
+  );
   };
 
 export default AccountInfo;
