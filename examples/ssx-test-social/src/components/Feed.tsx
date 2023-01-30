@@ -1,28 +1,19 @@
 import { Box, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { useContext, useEffect, useState } from 'react';
 import PostContextProps from '../interfaces/iPostContext';
-import PostsContract from '../contract';
 import Post from '../interfaces/iPost';
 import React from 'react';
 
 
 
 function Feed({ postContext }: { postContext: React.Context<PostContextProps> }) {
-  const { newPost } = useContext(postContext);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { ssxProvider, posts } = useContext(postContext);
 
   useEffect(() => {
-    async function fetchPosts() {
-      console.log("fetching posts")
-      const allPosts = await PostsContract.getAllPosts();
-      console.log("done")
-      setPosts(allPosts);
-    }
+    console.log('posts updated');
+  }, [posts]);
 
-    fetchPosts();
-  }, [newPost]);
-
-  function thereArePosts(){
+  function OnePlusPosts(){
     const listItems = posts.map((p) =>
       <li>{p.postText}</li>
     );
@@ -32,10 +23,10 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
   }
   
   if (posts && posts.length > 0) {
-    return thereArePosts()
+    return OnePlusPosts()
   }
   else {
-    return <div>Nothing</div>
+    return <div></div>
   }
 
  

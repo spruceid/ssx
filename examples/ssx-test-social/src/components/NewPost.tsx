@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
 import { TextField, Button } from '@material-ui/core';
-import Post from '../interfaces/iPost'
 import PostContextProps from "../interfaces/iPostContext";
-import postsContract from '../contract'
 import { SSX } from "@spruceid/ssx";
+import Post from "../interfaces/iPost";
 
 function NewPost({ postContext }: { postContext: React.Context<PostContextProps> }) {
-  const { ssxProvider, setNewPost, newPost } = useContext(postContext);
+  const { ssxProvider, posts, setPosts } = useContext(postContext);
   const [text, setText] = useState('');
 
 
@@ -15,11 +14,8 @@ function NewPost({ postContext }: { postContext: React.Context<PostContextProps>
     const address = (ssxProvider instanceof SSX && typeof ssxProvider.address() !== 'undefined')
     ? ssxProvider.address()!
     : null;
-    const tx = await postsContract.addPost(text, address)
-    await tx.wait();
     const post: Post = { postText: text, user: address }
-    setNewPost(!newPost)
-    console.log("After set", newPost)
+    setPosts([...posts, post])
     setText('');
   }
 
