@@ -13,6 +13,9 @@ import {
   SSXClientSession,
 } from '@spruceid/ssx-core/client';
 
+import type { IUserAuthorization, IEncryption, IDataVault, ICredential } from './modules';
+import { UserAuthorization, BrowserDataVault, SignatureEncryption, Credential } from './modules';
+
 declare global {
   interface Window {
     ethereum?: any;
@@ -44,74 +47,33 @@ export class SSX {
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
 
-  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
-    this.init = new SSXInit({
-      ...this.config,
-      providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers },
-    });
+  /** User Authorization module */
+  public userAuthorization: IUserAuthorization;
 
-    if (this.config.enableDaoLogin) {
-      const gnosis = new GnosisDelegation();
-      this.init.extend(gnosis);
-    }
+  /** Encryption Module */
+  public encryption: IEncryption;
+
+  /** DataVault Module */
+  public dataVault: IDataVault;
+
+  /** Credential Module */
+  public credential: ICredential;
+
+  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
+    // TODO: initialize these based on the config
+    this.userAuthorization = new UserAuthorization(config);
+    this.encryption = new SignatureEncryption();
+    this.dataVault = new BrowserDataVault();
+    this.credential = new Credential();
   }
 
   /**
    * Request the user to sign in, and start the session.
    * @returns Object containing information about the session
    */
-  public async signIn(): Promise<SSXClientSession> {
-    try {
-      this.connection = await this.init.connect();
-    } catch (err) {
-      // Something went wrong when connecting or creating Session (wasm)
-      console.error(err);
-      throw err;
-    }
-
-    try {
-      this.session = await this.connection.signIn();
-    } catch (err) {
-      // Request to /ssx-login went wrong
-      console.error(err);
-      throw err;
-    }
-    const promises = [];
-
-    let resolveEnsOnClient = false;
-    if (this.config.resolveEns) {
-      if (this.config.resolveEns === true) {
-        resolveEnsOnClient = true;
-        promises.push(this.resolveEns(this.session.address));
-      } else if (!this.config.resolveEns.resolveOnServer) {
-        resolveEnsOnClient = true;
-
-        promises.push(this.resolveEns(
-          this.session.address,
-          this.config.resolveEns.resolve
-        ));
-      }
-    }
-
-    const resolveLensOnClient = (this.config.resolveLens === true);
-    if (resolveLensOnClient) {
-      promises.push(this.resolveLens(this.session.address))
-    }
-
-    await Promise.all(promises).then(([ens, lens]) => {
-      if (!resolveEnsOnClient && resolveLensOnClient) {
-        [ens, lens] = [undefined, ens];
-      }
-      if (ens) {
-        this.session.ens = ens;
-      }
-      if (lens) {
-        this.session.lens = lens;
-      }
-    });
-
-    return this.session;
-  }
+  public signIn = async (): Promise<SSXClientSession> => {
+    return this.userAuthorization.signIn();
+  };
 
   /**
    * ENS data supported by SSX.
@@ -127,7 +89,7 @@ export class SSX {
       avatar: true,
     }
   ): Promise<SSXEnsData> {
-    return ssxResolveEns(this.connection.provider, address, resolveEnsOpts);
+    return this.userAuthorization.resolveEns(address, resolveEnsOpts);
   }
 
   /**
@@ -149,33 +111,25 @@ export class SSX {
     /* Page cursor used to paginate the request. Default to first page. */
     pageCursor: string = "{}"
   ): Promise<string | SSXLensProfilesResponse> {
-    return ssxResolveLens(this.connection.provider, address, pageCursor);
+    return this.userAuthorization.resolveLens(address, pageCursor);
   }
 
   /**
    * Invalidates user's session.
    */
   public async signOut(): Promise<void> {
-    try {
-      await this.connection.signOut(this.session);
-    } catch (err) {
-      // request to /ssx-logout went wrong
-      console.error(err);
-      throw err;
-    }
-    this.session = null;
-    this.connection = null;
+    return this.userAuthorization.signOut();
   }
 
   /**
    * Gets the address that is connected and signed in.
    * @returns Address.
    */
-  public address: () => string | undefined = () => this.session?.address;
+  public address: () => string | undefined = () => this.userAuthorization.address()
 
   /**
    * Get the chainId that the address is connected and signed in on.
    * @returns chainId.
    */
-  public chainId: () => number | undefined = () => this.session?.chainId;
+  public chainId: () => number | undefined = () => this.userAuthorization.chainId()
 }

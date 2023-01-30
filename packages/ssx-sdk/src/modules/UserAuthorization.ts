@@ -26,12 +26,17 @@ interface IUserAuthorization {
   /* createUserAuthorization */
   connect(): Promise<any>;
   signIn(): Promise<any>;
+  resolveEns(): Promise<any>;
+  resolveLens(): Promise<any>;
+  address(): string | undefined;
+  chainId(): number | undefined;
   /* getUserAuthorization */
   // getSIWE
   // getSessionData
   // getCapabilities
   /* listUserAuthorization */
   /* deleteUserAuthorization */
+  signOut(): Promise<any>;
   // signOut()
   /* updateUserAuthorization */
   // requestCapabilities()

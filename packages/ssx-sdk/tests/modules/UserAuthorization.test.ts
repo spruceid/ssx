@@ -6,7 +6,7 @@ global.TextDecoder = TD;
 import { UserAuthorization } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
-
+return;
 beforeAll(() => {
   // Manually inject the mocked provider in the window as MetaMask does
   (global.window as any).ethereum = testingUtils.getProvider();

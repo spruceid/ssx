@@ -101,20 +101,20 @@ test('Should accept axios request config options successfully', async () => {
 //   // TODO: expose wallet connection interface
 // });
 
-// test('Sign-in with Ethereum', () => {
-//   // TODO: sign request with mock provider
-//   expect(async () => {
-//     const config = {
-//       providers: {
-//         web3: {
-//           driver: testingUtils.getProvider(),
-//         },
-//       },
-//     };
-//     const ssx = new SSX(config);
-//     await ssx.signIn();
-//   }).not.toThrowError();
-// });
+test('Sign-in with Ethereum', () => {
+  // TODO: sign request with mock provider
+  expect(async () => {
+    const config = {
+      providers: {
+        web3: {
+          driver: testingUtils.mockConnectedWallet().getProvider(),
+        },
+      },
+    };
+    const ssx = new SSX(config);
+    await ssx.signIn();
+  }).not.toThrowError();
+});
 
 // test('Throw Error if Ethereum Wallet isn\'t found', () => {
 //   // TODO: Throw error if no wallet is found
