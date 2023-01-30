@@ -13,7 +13,7 @@ const getSSXConfig = async () => {
 
   return { 
     enableDaoLogin: true,
-    resolveEns: true,
+    //resolveEns: true,
     providers: {
       web3: {  driver }
     }

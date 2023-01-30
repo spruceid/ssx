@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@spruceid/ssx": "^1.2.1",
     "@walletconnect/web3-provider": "^1.8.0",

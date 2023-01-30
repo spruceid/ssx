@@ -1,59 +1,92 @@
-import { useState } from "react";
-import logo from './logo.svg';
+import React, { createContext, useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Button, Typography, Container } from '@material-ui/core';
+import AccountInfo from './components/AccountInfo';
+import NewPost from './components/NewPost';
+import Feed from './components/Feed';
 import { SSX } from '@spruceid/ssx';
-import './App.css';
 import getSSXConfig from './ssx.config';
-import AccountInfo from "./components/AccountInfo";
-import { ethers } from "ethers"
-import Login from "./components/Login";
-import NewPost from "./components/NewPost";
-import Post from "./interfaces/iPost"
-import Feed from "./components/Feed";
+import PostContextProps from './interfaces/iPostContext';
+import Post from './interfaces/iPost';
+import postsContract from './contract';
+
+function App() {
+  const [ssxProvider, setSSXProvider] = useState<SSX | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const PostContext = createContext<PostContextProps>({ 
+    posts: [], 
+    setPosts: () => {},
+    ssxProvider: null,
+    setSSXProvider: () => {}
+  });
 
 
-const App = () => {
+  const handleLogin = async () => {
+    const ssxConfig = await getSSXConfig();
+    const ssx = new SSX(ssxConfig);
+    await ssx.signIn();
+    setSSXProvider(ssx);
+  };
 
-  const [ssxProvider, setSSX] = useState<SSX | null>(null);
-  const API_KEY = process.env.REACT_APP_API_KEY;
-  const PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY as any;
-  const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS as any;
-  const contract = require("./artifacts/contracts/Posts.sol/Posts.json");
-  const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", API_KEY);
-  const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
-  const PostsContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+  const handleLogout = async () => {
+    ssxProvider?.signOut();
+    setSSXProvider(null);
+  };
 
+  useEffect(() => {
+    async function fetchPosts() {
+      const posts = await postsContract.getAllPosts();
+      console.log(posts)
+      setPosts(posts);
+    }
 
-  const getPosts = async () => {
-    const prevPosts: Post[] = await PostsContract.getAllPosts()
-    console.log(prevPosts)
-    return prevPosts
-  }
+    fetchPosts();
+  },[]);
 
-  const [posts, setPosts] = useState(getPosts())
-  
   return (
-    <div className="App">
-      <div className="App-header">
-        <img
-          src={logo}
-          className="App-logo"
-          alt="logo"
-        />
-        <span>SSX</span>
+    <PostContext.Provider value={{ posts, setPosts, ssxProvider, setSSXProvider }}>
+      <div>
+        <Grid container>
+          {
+            ssxProvider ?
+              <>
+                <Grid item xs={12}>
+                  <AccountInfo address={ssxProvider?.address() || ''} />
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleLogout}
+                  >
+                    LOG OUT
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <NewPost postContext={PostContext} />
+                </Grid>
+              </> :
+              <Grid item xs={12}>
+                <Button variant="contained" color="primary" onClick={handleLogin}>
+                  LOG IN
+                </Button>
+              </Grid>
+          }
+          <Grid item xs={12}>
+            <Feed postContext={PostContext} />
+          </Grid>
+        </Grid>
       </div>
-      <Login ssxProvider={ssxProvider} setSSX={setSSX}></Login>
-      <div className="newPost">
-        {
-        ssxProvider ? 
-        <>
-        <NewPost contract={PostsContract} ssxProvider={ssxProvider} posts={posts} setPosts={setPosts}></NewPost>
-        </> :
-        <div></div>          
-        }
-      </div>
-        <Feed posts={posts}></Feed>
-    </div>
+    </PostContext.Provider>
   );
 }
+
+
+// const getPosts = async () => {
+//   const prevPosts: Post[] = await PostsContract.getAllPosts()
+//   console.log(prevPosts)
+//   return prevPosts
+// }
+
+// const [posts, setPosts] = useState(getPosts())
 
 export default App;

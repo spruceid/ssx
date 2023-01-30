@@ -2,11 +2,11 @@ pragma solidity ^0.8.0;
 
 contract Posts {
   // Event that is emitted when a new post is added
-  event NewPost(address indexed username, string postText);
+  event NewPost(string indexed username, string postText);
 
   // Struct to represent a single post
   struct Post {
-    address username;
+    string username;
     string postText;
   }
 
@@ -16,14 +16,11 @@ contract Posts {
   // Counter for generating unique post IDs
   uint256 public postCount;
 
-  function addPost(string memory _postText) public {
+  function addPost(string memory _postText, string memory _username) public {
     require(
       bytes(_postText).length <= 140,
       'Post text must be less than 140 characters'
     );
-
-    // Get the user's Ethereum address as the username
-    address _username = msg.sender;
 
     // Generate a unique post ID
     uint256 _postId = postCount;

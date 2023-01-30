@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/annaclaire/Documents/spruce/ssx/examples/ssx-test-social/contracts/Posts.sol": {
-      "lastModificationDate": 1675036730547,
-      "contentHash": "d63e8c89d5172f1228b025470f0f0b71",
+    "/Users/annaclairefields/Documents/ssx/examples/ssx-test-social/contracts/Posts.sol": {
+      "lastModificationDate": 1675058738112,
+      "contentHash": "219dee7ac594a24a8c336ff418bfcf07",
       "sourceName": "contracts/Posts.sol",
       "solcConfig": {
         "version": "0.8.0",
