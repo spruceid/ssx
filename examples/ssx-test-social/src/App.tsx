@@ -1,14 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography, Container } from '@material-ui/core';
+import { Grid, Button, Typography, Container, Box } from '@material-ui/core';
 import AccountInfo from './components/AccountInfo';
 import NewPost from './components/NewPost';
 import Feed from './components/Feed';
 import { SSX } from '@spruceid/ssx';
 import getSSXConfig from './ssx.config';
 import PostContextProps from './interfaces/iPostContext';
-import Post from './interfaces/iPost';
-import postsContract from './contract';
+import './App.css';
 
 function App() {
   const [ssxProvider, setSSXProvider] = useState<SSX | null>(null);
@@ -27,29 +26,31 @@ function App() {
   };
 
 
-  const PostContext = createContext<PostContextProps>({ 
+  const PostContext = createContext<PostContextProps>({
     ssxProvider: null,
-    setSSXProvider: () => {},
+    setSSXProvider: () => { },
     newPost: false,
-    setNewPost: () => {}
+    setNewPost: () => { }
   });
 
   return (
     <PostContext.Provider value={{ ssxProvider, setSSXProvider, newPost, setNewPost }}>
-      <div>
-                  {/* <AccountInfo address={ssxProvider?.address() || ''} />
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleLogout}
-                  >
-                    LOG OUT
-                  </Button>
-                  <NewPost postContext={PostContext} />
-                <Button variant="contained" color="primary" onClick={handleLogin}>
-                  LOG IN
-                </Button> */}
-            <Feed postContext={PostContext} />
+      <div className='App'>
+        <Grid container spacing={1} justifyContent="flex-end">
+          <Grid item xs={2} >
+            <AccountInfo address={ssxProvider?.address() || ''} />
+            <Button variant="contained"
+              onClick={handleLogout}
+            >
+              LOG OUT
+            </Button>
+          </Grid>
+        </Grid>
+        <NewPost postContext={PostContext} />
+        <Button onClick={handleLogin}>
+          LOG IN TO CREATE POST
+        </Button>
+        <Feed postContext={PostContext} />
       </div>
     </PostContext.Provider>
   );
