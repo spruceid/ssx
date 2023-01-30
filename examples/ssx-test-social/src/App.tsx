@@ -21,15 +21,16 @@ const App = () => {
   const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", API_KEY);
   const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
   const PostsContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-  const [posts, setPosts] = useState(['okay', 'nice'])
 
 
   const getPosts = async () => {
     const prevPosts: Post[] = await PostsContract.getAllPosts()
-      console.log(prevPosts)
+    console.log(prevPosts)
+    return prevPosts
   }
 
-  getPosts()
+  const [posts, setPosts] = useState(getPosts())
+  
   return (
     <div className="App">
       <div className="App-header">
