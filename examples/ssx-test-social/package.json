@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@spruceid/ssx": "^1.2.1",
     "@walletconnect/web3-provider": "^1.8.0",
     "buffer": "^6.0.3",

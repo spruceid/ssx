@@ -1,19 +1,17 @@
-import { Key, useState } from "react";
+import { useState } from "react";
+import Post from '../interfaces/iPost'
 
 const NewPost = (props: any) => {
     const [text, setText] = useState('');
-
-    interface Post {
-        text: string,
-        user: string
-    }
 
     function handleChange(event: any) {
         setText(event.target.value);
     }
 
-    function handleSubmit(event: any) {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
+        const tx = await props.contract.addPost(text)
+        await tx.wait();
         props.setPosts([...props.posts, {text: text, user: props.ssxProvider.address()}]);
         setText('');
     }
@@ -24,11 +22,6 @@ const NewPost = (props: any) => {
             <input type="text" value={text} onChange={handleChange} />
             <button type="submit">Post</button>
           </form>
-          <div>
-            {props.posts.map((post: Post, index: any) => (
-              <div key={index}>{post.text}{post.user}</div>
-            ))}
-          </div>
         </>
       );
 

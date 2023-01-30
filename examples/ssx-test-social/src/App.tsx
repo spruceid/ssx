@@ -7,9 +7,11 @@ import AccountInfo from "./components/AccountInfo";
 import { ethers } from "ethers"
 import Login from "./components/Login";
 import NewPost from "./components/NewPost";
+import Post from "./interfaces/iPost"
+import Feed from "./components/Feed";
 
 
-function App() {
+const App = () => {
 
   const [ssxProvider, setSSX] = useState<SSX | null>(null);
   const API_KEY = process.env.REACT_APP_API_KEY;
@@ -19,9 +21,15 @@ function App() {
   const alchemyProvider = new ethers.providers.AlchemyProvider("goerli", API_KEY);
   const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
   const PostsContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState(['okay', 'nice'])
 
 
+  const getPosts = async () => {
+    const prevPosts: Post[] = await PostsContract.getAllPosts()
+      console.log(prevPosts)
+  }
+
+  getPosts()
   return (
     <div className="App">
       <div className="App-header">
@@ -37,11 +45,12 @@ function App() {
         {
         ssxProvider ? 
         <>
-        <NewPost postsContract={PostsContract} setPosts={setPosts} posts={posts} ssxProvider={ssxProvider}></NewPost>
+        <NewPost contract={PostsContract} ssxProvider={ssxProvider} posts={posts} setPosts={setPosts}></NewPost>
         </> :
         <div></div>          
         }
       </div>
+        <Feed posts={posts}></Feed>
     </div>
   );
 }
