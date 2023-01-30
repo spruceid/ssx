@@ -12,15 +12,7 @@ import postsContract from './contract';
 
 function App() {
   const [ssxProvider, setSSXProvider] = useState<SSX | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  const PostContext = createContext<PostContextProps>({ 
-    posts: [], 
-    setPosts: () => {},
-    ssxProvider: null,
-    setSSXProvider: () => {}
-  });
-
+  const [newPost, setNewPost] = useState<boolean>(false);
 
   const handleLogin = async () => {
     const ssxConfig = await getSSXConfig();
@@ -34,25 +26,18 @@ function App() {
     setSSXProvider(null);
   };
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const posts = await postsContract.getAllPosts();
-      console.log(posts)
-      setPosts(posts);
-    }
 
-    fetchPosts();
-  },[]);
+  const PostContext = createContext<PostContextProps>({ 
+    ssxProvider: null,
+    setSSXProvider: () => {},
+    newPost: false,
+    setNewPost: () => {}
+  });
 
   return (
-    <PostContext.Provider value={{ posts, setPosts, ssxProvider, setSSXProvider }}>
+    <PostContext.Provider value={{ ssxProvider, setSSXProvider, newPost, setNewPost }}>
       <div>
-        <Grid container>
-          {
-            ssxProvider ?
-              <>
-                <Grid item xs={12}>
-                  <AccountInfo address={ssxProvider?.address() || ''} />
+                  {/* <AccountInfo address={ssxProvider?.address() || ''} />
                   <Button
                     variant="contained"
                     color="secondary"
@@ -60,21 +45,11 @@ function App() {
                   >
                     LOG OUT
                   </Button>
-                </Grid>
-                <Grid item xs={12}>
                   <NewPost postContext={PostContext} />
-                </Grid>
-              </> :
-              <Grid item xs={12}>
                 <Button variant="contained" color="primary" onClick={handleLogin}>
                   LOG IN
-                </Button>
-              </Grid>
-          }
-          <Grid item xs={12}>
+                </Button> */}
             <Feed postContext={PostContext} />
-          </Grid>
-        </Grid>
       </div>
     </PostContext.Provider>
   );

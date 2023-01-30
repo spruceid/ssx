@@ -1,7 +1,6 @@
 import { Address } from "cluster";
 
 export default interface Post {
-    text: string,
+    postText: string | null;
     user: string | null;
-    id: number
 }
