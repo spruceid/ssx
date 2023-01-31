@@ -13,7 +13,7 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
     console.log('posts updated');
   }, [posts]);
 
-  function OnePlusPosts() {
+  function PostsExist() {
     return (
       <div style={{ display: 'flex', flexDirection: 'column' , marginTop: '2rem'}}>
         {posts.map((post, index) => (
@@ -24,7 +24,7 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
   }
 
   if (posts && posts.length > 0) {
-    return OnePlusPosts()
+    return PostsExist()
   }
   else {
     return <div></div>
