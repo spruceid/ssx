@@ -26,7 +26,17 @@ interface IUserAuthorization {
   /* createUserAuthorization */
   connect(): Promise<any>;
   signIn(): Promise<any>;
-  resolveEns(): Promise<any>;
+  /**
+   * ENS data supported by SSX.
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  resolveEns(
+    /** User address */
+    address: string,
+    resolveEnsOpts: SSXEnsResolveOptions
+  ): Promise<SSXEnsData>;
   /**
    * Resolves Lens profiles owned by the given Ethereum Address. Each request is
    * limited by 10. To get other pages you must to pass the pageCursor parameter.
@@ -44,7 +54,7 @@ interface IUserAuthorization {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor = '{}'
+    pageCursor: string,
   ): Promise<string | SSXLensProfilesResponse>;
   address(): string | undefined;
   chainId(): number | undefined;
