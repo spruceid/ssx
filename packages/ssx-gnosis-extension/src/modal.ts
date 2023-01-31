@@ -123,34 +123,8 @@ const getErrorModal = (): Element => {
   p.appendChild(document.createElement('br'));
   p.appendChild(document.createTextNode('wrong!'));
 
-  const svgGnosis = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'svg'
-  );
-  svgGnosis.setAttribute('width', '32');
-  svgGnosis.setAttribute('height', '32');
-  svgGnosis.setAttribute('viewBox', '0 0 32 32');
-  svgGnosis.setAttribute('fill', 'none');
-  const pathGnosis = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'path'
-  );
-  pathGnosis.setAttribute('fill-rule', 'evenodd');
-  pathGnosis.setAttribute('clip-rule', 'evenodd');
-  pathGnosis.setAttribute(
-    'd',
-    'M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM16 21C18.419 21 20.4367 19.2822 20.9 17H27.5C28.0523 17 28.5 16.5523 28.5 16C28.5 15.4477 28.0523 15 27.5 15H20.9C20.4367 12.7178 18.419 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z'
-  );
-  pathGnosis.setAttribute('fill', 'white');
-  svgGnosis.appendChild(pathGnosis);
-  const a = document.createElement('a');
-  a.setAttribute('href', '#');
-  a.appendChild(svgGnosis);
-  a.appendChild(document.createTextNode('Gnosis Safe'));
-
   container.appendChild(svg);
   container.appendChild(p);
-  container.appendChild(a);
   info.appendChild(container);
 
   return info;
