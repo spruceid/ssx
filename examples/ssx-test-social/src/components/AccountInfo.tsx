@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Typography } from "@material-ui/core";
 function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
   return (
     <div>
-      <Card style={{ backgroundColor: "rgba(39, 39, 39, 0.7)", color: "white", width: "fit-content"}}>
+      <Card style={{ backgroundColor: "rgba(39, 39, 39, 0.7)", color: "white", width: "fit-content" }}>
         <CardContent>
           <Typography style={{ fontWeight: 'bold' }}>WALLET ADDRESS</Typography>
           <Typography>{address}</Typography>
@@ -11,6 +11,6 @@ function AccountInfo({ address, delegator }: { address: string, delegator?: stri
       </Card>
     </div>
   );
-  };
+};
 
 export default AccountInfo;

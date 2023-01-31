@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import PostContextProps from '../interfaces/iPostContext';
 import Post from '../interfaces/iPost';
 import React from 'react';
-
+import SinglePost from './SinglePost';
 
 
 function Feed({ postContext }: { postContext: React.Context<PostContextProps> }) {
@@ -13,47 +13,25 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
     console.log('posts updated');
   }, [posts]);
 
-  function OnePlusPosts(){
-    const listItems = posts.map((p) =>
-      <li>{p.postText}</li>
-    );
+  function OnePlusPosts() {
     return (
-      <ul>{listItems}</ul>
+      <div style={{ display: 'flex', flexDirection: 'column' , marginTop: '2rem'}}>
+        {posts.map((post, index) => (
+          <SinglePost key={index} user={post.user} postText={post.postText} />
+        ))}
+      </div>
     );
   }
-  
+
   if (posts && posts.length > 0) {
     return OnePlusPosts()
   }
   else {
     return <div></div>
   }
-
- 
-  // return (
-  //   <List>
-  //     {posts.map((post, index) => (
-  //       <ListItem key={index}>
-  //         <ListItemText
-  //           primary={post.user}
-  //           secondary={
-  //             <Typography>
-  //               {post.text}
-  //             </Typography>
-  //           }
-  //         />
-  //       </ListItem>
-  //     ))}
-  //   </List>
-  // );
-  // return (
-  //   <div>
-  //     Empty
-  //   </div>
-
-  // );
-
 }
 
 export default Feed;
+
+
 

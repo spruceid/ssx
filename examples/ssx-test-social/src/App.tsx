@@ -1,5 +1,5 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { Grid, Button, Typography, Container, Box } from '@material-ui/core';
+import React, { createContext,useState } from 'react';
+import { Button } from '@material-ui/core';
 import AccountInfo from './components/AccountInfo';
 import NewPost from './components/NewPost';
 import Feed from './components/Feed';
@@ -39,35 +39,29 @@ function App() {
       {
         ssxProvider ?
         <>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-        <NewPost postContext={PostContext} />
         <div style={{ width: 'auto', marginRight: '2rem',display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <AccountInfo address={ssxProvider?.address() || ''} />
           <Button style={{width: "25rem"}} onClick={handleLogout}>LOG OUT</Button>
         </div>
+        <div style={{ display: 'flex', flexDirection:'row', justifyContent: 'center', height: 'auto', width:'auto'}}>
+        <NewPost postContext={PostContext} />
         </div>
         </> :
         <>
-        <div style={{ width: 'auto', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: 'auto',display: 'flex', justifyContent: 'center' }}>
         <Button style={{width: "25rem"}} onClick={handleLogin}>
         LOG IN TO CREATE POST
       </Button>
         </div>
         </>
       }
+       <div style={{ display: 'flex', flexDirection:'row', justifyContent: 'center', height: 'auto', width:'auto'}}>
       <Feed postContext={PostContext} />
+      </div>
     </div>
     </PostContext.Provider >
   );
 }
 
-
-// const getPosts = async () => {
-//   const prevPosts: Post[] = await PostsContract.getAllPosts()
-//   console.log(prevPosts)
-//   return prevPosts
-// }
-
-// const [posts, setPosts] = useState(getPosts())
 
 export default App;

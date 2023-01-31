@@ -90,3 +90,29 @@
   cursor: pointer;
   background: transparent;
 }
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: auto;
+  margin-right: 2rem;
+}
+
+.logoutButton {
+  width: 25rem;
+}
+
+.centerContents {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: auto;
+  width: auto;
+}
+
+.loginButton {
+  width: 25rem;
+  display: flex;
+  justify-content: center;
+}
