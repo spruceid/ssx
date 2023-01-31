@@ -89,6 +89,13 @@ export class SSX {
   };
 
   /**
+   * Invalidates user's session.
+   */
+  public signOut = async (): Promise<void> => {
+    return this.userAuthorization.signOut();
+  };
+
+  /**
    * ENS data supported by SSX.
    * @param address - User address.
    * @param resolveEnsOpts - Options to resolve ENS.
@@ -127,12 +134,6 @@ export class SSX {
     return this.userAuthorization.resolveLens(address, pageCursor);
   }
 
-  /**
-   * Invalidates user's session.
-   */
-  public async signOut(): Promise<void> {
-    return this.userAuthorization.signOut();
-  }
 
   /**
    * Gets the address that is connected and signed in.
