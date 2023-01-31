@@ -1,21 +1,18 @@
-import { Box, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { useContext, useEffect, useState } from 'react';
 import PostContextProps from '../interfaces/iPostContext';
-import Post from '../interfaces/iPost';
 import React from 'react';
 import SinglePost from './SinglePost';
 
 
 function Feed({ postContext }: { postContext: React.Context<PostContextProps> }) {
-  const { ssxProvider, posts } = useContext(postContext);
+  const { posts } = useContext(postContext);
 
   useEffect(() => {
-    console.log('posts updated');
   }, [posts]);
 
   function PostsExist() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' , marginTop: '2rem'}}>
+      <div style={{ display: 'flex', flexDirection: 'column', marginTop: '2rem' }}>
         {posts.map((post, index) => (
           <SinglePost key={index} user={post.user} postText={post.postText} />
         ))}
@@ -26,9 +23,7 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
   if (posts && posts.length > 0) {
     return PostsExist()
   }
-  else {
-    return <div></div>
-  }
+  return <div></div>
 }
 
 export default Feed;

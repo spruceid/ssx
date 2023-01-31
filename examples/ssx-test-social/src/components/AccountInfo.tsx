@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@material-ui/core";
 
 function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
   return (
