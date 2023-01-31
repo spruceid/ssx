@@ -12,7 +12,7 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
 
   function PostsExist() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', marginTop: '2rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column-reverse', marginTop: '2rem' }}>
         {posts.map((post, index) => (
           <SinglePost key={index} user={post.user} postText={post.postText} />
         ))}
