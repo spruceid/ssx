@@ -55,7 +55,7 @@ For this example, we will be using the following explicit options in the setup t
 
 <figure><img src="../.gitbook/assets/TerminalPromptCreationTool.png" alt=""><figcaption><p>The <code>create-ssx-dapp</code> tool</p></figcaption></figure>
 
-### Setup Alchemy Account
+### Set up Alchemy Account
 
 An [Alchemy account](https://www.alchemy.com/) and API key will be necessary since `alchemy-sdk` is used to see if a user has an ENS name.
 
@@ -66,7 +66,7 @@ To configure the key in the project, create a `.env` file and add the key there:
 REACT_APP_ALCHEMY_API_KEY=YOUR_KEY
 ```
 
-### Setup the Alchemy SDK and RainbowKit
+### Set up the Alchemy SDK and RainbowKit
 
 The Alchemy SDK dependency can be installed with the following command in the directory of your dapp:
 
@@ -102,6 +102,7 @@ import {
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
+
 const { chains, provider } = configureChains(
   [mainnet, goerli],
   [
@@ -113,10 +114,12 @@ const { chains, provider } = configureChains(
     publicProvider(),
   ]
 );
+
 const { connectors } = getDefaultWallets({
   appName: 'SSX ENS Token Gated Example',
   chains,
 });
+
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
@@ -160,7 +163,9 @@ import {
 import { useSSX } from '@spruceid/ssx-react';
 import { SSXClientSession } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
+
 /*....*/
+
 function App() {
   /* SSX hook */
   const { ssx } = useSSX();
@@ -172,6 +177,7 @@ function App() {
   const [session, setSession] = useState<SSXClientSession>();
   const [loading, setLoading] = useState<boolean>(false);
   const { data: provider } = useSigner();
+  
   useEffect(() => {
     if (ssx && loading) {
       /* Sign-in with SSX whenever the button is pressed */
@@ -189,6 +195,7 @@ function App() {
         });
     }
   }, [ssx, loading]);
+  
   useEffect(() => {
     if (!provider) {
       setSession(undefined);
@@ -197,6 +204,7 @@ function App() {
       setLoading(true);
     }
   }, [provider]);
+  
   const handleClick = () => {
     /* Opens the RainbowKit modal if in the correct state */
     if (openConnectModal) {
@@ -205,6 +213,7 @@ function App() {
     /* Triggers the Sign-in hook */
     setLoading(true);
   };
+  
   return (
     <div className="App">
       <div className="App-header">
