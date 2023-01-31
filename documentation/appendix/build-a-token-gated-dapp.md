@@ -10,7 +10,7 @@ Gating access to content based on a user's NFTs or tokens is a core-building blo
 * If an NFT PFP project wanted to offer exclusive content to token holders.
 * If a project wanted to enable early access to an application based on holding an NFT.
 
-This example will show the developers how to build and enable token-gated access in their dapp with SSX based on holding an ENS name.&#x20;
+This example will show developers how to build and enable token-gated access in their dapp with SSX based on holding an ENS name.&#x20;
 
 Additionally, it will show a developer how to also use SSX with [RainbowKit](https://www.rainbowkit.com/) and [Alchemy](https://www.alchemy.com/).&#x20;
 
