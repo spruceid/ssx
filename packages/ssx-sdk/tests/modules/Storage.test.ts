@@ -3,15 +3,24 @@ import { TextEncoder as TE, TextDecoder as TD } from 'util';
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
-import { BrowserDataVault } from '../../src/modules';
+import {
+  BrowserDataVault,
+  SignatureEncryption,
+  UserAuthorization,
+} from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
-return;
-describe('Storage', () => {
+
+xdescribe('Storage', () => {
   describe('BrowserDataVault', () => {
     let storage;
+    // depends on Encryption module
+    // TODO: configure UserAuth, Encryption for testing
+    const userAuth = new UserAuthorization();
+    const encryption = new SignatureEncryption({}, userAuth);
     beforeEach(() => {
-      storage = new BrowserDataVault();
+      const storageConfig = {};
+      storage = new BrowserDataVault(storageConfig, encryption);
     });
 
     test('Should be able to create a new storage instance', () => {

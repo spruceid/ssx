@@ -19,6 +19,16 @@ import {
 } from '@spruceid/ssx-core/client';
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 
+/** UserAuthorization Module
+ *
+ * Handles the capabilities that a user can provide a dapp, specifically
+ * authentication and authorization. This resource handles  all key and
+ * signing capabilities including:
+ * - ethereum provider, wallet connection, SIWE message creation and signing
+ * - session key management
+ * - creates, manages, and handles session data
+ * - manages/provides capabilities
+ */
 interface IUserAuthorization {
   /* properties */
   provider: ethers.providers.Web3Provider;
@@ -54,7 +64,7 @@ interface IUserAuthorization {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string,
+    pageCursor: string
   ): Promise<string | SSXLensProfilesResponse>;
   address(): string | undefined;
   chainId(): number | undefined;
@@ -68,7 +78,6 @@ interface IUserAuthorization {
   // signOut()
   /* updateUserAuthorization */
   // requestCapabilities()
-
 }
 
 class UserAuthorizationInit {

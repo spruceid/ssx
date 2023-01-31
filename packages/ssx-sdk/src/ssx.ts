@@ -51,7 +51,16 @@ export class SSX {
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
 
-  /** User Authorization module */
+  /** UserAuthorization Module
+   *
+   * Handles the capabilities that a user can provide a dapp, specifically
+   * authentication and authorization. This resource handles all key and
+   * signing capabilities including:
+   * - ethereum provider, wallet connection, SIWE message creation and signing
+   * - session key management
+   * - creates, manages, and handles session data
+   * - manages/provides capabilities
+   */
   public userAuthorization: IUserAuthorization;
 
   /** Encryption Module */
