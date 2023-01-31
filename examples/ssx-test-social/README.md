@@ -1,23 +1,34 @@
--WORK FLOW
+# ssx-test-dapp
 
-1. ~~sign in + sign in config (dao and resolve)~~
-2. ~~smart contract for posts~~
-3. ~~deploy contract (hardhat)~~
-4. ~~walletconnect~~
-5. writePost component + signed in logic
-6. single post component
-7. feed component
-8. app logic
-9. styling
+This is a simple social media that demonstrates the functionality of SSX. It is configured to run locally and does not persist state between instances. 
 
-just for anna claire: need to read about alchemy, better understanding of ssx and providers architecture
 
-react architecture 
+**Install Dependencies**
 
-APP 
-instantiate contract 
-1. feed
-    children
-    1. post 
-2. login 
-3. new post 
+```bash
+yarn install 
+
+# or 
+
+npm install
+```
+
+**Run**
+
+``` bash
+yarn start
+
+# or
+
+npm run start
+```
+
+**Build**
+
+``` bash
+yarn build
+
+# or 
+
+npm run build
+```
