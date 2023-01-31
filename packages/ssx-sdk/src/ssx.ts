@@ -1,20 +1,24 @@
-import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 import { SSXConnected, SSXInit } from './core';
 import {
   SSXRPCProviders,
   SSXEnsData,
   SSXEnsResolveOptions,
-  ssxResolveEns,
-  ssxResolveLens,
   SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
-import {
-  SSXClientConfig,
-  SSXClientSession,
-} from '@spruceid/ssx-core/client';
+import { SSXClientConfig, SSXClientSession } from '@spruceid/ssx-core/client';
 
-import type { IUserAuthorization, IEncryption, IDataVault, ICredential } from './modules';
-import { UserAuthorization, BrowserDataVault, SignatureEncryption, Credential } from './modules';
+import type {
+  IUserAuthorization,
+  IEncryption,
+  IDataVault,
+  ICredential,
+} from './modules';
+import {
+  UserAuthorization,
+  BrowserDataVault,
+  SignatureEncryption,
+  Credential,
+} from './modules';
 
 declare global {
   interface Window {
@@ -62,9 +66,9 @@ export class SSX {
   constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
     // TODO: initialize these based on the config
     this.userAuthorization = new UserAuthorization(config);
-    this.encryption = new SignatureEncryption();
-    this.dataVault = new BrowserDataVault();
-    this.credential = new Credential();
+    this.encryption = new SignatureEncryption({}, this.userAuthorization);
+    this.dataVault = new BrowserDataVault({}, this.encryption);
+    this.credential = new Credential({}, this.dataVault);
   }
 
   /**
@@ -93,15 +97,15 @@ export class SSX {
   }
 
   /**
-   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
    * limited by 10. To get other pages you must to pass the pageCursor parameter.
-   * 
+   *
    * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
    * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
-   *  
+   *
    * @param address - Ethereum User address.
-   * @param pageCursor - Page cursor used to paginate the request. Default to 
-   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
@@ -109,7 +113,7 @@ export class SSX {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = "{}"
+    pageCursor = '{}'
   ): Promise<string | SSXLensProfilesResponse> {
     return this.userAuthorization.resolveLens(address, pageCursor);
   }
@@ -125,11 +129,13 @@ export class SSX {
    * Gets the address that is connected and signed in.
    * @returns Address.
    */
-  public address: () => string | undefined = () => this.userAuthorization.address()
+  public address: () => string | undefined = () =>
+    this.userAuthorization.address();
 
   /**
    * Get the chainId that the address is connected and signed in on.
    * @returns chainId.
    */
-  public chainId: () => number | undefined = () => this.userAuthorization.chainId()
+  public chainId: () => number | undefined = () =>
+    this.userAuthorization.chainId();
 }
