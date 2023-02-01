@@ -69,5 +69,4 @@ xdescribe('UserAuthorization', () => {
   //     // expect result 1 capabilities to be a subset of result 2
   //   });
   // });
-
 });

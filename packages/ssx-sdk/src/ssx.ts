@@ -1,4 +1,3 @@
-import { SSXConnected, SSXInit } from './core';
 import {
   SSXRPCProviders,
   SSXEnsData,
@@ -12,6 +11,8 @@ import type {
   IEncryption,
   IDataVault,
   ICredential,
+  UserAuthorizationConnected,
+  UserAuthorizationInit,
 } from './modules';
 import {
   UserAuthorization,
@@ -40,13 +41,13 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
  */
 export class SSX {
   /** SSXClientSession builder. */
-  private init: SSXInit;
+  private init: UserAuthorizationInit;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
 
   /** Current connection of SSX */
-  public connection?: SSXConnected;
+  public connection?: UserAuthorizationConnected;
 
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
@@ -133,7 +134,6 @@ export class SSX {
   ): Promise<string | SSXLensProfilesResponse> {
     return this.userAuthorization.resolveLens(address, pageCursor);
   }
-
 
   /**
    * Gets the address that is connected and signed in.
