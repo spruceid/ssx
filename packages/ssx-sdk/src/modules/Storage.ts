@@ -16,6 +16,8 @@ interface IDataVault extends IStorage {
   // getStorage: encrypted_getStorage
 }
 
+// class BrowserStorage implements IStorage {}
+// class BrowserDataVault extends BrowserStorage implements IDataVault {
 class BrowserDataVault implements IDataVault {
   private encryption: IEncryption;
 

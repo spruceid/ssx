@@ -166,7 +166,6 @@ class UserAuthorizationConnected implements ISSXConnected {
   public api?: AxiosInstance;
 
   /** Ethereum Provider */
-  public provider: ethers.providers.Web3Provider;
 
   constructor(
     /** Instance of SSXSessionBuilder */
@@ -176,7 +175,7 @@ class UserAuthorizationConnected implements ISSXConnected {
     /** Enabled extensions. */
     public extensions: SSXExtension[],
     /** EthersJS provider. */
-    public _provider: ethers.providers.Web3Provider
+    public provider: ethers.providers.Web3Provider
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();
     if (this.config.providers?.server?.host) {
@@ -185,7 +184,7 @@ class UserAuthorizationConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
-    this.provider = _provider;
+    // this.provider = provider;
   }
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
