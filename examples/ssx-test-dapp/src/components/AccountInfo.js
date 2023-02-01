@@ -20,6 +20,7 @@ const AccountInfo = ({ address, session }) => {
               {
                 session.ens.avatarUrl || session.ens.ensAvatarUrl ?
                   <img
+                    id='ensAvatar'
                     className='AccountInfo-avatar'
                     src={session.ens.avatarUrl ?? session.ens.ensAvatarUrl}
                     alt='ENS avatar'
@@ -28,7 +29,10 @@ const AccountInfo = ({ address, session }) => {
               }
               {
                 session.ens.domain || session.ens.ensName ?
-                  <code className='AccountInfo-value'>
+                  <code
+                    id='ensDomain'
+                    className='AccountInfo-value'
+                  >
                     {session.ens.domain || session.ens.ensName}
                   </code> :
                   null
@@ -91,8 +95,11 @@ const AccountInfo = ({ address, session }) => {
           Address
         </b>
         <br />
-        <code className='AccountInfo-value'>
-          {address}
+        <code
+          id='userAddress'
+          className='AccountInfo-value'
+        >
+          {address.toLowerCase()}
         </code>
       </p>
     </div>
