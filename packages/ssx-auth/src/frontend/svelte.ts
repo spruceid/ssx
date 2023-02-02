@@ -1,18 +1,16 @@
 import { signIn } from '@auth/sveltekit/client';
 import type { SSXClientSession } from '@spruceid/ssx';
-
-interface SSXNextAuthRouteConfig {
-  getCsrfTokenParams?: any;
-  signInOptions?: SignInOptions;
-}
+import { getCsrfToken } from 'next-auth/react'
+import { SSXAuthRouteConfigOptions } from '../types';
 
 /** Approach A */
-export const SSXNextAuthRouteConfig = (config?: SSXNextAuthRouteConfig) => {
+export const SSXSvelteAuthRouteConfig = (config?: SSXAuthRouteConfigOptions) => {
   const nonce = {
     customAPIOperation: async () => {
       return await getCsrfToken(config?.getCsrfTokenParams);
     },
   };
+
   const login = {
     customAPIOperation: async (session: SSXClientSession) => {
       const { siwe, signature } = session;
