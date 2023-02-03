@@ -21,6 +21,7 @@ const ssxEndpoints = (
   router.get(
     routes?.nonce ?? '/ssx-nonce',
     function (req: Request, res: Response): void {
+      req.session.siwe = undefined;
       req.session.nonce = ssx.generateNonce();
       req.session.save(() => res.status(200).send(req.session.nonce));
     }
@@ -86,7 +87,7 @@ const ssxEndpoints = (
       req.session.daoLogin = session.daoLogin;
       req.session.ens = session.ens;
       req.session.lens = session.lens;
-
+      req.session.save(() => res.status(200).json({ ...req.session }));
       res.status(200).json({ ...req.session });
       return;
     }
