@@ -11,7 +11,7 @@ import {
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
-xdescribe('Encryption', () => {
+describe('Encryption', () => {
   let encryption;
   // depends on UserAuthorization
   // TODO: configure UserAuth for testing
@@ -25,12 +25,14 @@ xdescribe('Encryption', () => {
 
     test('Should be able to encrypt and decrypt a message', async () => {
       const message = 'Hello World';
-      const encryptedMessage = await encryption.encrypt(message);
-      const decryptedMessage = await encryption.decrypt(encryptedMessage);
-      expect(decryptedMessage).toEqual(message);
+      const blob = new Blob([message]);
+      const encryptedBlob = await encryption.encrypt(blob);
+      const decryptedBlob = await encryption.decrypt(encryptedBlob);
+      const decryptedText = await decryptedBlob.text();
+      expect(decryptedText).toEqual(message);
     });
 
-    test('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
+    xtest('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
       const message = 'Hello World';
       const key = '123456789012';
       const encryptedMessage = await encryption.encrypt(message, key);
@@ -39,7 +41,7 @@ xdescribe('Encryption', () => {
     });
   });
 
-  describe('Lit Encryption', () => {
+  xdescribe('Lit Encryption', () => {
     beforeEach(() => {
       const encryptionConfig = {};
       encryption = new LitEncryption(encryptionConfig, userAuth);
