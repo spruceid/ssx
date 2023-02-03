@@ -13,6 +13,7 @@ class LitEncryption implements IEncryption {
     this.userAuth = userAuth;
   }
 }
+
 class SignatureEncryption implements IEncryption {
   private userAuth: IUserAuthorization;
   private encryptionKey?: any;
@@ -26,11 +27,11 @@ class SignatureEncryption implements IEncryption {
       return;
     }
     // get user signature of message
-    // const message = `Sign this message to generate an encryption key for ${this.userAuth.address}`;
-    // const signature = await this.userAuth.provider
-    //   .getSigner()
-    //   .signMessage(message);
-    const signature = 'fake signature';
+    const message = `Sign this message to generate an encryption key for ${this.userAuth.address}`;
+    const signature = await this.userAuth.provider
+      .getSigner()
+      .signMessage(message);
+    // const signature = 'fake signature';
     console.log('signature', signature);
     // derive encryption key from signature
     this.encryptionKey = this.deriveKeyFromSignature(signature);
@@ -47,7 +48,7 @@ class SignatureEncryption implements IEncryption {
       ['deriveBits', 'deriveKey']
     );
 
-    const key = await crypto.subtle.deriveKey(
+    const key = await window.crypto.subtle.deriveKey(
       {
         name: 'HKDF',
         hash: 'SHA-256',
