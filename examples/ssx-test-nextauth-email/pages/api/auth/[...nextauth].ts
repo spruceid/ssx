@@ -5,7 +5,7 @@ import { SSXServer } from "@spruceid/ssx-server";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../lib/prismadb"
-import { SSXNextAuthWithEmail } from "../../../ssx-next-auth-backend";
+import { SSXNextAuthWithEmail } from "../../../components/SSXNextAuthWithEmailBackend";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const ssxConfig = {};

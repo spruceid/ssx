@@ -6,21 +6,30 @@ import { useRouter } from 'next/router';
 import { useSSX } from "@spruceid/ssx-react";
 import styles from '../styles/Home.module.css';
 import { signIn } from 'next-auth/react';
+import SignInWithEmailModal from '../components/SignInWithEmailModal';
 
 
 const Home: NextPage = () => {
   const { ssx, ssxLoaded } = useSSX();
   const router = useRouter();
-  const [address, setAddress] = useState<string>();
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  }
 
   const handleSignIn = async () => {
     const response: any = await ssx?.signIn();
-    if(response?.status === 200) {
+    if (response?.status === 200) {
       router.push('/protected');
-    } else if(response?.status === 401) {
+    } else if (response?.status === 401) {
       // link not found -> open email modal
-      handleEmailSignIn("...")
-    } else if( response?.status === 403) {
+      handleOpenModal();
+    } else if (response?.status === 403) {
       // sign in error 
     }
   };
@@ -29,6 +38,7 @@ const Home: NextPage = () => {
     try {
       const callbackUrl = "/protected";
       signIn("email", { email, redirect: false, callbackUrl });
+      handleCloseModal()
     } catch (error) {
       console.error(error)
       window.alert(error);
@@ -58,16 +68,15 @@ const Home: NextPage = () => {
 
         <p className={styles.description}>
           Sign-in with Ethereum powered by SSX
-          <br/>
+          <br />
           <button onClick={handleSignIn} disabled={!ssxLoaded}>Sign Message</button>
-          <button onClick={() => handleEmailSignIn('...')}>Email</button>
+          <button onClick={handleOpenModal}>Email</button>
+          <SignInWithEmailModal
+            showModal={showModal}
+            handleClose={handleCloseModal}
+            handleEmailSignIn={handleEmailSignIn}
+          />
         </p>
-        {
-          address && 
-          <p className={styles.description}>
-            Address: <code>{address}</code>
-          </p>
-        }
       </main>
 
       <footer className={styles.footer}>

@@ -1,30 +1,36 @@
 import React from "react";
 import styles from '../styles/Protected.module.css'
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { signOut, useSession } from 'next-auth/react';
 import { useSSX } from "@spruceid/ssx-react";
 
 
 export default function Protected() {
-    const router = useRouter();
     const { data: session, status } = useSession();
     const { ssx, ssxLoaded } = useSSX();
+
+    const reloadSession = () => {
+        const event = new Event("visibilitychange");
+        document.dispatchEvent(event);
+    };
 
     const linkAccount = async () => {
         const response: any = await ssx?.signIn();
         fetch(`/api/auth/linkWeb3Account?address=${response.address}`)
-            .then(console.log)
+            .then(reloadSession)
     }
 
     const unlinkAccount = async () => {
         fetch(`/api/auth/unlinkWeb3Account`)
-            .then(console.log)
+            .then(reloadSession)
     }
 
-
-    const signOut = async () => {
-        await ssx?.signOut();
-        router.push('/')
+    const signOutAccount = async () => {
+        try {
+            await ssx?.signOut();
+        } catch (e) { }
+        signOut({
+            callbackUrl: '/'
+        });
     }
 
     if (status === "loading") {
@@ -47,11 +53,16 @@ export default function Protected() {
             <h2 className={styles.title}>Protected Page</h2>
             <p className={styles.description}>
                 You are Authenticated as <br />
-                {session?.user?.id}
+                {session?.user?.id}<br />
+                email: {session?.user?.email}<br />
+                web3Address: {session?.user?.web3Address}
             </p>
-            <button onClick={signOut} disabled={!ssxLoaded}>Log Out</button>
-            <button onClick={linkAccount} disabled={!ssxLoaded}>Link</button>
-            <button onClick={unlinkAccount} disabled={!ssxLoaded}>Unlink</button>
+            <button onClick={signOutAccount} disabled={!ssxLoaded}>Log Out</button>
+            {
+                session?.user.web3Address ?
+                    <button onClick={unlinkAccount} disabled={!ssxLoaded}>Unlink</button> :
+                    <button onClick={linkAccount} disabled={!ssxLoaded}>Link</button>
+            }
         </div>
     )
 }

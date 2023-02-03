@@ -50,7 +50,7 @@ export const SSXNextAuthWithEmail = (
       if (!siwe) return null;
 
       if (success) {
-        const user = await prisma.user.findUnique({
+        const user = await prisma?.user.findUnique({
           where: {
             web3Address: siwe.address
           }
@@ -75,10 +75,15 @@ export const SSXNextAuthWithEmail = (
   };
 
   const session = async ({ session, token }: SessionData) => {
-    if (session.user) {
-      session.user.id = token.sub;
-    }
-    return session;
+    const user = await prisma?.user.findUnique({
+      where: {
+        id: token.sub
+      }
+    })
+    return {
+      ...session,
+      user
+    };
   };
 
   return { credentials, authorize, session };
@@ -97,4 +102,4 @@ interface SessionData {
   session: Session;
   user: User | AdapterUser;
   token: JWT;
-}
+};
