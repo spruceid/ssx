@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@auth/sveltekit": "^0.2.0",
+    "@auth/core": "^0.4.0",
+    "@auth/sveltekit": "^0.2.1",
     "@spruceid/ssx": "1.2.1",
     "@spruceid/ssx-server": "1.2.1",
     "next": "^12.1.6",
