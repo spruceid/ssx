@@ -13,12 +13,15 @@ const Home: NextPage = () => {
   const { ssx, ssxLoaded } = useSSX();
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>();
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setModalTitle(undefined);
   }
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (title?: string) => {
+    setModalTitle(title);
     setShowModal(true);
   }
 
@@ -28,9 +31,10 @@ const Home: NextPage = () => {
       router.push('/protected');
     } else if (response?.status === 401) {
       // link not found -> open email modal
-      handleOpenModal();
+      handleOpenModal('Add an email to your account');
     } else if (response?.status === 403) {
       // sign in error 
+      window.alert(response?.error);
     }
   };
 
@@ -38,7 +42,7 @@ const Home: NextPage = () => {
     try {
       const callbackUrl = "/protected";
       signIn("email", { email, redirect: false, callbackUrl });
-      handleCloseModal()
+      handleCloseModal();
     } catch (error) {
       console.error(error)
       window.alert(error);
@@ -56,7 +60,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div style={{ display: "flex", justifyContent: "end" }}>
+      <div className={styles.connectButton}>
         <ConnectButton />
       </div>
       <main className={styles.main}>
@@ -66,16 +70,17 @@ const Home: NextPage = () => {
           <a href="https://docs.ssx.id/">SSX</a> + <a href="https://nextjs.org">Next.js</a> + <a href="https://next-auth.js.org/">NextAuth.js!</a>
         </h1>
 
+        <button onClick={() => handleOpenModal()}>Sign in with Email</button>
+        <SignInWithEmailModal
+          title={modalTitle}
+          showModal={showModal}
+          handleClose={handleCloseModal}
+          handleEmailSignIn={handleEmailSignIn}
+        />
         <p className={styles.description}>
           Sign-in with Ethereum powered by SSX
           <br />
           <button onClick={handleSignIn} disabled={!ssxLoaded}>Sign Message</button>
-          <button onClick={handleOpenModal}>Email</button>
-          <SignInWithEmailModal
-            showModal={showModal}
-            handleClose={handleCloseModal}
-            handleEmailSignIn={handleEmailSignIn}
-          />
         </p>
       </main>
 

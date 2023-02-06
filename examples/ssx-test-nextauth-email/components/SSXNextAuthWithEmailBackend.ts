@@ -64,7 +64,6 @@ export const SSXNextAuthWithEmail = (
           image: ens?.avatarUrl,
           address: siwe.address,
           id: user.id
-          // id: `did:pkh:eip155:${siwe.chainId}:${siwe.address}`,
         };
       }
     } catch (e) {

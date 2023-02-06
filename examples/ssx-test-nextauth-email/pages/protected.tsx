@@ -3,7 +3,6 @@ import styles from '../styles/Protected.module.css'
 import { signOut, useSession } from 'next-auth/react';
 import { useSSX } from "@spruceid/ssx-react";
 
-
 export default function Protected() {
     const { data: session, status } = useSession();
     const { ssx, ssxLoaded } = useSSX();
@@ -55,14 +54,16 @@ export default function Protected() {
                 You are Authenticated as <br />
                 {session?.user?.id}<br />
                 email: {session?.user?.email}<br />
-                web3Address: {session?.user?.web3Address}
+                web3Address: {session?.user?.web3Address || 'not found'}
             </p>
-            <button onClick={signOutAccount} disabled={!ssxLoaded}>Log Out</button>
+            <div className={styles.linkButtonContainer}>
             {
                 session?.user.web3Address ?
-                    <button onClick={unlinkAccount} disabled={!ssxLoaded}>Unlink</button> :
-                    <button onClick={linkAccount} disabled={!ssxLoaded}>Link</button>
+                <button onClick={unlinkAccount} disabled={!ssxLoaded}>Unlink web3 address</button> :
+                <button onClick={linkAccount} disabled={!ssxLoaded}>Link web3 address</button>
             }
+            </div>
+            <button onClick={signOutAccount} disabled={!ssxLoaded}>Log Out</button>
         </div>
     )
 }
