@@ -10,13 +10,23 @@ To run the app locally, do the following:
 yarn
 ```
 
+### Start SMTP Fake Server
+
+To start the server run:
+
+```bash
+docker run -d -p 1080:1080 -p 1025:1025 --name mailcatcher schickling/mailcatcher
+```
+
+To check the mailbox head over to http://localhost:1080.
+
 ### Copy the file and fill the environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-Pay attention to the SMTP configuration (EMAIL_SERVER and EMAIL_FROM). 
+If you are using the fake SMTP server set EMAIL_SERVER=smtp://localhost:1025 and EMAIL_FROM can be any email. 
 
 ### Setup DB (SQLite)
 
