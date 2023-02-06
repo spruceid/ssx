@@ -4,22 +4,88 @@ import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
 import { generateNonce } from 'siwe';
 import {
+  SSXEnsData,
+  ssxResolveEns,
+  ssxResolveLens,
+  SSXLensProfilesResponse,
+  SSXEnsResolveOptions,
+  isSSXRouteConfig,
+} from '@spruceid/ssx-core';
+import {
   SSXClientSession,
   SSXClientConfig,
   ISSXConnected,
   SSXExtension,
 } from '@spruceid/ssx-core/client';
-import {
-  SSXEnsResolveOptions,
-  isSSXRouteConfig,
-} from '@spruceid/ssx-core';
+import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 
-/** Initializer for an SSXClientSession. */
-export class SSXInit {
+/** UserAuthorization Module
+ *
+ * Handles the capabilities that a user can provide a dapp, specifically
+ * authentication and authorization. This resource handles  all key and
+ * signing capabilities including:
+ * - ethereum provider, wallet connection, SIWE message creation and signing
+ * - session key management
+ * - creates, manages, and handles session data
+ * - manages/provides capabilities
+ */
+interface IUserAuthorization {
+  /* properties */
+  provider: ethers.providers.Web3Provider;
+
+  /* createUserAuthorization */
+  connect(): Promise<any>;
+  signIn(): Promise<any>;
+  /**
+   * ENS data supported by SSX.
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  resolveEns(
+    /** User address */
+    address: string,
+    resolveEnsOpts: SSXEnsResolveOptions
+  ): Promise<SSXEnsData>;
+  /**
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
+   * limited by 10. To get other pages you must pass the pageCursor parameter.
+   *
+   * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai
+   * Testnet (maticmum). Visit https://docs.lens.xyz/docs/api-links for more
+   * information.
+   *
+   * @param address - Ethereum User address.
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for
+   * more information.
+   * @returns Object containing Lens profiles items and pagination info.
+   */
+  resolveLens(
+    /* Ethereum User Address. */
+    address: string,
+    /* Page cursor used to paginate the request. Default to first page. */
+    pageCursor: string
+  ): Promise<string | SSXLensProfilesResponse>;
+  address(): string | undefined;
+  chainId(): number | undefined;
+  /* getUserAuthorization */
+  // getSIWE
+  // getSessionData
+  // getCapabilities
+  /* listUserAuthorization */
+  /* deleteUserAuthorization */
+  signOut(): Promise<any>;
+  // signOut()
+  /* updateUserAuthorization */
+  // requestCapabilities()
+}
+
+class UserAuthorizationInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
-  constructor(private config?: SSXClientConfig) { }
+  constructor(private config?: SSXClientConfig) {}
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -28,10 +94,9 @@ export class SSXInit {
 
   /**
    * Connect to the signing account using the configured provider.
-   * @returns SSXConnected instance.
+   * @returns UserAuthorizationConnected instance.
    */
-  async connect(): Promise<SSXConnected> {
-    // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
+  async connect(): Promise<UserAuthorizationConnected> {
     let provider: ethers.providers.Web3Provider;
 
     // eslint-disable-next-line no-underscore-dangle
@@ -77,12 +142,17 @@ export class SSXInit {
       throw err;
     }
 
-    return new SSXConnected(builder, this.config, this.extensions, provider);
+    return new UserAuthorizationConnected(
+      builder,
+      this.config,
+      this.extensions,
+      provider
+    );
   }
 }
 
 /** An intermediate SSX state: connected, but not signed-in. */
-export class SSXConnected implements ISSXConnected {
+class UserAuthorizationConnected implements ISSXConnected {
   /**
    * Promise that is initialized on construction of this class to run the "afterConnect" methods
    * of the extensions.
@@ -95,6 +165,8 @@ export class SSXConnected implements ISSXConnected {
 
   /** Axios instance. */
   public api?: AxiosInstance;
+
+  /** Ethereum Provider */
 
   constructor(
     /** Instance of SSXSessionBuilder */
@@ -113,6 +185,7 @@ export class SSXConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
+    // this.provider = provider;
   }
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
@@ -167,13 +240,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
 
     const { customAPIOperation } = requestConfig;
     if (customAPIOperation) {
@@ -212,13 +285,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
     const { customAPIOperation } = requestConfig;
 
     if (customAPIOperation) {
@@ -234,7 +307,7 @@ export class SSXConnected implements ISSXConnected {
         resolveEns = this.config.resolveEns.resolve;
       }
 
-      let resolveLens: boolean = this.config.resolveLens === 'onServer';
+      const resolveLens: boolean = this.config.resolveLens === 'onServer';
 
       try {
         const data = {
@@ -279,14 +352,16 @@ export class SSXConnected implements ISSXConnected {
     }
 
     const defaults = {
-      address: this.config.siweConfig?.address ?? await this.provider.getSigner().getAddress(),
+      address:
+        this.config.siweConfig?.address ??
+        (await this.provider.getSigner().getAddress()),
       walletAddress: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
       domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
       nonce: generateNonce(),
     };
-    
+
     const serverNonce = await this.ssxServerNonce(defaults);
     if (serverNonce) defaults.nonce = serverNonce;
 
@@ -326,13 +401,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
     // check if we should run a custom operation instead
     const { customAPIOperation } = requestConfig;
 
@@ -357,3 +432,169 @@ export class SSXConnected implements ISSXConnected {
     }
   }
 }
+const SSX_DEFAULT_CONFIG: SSXClientConfig = {
+  providers: {
+    web3: {
+      driver: globalThis.ethereum,
+    },
+  },
+};
+
+class UserAuthorization implements IUserAuthorization {
+  /** The Ethereum provider */
+  public provider: ethers.providers.Web3Provider;
+
+  /** The session representation (once signed in). */
+  public session?: SSXClientSession;
+
+  /** SSXClientSession builder. */
+  private init: UserAuthorizationInit;
+
+  /** Current connection of SSX */
+  private connection?: UserAuthorizationConnected;
+
+  /** The SSXClientConfig object. */
+  private config: SSXClientConfig;
+
+  constructor(private _config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
+    this.config = _config;
+    this.init = new UserAuthorizationInit({
+      ...this.config,
+      providers: { ...SSX_DEFAULT_CONFIG.providers, ...this.config?.providers },
+    });
+
+    if (this.config.enableDaoLogin) {
+      const gnosis = new GnosisDelegation();
+      this.init.extend(gnosis);
+    }
+  }
+
+  public async connect(): Promise<void> {
+    if (this.connection) {
+      return;
+    }
+    try {
+      this.connection = await this.init.connect();
+      this.provider = this.connection.provider;
+    } catch (err) {
+      // ERROR:
+      // Something went wrong when connecting or creating Session (wasm)
+      console.error(err);
+      throw err;
+    }
+  }
+
+  public async signIn(): Promise<SSXClientSession> {
+    await this.connect();
+
+    try {
+      this.session = await this.connection.signIn();
+    } catch (err) {
+      // Request to /ssx-login went wrong
+      console.error(err);
+      throw err;
+    }
+    const promises = [];
+
+    let resolveEnsOnClient = false;
+    if (this.config.resolveEns) {
+      if (this.config.resolveEns === true) {
+        resolveEnsOnClient = true;
+        promises.push(this.resolveEns(this.session.address));
+      } else if (!this.config.resolveEns.resolveOnServer) {
+        resolveEnsOnClient = true;
+
+        promises.push(
+          this.resolveEns(this.session.address, this.config.resolveEns.resolve)
+        );
+      }
+    }
+
+    const resolveLensOnClient = this.config.resolveLens === true;
+    if (resolveLensOnClient) {
+      promises.push(this.resolveLens(this.session.address));
+    }
+
+    await Promise.all(promises).then(([ens, lens]) => {
+      if (!resolveEnsOnClient && resolveLensOnClient) {
+        [ens, lens] = [undefined, ens];
+      }
+      if (ens) {
+        this.session.ens = ens;
+      }
+      if (lens) {
+        this.session.lens = lens;
+      }
+    });
+
+    return this.session;
+  }
+
+  /**
+   * ENS data supported by SSX.
+   * @param address - User address.
+   * @param resolveEnsOpts - Options to resolve ENS.
+   * @returns Object containing ENS data.
+   */
+  public async resolveEns(
+    /** User address */
+    address: string,
+    resolveEnsOpts: SSXEnsResolveOptions = {
+      domain: true,
+      avatar: true,
+    }
+  ): Promise<SSXEnsData> {
+    return ssxResolveEns(this.connection.provider, address, resolveEnsOpts);
+  }
+
+  /**
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
+   * limited by 10. To get other pages you must to pass the pageCursor parameter.
+   *
+   * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+   * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+   *
+   * @param address - Ethereum User address.
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
+   * information.
+   * @returns Object containing Lens profiles items and pagination info.
+   */
+  async resolveLens(
+    /* Ethereum User Address. */
+    address: string,
+    /* Page cursor used to paginate the request. Default to first page. */
+    pageCursor = '{}'
+  ): Promise<string | SSXLensProfilesResponse> {
+    return ssxResolveLens(this.connection.provider, address, pageCursor);
+  }
+
+  /**
+   * Invalidates user's session.
+   */
+  public async signOut(): Promise<void> {
+    try {
+      await this.connection.signOut(this.session);
+    } catch (err) {
+      // request to /ssx-logout went wrong
+      console.error(err);
+      throw err;
+    }
+    this.session = undefined;
+    this.connection = undefined;
+  }
+
+  /**
+   * Gets the address that is connected and signed in.
+   * @returns Address.
+   */
+  public address: () => string | undefined = () => this.session?.address;
+
+  /**
+   * Get the chainId that the address is connected and signed in on.
+   * @returns chainId.
+   */
+  public chainId: () => number | undefined = () => this.session?.chainId;
+}
+
+export { IUserAuthorization, UserAuthorization, UserAuthorizationInit, UserAuthorizationConnected };

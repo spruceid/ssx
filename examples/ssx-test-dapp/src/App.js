@@ -127,7 +127,7 @@ function App() {
         console.error(err);
       }
     } else {
-      ssxProvider.signOut();
+      ssxProvider && ssxProvider.signOut();
       setSSX(null);
     }
   };
