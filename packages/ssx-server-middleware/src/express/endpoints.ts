@@ -22,7 +22,6 @@ const ssxEndpoints = (
     routes?.nonce ?? '/ssx-nonce',
     function (req: Request, res: Response): void {
       req.session.siwe = undefined;
-      req.session.siwe = undefined;
       req.session.nonce = ssx.generateNonce();
       req.session.save(() => res.status(200).send(req.session.nonce));
     }
