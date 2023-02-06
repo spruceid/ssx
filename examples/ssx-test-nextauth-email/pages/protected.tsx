@@ -14,7 +14,7 @@ export default function Protected() {
 
     const linkAccount = async () => {
         const response: any = await ssx?.signIn();
-        fetch(`/api/auth/linkWeb3Account?address=${response.address}`)
+        fetch(`/api/auth/linkWeb3Account?address=${response.address}&chainId=${response.chainId}`)
             .then(reloadSession)
     }
 

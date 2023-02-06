@@ -45,32 +45,30 @@ export const SSXNextAuthWithEmail = (
         JSON.parse(credentials?.resolveEns || 'false'),
         nonce || ''
       );
+
       const { siwe, ens } = session;
-
-      if (!siwe) return null;
-
-      if (success) {
-        const user = await prisma?.user.findUnique({
-          where: {
-            web3Address: siwe.address
-          }
-        })
-        if (!user) {
-          return null
+      
+      if (!siwe || !success) return null;
+      
+      const web3Address = `did:pkh:eip155:${siwe.chainId}:${siwe.address}`;
+      const user = await prisma?.user.findUnique({
+        where: {
+          web3Address
         }
+      });
 
-        return {
-          name: ens?.domain || siwe.address,
-          image: ens?.avatarUrl,
-          address: siwe.address,
-          id: user.id
-        };
-      }
+      if (!user) return null;
+
+      return {
+        name: ens?.domain || siwe.address,
+        image: ens?.avatarUrl,
+        address: web3Address,
+        id: user.id
+      };
     } catch (e) {
       console.error(e);
       return null;
     }
-    return null;
   };
 
   const session = async ({ session, token }: SessionData) => {
@@ -78,7 +76,7 @@ export const SSXNextAuthWithEmail = (
       where: {
         id: token.sub
       }
-    })
+    });
     return {
       ...session,
       user
@@ -87,8 +85,6 @@ export const SSXNextAuthWithEmail = (
 
   return { credentials, authorize, session };
 };
-
-
 
 interface Credentials {
   message: string;
