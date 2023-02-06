@@ -88,7 +88,6 @@ const ssxEndpoints = (
       req.session.ens = session.ens;
       req.session.lens = session.lens;
       req.session.save(() => res.status(200).json({ ...req.session }));
-      res.status(200).json({ ...req.session });
       return;
     }
   );
