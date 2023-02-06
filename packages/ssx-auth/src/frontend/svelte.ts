@@ -1,7 +1,7 @@
 import { signIn } from '@auth/sveltekit/client';
 import type { SSXClientSession } from '@spruceid/ssx';
 import { getCsrfToken } from 'next-auth/react'
-import { SSXAuthRouteConfigOptions } from '../types';
+import { SSXAuthRouteConfigOptions } from '../types.js';
 
 /** Approach A */
 export const SSXSvelteAuthRouteConfig = (config?: SSXAuthRouteConfigOptions) => {
