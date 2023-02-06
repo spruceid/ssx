@@ -181,3 +181,25 @@ test('Should accept extensions successfully', async () => {
 
   await expect(ssx.signIn()).resolves.not.toThrowError();
 });
+// test('Sign-in with Ethereum', () => {
+//   // TODO: sign request with mock provider
+//   expect(async () => {
+//     const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+//     const config = {
+//       providers: {
+//         web3: {
+//           driver: testingUtils.mockConnectedWallet().getProvider(),
+//         },
+//       },
+//     };
+//     const ssx = new SSX(config);
+//     await ssx.signIn();
+//   }).not.toThrowError();
+// });
+
+// test('Throw Error if Ethereum Wallet isn\'t found', () => {
+//   // TODO: Throw error if no wallet is found
+//   // global.window.ethereum = undefined;
+//   // const ssx = ;
+//   // expect(() => { const ssx = new SSX(); ssx.signIn(); }).toThrowError('An ethereum wallet extension is not installed.');
+// });
