@@ -7,10 +7,27 @@
   "author": "Spruce Systems, Inc.",
   "license": "Apache-2.0 OR MIT",
   "private": false,
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.js",
+      "default": "./dist/types.js"
+    },
+    "./client": {
+      "types": "./dist/client/index.d.js",
+      "default": "./dist/client/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:spruceid/ssx.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --jsx react-jsx",
-    "clean": "tsc --jsx react-jsx --clean"
+    "build": "tsc --jsx react-jsx"
   },
   "dependencies": {
     "@auth/core": "^0.4.0",
