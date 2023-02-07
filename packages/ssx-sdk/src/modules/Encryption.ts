@@ -1,9 +1,28 @@
 import * as jose from 'jose';
 import { IUserAuthorization } from './UserAuthorization';
 
+/**
+ * The Encryption module handles the encryption and decryption of data.
+ * It expects a Blob as input to be encrypted and returns a Blob as output when
+ * decrypted.
+ *
+ * The format encrypted state depends on the implementation.
+ */
 interface IEncryption {
-  // encrypt
-  // decrypt
+  /**
+   * Encrypts the data. The data is expected to be a Blob.
+   * The output type depends on the implementation.
+   * @param data - The data to encrypt.
+   * @returns The encrypted data.
+   */
+  encrypt: (data: Blob) => Promise<any>;
+  /**
+   * Decrypts the data. The encrypted type depends on the implementation. The
+   * output returned is a Blob.
+   * @param encrypted - The encrypted data to decrypt.
+   * @returns - The decrypted data as a blob
+   */
+  decrypt: (encrypted: any) => Promise<Blob>;
 }
 
 class LitEncryption implements IEncryption {
@@ -12,8 +31,17 @@ class LitEncryption implements IEncryption {
   constructor(config: any, userAuth: IUserAuthorization) {
     this.userAuth = userAuth;
   }
+  encrypt: (data: Blob) => Promise<any>;
+  decrypt: (encrypted: any) => Promise<Blob>;
 }
 
+/**
+ * The SignatureEncryption module handles the encryption and decryption of data.
+ * It uses the user's signature (via UserAuthorization) to derive an encryption
+ * key for ECIES encryption.
+ *
+ * The format encrypted state is a JWE.
+ */
 class SignatureEncryption implements IEncryption {
   private userAuth: IUserAuthorization;
   private encryptionKey?: any;
@@ -27,14 +55,12 @@ class SignatureEncryption implements IEncryption {
       return;
     }
     // get user signature of message
-    const message = `Sign this message to generate an encryption key for ${this.userAuth.address}`;
-    const signature = await this.userAuth.provider
-      .getSigner()
-      .signMessage(message);
+    const message = `Sign this message to generate an encryption key for ${this.userAuth.address()}`;
+    const signature = await this.userAuth.signMessage(message);
     // const signature = 'fake signature';
     console.log('signature', signature);
     // derive encryption key from signature
-    this.encryptionKey = this.deriveKeyFromSignature(signature);
+    this.encryptionKey = await this.deriveKeyFromSignature(signature);
   };
 
   private deriveKeyFromSignature = async (signature: string) => {
@@ -64,25 +90,44 @@ class SignatureEncryption implements IEncryption {
     return key;
   };
 
-  public encrypt = async (data: any) => {
+  public encrypt = async (data: Blob) => {
     // blob => jwe
+    console.log('encrypting', data);
+    // get data blob as binary and structure as Uint8Array
+    // TODO: update approach to encode entire blob (including type) as Uint8Array
+    const binaryData = await data
+      .arrayBuffer()
+      .then(arraybuffer => new Uint8Array(arraybuffer));
+
+    // fetch/generate encryption key
     await this.generateEncryptionKey();
 
+    // encrypt data as JWE
     const encrypted = await new jose.FlattenedEncrypt(
       // new TextEncoder().encode(data),
-      data
+      binaryData
     )
       .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
       .encrypt(this.encryptionKey);
 
+    // return JWE
     return encrypted;
   };
 
-  public decrypt = async (data: any) => {
+  public decrypt = async (encrypted: any) => {
     // jwe => blob
+    // fetch/generate encryption key
     await this.generateEncryptionKey();
-    const { plaintext } = await jose.flattenedDecrypt(data, this.encryptionKey);
-    return plaintext;
+    const { plaintext } = await jose.flattenedDecrypt(
+      encrypted,
+      this.encryptionKey
+    );
+
+    // convert Uint8Array to blob
+    // TODO: update approach to encode entire blob (including type) as Uint8Array
+    const blob = new Blob([plaintext], { type: 'text/plain' });
+
+    return blob;
   };
 }
 
