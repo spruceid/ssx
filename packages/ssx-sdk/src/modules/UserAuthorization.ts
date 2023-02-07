@@ -69,6 +69,11 @@ interface IUserAuthorization {
   ): Promise<string | SSXLensProfilesResponse>;
   address(): string | undefined;
   chainId(): number | undefined;
+  /**
+   * Signs a message using the private key of the connected address.
+   * @returns signature;
+   */
+  signMessage(message: string): Promise<string>;
   /* getUserAuthorization */
   // getSIWE
   // getSessionData
@@ -560,7 +565,7 @@ class UserAuthorization implements IUserAuthorization {
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
-  async resolveLens(
+  public async resolveLens(
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
@@ -595,6 +600,19 @@ class UserAuthorization implements IUserAuthorization {
    * @returns chainId.
    */
   public chainId: () => number | undefined = () => this.session?.chainId;
+
+  /**
+   * Signs a message using the private key of the connected address.
+   * @returns signature;
+   */
+  public async signMessage(message: string): Promise<string> {
+    return this.provider.getSigner().signMessage(message);
+  }
 }
 
-export { IUserAuthorization, UserAuthorization, UserAuthorizationInit, UserAuthorizationConnected };
+export {
+  IUserAuthorization,
+  UserAuthorization,
+  UserAuthorizationInit,
+  UserAuthorizationConnected,
+};
