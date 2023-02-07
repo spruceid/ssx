@@ -200,6 +200,7 @@ function App() {
             ssxProvider ?
               <>
                 <Button
+                  id='signOutButton'
                   onClick={ssxLogoutHandler}
                   loading={loading || wagmiIsLoading}
                 >
@@ -212,6 +213,7 @@ function App() {
               </> :
               <>
                 <Button
+                  id='signInButton'
                   onClick={ssxHandler}
                   loading={loading || wagmiIsLoading}
                 >
@@ -219,7 +221,10 @@ function App() {
                 </Button>
               </>
           }
-          <Dropdown label='Select Preference(s)'>
+          <Dropdown 
+            id='selectPreferences'
+            label='Select Preference(s)'
+          >
             <div className='Dropdown-item'>
               <span className='Dropdown-item-name'>
                 Provider
@@ -227,7 +232,7 @@ function App() {
               <div className='Dropdown-item-options'>
                 <RadioGroup
                   name='provider'
-                  options={['MetaMask', 'Web3Modal', 'Web3Modal + WalletConnect', 'Web3Modal v2']}
+                  options={['MetaMask', 'Web3Modal', 'Web3Modal and WalletConnect', 'Web3Modal v2']}
                   value={provider}
                   onChange={setProvider}
                   inline={false}
