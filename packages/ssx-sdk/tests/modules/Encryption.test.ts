@@ -25,41 +25,33 @@ describe('Encryption', () => {
 
     test('Should be able to encrypt and decrypt a message', async () => {
       const message = 'Hello World';
-      const blob = new Blob([message]);
+      const blob = new Blob([message], { type: 'text/plain' });
       const encryptedBlob = await encryption.encrypt(blob);
       const decryptedBlob = await encryption.decrypt(encryptedBlob);
       const decryptedText = await decryptedBlob.text();
       expect(decryptedText).toEqual(message);
     });
-
-    xtest('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
-      const message = 'Hello World';
-      const key = '123456789012';
-      const encryptedMessage = await encryption.encrypt(message, key);
-      const decryptedMessage = await encryption.decrypt(encryptedMessage, key);
-      expect(decryptedMessage).toEqual(message);
-    });
   });
 
-  xdescribe('Lit Encryption', () => {
-    beforeEach(() => {
-      const encryptionConfig = {};
-      encryption = new LitEncryption(encryptionConfig, userAuth);
-    });
+  // xdescribe('Lit Encryption', () => {
+  //   beforeEach(() => {
+  //     const encryptionConfig = {};
+  //     encryption = new LitEncryption(encryptionConfig, userAuth);
+  //   });
 
-    test('Should be able to encrypt and decrypt a message', async () => {
-      const message = 'Hello World';
-      const encryptedMessage = await encryption.encrypt(message);
-      const decryptedMessage = await encryption.decrypt(encryptedMessage);
-      expect(decryptedMessage).toEqual(message);
-    });
+  //   test('Should be able to encrypt and decrypt a message', async () => {
+  //     const message = 'Hello World';
+  //     const encryptedMessage = await encryption.encrypt(message);
+  //     const decryptedMessage = await encryption.decrypt(encryptedMessage);
+  //     expect(decryptedMessage).toEqual(message);
+  //   });
 
-    test('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
-      const message = 'Hello World';
-      const key = '123456789012';
-      const encryptedMessage = await encryption.encrypt(message, key);
-      const decryptedMessage = await encryption.decrypt(encryptedMessage, key);
-      expect(decryptedMessage).toEqual(message);
-    });
-  });
+  //   test('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
+  //     const message = 'Hello World';
+  //     const key = '123456789012';
+  //     const encryptedMessage = await encryption.encrypt(message, key);
+  //     const decryptedMessage = await encryption.decrypt(encryptedMessage, key);
+  //     expect(decryptedMessage).toEqual(message);
+  //   });
+  // });
 });

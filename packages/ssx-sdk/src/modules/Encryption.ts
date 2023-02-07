@@ -41,6 +41,7 @@ class LitEncryption implements IEncryption {
  * key for ECIES encryption.
  *
  * The format encrypted state is a JWE.
+ * This module should not be used in production.
  */
 class SignatureEncryption implements IEncryption {
   private userAuth: IUserAuthorization;
@@ -57,8 +58,6 @@ class SignatureEncryption implements IEncryption {
     // get user signature of message
     const message = `Sign this message to generate an encryption key for ${this.userAuth.address()}`;
     const signature = await this.userAuth.signMessage(message);
-    // const signature = 'fake signature';
-    console.log('signature', signature);
     // derive encryption key from signature
     this.encryptionKey = await this.deriveKeyFromSignature(signature);
   };
@@ -92,7 +91,6 @@ class SignatureEncryption implements IEncryption {
 
   public encrypt = async (data: Blob) => {
     // blob => jwe
-    console.log('encrypting', data);
     // get data blob as binary and structure as Uint8Array
     // TODO: update approach to encode entire blob (including type) as Uint8Array
     const binaryData = await data
