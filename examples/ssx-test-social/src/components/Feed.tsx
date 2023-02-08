@@ -20,7 +20,7 @@ function Feed({ postContext }: { postContext: React.Context<PostContextProps> })
     );
   }
 
-  if (posts && posts.length > 0) {
+  if (posts?.length > 0) {
     return PostsExist()
   }
   return <div></div>
