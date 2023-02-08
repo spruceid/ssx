@@ -1,4 +1,4 @@
-# ssx-test-dapp
+# ssx-test-social
 
 This is a simple social media that demonstrates the functionality of SSX. It is configured to run locally and does not persist state between instances. 
 
