@@ -6,5 +6,4 @@ export default interface PostContextProps {
   setSSXProvider: React.Dispatch<React.SetStateAction<SSX | null>>,
   posts: Post[],
   setPosts: React.Dispatch<React.SetStateAction<Post[]>>
-
 }
