@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { TextField, Button, InputAdornment, IconButton } from '@material-ui/core';
+import { TextField, InputAdornment, IconButton } from '@material-ui/core';
 import PostContextProps from "../interfaces/iPostContext";
 import { SSX } from "@spruceid/ssx";
 import Post from "../interfaces/iPost";
