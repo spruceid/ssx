@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from "@material-ui/core";
 
-function AccountInfo({ address, delegator }: { address: string, delegator?: string }) {
+function AccountInfo({ address }: { address: string }) {
   return (
     <div>
       <Card style={{ backgroundColor: "rgba(39, 39, 39, 0.7)", color: "white", width: "fit-content" }}>
