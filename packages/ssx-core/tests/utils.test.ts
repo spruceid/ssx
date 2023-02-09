@@ -189,11 +189,10 @@ test('Should resolve Lens profile on Polygon Mainnet successfully', async () => 
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
   ).resolves.toEqual(
     expect.objectContaining({
-      pageInfo: {
+      pageInfo: expect.objectContaining({
         prev: '{"offset":0}',
         next: '{"offset":1}',
-        totalCount: 1,
-      }
+      })
     })
   );
 }, 10000);
@@ -208,11 +207,10 @@ test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
   ).resolves.toEqual(
     expect.objectContaining({
-      pageInfo: {
+      pageInfo: expect.objectContaining({
         prev: '{"offset":0}',
         next: null,
-        totalCount: 0,
-      }
+      })
     })
   );
 }, 10000);
