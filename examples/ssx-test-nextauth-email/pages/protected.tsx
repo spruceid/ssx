@@ -1,7 +1,8 @@
 import React from "react";
-import styles from '../styles/Protected.module.css'
 import { signOut, useSession } from 'next-auth/react';
 import { useSSX } from "@spruceid/ssx-react";
+import Header from "../components/Header";
+import Title from "../components/Title";
 
 export default function Protected() {
     const { data: session, status } = useSession();
@@ -33,37 +34,70 @@ export default function Protected() {
     }
 
     if (status === "loading") {
-        <div className={styles.container}>
-            <h2 className={styles.title}>Protected Page</h2>
-            <p className={styles.description}>Loading</p>
-        </div>
+        return (
+            <div className='App'>
+                <Header />
+                <Title
+                    title='Protected Page'
+                    subtitle='Loading...'
+                />
+            </div>
+        );
     }
 
     if (status === "unauthenticated") {
-        return (<div className={styles.container}>
-            <h2 className={styles.title}>Protected Page</h2>
-            <p className={styles.description}>
-                This page is only accessible to authenticated users.
-            </p>
-        </div>)
-    }
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>Protected Page</h2>
-            <p className={styles.description}>
-                You are Authenticated as <br />
-                {session?.user?.id}<br />
-                email: {session?.user?.email}<br />
-                web3Address: {session?.user?.web3Address || 'not found'}
-            </p>
-            <div className={styles.linkButtonContainer}>
-            {
-                session?.user.web3Address ?
-                <button onClick={unlinkAccount} disabled={!ssxLoaded}>Unlink web3 address</button> :
-                <button onClick={linkAccount} disabled={!ssxLoaded}>Link web3 address</button>
-            }
+        return (
+            <div className='App'>
+                <Header />
+                <Title
+                    title='Protected Page'
+                    subtitle='This page is only accessible to authenticated users.'
+                />
             </div>
-            <button onClick={signOutAccount} disabled={!ssxLoaded}>Log Out</button>
+        )
+    }
+
+    return (
+        <div className='App'>
+            <Header />
+            <Title
+                title='Protected Page'
+                subtitle={
+                    <>
+                        You are signed in as: email: {session?.user?.email}<br />
+                        Linked Ethereum address: {session?.user?.web3Address || 'none'}
+                    </>
+                }
+            />
+
+            <div className='Content'>
+                <div className='Content-container'>
+                    {
+                        session?.user.web3Address ?
+                            <button
+                                className='Button'
+                                onClick={unlinkAccount}
+                                disabled={!ssxLoaded}
+                            >
+                                UNLINK THE ETHEREUM ACCOUNT
+                            </button> :
+                            <button
+                                className='Button'
+                                onClick={linkAccount}
+                                disabled={!ssxLoaded}
+                            >
+                                LINK AN ETHEREUM ACCOUNT
+                            </button>
+                    }
+                    <button
+                        className='Button'
+                        onClick={signOutAccount}
+                        disabled={!ssxLoaded}
+                    >
+                        LOG OUT
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

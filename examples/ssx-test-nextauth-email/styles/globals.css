@@ -1,9 +1,76 @@
+@font-face {
+  font-family: "Basier Square";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/basier-square-regular.eot");
+  /* IE9 Compat Modes */
+  src: local(""),
+    url("/fonts/basier-square-regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("/fonts/basier-square-regular.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("/fonts/basier-square-regular.woff") format("woff"),
+    /* Modern Browsers */
+    url("/fonts/basier-square-regular.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("/fonts/basier-square-regular.svg#Basier Square") format("svg");
+  /* Legacy iOS */
+}
+
+@font-face {
+  font-family: "Basier Square";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/basier-square-medium.eot");
+  /* IE9 Compat Modes */
+  src: local(""),
+    url("/fonts/basier-square-medium.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("/fonts/basier-square-medium.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("/fonts/basier-square-medium.woff") format("woff"),
+    /* Modern Browsers */
+    url("/fonts/basier-square-medium.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("/fonts/basier-square-medium.svg#Basier Square") format("svg");
+  /* Legacy iOS */
+}
+
+@font-face {
+  font-family: "Basier Square";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/basier-square-bold.eot");
+  /* IE9 Compat Modes */
+  src: local(""),
+    url("/fonts/basier-square-bold.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */
+    url("/fonts/basier-square-bold.woff2") format("woff2"),
+    /* Super Modern Browsers */
+    url("/fonts/basier-square-bold.woff") format("woff"),
+    /* Modern Browsers */
+    url("/fonts/basier-square-bold.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("/fonts/basier-square-bold.svg#Basier Square") format("svg");
+  /* Legacy iOS */
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Basier Square';
+  background: #F1F1FF;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span {
+  font-family: 'Basier Square';
 }
 
 a {
@@ -15,12 +82,186 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* App */
+.App {
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
+/* Header */
+.Header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 64px;
+  display: block;
+  background-color: white;
+}
+
+.Header-container {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.Header-span {
+  font-weight: 700;
+  font-size: 32px;
+}
+
+
+.Header-logo {
+  height: 40px;
+  pointer-events: none;
+  margin-right: 16px;
+}
+
+.Header-button--connect {
+  float: right;
+}
+
+
+/* Title */
+.Title {
+  margin: 24px auto;
+}
+
+.Title-h1 {
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.Title-h2 {
+  font-weight: 400;
+  font-size: 16px;
+  color: #667080;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Content */
+.Content {
+  width: 480px;
+  max-width: 100%;
+  min-height: 180px;
+  background-color: white;
+  backdrop-filter: blur(2px);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.Content-container {
+  padding: 30px;
+}
+
+.Content-h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* Button */
+.Button {
+  border: none;
+  width: 100%;
+  padding: 16px 24px;
+  color: white;
+  background: #3376E7;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 150ms ease 0s;
+  margin: 16px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.Button:hover:not(:disabled) {
+  transform: scale(1.01);
+}
+
+/* Modal */
+.Modal-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgba(229, 229, 229, 0.4);
+}
+
+.Modal {
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  padding: 2rem 6rem;
+  width: 400px;
+  max-width: 100%;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+@media (max-width: 400px) {
+  .Modal {
+    padding: 2rem 1rem;
   }
-  body {
-    color: white;
-    background: black;
-  }
+}
+
+.Modal-title {
+  font-size: 24px;
+}
+
+.Modal-input {
+  width: 100%;
+  padding: 1rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  background-color: #eee;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.Modal-button--close {
+  background-color: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+/*  */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+    supported by Chrome, Edge, Opera and Firefox */
 }

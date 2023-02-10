@@ -6,7 +6,8 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
 import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
-import {  SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import Head from 'next/head';
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
   console.error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
@@ -44,12 +45,12 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const { server } = SSXNextAuthRouteConfig({ signInOptions: { callbackUrl:'/protected' }});
+const { server } = SSXNextAuthRouteConfig({ signInOptions: { callbackUrl: '/protected' } });
 const ssxConfig: any = {
   siweConfig: {
     domain: "localhost:3000",
   },
-  providers: { 
+  providers: {
     server,
   },
 };
@@ -57,15 +58,25 @@ const ssxConfig: any = {
 
 function MyApp({ Component, pageProps }: any) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <SSXProvider ssxConfig={ssxConfig}> 
-          <SessionProvider session={pageProps.session} refetchInterval={0}>
-            <Component {...pageProps} />
-          </SessionProvider>
-        </SSXProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+      <Head>
+        <title>SSX NextAuth + Email</title>
+        <meta
+          name="description"
+          content="SSX powered dapp + NextAuth with Email"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains}>
+          <SSXProvider ssxConfig={ssxConfig}>
+            <SessionProvider session={pageProps.session} refetchInterval={0}>
+              <Component {...pageProps} />
+            </SessionProvider>
+          </SSXProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </>
   );
 }
 

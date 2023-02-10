@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from '../styles/SignInWithEmailModal.module.css'
 
 interface ISignInWithEmailModal {
   title?: string,
@@ -8,34 +7,42 @@ interface ISignInWithEmailModal {
   handleEmailSignIn: (email: string) => void;
 }
 
-const SignInWithEmailModal = ({ title = 'Sign in with Email', showModal, handleClose, handleEmailSignIn }: ISignInWithEmailModal) => {
+const SignInWithEmailModal = ({ title = 'Sign-In with Email', showModal, handleClose, handleEmailSignIn }: ISignInWithEmailModal) => {
 
-  const [email,setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
 
   return (
     <>
       {
         showModal && (
-          <div className={styles.container}>
-            <div className={styles.modal}>
-              <h3>{title}</h3>
+          <div className='Modal-container'>
+            <div className='Modal'>
+              <h3 className='Modal-title'>{title}</h3>
+              <button
+                className='Modal-button--close'
+                onClick={handleClose}
+              >
+                &#x2715;
+              </button>
               <div>
-                <div className={styles.body}>
-                  <label htmlFor='email'><b>Email</b></label>
-                  <input 
-                    type='email' 
+                <div>
+                  <input
+                    type='email'
                     id='email'
-                    className={styles.input}
-                    value={email} 
-                    onChange={(event) => setEmail(event.target.value)} 
-                    />
+                    placeholder='email@example.com'
+                    className='Modal-input'
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
                 </div>
               </div>
-              <div className={styles.footer}>
-                <button onClick={handleClose}>Close</button>
-                <button onClick={() => handleEmailSignIn(email)}>Send email</button>
+                <button
+                  className='Button'
+                  onClick={() => handleEmailSignIn(email)}
+                >
+                  SIGN IN WITH EMAIL
+                </button>
               </div>
-            </div>
           </div>
         )}
     </>
