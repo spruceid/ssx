@@ -19,13 +19,15 @@ const RadioGroup = ({ label, name, options, value, onChange, inline = true }) =>
                     >
                         <input
                             type='radio'
-                            id={`${name}-${option}`}
+                            id={`${name}-${option.replace(/\s+/g, '')}`}
                             name={name}
                             value={option}
                             checked={value === option}
                             onChange={() => onChange(option)}
                         />
-                        <label htmlFor={`${name}-${option}`}>
+                        <label htmlFor={
+                            `${name}-${option.replace(/\s+/g, '')}`
+                        }>
                             {option}
                         </label>
                     </div>

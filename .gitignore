@@ -3,9 +3,14 @@ node_modules
 /.pnp
 .pnp.js
 
+# settings
+.yarn*
+
 # testing
 /coverage
 .env
+videos
+screenshots
 
 # production
 /build
