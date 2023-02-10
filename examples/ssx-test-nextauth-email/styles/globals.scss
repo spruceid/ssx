@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @font-face {
   font-family: "Basier Square";
   font-style: normal;
@@ -264,4 +266,33 @@ a {
   user-select: none;
   /* Non-prefixed version, currently
     supported by Chrome, Edge, Opera and Firefox */
+}
+
+
+/* fireworks */
+
+.firework {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+}
+
+@keyframes launchFirework {
+  to {
+    opacity: 0;
+  }
+}
+
+@for $i from 1 through 20 {
+  @keyframes launchFirework#{$i} {
+    to {
+      transform: translate(random(402) - 202 + px, random(402) - 202 + px);
+    }
+  }
+
+  .firework#{$i} {
+    animation: launchFirework random(1001)+499+ms linear forwards,
+    launchFirework#{$i} random(1001)+499+ms linear forwards;
+  }
 }

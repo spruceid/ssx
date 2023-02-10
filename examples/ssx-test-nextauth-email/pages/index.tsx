@@ -7,7 +7,6 @@ import SignInWithEmailModal from '../components/SignInWithEmailModal';
 import Header from '../components/Header';
 import Title from '../components/Title';
 
-
 const Home: NextPage = () => {
   const { ssx, ssxLoaded } = useSSX();
   const router = useRouter();
@@ -81,6 +80,7 @@ const Home: NextPage = () => {
           handleClose={handleCloseModal}
           handleEmailSignIn={handleEmailSignIn}
         />
+
       </div>
     </>
   );

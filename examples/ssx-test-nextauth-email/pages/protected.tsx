@@ -16,7 +16,13 @@ export default function Protected() {
     const linkAccount = async () => {
         const response: any = await ssx?.signIn();
         fetch(`/api/auth/linkWeb3Account?address=${response.address}&chainId=${response.chainId}`)
-            .then(reloadSession)
+            .then(() => {
+                const rect = document.getElementById('pageSubtitle')?.getClientRects()[0];
+                if (rect) {
+                    window.explode(rect);
+                }
+                reloadSession();
+            })
     }
 
     const unlinkAccount = async () => {
@@ -59,14 +65,14 @@ export default function Protected() {
 
     return (
         <div className='App'>
-            <Header />
+            <Header connectButton />
             <Title
                 title='Protected Page'
                 subtitle={
-                    <>
+                    <div id='pageSubtitle'>
                         You are signed in as: email: {session?.user?.email}<br />
                         Linked Ethereum address: {session?.user?.web3Address || 'none'}
-                    </>
+                    </div>
                 }
             />
 
