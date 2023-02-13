@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext} from 'react';
 import PostContextProps from '../interfaces/iPostContext';
 import React from 'react';
 import SinglePost from './SinglePost';
@@ -6,9 +6,6 @@ import SinglePost from './SinglePost';
 
 function Feed({ postContext }: { postContext: React.Context<PostContextProps> }) {
   const { posts } = useContext(postContext);
-
-  useEffect(() => {
-  }, [posts]);
 
   function PostsExist() {
     return (
