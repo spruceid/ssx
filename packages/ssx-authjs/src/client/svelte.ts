@@ -3,7 +3,6 @@ import type { SSXClientSession } from '@spruceid/ssx';
 import { getCsrfToken } from 'next-auth/react'
 import { SSXAuthRouteConfigOptions } from '../types.js';
 
-/** Approach A */
 export const SSXSvelteAuthRouteConfig = (config?: SSXAuthRouteConfigOptions) => {
   const nonce = {
     customAPIOperation: async () => {
