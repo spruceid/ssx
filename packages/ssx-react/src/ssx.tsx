@@ -7,7 +7,6 @@ import {
   ReactNode,
 } from 'react';
 import { SSX, SSXClientConfig } from '@spruceid/ssx';
-import { useSigner } from 'wagmi';
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -58,9 +57,14 @@ export const SSXProvider = ({
   } else {
     // assume using wagmi.sh if no provider is provided
     usingWagmi = true;
-    ({ data: provider, isSuccess: providerLoaded } = (typeof window !==
-      'undefined' &&
-      useSigner()) || { data: undefined, isSuccess: false });
+    import('@wagmi/core').then(({ watchSigner }) => {
+      watchSigner({}, async signer => {
+        if (signer) {
+          provider = signer.provider;
+          providerLoaded = true;
+        }
+      });
+    });
   }
 
   const [ssxState, setSSXState] = useReducer(
@@ -76,8 +80,6 @@ export const SSXProvider = ({
 
   useEffect(() => {
     async function initializeSSX() {
-      const { SSX } = await import('@spruceid/ssx');
-
       const modifiedSSXConfig = {
         ...ssxConfig,
         siweConfig: {
