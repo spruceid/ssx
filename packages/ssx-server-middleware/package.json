@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-server-middleware",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Spruce Systems, Inc.",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@spruceid/ssx-core": "1.1.1",
-    "@spruceid/ssx-gnosis-extension": "1.1.3",
+    "@spruceid/ssx-gnosis-extension": "1.1.4",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
