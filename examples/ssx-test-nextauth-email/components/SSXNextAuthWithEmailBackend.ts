@@ -38,7 +38,7 @@ export const SSXNextAuthWithEmail = (
       const nonce = await getCsrfToken({ req });
 
       // validate signature, nonce and ssx config options
-      const { success, error, session } = await ssx.login(
+      const { success, session } = await ssx.login(
         credentials?.message || '',
         credentials?.signature || '',
         JSON.parse(credentials?.daoLogin || 'false'),
