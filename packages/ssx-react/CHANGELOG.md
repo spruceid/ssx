@@ -1,5 +1,12 @@
 # @spruceid/ssx-react
 
+## 1.2.2
+
+### Patch Changes
+
+- @spruceid/ssx@1.2.2
+- @spruceid/ssx-server@1.2.2
+
 ## 1.2.1
 
 ### Patch Changes
