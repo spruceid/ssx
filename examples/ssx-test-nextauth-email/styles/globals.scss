@@ -196,6 +196,15 @@ a {
   transform: scale(1.01);
 }
 
+.Button img {
+  width: 20px;
+  height: 20px;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear; 
+}
+
 /* Modal */
 .Modal-container {
   position: fixed;
@@ -295,4 +304,13 @@ a {
     animation: launchFirework random(1001)+499+ms linear forwards,
     launchFirework#{$i} random(1001)+499+ms linear forwards;
   }
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }

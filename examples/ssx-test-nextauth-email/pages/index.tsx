@@ -12,9 +12,12 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalTitle, setModalTitle] = useState<string>();
+  const [emailSent, setEmailSent] = useState<boolean | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setEmailSent(undefined);
     setModalTitle(undefined);
   }
 
@@ -37,21 +40,25 @@ const Home: NextPage = () => {
   };
 
   const handleEmailSignIn = async (email: string) => {
-    try {
-      const callbackUrl = "/protected";
-      signIn("email", { email, redirect: false, callbackUrl });
-      handleCloseModal();
-    } catch (error) {
-      console.error(error)
-      window.alert(error);
+    setLoading(true);
+    const callbackUrl = "/protected";
+    const response = await signIn("email", { email, redirect: false, callbackUrl });
+    if (response?.error) {
+      setEmailSent(false);
+    } else {
+      setEmailSent(true);
+      setTimeout(() => {
+        handleCloseModal();
+      }, 5000);
     }
+    setLoading(false);
   };
 
   return (
     <>
       <div className='App'>
         <Header connectButton />
-        <Title 
+        <Title
           title='NextAuth Email + SSX Example'
           subtitle='Let users log in using their email first, associate an Ethereum account, and then start signing in with Ethereum.'
         />
@@ -77,6 +84,8 @@ const Home: NextPage = () => {
         <SignInWithEmailModal
           title={modalTitle}
           showModal={showModal}
+          success={emailSent}
+          loading={loading}
           handleClose={handleCloseModal}
           handleEmailSignIn={handleEmailSignIn}
         />
