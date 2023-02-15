@@ -53,7 +53,7 @@ const Home: NextPage = () => {
         <Header connectButton />
         <Title 
           title='NextAuth Email + SSX Example'
-          subtitle='Let users log in using their emails first, associate an Ethereum account, and then start signing in with Ethereum.'
+          subtitle='Let users log in using their email first, associate an Ethereum account, and then start signing in with Ethereum.'
         />
 
         <div className='Content'>

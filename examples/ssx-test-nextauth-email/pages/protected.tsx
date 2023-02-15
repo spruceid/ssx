@@ -85,7 +85,7 @@ export default function Protected() {
                                 onClick={unlinkAccount}
                                 disabled={!ssxLoaded}
                             >
-                                UNLINK THE ETHEREUM ACCOUNT
+                                UNLINK YOUR ETHEREUM ACCOUNT
                             </button> :
                             <button
                                 className='Button'
