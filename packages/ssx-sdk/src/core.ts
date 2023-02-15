@@ -30,6 +30,23 @@ export class SSXInit {
    * Connect to the signing account using the configured provider.
    * @returns SSXConnected instance.
    */
+
+
+  //   async function connect() {
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  //     let accounts = await provider.send("eth_requestAccounts", []);
+  //     let account = accounts[0];
+  //     provider.on('accountsChanged', function (accounts) {
+  //         account = accounts[0];
+  //         console.log(address); // Print new address
+  //     });
+
+  //     const signer = provider.getSigner();
+
+  //     const address = await signer.getAddress();
+
+  //     console.log(address);
+  // }
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
     let provider: ethers.providers.Web3Provider;
@@ -53,6 +70,7 @@ export class SSXInit {
       !this.config.providers.web3?.driver?.bridge?.includes('walletconnect')
     ) {
       const connectedAccounts = await provider.listAccounts();
+      console.log(connectedAccounts)
       if (connectedAccounts.length === 0) {
         try {
           await provider.send('wallet_requestPermissions', [
@@ -64,6 +82,15 @@ export class SSXInit {
           throw err;
         }
       }
+      let account = connectedAccounts[0];
+      provider.on('accountsChanged', function (accounts) {
+        console.log("accounts changed")
+        account = accounts[0];
+        console.log(address); // Print new address
+      });
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      console.log(address);
     }
 
     let builder;
@@ -113,7 +140,19 @@ export class SSXConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
+    console.log(provider.provider)
+    provider.on('accountsChanged', async function (accounts) {
+      const connectedAccounts = await provider.listAccounts();
+      let account = connectedAccounts[0]
+      console.log("accounts changed")
+
+      account = accounts[0];
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      console.log(address); // Print new address
+    });
   }
+
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
   public async applyExtensions(): Promise<void> {
@@ -286,7 +325,7 @@ export class SSXConnected implements ISSXConnected {
       issuedAt: new Date().toISOString(),
       nonce: generateNonce(),
     };
-    
+
     const serverNonce = await this.ssxServerNonce(defaults);
     if (serverNonce) defaults.nonce = serverNonce;
 
