@@ -1,0 +1,24 @@
+name: Feature Request 🚀 
+description: Request a feature in SSX
+title: "[FEATURE REQUEST]: <title>"
+labels: [Feature Request, Enhancement]
+body:
+- type: checkboxes
+  attributes:
+    label: Is there an existing issue for this?
+    description: Please search to see if an issue already exists for the feature you're requesting.
+    options:
+    - label: I have searched the existing issues
+      required: true
+- type: textarea
+  attributes:
+    label: Feature
+    description: Describe the feature.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: User Stories
+    description: Please provide any user stories you can to further describe the feature.
+  validations:
+    required: false
