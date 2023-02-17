@@ -32,21 +32,6 @@ export class SSXInit {
    */
 
 
-  //   async function connect() {
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-  //     let accounts = await provider.send("eth_requestAccounts", []);
-  //     let account = accounts[0];
-  //     provider.on('accountsChanged', function (accounts) {
-  //         account = accounts[0];
-  //         console.log(address); // Print new address
-  //     });
-
-  //     const signer = provider.getSigner();
-
-  //     const address = await signer.getAddress();
-
-  //     console.log(address);
-  // }
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
     let provider: ethers.providers.Web3Provider;
@@ -82,15 +67,6 @@ export class SSXInit {
           throw err;
         }
       }
-      let account = connectedAccounts[0];
-      provider.on('accountsChanged', function (accounts) {
-        console.log("accounts changed")
-        account = accounts[0];
-        console.log(address); // Print new address
-      });
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      console.log(address);
     }
 
     let builder;
@@ -141,7 +117,7 @@ export class SSXConnected implements ISSXConnected {
       });
     }
     console.log(provider.provider)
-    provider.on('accountsChanged', async function (accounts) {
+    this.provider.on('accountsChanged', async function (accounts) {
       const connectedAccounts = await provider.listAccounts();
       let account = connectedAccounts[0]
       console.log("accounts changed")
