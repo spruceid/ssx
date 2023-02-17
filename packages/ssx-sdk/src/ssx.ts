@@ -11,9 +11,9 @@ import {
 import {
   SSXClientConfig,
   SSXClientSession,
+  SSXExtension,
 } from '@spruceid/ssx-core/client';
 import type { ethers } from 'ethers';
-import { SSXExtension } from '../../ssx-core/dist/client/types';
 declare global {
   interface Window {
     ethereum?: any;
