@@ -34,6 +34,7 @@
     "sdk": "yarn workspace @spruceid/ssx",
     "react": "yarn workspace @spruceid/ssx-react",
     "core": "yarn workspace @spruceid/ssx-core",
+    "authjs": "yarn workspace @spruceid/ssx-authjs",
     "server": "yarn workspace @spruceid/ssx-server",
     "serverless": "yarn workspace @spruceid/ssx-serverless",
     "test-dapp": "yarn workspace ssx-test-dapp",
