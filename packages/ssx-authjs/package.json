@@ -8,10 +8,6 @@
   "license": "Apache-2.0 OR MIT",
   "private": false,
   "exports": {
-    ".": {
-      "types": "./dist/types.d.js",
-      "default": "./dist/types.js"
-    },
     "./client": {
       "types": "./dist/client/index.d.js",
       "default": "./dist/client/index.js"
