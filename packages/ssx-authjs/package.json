@@ -17,6 +17,16 @@
       "default": "./dist/server/index.js"
     }
   },
+  "typesVersions": {
+    "*": {
+      "server": [
+        "dist/server/index.d.ts"
+      ],
+      "client": [
+        "dist/client/index.d.ts"
+      ]
+    }
+  },
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com:spruceid/ssx.git"
