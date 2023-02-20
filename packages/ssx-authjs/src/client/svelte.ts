@@ -12,12 +12,15 @@ export const SSXSvelteAuthRouteConfig = (config?: SSXAuthRouteConfigOptions) => 
   const login = {
     customAPIOperation: async (session: SSXClientSession) => {
       const { siwe, signature } = session;
-      return signIn('credentials', {
-        message: siwe,
-        redirect: false,
-        signature,
-        ...config?.signInOptions,
-      });
+      return import('@auth/sveltekit/client')
+        .then(svelteKitClient => {
+          return svelteKitClient.signIn('credentials', {
+            message: siwe,
+            redirect: false,
+            signature,
+            ...config?.signInOptions,
+          });
+        })
     },
   };
   const logout = {
