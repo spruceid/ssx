@@ -1,4 +1,4 @@
-import { useContext} from 'react';
+import { useContext } from 'react';
 import PostContextProps from '../interfaces/iPostContext';
 import React from 'react';
 import SinglePost from './SinglePost';
