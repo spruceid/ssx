@@ -116,16 +116,10 @@ export class SSXConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
-    console.log(provider.provider)
     this.provider.on('accountsChanged', async function (accounts) {
       const connectedAccounts = await provider.listAccounts();
       let account = connectedAccounts[0]
-      console.log("accounts changed")
-
       account = accounts[0];
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      console.log(address); // Print new address
     });
   }
 
