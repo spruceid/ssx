@@ -1,5 +1,13 @@
 # @spruceid/ssx-serverless
 
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [60dedab]
+- Updated dependencies [63f70cf]
+  - @spruceid/ssx-gnosis-extension@1.1.4
+
 ## 1.2.1
 
 ### Patch Changes
