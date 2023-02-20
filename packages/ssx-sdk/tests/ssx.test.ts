@@ -153,10 +153,19 @@ test('Should accept axios request config options successfully', async () => {
 });
 
 test('Should accept extensions successfully', async () => {
-  // import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { GnosisDelegation } = require('@spruceid/ssx-gnosis-extension');
+  const GnosisDelegation = (await import('@spruceid/ssx-gnosis-extension')).GnosisDelegation;
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+  testingUtils.mockChainId('0x1');
+  testingUtils.mockConnectedWallet([
+    '0x456c1182DecC365DCFb5F981dCaef671C539AD44',
+  ]);
+  const abi = [
+    'event SetDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
+    'event ClearDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
+  ] as const;
+  const contractTestingUtils = testingUtils.generateContractUtils(abi);
+  contractTestingUtils.mockGetLogs('SetDelegate', []);
+  contractTestingUtils.mockGetLogs('ClearDelegate', []);
   const ssxConfig = {
     providers: {
       web3: {
@@ -169,31 +178,4 @@ test('Should accept extensions successfully', async () => {
   ssx.extend(gnosis);
 
   await expect(ssx.signIn()).resolves.not.toThrowError();
-
 });
-
-// test('Connect to wallet', async () => {
-//   // TODO: expose wallet connection interface
-// });
-
-// test('Sign-in with Ethereum', () => {
-//   // TODO: sign request with mock provider
-//   expect(async () => {
-//     const config = {
-//       providers: {
-//         web3: {
-//           driver: provider,
-//         },
-//       },
-//     };
-//     const ssx = new SSX(config);
-//     await ssx.signIn();
-//   }).not.toThrowError();
-// });
-
-// test('Throw Error if Ethereum Wallet isn\'t found', () => {
-//   // TODO: Throw error if no wallet is found
-//   // global.window.ethereum = undefined;
-//   // const ssx = ;
-//   // expect(() => { const ssx = new SSX(); ssx.signIn(); }).toThrowError('An ethereum wallet extension is not installed.');
-// });
