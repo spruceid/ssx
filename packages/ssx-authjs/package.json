@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "author": "Spruce Systems, Inc.",
   "license": "Apache-2.0 OR MIT",
   "private": false,
