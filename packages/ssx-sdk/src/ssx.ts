@@ -78,7 +78,6 @@ export class SSX {
       this.connection = await this.init.connect();
       this.provider = this.connection.provider;
     } catch (err) {
-      // ERROR:
       // Something went wrong when connecting or creating Session (wasm)
       console.error(err);
       throw err;
