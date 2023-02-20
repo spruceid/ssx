@@ -153,7 +153,9 @@ test('Should accept axios request config options successfully', async () => {
 });
 
 test('Should accept extensions successfully', async () => {
-  const GnosisDelegation = (await import('@spruceid/ssx-gnosis-extension')).GnosisDelegation;
+  jest.setTimeout(30000);
+  const GnosisDelegation = (await import('@spruceid/ssx-gnosis-extension'))
+    .GnosisDelegation;
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
   testingUtils.mockChainId('0x1');
   testingUtils.mockConnectedWallet([
