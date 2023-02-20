@@ -55,7 +55,6 @@ export class SSXInit {
       !this.config.providers.web3?.driver?.bridge?.includes('walletconnect')
     ) {
       const connectedAccounts = await provider.listAccounts();
-      console.log(connectedAccounts)
       if (connectedAccounts.length === 0) {
         try {
           await provider.send('wallet_requestPermissions', [
