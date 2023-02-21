@@ -1,5 +1,14 @@
 # @spruceid/ssx-server-middleware
 
+## 1.0.2
+
+### Patch Changes
+
+- Fixing nonce bug documented here https://github.com/spruceid/ssx/issues/70
+- Updated dependencies [60dedab]
+- Updated dependencies [63f70cf]
+  - @spruceid/ssx-gnosis-extension@1.1.4
+
 ## 1.0.1
 
 ### Patch Changes

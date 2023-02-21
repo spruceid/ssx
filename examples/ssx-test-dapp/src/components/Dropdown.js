@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const Dropdown = ({ label, children }) => {
+const Dropdown = ({ id, label, children }) => {
 
     const [open, setOpen] = useState(false);
 
@@ -22,6 +22,7 @@ const Dropdown = ({ label, children }) => {
         className='Dropdown no-select'
     >
         <div
+            id={id}
             className='Dropdown-input'
             onClick={() => setOpen(!open)}
         >
