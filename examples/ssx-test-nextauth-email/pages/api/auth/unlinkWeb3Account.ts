@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 export default async function linkWeb3Account(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
   if (session) {
-    await prisma.user.update({
+    await prisma?.user.update({
       where: {
         id: session?.user?.id,
       },
