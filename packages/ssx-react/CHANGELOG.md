@@ -1,5 +1,12 @@
 # @spruceid/ssx-react
 
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies [aa228bc]
+  - @spruceid/ssx@1.2.3
+
 ## 1.2.2
 
 ### Patch Changes
