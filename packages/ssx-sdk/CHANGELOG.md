@@ -1,5 +1,19 @@
 # @spruceid/ssx
 
+## 1.2.3
+
+### Patch Changes
+
+- aa228bc: Separated and exposed the connect function to connect the SSX instance to the ethereum provider. Also exposed the extension interface to allow for extensions to SSX
+
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [60dedab]
+- Updated dependencies [63f70cf]
+  - @spruceid/ssx-gnosis-extension@1.1.4
+
 ## 1.2.1
 
 ### Patch Changes

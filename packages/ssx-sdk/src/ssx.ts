@@ -11,8 +11,9 @@ import {
 import {
   SSXClientConfig,
   SSXClientSession,
+  SSXExtension,
 } from '@spruceid/ssx-core/client';
-
+import type { ethers } from 'ethers';
 declare global {
   interface Window {
     ethereum?: any;
@@ -34,6 +35,9 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
 export class SSX {
   /** SSXClientSession builder. */
   private init: SSXInit;
+
+  /** The Ethereum provider */
+  public provider: ethers.providers.Web3Provider;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
@@ -57,17 +61,35 @@ export class SSX {
   }
 
   /**
-   * Request the user to sign in, and start the session.
-   * @returns Object containing information about the session
+   * Extends SSX with a functions that are called after connecting and signing in.
    */
-  public async signIn(): Promise<SSXClientSession> {
+  public extend(extension: SSXExtension): void {
+    this.init.extend(extension);
+  }
+
+  /**
+   * Connects the SSX instance to the Ethereum provider.
+   */
+  public async connect(): Promise<void> {
+    if (this.connection) {
+      return;
+    }
     try {
       this.connection = await this.init.connect();
+      this.provider = this.connection.provider;
     } catch (err) {
       // Something went wrong when connecting or creating Session (wasm)
       console.error(err);
       throw err;
     }
+  }
+
+  /**
+   * Request the user to sign in, and start the session.
+   * @returns Object containing information about the session
+   */
+  public async signIn(): Promise<SSXClientSession> {
+    await this.connect();
 
     try {
       this.session = await this.connection.signIn();
