@@ -1,12 +1,16 @@
-import {
+import React, {
   useContext,
   createContext,
-  useState,
   useReducer,
   useEffect,
   ReactNode,
 } from 'react';
-import { SSX, SSXClientConfig } from '@spruceid/ssx';
+import ssx from '@spruceid/ssx';
+import { useSigner } from 'wagmi';
+
+const { SSX } = ssx;
+type SSX = ssx.SSX;
+type SSXClientConfig = ssx.SSXClientConfig;
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -35,12 +39,10 @@ export interface SSXContextInterface {
 }
 
 /** Default, uninitialized context. */
-const defaultContext: SSXContextInterface = {
+const SSXContext = createContext<SSXContextInterface>({
   ssx: undefined,
   ssxLoaded: false,
-};
-
-const SSXContext = createContext(defaultContext);
+});
 
 /** SSX Provider Component. */
 export const SSXProvider = ({
@@ -57,14 +59,11 @@ export const SSXProvider = ({
   } else {
     // assume using wagmi.sh if no provider is provided
     usingWagmi = true;
-    import('@wagmi/core').then(({ watchSigner }) => {
-      watchSigner({}, async signer => {
-        if (signer) {
-          provider = signer.provider;
-          providerLoaded = true;
-        }
-      });
-    });
+    if (typeof window !== 'undefined') {
+      const { data, isSuccess } = useSigner();
+      provider = data?.provider;
+      providerLoaded = isSuccess;
+    }
   }
 
   const [ssxState, setSSXState] = useReducer(

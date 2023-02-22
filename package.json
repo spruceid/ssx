@@ -12,7 +12,6 @@
     "examples/ssx-test-express-api",
     "examples/ssx-test-gulp-dapp",
     "examples/ssx-test-http-api",
-    "examples/ssx-test-nextauth",
     "examples/ssx-test-serverless-dynamodb-api",
     "examples/ssx-test-web3modal-v2-react",
     "examples/ssx-test-web3modal-v2-standalone"

@@ -20,7 +20,7 @@ const { chains, provider, webSocketProvider } = configureChains(
     chain.optimism,
     chain.arbitrum,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.goerli, chain.kovan, chain.rinkeby, chain.ropsten]
+      ? [chain.goerli, chain.ropsten]
       : []),
   ],
   [
@@ -45,12 +45,12 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const { server } = SSXNextAuthRouteConfig({ signInOptions: { callbackUrl:'/protected' }});
+const { server } = SSXNextAuthRouteConfig({ signInOptions: { callbackUrl: '/protected' } });
 const ssxConfig: any = {
   siweConfig: {
     domain: "localhost:3000",
   },
-  providers: { 
+  providers: {
     server,
   },
 };
@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <SSXProvider ssxConfig={ssxConfig}> 
+        <SSXProvider ssxConfig={ssxConfig}>
           <SessionProvider session={pageProps.session} refetchInterval={0}>
             <Component {...pageProps} />
           </SessionProvider>
