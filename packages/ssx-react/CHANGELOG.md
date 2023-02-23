@@ -1,5 +1,11 @@
 # @spruceid/ssx-react
 
+## 1.2.4
+
+### Patch Changes
+
+- This updates the ssx-react package in order to improve compatibility between all wagmi/rainbow-kit versions.
+
 ## 1.2.3
 
 ### Patch Changes

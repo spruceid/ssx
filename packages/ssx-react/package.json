@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-react",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
