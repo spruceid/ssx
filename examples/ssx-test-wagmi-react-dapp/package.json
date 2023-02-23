@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "0.8.1",
-    "@spruceid/ssx-react": "file:../../packages/ssx-react/dist",
+    "@spruceid/ssx-react": "file:../../packages/ssx-react",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "react": "^18.1.0",
