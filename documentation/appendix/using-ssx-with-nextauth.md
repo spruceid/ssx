@@ -20,10 +20,6 @@ Install [`ssx`](https://www.npmjs.com/package/@spruceid/ssx-react) and [`next-au
 npm install @spruceid/ssx-react @spruceid/ssx-server next-auth
 ```
 
-{% hint style="danger" %}
-If you are using wagmi, SSX currently works with wagmi v0.7.15 and below. We are currently working on supporting all versions of wagmi!&#x20;
-{% endhint %}
-
 ## Add NextAuth API Routes
 
 In your dapp, we will add an API route (`pages/api/auth/[...nextauth].ts`) for NextAuth and configure it with SSX. SSX provides configured `credentials` and `authorize` functions to create a NextAuth provider. SSX also provides a `session` function, but it is likely you will want to modify the contents of the function to provide specific session data from the server to the frontend client.
@@ -198,6 +194,6 @@ export default function Protected() {
 
 ## Wrap up
 
-Now that you have authentication in your dapp, take a deeper dive into some of the capabilities SSX gives you like [signing in on behalf of a multisig](../configuring-ssx/#enabling-dao-login), [resolving ENS/Lens names](../configuring-ssx/#resolveens), or [customizing the SIWE message.](../configuring-ssx/#customizing-fields-in-the-siwe-message)&#x20;
+Now that you have authentication in your dapp, take a deeper dive into some of the capabilities SSX gives you, like [signing in on behalf of a multisig](../configuring-ssx/#enabling-dao-login), [resolving ENS/Lens names](../configuring-ssx/#resolveens), or [customizing the SIWE message.](../configuring-ssx/#customizing-fields-in-the-siwe-message)&#x20;
 
 Have any questions? Hop into the [Spruce discord](https://discord.gg/tKT6kA6hjV) and ask!
