@@ -1,5 +1,11 @@
 # @spruceid/ssx
 
+## 1.2.4
+
+### Patch Changes
+
+- Bump version for package rebuild
+
 ## 1.2.3
 
 ### Patch Changes
