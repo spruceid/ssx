@@ -43,6 +43,8 @@
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api",
     "start:test-dapp": "yarn test-dapp start",
     "start:test-api": "yarn express-api start",
+    "prepare-release": "changeset version",
+    "publish-packages": "yarn reset && yarn build && changeset publish",
     "test:e2e": "start-test 'yarn start:test-dapp' 3000 'yarn start:test-api' 3001 'SECRET_WORDS=\"test test test test test test test test test test test junk\" synpress run'"
   },
   "devDependencies": {
