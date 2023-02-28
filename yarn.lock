@@ -5583,77 +5583,10 @@
     uri-js "^4.4.1"
     valid-url "^1.0.9"
 
-"@spruceid/ssx-gnosis-extension@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@spruceid/ssx-gnosis-extension/-/ssx-gnosis-extension-1.1.4.tgz#cf63c5c12edfb9346a58e766fd709c710276eedb"
-  integrity sha512-HTg61SsKHV18JBO0cXgha0Y3SCS8qxVvTWiIFFf05PPDDWmjdrooUxU87sVWez3F5mkh3MHxmKnTIrPB5byKAg==
-  dependencies:
-    "@spruceid/ssx-core" "1.1.1"
-
 "@spruceid/ssx-sdk-wasm@0.1.2":
   version "0.1.2"
   resolved "https://registry.npmjs.org/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.1.2.tgz#d28301d83b4b008247fef774a082c4c50bd3c4ee"
   integrity sha512-PuxRlyTlycXrTU11B22XcCz1PUU7p5krXxnb+ztPkgR3fAMP3ubENgoUyLllUJXxx2O/Jpne+0P9HIro+vilPg==
-
-"@spruceid/ssx-server-middleware@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@spruceid/ssx-server-middleware/-/ssx-server-middleware-1.0.2.tgz#dabcc44fabcfd104ebd0a789e0ff89e0dc9e8d8e"
-  integrity sha512-FLyVYNIzwGnEZ1y10NBrKCvK0UTwpVzkK13VRSVPm6Kux0IEHWq2yYKw2mMtCBHgNr80iKApc/PsoyJBD7oaHQ==
-  dependencies:
-    "@spruceid/ssx-core" "1.1.1"
-    "@spruceid/ssx-gnosis-extension" "1.1.4"
-    body-parser "^1.20.0"
-    cookie-parser "^1.4.6"
-    cors "^2.8.5"
-    express "^4.18.1"
-    express-session "^1.17.3"
-
-"@spruceid/ssx-server@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@spruceid/ssx-server/-/ssx-server-1.2.2.tgz#d5daadc84c790c8015273fe0f8a179520e7815b0"
-  integrity sha512-4ja2r8ANKuduMae1qOIKM3Pn28z3+qdRMzxMd4EQYLAwGaSS1Vl6io1jafXlhTGmnUlVswenp7ilavaG7Xm6TA==
-  dependencies:
-    "@spruceid/ssx-core" "1.1.1"
-    "@spruceid/ssx-gnosis-extension" "1.1.4"
-    "@spruceid/ssx-server-middleware" "1.0.2"
-    axios "^0.27.2"
-    body-parser "^1.20.0"
-    cookie-parser "^1.4.6"
-    cors "^2.8.5"
-    ethers "^5.7.1"
-    express "^4.18.1"
-    express-session "^1.17.3"
-    rc "^1.2.8"
-    siwe "^2.1.2"
-
-"@spruceid/ssx@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@spruceid/ssx/-/ssx-1.2.3.tgz#e3d41320f051b577aed2d649cc1741b0f93f43d5"
-  integrity sha512-A61WzyKSAFUbqGT0PFMQtvm0BGJJL18tU11FmvW7CRq65gvtwmsFlkZ3qhlDhxH6H29B1BPKTxSQpymIdrnt1A==
-  dependencies:
-    "@metamask/detect-provider" "^1.2.0"
-    "@spruceid/ssx-core" "1.1.1"
-    "@spruceid/ssx-gnosis-extension" "1.1.4"
-    "@spruceid/ssx-sdk-wasm" "0.1.2"
-    "@types/lodash.merge" "^4.6.7"
-    assert "^2.0.0"
-    axios "^0.27.2"
-    browser "^0.2.6"
-    buffer "^6.0.3"
-    cross-env "5.0.5"
-    ethers "^5.7.1"
-    events "^3.3.0"
-    https-browserify "^1.0.0"
-    lodash.merge "^4.6.2"
-    os-browserify "^0.3.0"
-    path-browserify "^1.0.1"
-    process "^0.11.10"
-    siwe "^2.1.2"
-    stream-browserify "^3.0.0"
-    stream-http "^3.2.0"
-    url "^0.11.0"
-    util "^0.12.4"
-    web3modal "^1.9.7"
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
