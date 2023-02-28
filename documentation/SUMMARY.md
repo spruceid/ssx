@@ -17,6 +17,7 @@
 * [Build a Token-Gated Dapp](appendix/build-a-token-gated-dapp.md)
 * [Using SSX with NextAuth](appendix/using-ssx-with-nextauth.md)
 * [From Email Login to SIWE](appendix/from-email-login-to-siwe.md)
+* [SSX Server Quickstart](appendix/ssx-server-quickstart.md)
 
 ## Reference
 
