@@ -4,6 +4,12 @@ This is a simple example on how to setup a SSX Server with Express.js. For a ste
 https://docs.ssx.id/ssx-server-quickstart.
 
 ## Running
+Prepare by creating and editing the secrets in the `.env` file. You can use the `.env.example` as a template.
+```bash
+cp .env.example .env
+```
+
+To run the example, first install the dependencies and then start the server.
 ```bash
 yarn && yarn start
 ```
