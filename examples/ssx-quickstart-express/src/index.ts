@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(SSXExpressMiddleware(ssx));
 
 app.get('/', (_req, res) => {
-  res.send('UP\n');
+  res.send('SSX Server Online\n');
 });
 
 const server = http.createServer(app).listen({ host: '0.0.0.0', port: '5000' }, () => {
