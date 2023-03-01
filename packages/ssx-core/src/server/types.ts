@@ -5,6 +5,11 @@ import { EventEmitter } from 'events';
 import { ethers } from 'ethers';
 import { SiweMessage, SiweError } from 'siwe';
 
+export enum AuthenticationMethod {
+    COOKIES = 'cookies',
+    JWT = 'jwt'
+}
+
 /** Configuration interface for ssx-server */
 export interface SSXServerConfig {
   /** A key used for signing cookies coming from the server. Providing this key enables signed cookies. */
@@ -14,6 +19,8 @@ export interface SSXServerConfig {
   /** Changes cookie attributes. Determines whether or not server cookies
    * require HTTPS and sets the SameSite attribute to 'lax'. Defaults to false */
   useSecureCookies?: boolean;
+  /** The authentication method to be used between client and server. Defaults to cookies */
+  authenticationMethod?: AuthenticationMethod;
 }
 
 /** SSX web3 configuration settings. */
@@ -106,6 +113,8 @@ export abstract class SSXServerBaseClass extends EventEmitter {
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
+  /** Authentication method to be used between client and server */
+  public authenticationMethod: AuthenticationMethod;
   /**
    * Sets default values for optional configurations
    */
@@ -167,6 +176,11 @@ export abstract class SSXServerBaseClass extends EventEmitter {
    * @returns Session options.
    */
   public getExpressSessionConfig: () => SessionOptions;
+  /**
+   * Create a json web token by signing the payload passed as parameter
+   * @return json web token
+   */
+  public getJWT: (payload: any) => string;
   /**
    * Gets default Express Session Config.
    * @returns Default session options

@@ -1,7 +1,8 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServerRouteNames } from '@spruceid/ssx-core';
-import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
+import { AuthenticationMethod, SSXServerBaseClass } from '@spruceid/ssx-core/server';
+import { SessionData } from 'express-session';
 
 const ssxEndpoints = (
   ssx: SSXServerBaseClass,
@@ -82,12 +83,24 @@ const ssxEndpoints = (
         return res.status(400).json({ message });
       }
 
-      req.session.siwe = session.siwe;
-      req.session.signature = session.signature;
-      req.session.daoLogin = session.daoLogin;
-      req.session.ens = session.ens;
-      req.session.lens = session.lens;
-      req.session.save(() => res.status(200).json({ ...req.session }));
+      const payload: Omit<SessionData, 'nonce' | 'cookie'> = {
+        siwe: session.siwe,
+        signature: session.signature,
+        daoLogin: session.daoLogin,
+        ens: session.ens,
+        lens: session.lens,
+      }
+
+      if (ssx.authenticationMethod === AuthenticationMethod.COOKIES) {
+        Object.assign(req.session, payload);
+        req.session.save(() => res.status(200).json({ ...req.session }));
+      } else {
+        req.session.destroy(null)
+        res.status(200).json({
+            jwt: ssx.getJWT(payload)
+        })
+      }
+
       return;
     }
   );

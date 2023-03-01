@@ -15,11 +15,13 @@ import {
   SSXEventLogTypes,
   SSXServerBaseClass,
   ssxLog,
+  AuthenticationMethod,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
 import { RequestHandler } from 'express';
+import { sign as signJWT } from 'jsonwebtoken'
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
@@ -35,6 +37,8 @@ export class SSXServer extends SSXServerBaseClass {
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
+  /** Authentication method used between client and server */
+  public authenticationMethod: AuthenticationMethod;
 
   constructor(config: SSXServerConfig = {}) {
     super();
@@ -62,6 +66,10 @@ export class SSXServer extends SSXServerBaseClass {
     if (config.providers?.rpc) {
       this.provider = getProvider(config.providers.rpc);
     }
+
+    this.authenticationMethod = config.authenticationMethod || AuthenticationMethod.COOKIES
+
+    console.log({ configAuth: config.authenticationMethod, authSet: this.authenticationMethod })
   }
 
   /**
@@ -259,6 +267,18 @@ export class SSXServer extends SSXServerBaseClass {
         ? { store: this._config.providers?.sessionConfig?.store(session) }
         : {}),
     };
+  };
+
+  /**
+   * Create a json web token by signing the payload passed as parameter
+   * @returns JWT for client/server interaction
+   */
+  public getJWT = (payload: any): string => {
+    return signJWT(
+        payload,
+        this._config.signingKey,
+        { expiresIn: '1h' },
+    )
   };
 
   /**
