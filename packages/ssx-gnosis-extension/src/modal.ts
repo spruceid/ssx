@@ -12,6 +12,8 @@ declare global {
   }
 }
 
+let delegators: Array<string> = [];
+
 /** Gnosis Modal Interface */
 interface IGnosisModal {
   /** Method to close the modal. */
@@ -25,7 +27,7 @@ interface IGnosisModal {
 }
 
 const styles =
-  '.ssx-gnosis-ssx-gnosis-modal--body{font-family:Satoshi;margin:0;background-color:#000}.ssx-gnosis-modal--container{display:flex;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;top:0;visibility:hidden;opacity:0;transition:all 0.3s ease}.ssx-gnosis-modal--container .ssx-gnosis-modal--backdrop{background:rgba(15,15,24,.6);position:fixed;width:100%;height:100%}.ssx-gnosis-modal--container.visible{opacity:1;visibility:visible}.ssx-gnosis-modal--container .ssx-gnosis-modal--content{max-width:100%;width:500px;position:fixed;top:calc((100vh - 550px - 120px)/2);transition:all 0.8s ease;z-index:9999}.ssx-gnosis-modal--header,.ssx-gnosis-modal--subheader,.ssx-gnosis-modal--footer{padding:1rem}.ssx-gnosis-modal--body{height:300px;overflow-y:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--option{font-size:16px;font-weight:400;padding:15px 30px;cursor:pointer}.ssx-gnosis-modal--body .ssx-gnosis-modal--info{width:100%;height:100%;display:flex;flex-wrap:wrap;text-align:center;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--info p{font-size:26px;font-weight:700;line-height:30px;margin-top:22px;margin-bottom:22px}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a{-webkit-appearance:button;-moz-appearance:button;appearance:button;text-decoration:none;cursor:pointer;border-radius:100px;width:174px;height:45px;font-size:16px;font-weight:700;line-height:25px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;margin:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{margin-right:12px}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader{width:100%;height:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{width:100px;height:100px}.ssx-gnosis-modal--header{display:flex;justify-content:space-between;align-items:center}.ssx-gnosis-modal--header .ssx-gnosis-modal--brand{display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.ssx-gnosis-modal--header h1{margin-left:12px;font-size:30px;line-height:46px;font-weight:900}.ssx-gnosis-modal--header button{font-size:20px;padding:12px;margin:0;height:40px;width:40px;border-radius:100px;border-style:none;cursor:pointer}.ssx-gnosis-modal--subheader{border-top-left-radius:20px;border-top-right-radius:20px;text-align:right}.ssx-gnosis-modal--subheader .ssx-gnosis-modal--results-counter{font-size:16px;font-weight:400;line-height:25.5px}.ssx-gnosis-modal--footer{text-align:right;border-bottom-left-radius:20px;border-bottom-right-radius:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}.ssx-gnosis-modal--btn{display:inline-block;border:0;cursor:pointer;font-size:16px;line-height:24.5px;font-weight:700;padding:11px 25px}.ssx-gnosis-modal--btn.disabled{cursor:not-allowed;opacity:.4}.ssx-gnosis-modal-rotating{animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-o-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-ms-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-moz-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-webkit-animation:ssx-gnosis-modal-rotating 0.7s linear infinite}@keyframes ssx-gnosis-modal-rotating{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}.ssx-gnosis-modal--theme-dark{color:#fff}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--header button{background:#fff;color:#000}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader,.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body{background-color:#293137}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a{background-color:#fff;color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{filter:brightness(0) saturate(100%) invert(30%) sepia(96%) saturate(1424%) hue-rotate(147deg) brightness(90%) contrast(101%)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{filter:invert(1)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-track{border-radius:20px;background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-thumb{border-radius:8px;background-color:#898f94}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar{background-color:#898f94;border-radius:20px;height:6px;width:6px}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option{background-color:transparent;border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option.selected{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option:hover{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader{border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{border-top:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.secondary{background:transparent;color:#ccc}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.primary{border-radius:8px;background:#656B6F;color:#fff}';
+  '.ssx-gnosis-ssx-gnosis-modal--body{font-family:Satoshi;margin:0;background-color:#000}.ssx-gnosis-modal--container{display:flex;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;top:0;visibility:hidden;opacity:0;transition:all 0.3s ease}.ssx-gnosis-modal--container .ssx-gnosis-modal--backdrop{background:rgba(15,15,24,.6);position:fixed;width:100%;height:100%}.ssx-gnosis-modal--container.visible{opacity:1;visibility:visible}.ssx-gnosis-modal--container .ssx-gnosis-modal--content{max-width:100%;width:500px;position:fixed;top:calc((100vh - 550px - 120px)/2);transition:all 0.8s ease;z-index:9999}.ssx-gnosis-modal--header,.ssx-gnosis-modal--subheader,.ssx-gnosis-modal--footer{padding:1rem}.ssx-gnosis-modal--body{height:300px;overflow-y:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--option{font-size:16px;font-weight:400;padding:15px 30px;cursor:pointer}.ssx-gnosis-modal--body .ssx-gnosis-modal--info{width:100%;height:100%;display:flex;flex-wrap:wrap;text-align:center;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--info p{font-size:26px;font-weight:700;line-height:30px;margin-top:22px;margin-bottom:22px}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a{-webkit-appearance:button;-moz-appearance:button;appearance:button;text-decoration:none;cursor:pointer;border-radius:100px;width:174px;height:45px;font-size:16px;font-weight:700;line-height:25px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;margin:auto}.ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{margin-right:12px}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader{width:100%;height:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center}.ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{width:100px;height:100px}.ssx-gnosis-modal--header{display:flex;justify-content:space-between;align-items:center}.ssx-gnosis-modal--header .ssx-gnosis-modal--brand{display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.ssx-gnosis-modal--header .ssx-gnosis-modal--header-title{margin-left:12px;font-size:30px;line-height:46px;font-weight:900;margin-block-start:0.67em;margin-block-end:0.67em;margin-inline-start:0px;margin-inline-end:0px}.ssx-gnosis-modal--header button{font-size:20px;padding:12px;margin:0;height:40px;width:40px;border-radius:100px;border-style:none;cursor:pointer;line-height:initial;font-family:initial}.ssx-gnosis-modal--subheader{border-top-left-radius:20px;border-top-right-radius:20px;text-align:right}.ssx-gnosis-modal--subheader .ssx-gnosis-modal--results-counter{font-size:16px;font-weight:400;line-height:25.5px}.ssx-gnosis-modal--footer{text-align:right;border-bottom-left-radius:20px;border-bottom-right-radius:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}.ssx-gnosis-modal--btn{display:inline-block;border:0;cursor:pointer;font-size:16px;line-height:24.5px;font-weight:700;padding:11px 25px}.ssx-gnosis-modal--btn.disabled{cursor:not-allowed;opacity:.4}.ssx-gnosis-modal-rotating{animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-o-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-ms-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-moz-animation:ssx-gnosis-modal-rotating 0.7s linear infinite;-webkit-animation:ssx-gnosis-modal-rotating 0.7s linear infinite}@keyframes ssx-gnosis-modal-rotating{from{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg)}}.ssx-gnosis-modal--theme-dark{color:#fff}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--header button{background:#fff;color:#000}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader,.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body{background-color:#293137}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a{background-color:#fff;color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--info a img{filter:brightness(0) saturate(100%) invert(30%) sepia(96%) saturate(1424%) hue-rotate(147deg) brightness(90%) contrast(101%)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--loader img{filter:invert(1)}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-track{border-radius:20px;background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar-thumb{border-radius:8px;background-color:#898f94}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body::-webkit-scrollbar{background-color:#898f94;border-radius:20px;height:6px;width:6px}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option{background-color:transparent;border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option.selected{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--body .ssx-gnosis-modal--option:hover{background-color:#24262A}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{background-color:#3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--subheader{border-bottom:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--footer{border-top:1px solid #3F464B}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.secondary{background:transparent;color:#ccc}.ssx-gnosis-modal--theme-dark .ssx-gnosis-modal--btn.primary{border-radius:8px;background:#656B6F;color:#fff}';
 
 /**
  * Gets modal loader component.
@@ -65,6 +67,7 @@ const getModalLoader = (): Element => {
  * Gets error component.
  * @returns Modal Error HTML element.
  */
+/* c8 ignore start */
 const getErrorModal = (): Element => {
   const info = document.createElement('div');
   info.classList.add('ssx-gnosis-modal--info');
@@ -122,38 +125,13 @@ const getErrorModal = (): Element => {
   p.appendChild(document.createElement('br'));
   p.appendChild(document.createTextNode('wrong!'));
 
-  const svgGnosis = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'svg'
-  );
-  svgGnosis.setAttribute('width', '32');
-  svgGnosis.setAttribute('height', '32');
-  svgGnosis.setAttribute('viewBox', '0 0 32 32');
-  svgGnosis.setAttribute('fill', 'none');
-  const pathGnosis = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'path'
-  );
-  pathGnosis.setAttribute('fill-rule', 'evenodd');
-  pathGnosis.setAttribute('clip-rule', 'evenodd');
-  pathGnosis.setAttribute(
-    'd',
-    'M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM16 21C18.419 21 20.4367 19.2822 20.9 17H27.5C28.0523 17 28.5 16.5523 28.5 16C28.5 15.4477 28.0523 15 27.5 15H20.9C20.4367 12.7178 18.419 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21Z'
-  );
-  pathGnosis.setAttribute('fill', 'white');
-  svgGnosis.appendChild(pathGnosis);
-  const a = document.createElement('a');
-  a.setAttribute('href', '#');
-  a.appendChild(svgGnosis);
-  a.appendChild(document.createTextNode('Gnosis Safe'));
-
   container.appendChild(svg);
   container.appendChild(p);
-  container.appendChild(a);
   info.appendChild(container);
 
   return info;
 };
+/* c8 ignore end */
 
 /**
  * Gets base modal component.
@@ -216,10 +194,11 @@ const getBaseModal = (): Element => {
   gLogo.appendChild(pathLogo2);
   gLogo.appendChild(pathLogo3);
   svgLogo.appendChild(gLogo);
-  const h1 = document.createElement('h1');
-  h1.appendChild(document.createTextNode('Safe'));
+  const divSafe = document.createElement('div');
+  divSafe.classList.add('ssx-gnosis-modal--header-title')
+  divSafe.appendChild(document.createTextNode('Safe'));
   brand.appendChild(svgLogo);
-  brand.appendChild(h1);
+  brand.appendChild(divSafe);
   // Close button
   const closeBtn = document.createElement('button');
   closeBtn.onclick = window.gnosisModal.closeModal;
@@ -345,7 +324,7 @@ export class GnosisDelegation implements SSXExtension {
     const modalBodyContent = document.createElement('div');
     await this.getOptions()
       .then(async options => {
-        // TODO(w4ll3): Uncomment once select Sign-in as DAO is implemented
+        delegators = options;
         this.selectedOption = `Yourself - ${this._connectedAddress}`;
         if (options.length === 0) {
           this.connect();
@@ -369,9 +348,8 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${
-              options.length > 1 ? 's' : ''
-            }`;
+            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
+              }`;
           })
           .catch(e => {
             console.error(e);
@@ -387,9 +365,8 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${
-              options.length > 1 ? 's' : ''
-            }`;
+            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
+              }`;
           });
       })
       .catch(e => {
@@ -469,14 +446,16 @@ export class GnosisDelegation implements SSXExtension {
    * @returns Promise void.
    */
   connect = async (): Promise<void> => {
-    if (!this.selectedOption.replace(/Yourself - /, '')) {
+    const option = this.selectedOption.replace(/Yourself - /, '');
+    const hasDelegator = [...delegators, this._connectedAddress].filter(delegator => option === delegator).length !== 1;
+    if (!option || hasDelegator) {
       this._failure(new Error('Invalid address selected.'));
       this.closeModal();
       return;
     }
     this.closeModal();
     this._proceed({
-      siwe: { address: this.selectedOption.replace(/Yourself - /, '') },
+      siwe: { address: option },
     });
     return;
   };
