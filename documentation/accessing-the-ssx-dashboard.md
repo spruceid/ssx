@@ -54,8 +54,8 @@ const ssx = new SSXServer({
 
 For more details on getting started with `ssx-server`, check out our quickstart guide!
 
-{% content-ref url="ssx-quickstart.md" %}
-[ssx-quickstart.md](ssx-quickstart.md)
+{% content-ref url="ssx-quickstart/" %}
+[ssx-quickstart](ssx-quickstart/)
 {% endcontent-ref %}
 
 ## Viewing Metrics

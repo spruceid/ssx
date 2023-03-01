@@ -1,23 +1,26 @@
 # Table of contents
 
 * [SSX](README.md)
-* [⚡ SSX Quickstart](ssx-quickstart.md)
+* [⚡ SSX Quickstart](ssx-quickstart/README.md)
+  * [SSX Server Quickstart](ssx-quickstart/ssx-server-quickstart.md)
 * [🛠 Configuring SSX](configuring-ssx/README.md)
   * [Configuring SSX Server](configuring-ssx/configuring-ssx-server.md)
   * [Configuring SSX with React](configuring-ssx/configuring-ssx-with-react.md)
   * [Configuring SSX for Serverless](configuring-ssx/configuring-ssx-for-serverless.md)
-* [❓ SSX: How It Works](ssx-how-it-works.md)
 * [📊 Accessing the SSX Dashboard](accessing-the-ssx-dashboard.md)
 * [📈 Scaling SSX Server](scaling-ssx-server.md)
+
+## Tutorials
+
+* [Moving From SIWE to SSX](tutorials/moving-from-siwe-to-ssx.md)
+* [Using SSX with NextAuth](tutorials/using-ssx-with-nextauth.md)
+* [Build a Token-Gated Dapp](tutorials/build-a-token-gated-dapp.md)
+* [From Email Login to SIWE](tutorials/from-email-login-to-siwe.md)
 
 ## appendix
 
 * [DAO Login Workflow](appendix/dao-login-workflow.md)
-* [Moving From SIWE to SSX](appendix/moving-from-siwe-to-ssx.md)
-* [Build a Token-Gated Dapp](appendix/build-a-token-gated-dapp.md)
-* [Using SSX with NextAuth](appendix/using-ssx-with-nextauth.md)
-* [From Email Login to SIWE](appendix/from-email-login-to-siwe.md)
-* [SSX Server Quickstart](appendix/ssx-server-quickstart.md)
+* [SSX: How It Works](appendix/ssx-how-it-works.md)
 
 ## Reference
 

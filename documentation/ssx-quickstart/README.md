@@ -62,7 +62,11 @@ const signIn = async () => {
 
 ## Installation on Server
 
-In order to get started with `ssx-server`, install `ssx-server` with your preferred package manager by running any of the following commands:&#x20;
+{% hint style="info" %}
+We have a number of server examples available for those getting started with SSX. Check out [SSX Server Quickstart](ssx-server-quickstart.md) for more info!
+{% endhint %}
+
+To get started with `ssx-server`, install `ssx-server` with your preferred package manager by running any of the following commands:&#x20;
 
 ```bash
 npm install @spruceid/ssx-server
@@ -73,7 +77,7 @@ pnpm install @spruceid/ssx-server
 ```
 
 {% hint style="info" %}
-Looking for SSX support for serverless or other servers besides Express? Check out [Configuring SSX on other Servers](configuring-ssx/configuring-ssx-server.md)
+Looking for SSX support for serverless or other servers besides Express? Check out [Configuring SSX on other Servers](../configuring-ssx/configuring-ssx-server.md)
 {% endhint %}
 
 ### Express.js Middleware

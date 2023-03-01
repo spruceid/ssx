@@ -10,8 +10,8 @@ SSX is a library that enables you to easily integrate [Sign-In with Ethereum](ht
 
 To hop right in, check out our Quickstart guide:
 
-{% content-ref url="ssx-quickstart.md" %}
-[ssx-quickstart.md](ssx-quickstart.md)
+{% content-ref url="ssx-quickstart/" %}
+[ssx-quickstart](ssx-quickstart/)
 {% endcontent-ref %}
 
 ### **How Does it Work?**
@@ -31,8 +31,8 @@ To learn about configuring SSX for your use cases, or using the DAO login featur
 
 To learn more about SSX and what's under the hood, check out:
 
-{% content-ref url="ssx-how-it-works.md" %}
-[ssx-how-it-works.md](ssx-how-it-works.md)
+{% content-ref url="appendix/ssx-how-it-works.md" %}
+[ssx-how-it-works.md](appendix/ssx-how-it-works.md)
 {% endcontent-ref %}
 
 ### Community and Help

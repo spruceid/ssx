@@ -4,7 +4,7 @@ description: >-
   SSX
 ---
 
-# ❓ SSX: How It Works
+# SSX: How It Works
 
 ## Overview
 
@@ -32,4 +32,4 @@ Upon successful login, SSX-Server issues a session cookie, `ssx-session` that co
 
 ``
 
-![An overview of the sign-in flow using SSX and SSX-Server](.gitbook/assets/ssx-overview-2.png)
+![An overview of the sign-in flow using SSX and SSX-Server](../.gitbook/assets/ssx-overview-2.png)
