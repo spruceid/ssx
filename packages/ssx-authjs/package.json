@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@auth/core": "^0.4.0",
-    "@spruceid/ssx": "1.2.2",
+    "@spruceid/ssx": "^1.2.2",
     "@spruceid/ssx-server": "1.2.2",
     "@sveltejs/kit": "^1.8.8",
     "next-auth": "^4.10.3",
