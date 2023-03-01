@@ -68,8 +68,6 @@ export class SSXServer extends SSXServerBaseClass {
     }
 
     this.authenticationMethod = config.authenticationMethod || AuthenticationMethod.COOKIES
-
-    console.log({ configAuth: config.authenticationMethod, authSet: this.authenticationMethod })
   }
 
   /**

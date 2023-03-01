@@ -85,41 +85,41 @@ test('Should log out successfully', async () => {
   expect(res.statusCode).toEqual(204);
 });
 
-// describe('Should override all paths successfully', () => {
-//   const customApp = express();
-//   const server = new SSXServer();
-//   customApp.use(session({ secret: 'FAKESECRET' }));
-//   customApp.use(
-//     SSXExpressMiddleware(server, {
-//       nonce: '/ssx-custom-nonce',
-//       login: '/ssx-custom-login',
-//       logout: '/ssx-custom-logout',
-//     }),
-//   );
-//
-//   test('Should get /ssx-custom-nonce successfully', async () => {
-//     const res = await request(customApp).get('/ssx-custom-nonce');
-//
-//     expect(res.statusCode).toEqual(200);
-//   });
-//
-//   test('Should post /ssx-custom-login successfully', async () => {
-//     const res = await request(customApp).post('/ssx-custom-login').send({
-//       siwe: SIWE_MESSAGE,
-//       signature: SIGNATURE,
-//       daoLogin: false,
-//       resolveEns: false,
-//     });
-//
-//     expect(res.statusCode).toEqual(200);
-//   });
-//
-//   test('Should post /ssx-custom-logout successfully', async () => {
-//     const res = await request(customApp).post('/ssx-custom-logout');
-//
-//     expect(res.statusCode).toEqual(204);
-//   });
-// });
+describe('Should override all paths successfully', () => {
+  const customApp = express();
+  const server = new SSXServer();
+  customApp.use(session({ secret: 'FAKESECRET' }));
+  customApp.use(
+    SSXExpressMiddleware(server, {
+      nonce: '/ssx-custom-nonce',
+      login: '/ssx-custom-login',
+      logout: '/ssx-custom-logout',
+    }),
+  );
+
+  test('Should get /ssx-custom-nonce successfully', async () => {
+    const res = await request(customApp).get('/ssx-custom-nonce');
+
+    expect(res.statusCode).toEqual(200);
+  });
+
+  test('Should post /ssx-custom-login successfully', async () => {
+    const res = await request(customApp).post('/ssx-custom-login').send({
+      siwe: SIWE_MESSAGE,
+      signature: SIGNATURE,
+      daoLogin: false,
+      resolveEns: false,
+    });
+
+    expect(res.statusCode).toEqual(200);
+  });
+
+  test('Should post /ssx-custom-logout successfully', async () => {
+    const res = await request(customApp).post('/ssx-custom-logout');
+
+    expect(res.statusCode).toEqual(204);
+  });
+});
 
 describe('JWT login', () => {
   const customApp = express();
@@ -132,23 +132,13 @@ describe('JWT login', () => {
   test('Should respond login with a valid jwt', async () => {
     let res: any
 
-    try {
-        res = await request(customApp).post('/ssx-login').send({
-            siwe: SIWE_MESSAGE,
-            signature: SIGNATURE,
-            daoLogin: false,
-            resolveEns: false,
-        });
-
-        console.log({ res: res.body, error: res.error })
-    } catch (error) {
-        console.log(error)
-    }
-
-    console.log('request: done')
+    res = await request(customApp).post('/ssx-login').send({
+        siwe: SIWE_MESSAGE,
+        signature: SIGNATURE,
+        daoLogin: false,
+        resolveEns: false,
+    });
 
     expect(res.statusCode).toEqual(200);
   })
-
-
 })
