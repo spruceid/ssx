@@ -320,7 +320,6 @@ export class GnosisDelegation implements SSXExtension {
     modalCounter.textContent = '';
     modalCounter.insertAdjacentHTML('beforeend', '&nbsp;');
     continueBtn.classList.add('disabled');
-    modal.classList.add('visible');
     const modalBodyContent = document.createElement('div');
     await this.getOptions()
       .then(async options => {
@@ -350,6 +349,8 @@ export class GnosisDelegation implements SSXExtension {
             modalBody.replaceChildren(modalBodyContent);
             modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
               }`;
+
+            modal.classList.add('visible');
           })
           .catch(e => {
             console.error(e);
@@ -367,10 +368,16 @@ export class GnosisDelegation implements SSXExtension {
             modalBody.replaceChildren(modalBodyContent);
             modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
               }`;
+            if (!modal.classList.contains('visible')) {
+              modal.classList.add('visible');
+            }
           });
       })
       .catch(e => {
         console.error(e);
+        if (!modal.classList.contains('visible')) {
+          modal.classList.add('visible');
+        }
         modalBody.replaceChildren(getErrorModal());
       });
   };
