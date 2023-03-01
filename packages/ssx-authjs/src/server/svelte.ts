@@ -1,5 +1,4 @@
 import { SSXServer } from '@spruceid/ssx-server';
-import { generateNonce } from 'siwe';
 
 export const SSXSvelteAuth = (
   cookies: any,
@@ -28,17 +27,10 @@ export const SSXSvelteAuth = (
     },
   };
 
-  const authorize = async credentials => {
+  const authorize = async (credentials: any) => {
     try {
-      const nonce = generateNonce();
 
-      cookies.set('nonce', nonce, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 30
-      });
+      const nonce = cookies.get('nonce');
 
       // validate signature, nonce and ssx config options
       const { success, error, session } = await ssx.login(
@@ -50,6 +42,12 @@ export const SSXSvelteAuth = (
       );
       const { siwe, signature, daoLogin, ens } = session;
       if (!siwe) return null;
+
+      //  // check domain
+      //  const nextAuthUrl = new URL(process.env.DOMAIN as string);
+      //  if (siwe.domain !== nextAuthUrl.host) {
+      //     return null;
+      //  }
 
       if (success) {
         return {
@@ -67,7 +65,7 @@ export const SSXSvelteAuth = (
     return null;
   };
 
-  const session = async sessionData => {
+  const session = async (sessionData: any) => {
     const { session, user, token } = sessionData;
     if (session.user) {
       session.user.name = token.sub;
