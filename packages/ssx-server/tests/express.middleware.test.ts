@@ -130,9 +130,7 @@ describe('JWT login', () => {
   customApp.use(SSXExpressMiddleware(server));
 
   test('Should respond login with a valid jwt', async () => {
-    let res: any
-
-    res = await request(customApp).post('/ssx-login').send({
+    const res = await request(customApp).post('/ssx-login').send({
         siwe: SIWE_MESSAGE,
         signature: SIGNATURE,
         daoLogin: false,
