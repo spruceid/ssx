@@ -138,5 +138,5 @@ describe('JWT login', () => {
     });
 
     expect(res.statusCode).toEqual(200);
-  })
+  });
 })
