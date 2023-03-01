@@ -7,7 +7,7 @@ import { SiweMessage, SiweError } from 'siwe';
 
 export enum AuthenticationMethod {
     COOKIES = 'cookies',
-    JWT = 'jwt'
+    JWT = 'jwt',
 }
 
 /** Configuration interface for ssx-server */

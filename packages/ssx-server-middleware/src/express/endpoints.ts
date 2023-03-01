@@ -1,7 +1,10 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServerRouteNames } from '@spruceid/ssx-core';
-import { AuthenticationMethod, SSXServerBaseClass } from '@spruceid/ssx-core/server';
+import {
+  AuthenticationMethod,
+  SSXServerBaseClass,
+} from '@spruceid/ssx-core/server';
 import { SessionData } from 'express-session';
 
 const ssxEndpoints = (
@@ -89,16 +92,16 @@ const ssxEndpoints = (
         daoLogin: session.daoLogin,
         ens: session.ens,
         lens: session.lens,
-      }
+      };
 
       if (ssx.authenticationMethod === AuthenticationMethod.COOKIES) {
         Object.assign(req.session, payload);
         req.session.save(() => res.status(200).json({ ...req.session }));
       } else {
-        req.session.destroy(null)
+        req.session.destroy(null);
         res.status(200).json({
-            jwt: ssx.getJWT(payload)
-        })
+          jwt: ssx.getJWT(payload),
+        });
       }
 
       return;
