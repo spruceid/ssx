@@ -2,19 +2,11 @@ import { SvelteKitAuth } from "@auth/sveltekit"
 import Credentials from "@auth/core/providers/credentials"
 import { SSXServer } from "@spruceid/ssx-server";
 import { generateNonce } from "siwe";
-//import { SSXSvelteAuth } from '@spruceid/ssx-authjs/server'
-import { onMount } from "svelte";
+import { SSXSvelteAuth } from '@spruceid/ssx-authjs/server'
 
 const ssx = new SSXServer({});
 
 export const handle = (params) => {
-
-  let SSXSvelteAuth; 
-  onMount(async () => {
-		let module = await import('@spruceid/ssx-authjs/server');
-		SSXSvelteAuth=module.SSXSvelteAuth
-	});
-  if (SSXSvelteAuth) {
     const { credentials, authorize } = SSXSvelteAuth(params.event.cookies, ssx);
 
     if (params.event.url.pathname === "/ssx-nonce") {
@@ -38,5 +30,4 @@ export const handle = (params) => {
         )
       ],
     })(params);
-  }
 }
