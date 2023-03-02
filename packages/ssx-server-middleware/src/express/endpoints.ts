@@ -1,10 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { SSXServerRouteNames } from '@spruceid/ssx-core';
-import {
-  AuthenticationMethod,
-  SSXServerBaseClass,
-} from '@spruceid/ssx-core/server';
+import { SSXServerRouteNames, SSXAuthenticationMethod } from '@spruceid/ssx-core';
+import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 import { SessionData } from 'express-session';
 
 const ssxEndpoints = (
@@ -94,7 +91,7 @@ const ssxEndpoints = (
         lens: session.lens,
       };
 
-      if (ssx.authenticationMethod === AuthenticationMethod.COOKIES) {
+      if (ssx.authenticationMethod === SSXAuthenticationMethod.COOKIES) {
         Object.assign(req.session, payload);
         req.session.save(() => res.status(200).json({ ...req.session }));
       } else {

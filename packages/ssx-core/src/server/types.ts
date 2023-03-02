@@ -1,14 +1,15 @@
+import { } from '../types';
 import { CookieOptions, RequestHandler } from 'express';
 import { SessionData, SessionOptions, Store } from 'express-session';
-import { SSXEnsData, SSXEnsResolveOptions, SSXRPCProvider } from '../types';
+import {
+  SSXEnsData,
+  SSXEnsResolveOptions,
+  SSXRPCProvider,
+  SSXAuthenticationMethod,
+} from '../types';
 import { EventEmitter } from 'events';
 import { ethers } from 'ethers';
 import { SiweMessage, SiweError } from 'siwe';
-
-export enum AuthenticationMethod {
-    COOKIES = 'cookies',
-    JWT = 'jwt',
-}
 
 /** Configuration interface for ssx-server */
 export interface SSXServerConfig {
@@ -20,7 +21,7 @@ export interface SSXServerConfig {
    * require HTTPS and sets the SameSite attribute to 'lax'. Defaults to false */
   useSecureCookies?: boolean;
   /** The authentication method to be used between client and server. Defaults to cookies */
-  authenticationMethod?: AuthenticationMethod;
+  authenticationMethod?: SSXAuthenticationMethod;
 }
 
 /** SSX web3 configuration settings. */
@@ -114,7 +115,7 @@ export abstract class SSXServerBaseClass extends EventEmitter {
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
   /** Authentication method to be used between client and server */
-  public authenticationMethod: AuthenticationMethod;
+  public authenticationMethod: SSXAuthenticationMethod;
   /**
    * Sets default values for optional configurations
    */

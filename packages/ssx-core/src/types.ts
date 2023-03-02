@@ -278,3 +278,9 @@ export interface SSXLensProfilesResponse {
   /** Lens pagination info. */
   pageInfo?: SSXLensProfilesPageInfo;
 }
+
+/** Authentication method to be used between client and server */
+export enum SSXAuthenticationMethod {
+  COOKIES = 'cookies',
+  JWT = 'jwt',
+}

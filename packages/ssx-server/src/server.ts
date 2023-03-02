@@ -8,6 +8,7 @@ import {
   getProvider,
   ssxResolveLens,
   SSXLensProfilesResponse,
+  SSXAuthenticationMethod,
 } from '@spruceid/ssx-core';
 import {
   SSXLogFields,
@@ -15,7 +16,6 @@ import {
   SSXEventLogTypes,
   SSXServerBaseClass,
   ssxLog,
-  AuthenticationMethod,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
@@ -38,7 +38,7 @@ export class SSXServer extends SSXServerBaseClass {
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
   /** Authentication method used between client and server */
-  public authenticationMethod: AuthenticationMethod;
+  public authenticationMethod: SSXAuthenticationMethod;
 
   constructor(config: SSXServerConfig = {}) {
     super();
@@ -68,7 +68,7 @@ export class SSXServer extends SSXServerBaseClass {
     }
 
     this.authenticationMethod =
-      config.authenticationMethod || AuthenticationMethod.COOKIES;
+      config.authenticationMethod || SSXAuthenticationMethod.COOKIES;
   }
 
   /**

@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import session from 'express-session';
-import { AuthenticationMethod, SSXExpressMiddleware, SSXServer } from '../src';
+import { SSXAuthenticationMethod } from '@spruceid/ssx-core'
+import { SSXExpressMiddleware, SSXServer } from '../src';
 import request from 'supertest';
 
 const SIWE_MESSAGE = {
@@ -125,11 +126,11 @@ describe('JWT login', () => {
   const customApp = express();
   const server = new SSXServer({
     signingKey: 'FAKESECRET',
-    authenticationMethod: AuthenticationMethod.JWT,
+    authenticationMethod: SSXAuthenticationMethod.JWT,
   });
   customApp.use(SSXExpressMiddleware(server));
 
-  test('Should respond login with a valid jwt', async () => {
+  test.only('Should respond login with a valid jwt', async () => {
     const res = await request(customApp).post('/ssx-login').send({
         siwe: SIWE_MESSAGE,
         signature: SIGNATURE,
