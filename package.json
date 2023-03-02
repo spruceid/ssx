@@ -12,7 +12,6 @@
     "examples/ssx-test-express-api",
     "examples/ssx-test-gulp-dapp",
     "examples/ssx-test-http-api",
-    "examples/ssx-test-nextauth",
     "examples/ssx-test-serverless-dynamodb-api",
     "examples/ssx-test-web3modal-v2-react",
     "examples/ssx-test-web3modal-v2-standalone"
@@ -44,6 +43,8 @@
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api",
     "start:test-dapp": "yarn test-dapp start",
     "start:test-api": "yarn express-api start",
+    "prepare-release": "changeset version",
+    "publish-packages": "yarn reset && yarn install && yarn build && changeset publish",
     "test:e2e": "start-test 'yarn start:test-dapp' 3000 'yarn start:test-api' 3001 'SECRET_WORDS=\"test test test test test test test test test test test junk\" synpress run'"
   },
   "devDependencies": {

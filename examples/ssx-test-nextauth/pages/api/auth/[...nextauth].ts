@@ -7,7 +7,7 @@ import { SSXServer } from "@spruceid/ssx-server";
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const ssxConfig = {};
   const ssx = new SSXServer(ssxConfig);
-  const { credentials, authorize, session } = SSXNextAuth(req, res, ssx);
+  const { credentials, authorize, session } = SSXNextAuth(req, ssx);
   const providers = [
     CredentialsProvider({
       name: "Ethereum",
@@ -23,7 +23,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
-     session,
+      session,
     },
   });
 }

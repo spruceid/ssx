@@ -1,5 +1,17 @@
 # @spruceid/ssx
 
+## 1.2.4
+
+### Patch Changes
+
+- Bump version for package rebuild
+
+## 1.2.3
+
+### Patch Changes
+
+- aa228bc: Separated and exposed the connect function to connect the SSX instance to the ethereum provider. Also exposed the extension interface to allow for extensions to SSX
+
 ## 1.2.2
 
 ### Patch Changes
