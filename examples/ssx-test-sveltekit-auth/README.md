@@ -6,6 +6,4 @@ This example is forked from the official SvelteKit Auth example by [Auth.js](htt
 
 You can run the app with the following commands:
 
-`npm install`
-
-`npm run dev`
+`yarn && yarn dev`
