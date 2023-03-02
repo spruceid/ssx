@@ -32,7 +32,9 @@ export type SSXClientSession = {
   walletAddress: string;
   chainId: number;
   /** Key to identify the session */
-  sessionKey: string;
+  sessionKey?: string;
+  /** Json web token to be used as proof of authentication */
+  jwt?: string;
   /** The message that can be obtained by SiweMessage.prepareMessage() */
   siwe: string;
   /** The signature of the siwe message */
