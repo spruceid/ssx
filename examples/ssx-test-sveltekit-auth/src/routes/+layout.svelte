@@ -1,40 +1,22 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { SSX } from "@spruceid/ssx"
+  import { SSXSvelteAuthRouteConfig } from "@spruceid/ssx-authjs/client"
 
-  const login = {
-    customAPIOperation: async (session) => {
-      const { siwe, signature } = session;
-      console.log("session", session);
-      
-      return import('@auth/sveltekit/client')
-        .then(svelteKitClient => {
-          return svelteKitClient.signIn('credentials', {
-            message: siwe,
-            redirect: false,
-            signature,
-            daoLogin: false,
-            resolveEns: false,
-          });
-        })
-    },
-  };
-
-  const routes = { login } ;
-  const server = { host: 'http://localhost:5173', routes };
-  const ssxConfig = {
-    siweConfig: {
-      domain: "localhost:5173",
-    },
-    providers: {
-      server,
-    },
-  }
-  const ssx = new SSX(ssxConfig);
-    
-  const handleSignIn = (props) => {
-    ssx.signIn();
-  }
+const { server } = SSXSvelteAuthRouteConfig();
+const ssxConfig = {
+  siweConfig: {
+    domain: "localhost:5173",
+  },
+  providers: {
+    server,
+  },
+}
+const ssx = new SSX(ssxConfig);
+  
+const handleSignIn = () => {
+  ssx.signIn();
+}
 </script>
 
 <div>
@@ -73,114 +55,113 @@
 </div>
 
 <style>
-  :global(body) {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-      "Noto Color Emoji";
-    padding: 0 1rem 1rem 1rem;
-    max-width: 680px;
-    margin: 0 auto;
-    background: #fff;
-    color: #333;
-  }
-  :global(li),
-  :global(p) {
-    line-height: 1.5rem;
-  }
-  :global(a) {
-    font-weight: 500;
-  }
-  :global(hr) {
-    border: 1px solid #ddd;
-  }
-  :global(iframe) {
-    background: #ccc;
-    border: 1px solid #ccc;
-    height: 10rem;
-    width: 100%;
-    border-radius: 0.5rem;
-    filter: invert(1);
-  }
-
-  .nojs-show {
-    opacity: 1;
-    top: 0;
-  }
-  .signedInStatus {
-    display: block;
-    min-height: 4rem;
-    width: 100%;
-  }
-  .loaded {
-    position: relative;
-    top: 0;
-    opacity: 1;
-    overflow: hidden;
-    border-radius: 0 0 0.6rem 0.6rem;
-    padding: 0.6rem 1rem;
-    margin: 0;
-    background-color: rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease-in;
-  }
-  .signedInText,
-  .notSignedInText {
-    position: absolute;
-    padding-top: 0.8rem;
-    left: 1rem;
-    right: 6.5rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: inherit;
-    z-index: 1;
-    line-height: 1.3rem;
-  }
-  .signedInText {
-    padding-top: 0rem;
-    left: 4.6rem;
-  }
-  .avatar {
-    border-radius: 2rem;
-    float: left;
-    height: 2.8rem;
-    width: 2.8rem;
-    background-color: white;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  .button,
-  .buttonPrimary {
-    float: right;
-    margin-right: -0.4rem;
-    font-weight: 500;
-    border-radius: 0.3rem;
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1.4rem;
-    padding: 0.7rem 0.8rem;
-    position: relative;
-    z-index: 10;
-    background-color: transparent;
-    color: #555;
-  }
-  .buttonPrimary {
-    background-color: #346df1;
-    border-color: #346df1;
-    color: #fff;
-    text-decoration: none;
-    padding: 0.7rem 1.4rem;
-  }
-  .buttonPrimary:hover {
-    box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
-  }
-  .navItems {
-    margin-bottom: 2rem;
-    padding: 0;
-    list-style: none;
-  }
-  .navItem {
-    display: inline-block;
-    margin-right: 1rem;
-  }
+:global(body) {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  padding: 0 1rem 1rem 1rem;
+  max-width: 680px;
+  margin: 0 auto;
+  background: #fff;
+  color: #333;
+}
+:global(li),
+:global(p) {
+  line-height: 1.5rem;
+}
+:global(a) {
+  font-weight: 500;
+}
+:global(hr) {
+  border: 1px solid #ddd;
+}
+:global(iframe) {
+  background: #ccc;
+  border: 1px solid #ccc;
+  height: 10rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  filter: invert(1);
+}
+.nojs-show {
+  opacity: 1;
+  top: 0;
+}
+.signedInStatus {
+  display: block;
+  min-height: 4rem;
+  width: 100%;
+}
+.loaded {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  overflow: hidden;
+  border-radius: 0 0 0.6rem 0.6rem;
+  padding: 0.6rem 1rem;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in;
+}
+.signedInText,
+.notSignedInText {
+  position: absolute;
+  padding-top: 0.8rem;
+  left: 1rem;
+  right: 6.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inherit;
+  z-index: 1;
+  line-height: 1.3rem;
+}
+.signedInText {
+  padding-top: 0rem;
+  left: 4.6rem;
+}
+.avatar {
+  border-radius: 2rem;
+  float: left;
+  height: 2.8rem;
+  width: 2.8rem;
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.button,
+.buttonPrimary {
+  float: right;
+  margin-right: -0.4rem;
+  font-weight: 500;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  padding: 0.7rem 0.8rem;
+  position: relative;
+  z-index: 10;
+  background-color: transparent;
+  color: #555;
+}
+.buttonPrimary {
+  background-color: #346df1;
+  border-color: #346df1;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+}
+.buttonPrimary:hover {
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
+}
+.navItems {
+  margin-bottom: 2rem;
+  padding: 0;
+  list-style: none;
+}
+.navItem {
+  display: inline-block;
+  margin-right: 1rem;
+}
 </style>
