@@ -30,8 +30,6 @@ export class SSXInit {
    * Connect to the signing account using the configured provider.
    * @returns SSXConnected instance.
    */
-
-
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
     let provider: ethers.providers.Web3Provider;
@@ -115,13 +113,7 @@ export class SSXConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
-    this.provider.on('accountsChanged', async function (accounts) {
-      const connectedAccounts = await provider.listAccounts();
-      let account = connectedAccounts[0]
-      account = accounts[0];
-    });
   }
-
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
   public async applyExtensions(): Promise<void> {
@@ -294,7 +286,7 @@ export class SSXConnected implements ISSXConnected {
       issuedAt: new Date().toISOString(),
       nonce: generateNonce(),
     };
-
+    
     const serverNonce = await this.ssxServerNonce(defaults);
     if (serverNonce) defaults.nonce = serverNonce;
 

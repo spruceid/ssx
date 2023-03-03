@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { SSX, SSXClientConfig } from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
+import { watchAccount, watchSigner } from 'wagmi/actions';
 
 /** Interface for SSX Web3 Provider. */
 export interface SSXWeb3Provider {
@@ -74,10 +75,17 @@ export const SSXProvider = ({
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
   const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
 
+  const unwatch = watchAccount(async (signer) => {
+    if (signer && ssxConfig && ssxConfig.siweConfig) {
+      if (signer.address != ssxConfig.siweConfig.address) {
+        ssxConfig.siweConfig.address = signer.address
+      }
+    }
+  })
+
   useEffect(() => {
     async function initializeSSX() {
       const { SSX } = await import('@spruceid/ssx');
-
       const modifiedSSXConfig = {
         ...ssxConfig,
         siweConfig: {
@@ -91,6 +99,8 @@ export const SSXProvider = ({
           },
         },
       };
+      console.log("in use effect", modifiedSSXConfig.siweConfig.address)
+
       const ssxInstance = new SSX(modifiedSSXConfig);
       setSSX(ssxInstance);
       setSSXLoaded(true);
