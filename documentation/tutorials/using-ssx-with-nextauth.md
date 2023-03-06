@@ -34,7 +34,7 @@ import { SSXServer } from "@spruceid/ssx-server";
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const ssxConfig = {};
   const ssx = new SSXServer(ssxConfig);
-  const { credentials, authorize } = SSXNextAuth(req, res, ssx);
+  const { credentials, authorize } = SSXNextAuth(req, ssx);
   
   const providers = [
     CredentialsProvider({
