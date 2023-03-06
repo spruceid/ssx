@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import { SSXServerRouteNames, SSXAuthenticationMethod } from '@spruceid/ssx-core';
-import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
+import { SSXServerBaseClass, SSXLoginPayload } from '@spruceid/ssx-core/server';
 import { SessionData } from 'express-session';
 
 const ssxEndpoints = (
@@ -83,7 +83,7 @@ const ssxEndpoints = (
         return res.status(400).json({ message });
       }
 
-      const payload: Omit<SessionData, 'nonce' | 'cookie'> = {
+      const payload: SSXLoginPayload = {
         siwe: session.siwe,
         signature: session.signature,
         daoLogin: session.daoLogin,

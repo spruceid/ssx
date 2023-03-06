@@ -15,6 +15,7 @@ import {
   SSXServerConfig,
   SSXEventLogTypes,
   SSXServerBaseClass,
+  SSXLoginPayload,
   ssxLog,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
@@ -272,7 +273,7 @@ export class SSXServer extends SSXServerBaseClass {
    * Create a json web token by signing the payload passed as parameter
    * @returns JWT for client/server interaction
    */
-  public getJWT = (payload: any): string => {
+  public getJWT = (payload: SSXLoginPayload): string => {
     return signJWT(payload, this._config.signingKey, { expiresIn: '1h' });
   };
 

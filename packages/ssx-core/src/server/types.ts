@@ -24,6 +24,8 @@ export interface SSXServerConfig {
   authenticationMethod?: SSXAuthenticationMethod;
 }
 
+export type SSXLoginPayload = Omit<SessionData, 'nonce' | 'cookie'>
+
 /** SSX web3 configuration settings. */
 export interface SSXServerProviders {
   /** JSON RPC provider configurations. */
