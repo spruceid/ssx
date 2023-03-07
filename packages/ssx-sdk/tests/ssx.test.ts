@@ -2,7 +2,7 @@ const { ethers } = require('ethers');
 const { generateTestingUtils } = require('eth-testing');
 const { TextEncoder: TE, TextDecoder: TD } = require('util');
 
-jest.mock('axios')
+jest.mock('axios');
 
 global.TextEncoder = TE;
 global.TextDecoder = TD;
@@ -18,7 +18,9 @@ test('Instantiate SSX with window.ethereum', () => {
 test('Instantiate SSX with providers.web3.driver and successfully sign in and sign out', async () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
   testingUtils.mockChainId('0x5');
-  testingUtils.mockConnectedWallet(['0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1']);
+  testingUtils.mockConnectedWallet([
+    '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1',
+  ]);
   const config = {
     providers: {
       web3: {
@@ -34,14 +36,16 @@ test('Instantiate SSX with providers.web3.driver and successfully sign in and si
 test('Instantiate SSX with providers.web3.driver and daoLogin', async () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
   testingUtils.mockChainId('0x1');
-  testingUtils.mockConnectedWallet(['0x456c1182DecC365DCFb5F981dCaef671C539AD44']);
+  testingUtils.mockConnectedWallet([
+    '0x456c1182DecC365DCFb5F981dCaef671C539AD44',
+  ]);
   const abi = [
     'event SetDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
     'event ClearDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
   ] as const;
   const contractTestingUtils = testingUtils.generateContractUtils(abi);
-  contractTestingUtils.mockGetLogs("SetDelegate", []);
-  contractTestingUtils.mockGetLogs("ClearDelegate", []);
+  contractTestingUtils.mockGetLogs('SetDelegate', []);
+  contractTestingUtils.mockGetLogs('ClearDelegate', []);
   const config = {
     providers: {
       web3: {
@@ -57,7 +61,9 @@ test('Instantiate SSX with providers.web3.driver and daoLogin', async () => {
 test('Instantiate SSX with providers.web3.driver and server and successfully sign in and sign out', async () => {
   const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
   testingUtils.mockChainId('0x5');
-  testingUtils.mockConnectedWallet(['0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1']);
+  testingUtils.mockConnectedWallet([
+    '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1',
+  ]);
   const config = {
     providers: {
       web3: {
@@ -65,24 +71,22 @@ test('Instantiate SSX with providers.web3.driver and server and successfully sig
       },
       server: {
         host: 'http://localhost:3001',
-      }
+      },
     },
   };
   const ssx = new SSX(config);
 
-  const mockAxios = jest.requireMock("axios");
-  mockAxios.default.create = jest
-    .fn()
-    .mockImplementation(() => ({
-      request: async (props: { url: string }) => {
-        switch (props.url) {
-          case '/ssx-nonce':
-            return { data: 'ZH54GNgkQWB887iJU' };
-          default:
-            return { data: {} };
-        }
+  const mockAxios = jest.requireMock('axios');
+  mockAxios.default.create = jest.fn().mockImplementation(() => ({
+    request: async (props: { url: string }) => {
+      switch (props.url) {
+        case '/ssx-nonce':
+          return { data: 'ZH54GNgkQWB887iJU' };
+        default:
+          return { data: {} };
       }
-    }));
+    },
+  }));
 
   await expect(ssx.signIn()).resolves.not.toThrowError();
   await expect(ssx.signOut()).resolves.not.toThrowError();
@@ -148,28 +152,32 @@ test('Should accept axios request config options successfully', async () => {
   }).not.toThrowError();
 });
 
-// test('Connect to wallet', async () => {
-//   // TODO: expose wallet connection interface
-// });
+test('Should accept extensions successfully', async () => {
+  jest.setTimeout(30000);
+  const GnosisDelegation = (await import('@spruceid/ssx-gnosis-extension'))
+    .GnosisDelegation;
+  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+  testingUtils.mockChainId('0x1');
+  testingUtils.mockConnectedWallet([
+    '0x456c1182DecC365DCFb5F981dCaef671C539AD44',
+  ]);
+  const abi = [
+    'event SetDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
+    'event ClearDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
+  ] as const;
+  const contractTestingUtils = testingUtils.generateContractUtils(abi);
+  contractTestingUtils.mockGetLogs('SetDelegate', []);
+  contractTestingUtils.mockGetLogs('ClearDelegate', []);
+  const ssxConfig = {
+    providers: {
+      web3: {
+        driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
+      },
+    },
+  };
+  const ssx = new SSX(ssxConfig);
+  const gnosis = new GnosisDelegation();
+  ssx.extend(gnosis);
 
-// test('Sign-in with Ethereum', () => {
-//   // TODO: sign request with mock provider
-//   expect(async () => {
-//     const config = {
-//       providers: {
-//         web3: {
-//           driver: provider,
-//         },
-//       },
-//     };
-//     const ssx = new SSX(config);
-//     await ssx.signIn();
-//   }).not.toThrowError();
-// });
-
-// test('Throw Error if Ethereum Wallet isn\'t found', () => {
-//   // TODO: Throw error if no wallet is found
-//   // global.window.ethereum = undefined;
-//   // const ssx = ;
-//   // expect(() => { const ssx = new SSX(); ssx.signIn(); }).toThrowError('An ethereum wallet extension is not installed.');
-// });
+  await expect(ssx.signIn()).resolves.not.toThrowError();
+});

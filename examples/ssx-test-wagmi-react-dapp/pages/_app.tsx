@@ -2,23 +2,33 @@ import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { chain, configureChains, createClient, WagmiConfig, useSigner } from 'wagmi';
+import { configureChains, createClient, WagmiConfig, useSigner } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  goerli,
+  sepolia,
+} from 'wagmi/chains';
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
-  throw new Error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
+  throw new Error(
+    'Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local'
+  );
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    chain.mainnet,
-    chain.polygon,
-    chain.optimism,
-    chain.arbitrum,
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.goerli, chain.kovan, chain.rinkeby, chain.ropsten]
+      ? [goerli, sepolia]
       : []),
   ],
   [
@@ -45,12 +55,13 @@ const wagmiClient = createClient({
 
 const ssxConfig = {
   siweConfig: {
-    domain: "localhost:3000",
+    domain: 'localhost:3000',
   },
 };
 
 function SSXWithWeb3Provider({ children }: any) {
-  const { data: provider, isSuccess: providerLoaded } = (typeof window !== 'undefined' &&
+  const { data: provider, isSuccess: providerLoaded } = (typeof window !==
+    'undefined' &&
     useSigner()) || { data: undefined, isSuccess: false };
 
   const web3Provider = {
@@ -59,7 +70,7 @@ function SSXWithWeb3Provider({ children }: any) {
   };
 
   return (
-    <SSXProvider ssxConfig={ssxConfig} web3Provider={web3Provider}> 
+    <SSXProvider ssxConfig={ssxConfig} web3Provider={web3Provider}>
       {children}
     </SSXProvider>
   );
@@ -69,7 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <SSXWithWeb3Provider >
+        <SSXWithWeb3Provider>
           <Component {...pageProps} />
         </SSXWithWeb3Provider>
 
