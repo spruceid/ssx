@@ -2,6 +2,8 @@ import { providers } from 'ethers';
 import { ConnectionInfo } from 'ethers/lib/utils';
 import { SSXClientSession } from './client';
 import type { AxiosRequestConfig } from 'axios';
+import type { Request } from 'express';
+import type { IncomingMessage } from 'http';
 
 /** SSX Route Configuration
  *  This configuration is used to override the default endpoint paths.
@@ -25,17 +27,30 @@ export interface SSXRouteConfig {
 
 /** Type-Guard for SSXRouteConfig. */
 export const isSSXRouteConfig = (
-  config: SSXRouteConfig | AxiosRequestConfig | string
-): config is SSXRouteConfig | AxiosRequestConfig => typeof config === 'object';
+  config: SSXServerRouteEndpointType
+): config is SSXRouteConfig | AxiosRequestConfig | SSXServerMiddlewareConfig => typeof config === 'object';
+
+
+export interface SSXServerMiddlewareConfig {
+  path: string;
+  callback?: (req: Request | IncomingMessage) => Promise<void> | void;
+};
+
+/** Type-Guard for SSXServerMiddlewareConfig. */
+export const isSSXServerMiddlewareConfig = (
+  config: SSXServerRouteEndpointType
+): config is SSXServerMiddlewareConfig => (config as SSXServerMiddlewareConfig)?.path !== undefined;
+
+export type SSXServerRouteEndpointType = Partial<SSXRouteConfig> | AxiosRequestConfig | string | SSXServerMiddlewareConfig;
 
 /** Server endpoints configuration. */
 export interface SSXServerRoutes {
   /** Get nonce endpoint path. /ssx-nonce as default. */
-  nonce?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
+  nonce?: SSXServerRouteEndpointType;
   /** Post login endpoint path. /ssx-login as default. */
-  login?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
+  login?: SSXServerRouteEndpointType;
   /** Post logout endpoint path. /ssx-logout as default. */
-  logout?: Partial<SSXRouteConfig> | AxiosRequestConfig | string;
+  logout?: SSXServerRouteEndpointType;
 }
 
 /** Server endpoints name configuration. */

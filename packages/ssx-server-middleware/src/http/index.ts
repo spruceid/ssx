@@ -3,7 +3,7 @@ import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { SSXRequestObject } from '../express/middleware';
-import { SSXServerRoutes } from '@spruceid/ssx-core';
+import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType, SSXServerRoutes } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 
 declare module 'http' {
@@ -28,6 +28,22 @@ function getBody(req: IncomingMessage): Promise<any> {
     });
   });
 }
+
+/**
+ * This receives a routeConfig param and returns the path string.
+ * @param routeConfig - Route config property
+ * @param defaultPath - Default path string
+ * @returns a path string
+ */
+const getRoutePath = (routeConfig: SSXServerRouteEndpointType, defaultPath: string) => {
+  if (isSSXServerMiddlewareConfig(routeConfig)) {
+    return routeConfig.path;
+  } else if (typeof routeConfig === 'string') {
+    return routeConfig;
+  } else {
+    return defaultPath;
+  }
+};
 
 /**
  * This middleware function does the following:
@@ -83,11 +99,13 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
       }
 
       // ssx endpoints
-      if (req.url === (routes?.nonce ?? '/ssx-nonce')) {
+      if (req.url === getRoutePath(routes?.nonce, '/ssx-nonce')) {
         req.session.nonce = ssx.generateNonce();
         res.statusCode = 200;
         res.end(req.session.nonce);
-      } else if (req.url === (routes?.login ?? '/ssx-login')) {
+        isSSXServerMiddlewareConfig(routes?.nonce) ? routes?.nonce?.callback(req) : null;
+        return;
+      } else if (req.url === getRoutePath(routes?.login, '/ssx-login')) {
         // get body data
         const body = await getBody(req);
         if (!body) {
@@ -138,13 +156,15 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ ...req.session }));
-      } else if (req.url === (routes?.logout ?? '/ssx-logout')) {
+        isSSXServerMiddlewareConfig(routes?.login) ? routes?.login?.callback(req) : null;
+      } else if (req.url === getRoutePath(routes?.logout, '/ssx-logout')) {
         req.session.destroy(null);
         req.session = null;
         await req.ssx.logout();
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ success: true }));
+        isSSXServerMiddlewareConfig(routes?.logout) ? routes?.logout?.callback(req) : null;
       }
 
       // run user defined requestListener

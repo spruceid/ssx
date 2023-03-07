@@ -29,7 +29,15 @@ app.use(cors({
   origin: true,
 }));
 
-app.use(SSXExpressMiddleware(ssx));
+app.use(SSXExpressMiddleware(ssx, {
+  login: {
+    path: '/ssx-login',
+    callback: (req: any) => {
+      console.log('login!!!')
+    }
+  },
+  logout: '/ssx-new-logout'
+}));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');

@@ -1,11 +1,28 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { SSXServerRouteNames } from '@spruceid/ssx-core';
+import { SSXServerRoutes, SSXServerRouteEndpointType, isSSXServerMiddlewareConfig } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
+
+/**
+ * This receives a routeConfig param and returns the path string.
+ * @param routeConfig - Route config property
+ * @param defaultPath - Default path string
+ * @returns a path string
+ */
+const getRoutePath = (routeConfig: SSXServerRouteEndpointType, defaultPath: string) => {
+  console.log(routeConfig, isSSXServerMiddlewareConfig(routeConfig), typeof routeConfig)
+  if (isSSXServerMiddlewareConfig(routeConfig)) {
+    return routeConfig.path;
+  } else if(typeof routeConfig === 'string') {
+    return routeConfig;
+  } else {
+    return defaultPath;
+  }
+};
 
 const ssxEndpoints = (
   ssx: SSXServerBaseClass,
-  routes?: SSXServerRouteNames
+  routes?: SSXServerRoutes
 ) => {
   const router = express.Router();
 
@@ -19,11 +36,13 @@ const ssxEndpoints = (
    * @param {Response} res
    */
   router.get(
-    routes?.nonce ?? '/ssx-nonce',
+    getRoutePath(routes?.nonce, '/ssx-nonce'),
     function (req: Request, res: Response): void {
       req.session.siwe = undefined;
       req.session.nonce = ssx.generateNonce();
       req.session.save(() => res.status(200).send(req.session.nonce));
+      isSSXServerMiddlewareConfig(routes?.nonce) ? routes?.nonce?.callback(req) : null;
+      return;
     }
   );
 
@@ -38,7 +57,7 @@ const ssxEndpoints = (
    * @param {Response} res
    */
   router.post(
-    routes?.login ?? '/ssx-login',
+    getRoutePath(routes?.login, '/ssx-login'),
     async function (req: Request, res: Response) {
       if (!req.body) {
         res.status(422).json({ message: 'Expected body.' });
@@ -88,6 +107,7 @@ const ssxEndpoints = (
       req.session.ens = session.ens;
       req.session.lens = session.lens;
       req.session.save(() => res.status(200).json({ ...req.session }));
+      isSSXServerMiddlewareConfig(routes?.login) ? routes?.login?.callback(req) : null;
       return;
     }
   );
@@ -99,7 +119,7 @@ const ssxEndpoints = (
    * @param {Response} res
    */
   router.post(
-    routes?.logout ?? '/ssx-logout',
+    getRoutePath(routes?.logout, '/ssx-logout'),
     async function (req: Request, res: Response) {
       try {
         req.session.destroy(null);
@@ -113,9 +133,10 @@ const ssxEndpoints = (
         res.status(500).json({ message: error.message });
       }
       res.status(204).send();
+      isSSXServerMiddlewareConfig(routes?.logout) ? routes?.logout?.callback(req) : null;
+      return;
     }
   );
-
   return router;
 };
 
