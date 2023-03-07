@@ -77,7 +77,7 @@ export const SSXProvider = ({
       ssxLoaded: false,
     }
   );
-  const { ssx, ssxLoaded, address } = ssxState;
+  const { ssx, ssxLoaded } = ssxState;
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
   const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
   
