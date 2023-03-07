@@ -85,7 +85,6 @@ export const SSXProvider = ({
     const unwatch = watchAccount(async (account) => {
       if(account.address) { 
           const signer = await fetchSigner();
-          console.log('account changed', account.address, ssx, signer)
           if(ssx) {
             ssx.provider = signer.provider
           }
@@ -111,7 +110,6 @@ export const SSXProvider = ({
         },
       },
     };
-    console.log("in initializeSSX", modifiedSSXConfig.siweConfig.address)
 
     const ssxInstance = new SSX(modifiedSSXConfig);
     setSSX(ssxInstance);
