@@ -13,11 +13,7 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.2",
     "@spruceid/ssx-react": "file:../../packages/ssx-react",
-<<<<<<< HEAD
     "@spruceid/ssx-server": "*",
-=======
-    "@spruceid/ssx-server": "file:../../packages/ssx-server",
->>>>>>> c4a3c9bd0790becf9200d0e8d14839283f3a73aa
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "next-auth": "^4.10.3",

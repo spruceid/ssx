@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import ssx from '@spruceid/ssx';
 import { useSigner } from 'wagmi';
-import { watchAccount, watchSigner } from 'wagmi/actions';
+import { fetchSigner, watchAccount } from 'wagmi/actions';
 
 const { SSX } = ssx;
 type SSX = ssx.SSX;
@@ -29,6 +29,8 @@ export interface SSXProviderProps {
   children: ReactNode;
   /** Optional SSX Signer. Will . */
   web3Provider?: SSXWeb3Provider;
+  /** Optional on change account callback. */
+  onChangeAccount?: (address: string, ssx: SSX) => Promise<void> | void;
 }
 
 /** Interface for contents provided to the Hook. */
@@ -50,6 +52,7 @@ export const SSXProvider = ({
   ssxConfig,
   children,
   web3Provider,
+  onChangeAccount,
 }: SSXProviderProps) => {
   let provider, providerLoaded;
   let usingWagmi = false;
@@ -74,43 +77,49 @@ export const SSXProvider = ({
       ssxLoaded: false,
     }
   );
-  const { ssx, ssxLoaded } = ssxState;
+  const { ssx, ssxLoaded, address } = ssxState;
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
   const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
-
-  const unwatch = watchAccount(async (signer) => {
-    if (signer && ssxConfig && ssxConfig.siweConfig) {
-      if (signer.address != ssxConfig.siweConfig.address) {
-        ssxConfig.siweConfig.address = signer.address
+  
+  useEffect(() => {
+    const unwatch = watchAccount(async (account) => {
+      if(account.address) { 
+          const signer = await fetchSigner();
+          console.log('account changed', account.address, ssx, signer)
+          if(ssx) {
+            ssx.provider = signer.provider
+          }
+          onChangeAccount && onChangeAccount(account.address, ssx);
       }
+    })
+    return () => {
+      unwatch();
     }
   })
 
-  useEffect(() => {
-    async function initializeSSX() {
-<<<<<<< HEAD
-      const { SSX } = await import('@spruceid/ssx');
-=======
->>>>>>> c4a3c9bd0790becf9200d0e8d14839283f3a73aa
-      const modifiedSSXConfig = {
-        ...ssxConfig,
-        siweConfig: {
-          ...ssxConfig?.siweConfig,
+  async function initializeSSX() {
+    const modifiedSSXConfig = {
+      ...ssxConfig,
+      siweConfig: {
+        ...ssxConfig?.siweConfig,
+      },
+      providers: {
+        ...ssxConfig?.providers,
+        web3: {
+          driver: usingWagmi ? provider?.provider : provider,
+          ...ssxConfig?.providers?.web3,
         },
-        providers: {
-          ...ssxConfig?.providers,
-          web3: {
-            driver: usingWagmi ? provider?.provider : provider,
-            ...ssxConfig?.providers?.web3,
-          },
-        },
-      };
-      console.log("in use effect", modifiedSSXConfig.siweConfig.address)
+      },
+    };
+    console.log("in initializeSSX", modifiedSSXConfig.siweConfig.address)
 
-      const ssxInstance = new SSX(modifiedSSXConfig);
-      setSSX(ssxInstance);
-      setSSXLoaded(true);
-    }
+    const ssxInstance = new SSX(modifiedSSXConfig);
+    setSSX(ssxInstance);
+    setSSXLoaded(true);
+    return ssx;
+  }
+  
+  useEffect(() => {
     if (providerLoaded && provider) {
       initializeSSX();
     }
