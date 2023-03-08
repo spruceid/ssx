@@ -101,23 +101,25 @@ export const ssxResolveEns = async (
     promises.push(provider.getAvatar(address));
   }
 
-  await Promise.all(promises).then(([domain, avatarUrl]) => {
-    if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
-      [domain, avatarUrl] = [undefined, domain];
-    }
-    if (domain) {
-      ens['domain'] = domain;
-    }
-    if (avatarUrl) {
-      ens['avatarUrl'] = avatarUrl;
-    }
-  });
+  await Promise.all(promises)
+    .then(([domain, avatarUrl]) => {
+      if (!resolveEnsOpts.domain && resolveEnsOpts.avatar) {
+        [domain, avatarUrl] = [undefined, domain];
+      }
+      if (domain) {
+        ens['domain'] = domain;
+      }
+      if (avatarUrl) {
+        ens['avatarUrl'] = avatarUrl;
+      }
+    })
+    .catch(console.error);
 
   return ens;
 };
 
 const LENS_API_LINKS = {
-  'matic':'https://api.lens.dev',
+  'matic': 'https://api.lens.dev',
   'maticmum': 'https://api-mumbai.lens.dev'
 }
 
@@ -149,7 +151,7 @@ export const ssxResolveLens = async (
   const networkName = (await provider.getNetwork()).name;
   const apiURL: string | null = LENS_API_LINKS[networkName];
 
-  if(!apiURL) {
+  if (!apiURL) {
     return `Can't resolve Lens to ${address} on network '${networkName}'. Use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`;
   }
 
