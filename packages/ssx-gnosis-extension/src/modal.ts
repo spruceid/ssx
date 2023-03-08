@@ -16,6 +16,8 @@ let delegators: Array<string> = [];
 
 /** Gnosis Modal Interface */
 interface IGnosisModal {
+  /** Method to abort operation handling an error and close the modal. */
+  abortOperation: (message: string) => void;
   /** Method to close the modal. */
   closeModal: () => void;
   /** Method to open modal. */
@@ -147,7 +149,7 @@ const getBaseModal = (): Element => {
   // Backdrop
   const backdrop = document.createElement('span');
   backdrop.classList.add('ssx-gnosis-modal--backdrop');
-  backdrop.onclick = window.gnosisModal.closeModal;
+  backdrop.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
   container.appendChild(backdrop);
 
   // Brand
@@ -201,7 +203,7 @@ const getBaseModal = (): Element => {
   brand.appendChild(divSafe);
   // Close button
   const closeBtn = document.createElement('button');
-  closeBtn.onclick = window.gnosisModal.closeModal;
+  closeBtn.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
   const svgClose = document.createElementNS(
     'http://www.w3.org/2000/svg',
     'svg'
@@ -242,7 +244,7 @@ const getBaseModal = (): Element => {
   // Close button
   const footerCloseBtn = document.createElement('button');
   footerCloseBtn.classList.add('ssx-gnosis-modal--btn', 'secondary');
-  footerCloseBtn.onclick = window.gnosisModal.closeModal;
+  footerCloseBtn.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
   footerCloseBtn.appendChild(document.createTextNode('Cancel'));
   // Continue button
   const continueBtn = document.createElement('button');
@@ -296,6 +298,7 @@ export class GnosisDelegation implements SSXExtension {
     this._connectedAddress = await ssx.provider.getSigner().getAddress();
 
     const gnosisModal = {
+      abortOperation: this.abortOperation,
       closeModal: this.closeModal,
       selectOption: this.selectOption,
       openModal: this.openModal,
@@ -320,7 +323,6 @@ export class GnosisDelegation implements SSXExtension {
     modalCounter.textContent = '';
     modalCounter.insertAdjacentHTML('beforeend', '&nbsp;');
     continueBtn.classList.add('disabled');
-    modal.classList.add('visible');
     const modalBodyContent = document.createElement('div');
     await this.getOptions()
       .then(async options => {
@@ -350,9 +352,11 @@ export class GnosisDelegation implements SSXExtension {
             modalBody.replaceChildren(modalBodyContent);
             modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
               }`;
+            modal.classList.add('visible');
           })
           .catch(e => {
             console.error(e);
+
             [this.selectedOption, ...options].forEach(option => {
               const newOption = document.createElement('div');
               newOption.setAttribute(
@@ -367,11 +371,17 @@ export class GnosisDelegation implements SSXExtension {
             modalBody.replaceChildren(modalBodyContent);
             modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
               }`;
+            if (!modal.classList.contains('visible')) {
+              modal.classList.add('visible');
+            }
           });
       })
       .catch(e => {
         console.error(e);
         modalBody.replaceChildren(getErrorModal());
+        if (!modal.classList.contains('visible')) {
+          modal.classList.add('visible');
+        }
       });
   };
 
@@ -432,6 +442,14 @@ export class GnosisDelegation implements SSXExtension {
     document
       .getElementById(`ssx-gnosis-modal--option-${option}`)
       .classList.add('selected');
+  };
+
+  /**
+   * Abort operation and close Modal.
+   */
+  abortOperation = (message: string): void => {
+    this._failure(new Error(message));
+    this.closeModal();
   };
 
   /**
