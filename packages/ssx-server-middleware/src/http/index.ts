@@ -3,8 +3,9 @@ import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import { Session, SessionData } from 'express-session';
 import { IncomingMessage, ServerResponse } from 'http';
 import { SSXRequestObject } from '../express/middleware';
-import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType, SSXServerRoutes } from '@spruceid/ssx-core';
+import { isSSXServerMiddlewareConfig, SSXServerRoutes } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
+import { getRoutePath } from '../utils';
 
 declare module 'http' {
   interface IncomingMessage {
@@ -28,22 +29,6 @@ function getBody(req: IncomingMessage): Promise<any> {
     });
   });
 }
-
-/**
- * This receives a routeConfig param and returns the path string.
- * @param routeConfig - Route config property
- * @param defaultPath - Default path string
- * @returns a path string
- */
-const getRoutePath = (routeConfig: SSXServerRouteEndpointType, defaultPath: string) => {
-  if (isSSXServerMiddlewareConfig(routeConfig)) {
-    return routeConfig.path;
-  } else if (typeof routeConfig === 'string') {
-    return routeConfig;
-  } else {
-    return defaultPath;
-  }
-};
 
 /**
  * This middleware function does the following:

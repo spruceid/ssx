@@ -1,24 +1,8 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { SSXServerRoutes, SSXServerRouteEndpointType, isSSXServerMiddlewareConfig } from '@spruceid/ssx-core';
+import { SSXServerRoutes, isSSXServerMiddlewareConfig } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
-
-/**
- * This receives a routeConfig param and returns the path string.
- * @param routeConfig - Route config property
- * @param defaultPath - Default path string
- * @returns a path string
- */
-const getRoutePath = (routeConfig: SSXServerRouteEndpointType, defaultPath: string) => {
-  console.log(routeConfig, isSSXServerMiddlewareConfig(routeConfig), typeof routeConfig)
-  if (isSSXServerMiddlewareConfig(routeConfig)) {
-    return routeConfig.path;
-  } else if(typeof routeConfig === 'string') {
-    return routeConfig;
-  } else {
-    return defaultPath;
-  }
-};
+import { getRoutePath } from '../utils';
 
 const ssxEndpoints = (
   ssx: SSXServerBaseClass,
