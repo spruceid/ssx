@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { ssxSession } from '@spruceid/ssx-sdk-wasm';
 import { AxiosInstance } from 'axios';
-import { ethers } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import {
   SSXEnsData,
   SSXEnsResolveOptions,
@@ -61,6 +61,10 @@ export interface SSXProviderWeb3 {
    * const signer = useSigner(); const provider = signer.provider; from Wagmi for Rainbowkit
    * */
   driver: any;
+  /**
+   * Ethers Signer class to sign messages
+   */
+  signer?: Signer;
 }
 
 /** SSX web3 configuration settings */
@@ -103,6 +107,8 @@ export interface ISSXConnected {
   extensions: SSXExtension[];
   /** Web3 provider. */
   provider: ethers.providers.Web3Provider;
+  /** Signer */
+  signer?: Signer;
   /** Promise that is initialized on construction to run the "afterConnect" methods of extensions. */
   afterConnectHooksPromise: Promise<void>;
   /** Method to verify if extension is enabled. */
