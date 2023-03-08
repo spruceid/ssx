@@ -33,10 +33,10 @@ app.use(SSXExpressMiddleware(ssx, {
   login: {
     path: '/ssx-login',
     callback: (req: any) => {
-      console.log('login!!!')
+      console.log(`User ${req.body.address} successfully signed in`);
     }
   },
-  logout: '/ssx-new-logout'
+  logout: '/ssx-logout'
 }));
 
 app.get('/', (req: Request, res: Response) => {
