@@ -1,0 +1,19 @@
+{
+  "name": "ssx-test-node-client",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "prestart": "yarn build",
+    "build": "tsc"
+  },
+  "private": true,
+  "dependencies": {
+    "@spruceid/ssx": "^1.2.4",
+    "ethers": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}
