@@ -4,6 +4,6 @@ This example is forked from the official SvelteKit Auth example by [Auth.js](htt
 
 ## Getting started
 
+create a .env file by running `cp .env.example .env` in this directory and filling in the values.
 You can run the app with the following commands:
-
 `yarn && yarn dev`
