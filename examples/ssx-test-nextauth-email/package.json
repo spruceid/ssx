@@ -13,8 +13,8 @@
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.9.0",
-    "@rainbow-me/rainbowkit": "^0.7.2",
-    "@spruceid/ssx-authjs": "*",
+    "@rainbow-me/rainbowkit": "^0.11.1",
+    "@spruceid/ssx-authjs": "file:../../packages/ssx-authjs",
     "@spruceid/ssx-react": "*",
     "@spruceid/ssx-server": "*",
     "ethers": "^5.0.0",

@@ -1,4 +1,4 @@
-## Overview
+# ssx-test-sveltekit-auth
 
 This example is forked from the official SvelteKit Auth example by [Auth.js](https://sveltekit.authjs.dev). It is a simple login flow to view a protected page using SSX as an Auth.js provider.
 
