@@ -30,7 +30,7 @@ export interface SSXProviderProps {
   /** Optional SSX Signer. Will . */
   web3Provider?: SSXWeb3Provider;
   /** Optional on change account callback. */
-  onChangeAccount?: (address: string, ssx: SSX) => Promise<void> | void;
+  onChangeAccount?: (address: string, ssx: SSX) => Promise<void | SSX>;
 }
 
 /** Interface for contents provided to the Hook. */
@@ -80,15 +80,24 @@ export const SSXProvider = ({
   const { ssx, ssxLoaded } = ssxState;
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
   const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
-  
+
+  const updateStateOnChange = async (account, ssx) => {
+    if (onChangeAccount) {
+      const newSSX = await onChangeAccount(account.address, ssx);
+      if (newSSX) {
+        setSSX(newSSX);
+      }
+    }
+  }
+
   useEffect(() => {
     const unwatch = watchAccount(async (account) => {
-      if(account.address) { 
-          const signer = await fetchSigner();
-          if(ssx) {
-            ssx.provider = signer.provider
-          }
-          onChangeAccount && onChangeAccount(account.address, ssx);
+      if (account.address) {
+        const signer = await fetchSigner();
+        if (ssx) {
+          ssx.provider = signer.provider;
+        }
+        updateStateOnChange(account, ssx);
       }
     })
     return () => {
@@ -116,7 +125,7 @@ export const SSXProvider = ({
     setSSXLoaded(true);
     return ssx;
   }
-  
+
   useEffect(() => {
     if (providerLoaded && provider) {
       initializeSSX();
