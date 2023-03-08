@@ -1,5 +1,5 @@
 ---
-'@spruceid/ssx-server-middleware': patch
+'@spruceid/ssx-server-middleware': minor
 ---
 
 This adds callbacks on ssx server middlewares routes. Usage example:
