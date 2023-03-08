@@ -80,7 +80,15 @@ const processRequest = async (req: IncomingMessage, res: ServerResponse) => {
 };
 
 // create instance of middleware
-const ssxMiddleware = SSXHttpMiddleware(ssx);
+const ssxMiddleware = SSXHttpMiddleware(ssx, {
+  login: {
+    path: '/ssx-login',
+    callback: async (req: IncomingMessage, body?: Record<string, any>) => {
+      console.log(`User ${body?.address} successfully signed in`);
+    }
+  },
+  logout: '/ssx-logout'
+});
 
 const requestListener = async (req: IncomingMessage, res: ServerResponse) => {
   const optionsOnly = cors(req, res);

@@ -33,7 +33,7 @@ export const isSSXRouteConfig = (
 
 export interface SSXServerMiddlewareConfig {
   path: string;
-  callback?: (req: Request | IncomingMessage) => Promise<void> | void;
+  callback?: (req: Request | IncomingMessage, body?: Record<string, any>) => Promise<void> | void;
 };
 
 /** Type-Guard for SSXServerMiddlewareConfig. */

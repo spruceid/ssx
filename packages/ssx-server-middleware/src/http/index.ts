@@ -6,6 +6,7 @@ import { SSXRequestObject } from '../express/middleware';
 import { isSSXServerMiddlewareConfig, SSXServerRoutes } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 import { getRoutePath } from '../utils';
+import url from 'url';
 
 declare module 'http' {
   interface IncomingMessage {
@@ -82,15 +83,15 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
           req.session.destroy(() => {});
         }
       }
-
+      const { pathname } = url.parse(req.url)
       // ssx endpoints
-      if (req.url === getRoutePath(routes?.nonce, '/ssx-nonce')) {
+      if (pathname === getRoutePath(routes?.nonce, '/ssx-nonce')) {
         req.session.nonce = ssx.generateNonce();
         res.statusCode = 200;
         res.end(req.session.nonce);
         isSSXServerMiddlewareConfig(routes?.nonce) ? routes?.nonce?.callback(req) : null;
         return;
-      } else if (req.url === getRoutePath(routes?.login, '/ssx-login')) {
+      } else if (pathname === getRoutePath(routes?.login, '/ssx-login')) {
         // get body data
         const body = await getBody(req);
         if (!body) {
@@ -141,8 +142,8 @@ export const SSXHttpMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRou
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ ...req.session }));
-        isSSXServerMiddlewareConfig(routes?.login) ? routes?.login?.callback(req) : null;
-      } else if (req.url === getRoutePath(routes?.logout, '/ssx-logout')) {
+        isSSXServerMiddlewareConfig(routes?.login) ? routes?.login?.callback(req, body) : null;
+      } else if (pathname === getRoutePath(routes?.logout, '/ssx-logout')) {
         req.session.destroy(null);
         req.session = null;
         await req.ssx.logout();
