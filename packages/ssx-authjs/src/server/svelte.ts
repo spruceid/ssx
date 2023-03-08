@@ -43,11 +43,6 @@ export const SSXSvelteAuth = (
       const { siwe, signature, daoLogin, ens } = session;
       if (!siwe) return null;
 
-      //  // check domain
-      //  const nextAuthUrl = new URL(process.env.DOMAIN as string);
-      //  if (siwe.domain !== nextAuthUrl.host) {
-      //     return null;
-      //  }
 
       if (success) {
         return {
