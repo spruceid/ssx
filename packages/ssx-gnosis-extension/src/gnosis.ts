@@ -84,7 +84,12 @@ export const getGnosisDelegationHistoryEventsFor = async (
   return Promise.all([
     delegationHistory.queryFilter(setDelegateFilter),
     delegationHistory.queryFilter(clearDelegateFilter),
-  ]).then(e => e.flat().sort((a, b) => a.blockNumber - b.blockNumber));
+  ])
+    .then(e => e.flat().sort((a, b) => a.blockNumber - b.blockNumber))
+    .catch(e => {
+      console.error(e);
+      return [];
+    });
 };
 
 /**
