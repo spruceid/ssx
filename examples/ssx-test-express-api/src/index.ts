@@ -32,7 +32,7 @@ app.use(cors({
 app.use(SSXExpressMiddleware(ssx, {
   login: {
     path: '/ssx-login',
-    callback: (req: any) => {
+    callback: (req: Request) => {
       console.log(`User ${req.body.address} successfully signed in`);
     }
   },
