@@ -5303,38 +5303,6 @@
     penpal "3.0.7"
     pocket-js-core "0.0.3"
 
-<<<<<<< HEAD
-"@prisma/client@^4.9.0":
-  version "4.10.1"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-4.10.1.tgz#c47fd54661ee74b174cee63e9dc418ecf57a6ccd"
-  integrity sha512-VonXLJZybdt8e5XZH5vnIGCRNnIh6OMX1FS3H/yzMGLT3STj5TJ/OkMcednrvELgk8PK89Vo3aSh51MWNO0axA==
-  dependencies:
-    "@prisma/engines-version" "4.10.1-2.aead147aa326ccb985dcfed5b065b4fdabd44b19"
-
-"@prisma/engines-version@4.10.1-2.aead147aa326ccb985dcfed5b065b4fdabd44b19":
-  version "4.10.1-2.aead147aa326ccb985dcfed5b065b4fdabd44b19"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-4.10.1-2.aead147aa326ccb985dcfed5b065b4fdabd44b19.tgz#312359d9d00e39e323136d0270876293d315658e"
-  integrity sha512-tsjTho7laDhf9EJ9EnDxAPEf7yrigSMDhniXeU4YoWc7azHAs4GPxRi2P9LTFonmHkJLMOLjR77J1oIP8Ife1w==
-
-"@prisma/engines@4.10.1":
-  version "4.10.1"
-  resolved "https://registry.npmjs.org/@prisma/engines/-/engines-4.10.1.tgz#c7062747f254e5d5fce98a8cae566c25f9f29fb2"
-  integrity sha512-B3tcTxjx196nuAu1GOTKO9cGPUgTFHYRdkPkTS4m5ptb2cejyBlH9X7GOfSt3xlI7p4zAJDshJP4JJivCg9ouA==
-
-"@rainbow-me/rainbowkit@^0.7.2":
-  version "0.7.4"
-  resolved "https://registry.npmjs.org/@rainbow-me/rainbowkit/-/rainbowkit-0.7.4.tgz#5cf25d9108ae125c3b1b2b6ddb01d785940011bd"
-  integrity sha512-o3kwaHZw9O40gfK2DamJZzoqPbK7EHC+8++QtFy5AQ0Sw5P+U0tzb/87KHatSIXyIwrZTEGD0uciPjCGikJMjg==
-  dependencies:
-    "@vanilla-extract/css" "1.9.1"
-    "@vanilla-extract/dynamic" "2.0.2"
-    "@vanilla-extract/sprinkles" "1.5.0"
-    clsx "1.1.1"
-    qrcode "1.5.0"
-    react-remove-scroll "2.5.4"
-
-=======
->>>>>>> main
 "@redis/bloom@1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@redis/bloom/-/bloom-1.2.0.tgz#d3fd6d3c0af3ef92f26767b56414a370c7b63b71"
@@ -6584,13 +6552,6 @@
   version "17.0.45"
   resolved "https://registry.npmjs.org/@types/node/-/node-17.0.45.tgz#2c0fafd78705e7a18b7906b5201a522719dc5190"
   integrity sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==
-
-"@types/nodemailer@^6.4.7":
-  version "6.4.7"
-  resolved "https://registry.npmjs.org/@types/nodemailer/-/nodemailer-6.4.7.tgz#658f4bca47c1a895b1d7e054b3b54030a5e1f5e0"
-  integrity sha512-f5qCBGAn/f0qtRcd4SEn88c8Fp3Swct1731X4ryPKqS61/A3LmmzN8zaEz7hneJvpjFbUUgY7lru/B/7ODTazg==
-  dependencies:
-    "@types/node" "*"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
