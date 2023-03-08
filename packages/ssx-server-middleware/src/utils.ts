@@ -1,4 +1,4 @@
-import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType } from "@spruceid/ssx-core/*";
+import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType } from "@spruceid/ssx-core";
 
 /**
  * This receives a routeConfig param and returns the path string.
