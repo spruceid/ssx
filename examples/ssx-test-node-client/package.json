@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@spruceid/ssx": "^1.2.4",
+    "@spruceid/ssx": "*",
     "ethers": "^6.1.0"
   },
   "devDependencies": {
