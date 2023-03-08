@@ -295,7 +295,7 @@ export class GnosisDelegation implements SSXExtension {
    */
   async afterConnect(ssx: ISSXConnected): Promise<ConfigOverrides> {
     this.web3provider = ssx.provider;
-    this._connectedAddress = await ssx.provider.getSigner().getAddress();
+    this._connectedAddress = await ssx.signer.getAddress();
 
     const gnosisModal = {
       abortOperation: this.abortOperation,

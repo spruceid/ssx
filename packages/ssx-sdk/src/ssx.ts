@@ -13,7 +13,7 @@ import {
   SSXClientSession,
   SSXExtension,
 } from '@spruceid/ssx-core/client';
-import type { ethers } from 'ethers';
+import type { ethers, Signer } from 'ethers';
 declare global {
   interface Window {
     ethereum?: any;
@@ -38,6 +38,9 @@ export class SSX {
 
   /** The Ethereum provider */
   public provider: ethers.providers.Web3Provider;
+
+  /** The Signer */
+  public signer?: Signer;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
@@ -77,6 +80,7 @@ export class SSX {
     try {
       this.connection = await this.init.connect();
       this.provider = this.connection.provider;
+      this.signer = this.connection.signer;
     } catch (err) {
       // Something went wrong when connecting or creating Session (wasm)
       console.error(err);

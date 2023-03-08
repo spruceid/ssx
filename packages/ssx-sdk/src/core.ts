@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, Signer, providers } from 'ethers';
 import { initialized, ssxSession } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
@@ -18,8 +18,19 @@ import {
 export class SSXInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
+  private executionEnvironment: 'node' | 'browser';
 
-  constructor(private config?: SSXClientConfig) { }
+  constructor(private config?: SSXClientConfig) { 
+    this.executionEnvironment = typeof process.versions.node !== 'undefined' ? 'node' : 'browser';
+
+    // if node, signer must be defined
+    if (this.executionEnvironment === 'node') {
+      if (!config?.providers?.web3?.signer) {
+        throw new Error("A web3.signer must be provided in the 'node' execution environment.");
+      }
+    }
+    
+  }
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -32,6 +43,34 @@ export class SSXInit {
    */
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
+    let provider: ethers.providers.Web3Provider, signer: Signer;
+    
+    if (this.executionEnvironment === 'node') {
+      provider = new ethers.providers.Web3Provider(() => { throw new Error("web3 provider not available in node execution env")});
+      signer = this.config.providers.web3.signer;
+    } else {
+      provider = await this.connectBrowser();
+      signer = this.config.providers?.web3?.signer || provider.getSigner();
+    }
+
+    let builder;
+    try {
+      builder = await initialized.then(
+        () => new ssxSession.SSXSessionBuilder()
+      );
+    } catch (err) {
+      // SSX wasm related error
+      console.error(err);
+      throw err;
+    }
+
+    return new SSXConnected(builder, this.config, this.extensions, provider, signer);
+  }
+
+  /**
+   * Connect to browser provider
+   */
+  async connectBrowser(): Promise<ethers.providers.Web3Provider> {
     let provider: ethers.providers.Web3Provider;
 
     // eslint-disable-next-line no-underscore-dangle
@@ -65,19 +104,7 @@ export class SSXInit {
         }
       }
     }
-
-    let builder;
-    try {
-      builder = await initialized.then(
-        () => new ssxSession.SSXSessionBuilder()
-      );
-    } catch (err) {
-      // SSX wasm related error
-      console.error(err);
-      throw err;
-    }
-
-    return new SSXConnected(builder, this.config, this.extensions, provider);
+    return provider;
   }
 }
 
@@ -104,7 +131,9 @@ export class SSXConnected implements ISSXConnected {
     /** Enabled extensions. */
     public extensions: SSXExtension[],
     /** EthersJS provider. */
-    public provider: ethers.providers.Web3Provider
+    public provider: ethers.providers.Web3Provider,
+    /** Signer that can be used to sign messages */
+    public signer: Signer,
   ) {
     this.afterConnectHooksPromise = this.applyExtensions();
     if (this.config.providers?.server?.host) {
@@ -279,9 +308,9 @@ export class SSXConnected implements ISSXConnected {
     }
 
     const defaults = {
-      address: this.config.siweConfig?.address ?? await this.provider.getSigner().getAddress(),
-      walletAddress: await this.provider.getSigner().getAddress(),
-      chainId: await this.provider.getSigner().getChainId(),
+      address: this.config.siweConfig?.address ?? await this.signer.getAddress(),
+      walletAddress: await this.signer.getAddress(),
+      chainId: await this.signer.getChainId(),
       domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
       nonce: generateNonce(),
@@ -294,11 +323,11 @@ export class SSXConnected implements ISSXConnected {
 
     const siwe = await this.builder.build(siweConfig);
 
-    const signature = await this.provider.getSigner().signMessage(siwe);
+    const signature = await this.signer.signMessage(siwe);
 
     let session = {
       address: siweConfig.address,
-      walletAddress: await this.provider.getSigner().getAddress(),
+      walletAddress: await this.signer.getAddress(),
       chainId: siweConfig.chainId,
       sessionKey,
       siwe,
