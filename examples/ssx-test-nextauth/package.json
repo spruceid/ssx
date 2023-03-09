@@ -13,7 +13,7 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.7.2",
     "@spruceid/ssx-react": "file:../../packages/ssx-react",
-    "@spruceid/ssx-server": "file:../../packages/ssx-server",
+    "@spruceid/ssx-server": "*",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "next-auth": "^4.10.3",
@@ -22,7 +22,7 @@
     "wagmi": "^0.5.0"
   },
   "devDependencies": {
-    "@types/node": "^17.0.35",
+    "@types/node": "^18.14.6",
     "@types/react": "^18.0.9",
     "dotenv": "16.0.3",
     "eslint": "^8.15.0",
