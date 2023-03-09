@@ -60,7 +60,22 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <SSXProvider ssxConfig={ssxConfig}>
+        <SSXProvider ssxConfig={ssxConfig} onChangeAccount={async (address: string, ssx: any) => {
+          console.log('changed', address)
+          if (address && ssx) {
+            try {
+              await ssx.signOut()
+            } catch (e) {
+              console.error(e)
+            }
+            try {
+              await ssx.signIn()
+            } catch (e) {
+              console.error(e)
+            }
+            return ssx;
+          }
+        }}>
           <SessionProvider session={pageProps.session} refetchInterval={0}>
             <Component {...pageProps} />
           </SessionProvider>
