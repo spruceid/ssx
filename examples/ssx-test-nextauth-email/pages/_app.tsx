@@ -5,7 +5,7 @@ import { configureChains, createClient, goerli, mainnet, WagmiConfig } from 'wag
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import { SSXProvider } from '@spruceid/ssx-react';
-import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
+import { SSXNextAuthRouteConfig } from '@spruceid/ssx-authjs/client';
 import { SessionProvider } from "next-auth/react";
 import Head from 'next/head';
 import { useEffect } from 'react';
