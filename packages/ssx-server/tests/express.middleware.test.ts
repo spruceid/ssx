@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import session from 'express-session';
+import { SSXAuthenticationMethod } from '@spruceid/ssx-core'
 import { SSXExpressMiddleware, SSXServer } from '../src';
 import request from 'supertest';
 
@@ -120,3 +121,23 @@ describe('Should override all paths successfully', () => {
     expect(res.statusCode).toEqual(204);
   });
 });
+
+describe('JWT login', () => {
+  const customApp = express();
+  const server = new SSXServer({
+    signingKey: 'FAKESECRET',
+    authenticationMethod: SSXAuthenticationMethod.JWT,
+  });
+  customApp.use(SSXExpressMiddleware(server));
+
+  test.only('Should respond login with a valid jwt', async () => {
+    const res = await request(customApp).post('/ssx-login').send({
+        siwe: SIWE_MESSAGE,
+        signature: SIGNATURE,
+        daoLogin: false,
+        resolveEns: false,
+    });
+
+    expect(res.statusCode).toEqual(200);
+  });
+})

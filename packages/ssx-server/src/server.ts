@@ -8,18 +8,21 @@ import {
   getProvider,
   ssxResolveLens,
   SSXLensProfilesResponse,
+  SSXAuthenticationMethod,
 } from '@spruceid/ssx-core';
 import {
   SSXLogFields,
   SSXServerConfig,
   SSXEventLogTypes,
   SSXServerBaseClass,
+  SSXLoginPayload,
   ssxLog,
 } from '@spruceid/ssx-core/server';
 import { ethers, utils } from 'ethers';
 import { SessionData, SessionOptions } from 'express-session';
 import session from 'express-session';
 import { RequestHandler } from 'express';
+import { sign as signJWT } from 'jsonwebtoken';
 
 /**
  * SSX-Server is a server-side library made to work with the SSX client libraries.
@@ -35,6 +38,8 @@ export class SSXServer extends SSXServerBaseClass {
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
+  /** Authentication method used between client and server */
+  public authenticationMethod: SSXAuthenticationMethod;
 
   constructor(config: SSXServerConfig = {}) {
     super();
@@ -62,6 +67,9 @@ export class SSXServer extends SSXServerBaseClass {
     if (config.providers?.rpc) {
       this.provider = getProvider(config.providers.rpc);
     }
+
+    this.authenticationMethod =
+      config.authenticationMethod || SSXAuthenticationMethod.COOKIES;
   }
 
   /**
@@ -134,7 +142,7 @@ export class SSXServer extends SSXServerBaseClass {
       }
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
-    
+
     let lens: string | SSXLensProfilesResponse;
     if (resolveLens) {
       promises.push(this.resolveLens(siweMessage.address));
@@ -214,15 +222,15 @@ export class SSXServer extends SSXServerBaseClass {
   };
 
   /**
-   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
    * limited by 10. To get other pages you must to pass the pageCursor parameter.
-   * 
+   *
    * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
    * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
-   *  
+   *
    * @param address - Ethereum User address.
-   * @param pageCursor - Page cursor used to paginate the request. Default to 
-   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
@@ -230,7 +238,7 @@ export class SSXServer extends SSXServerBaseClass {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = "{}"
+    pageCursor = '{}',
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.provider, address, pageCursor);
   }
@@ -259,6 +267,14 @@ export class SSXServer extends SSXServerBaseClass {
         ? { store: this._config.providers?.sessionConfig?.store(session) }
         : {}),
     };
+  };
+
+  /**
+   * Create a json web token by signing the payload passed as parameter
+   * @returns JWT for client/server interaction
+   */
+  public getJWT = (payload: SSXLoginPayload): string => {
+    return signJWT(payload, this._config.signingKey, { expiresIn: '1h' });
   };
 
   /**

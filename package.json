@@ -12,6 +12,7 @@
     "examples/ssx-test-express-api",
     "examples/ssx-test-gulp-dapp",
     "examples/ssx-test-http-api",
+    "examples/ssx-test-jwt-authentication",
     "examples/ssx-test-serverless-dynamodb-api",
     "examples/ssx-test-web3modal-v2-react",
     "examples/ssx-test-web3modal-v2-standalone"
@@ -40,6 +41,7 @@
     "react-dapp": "yarn workspace ssx-test-wagmi-react-dapp",
     "nextauth-dapp": "yarn workspace ssx-test-nextauth",
     "express-api": "yarn workspace ssx-test-express-api",
+    "jwt-authentication": "yarn workspace ssx-test-jwt-authentication",
     "http-api": "yarn workspace ssx-test-http-api",
     "serverless-dynamodb-api": "yarn workspace ssx-test-serverless-dynamodb-api",
     "start:test-dapp": "yarn test-dapp start",

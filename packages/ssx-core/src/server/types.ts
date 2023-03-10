@@ -1,6 +1,12 @@
+import { } from '../types';
 import { CookieOptions, RequestHandler } from 'express';
 import { SessionData, SessionOptions, Store } from 'express-session';
-import { SSXEnsData, SSXEnsResolveOptions, SSXRPCProvider } from '../types';
+import {
+  SSXEnsData,
+  SSXEnsResolveOptions,
+  SSXRPCProvider,
+  SSXAuthenticationMethod,
+} from '../types';
 import { EventEmitter } from 'events';
 import { ethers } from 'ethers';
 import { SiweMessage, SiweError } from 'siwe';
@@ -14,7 +20,11 @@ export interface SSXServerConfig {
   /** Changes cookie attributes. Determines whether or not server cookies
    * require HTTPS and sets the SameSite attribute to 'lax'. Defaults to false */
   useSecureCookies?: boolean;
+  /** The authentication method to be used between client and server. Defaults to cookies */
+  authenticationMethod?: SSXAuthenticationMethod;
 }
+
+export type SSXLoginPayload = Omit<SessionData, 'nonce' | 'cookie'>
 
 /** SSX web3 configuration settings. */
 export interface SSXServerProviders {
@@ -106,6 +116,8 @@ export abstract class SSXServerBaseClass extends EventEmitter {
   public provider: ethers.providers.BaseProvider;
   /** Session is a configured instance of express-session middleware. */
   public session: RequestHandler;
+  /** Authentication method to be used between client and server */
+  public authenticationMethod: SSXAuthenticationMethod;
   /**
    * Sets default values for optional configurations
    */
@@ -167,6 +179,11 @@ export abstract class SSXServerBaseClass extends EventEmitter {
    * @returns Session options.
    */
   public getExpressSessionConfig: () => SessionOptions;
+  /**
+   * Create a json web token by signing the payload passed as parameter
+   * @return json web token
+   */
+  public getJWT: (payload: any) => string;
   /**
    * Gets default Express Session Config.
    * @returns Default session options
