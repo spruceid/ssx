@@ -18,19 +18,8 @@ import {
 export class SSXInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
-  private executionEnvironment: 'node' | 'browser';
 
-  constructor(private config?: SSXClientConfig) { 
-    this.executionEnvironment = typeof process.versions.node !== 'undefined' ? 'node' : 'browser';
-
-    // if node, signer must be defined
-    if (this.executionEnvironment === 'node') {
-      if (!config?.providers?.web3?.signer) {
-        throw new Error("A web3.signer must be provided in the 'node' execution environment.");
-      }
-    }
-    
-  }
+  constructor(private config?: SSXClientConfig) {}
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -43,16 +32,20 @@ export class SSXInit {
    */
   async connect(): Promise<SSXConnected> {
     // TODO(w4ll3): consider creating a custom error object, i.e: SSXConnectError
-    let provider: ethers.providers.Web3Provider, signer: Signer;
-    
-    if (this.executionEnvironment === 'node') {
-      provider = new ethers.providers.Web3Provider(() => { throw new Error("web3 provider not available in node execution env")});
-      signer = this.config.providers.web3.signer;
-    } else {
+    let provider: ethers.providers.Web3Provider;
+
+    // if browser connect to browser's web3 provider
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.document !== 'undefined'
+    ) {
+      // browser
       provider = await this.connectBrowser();
-      signer = this.config.providers?.web3?.signer || provider.getSigner();
+    } else {
+      provider = this.config.providers?.web3?.driver;
     }
 
+    const signer = this.config.providers?.signer || provider.getSigner();
     let builder;
     try {
       builder = await initialized.then(
@@ -64,7 +57,14 @@ export class SSXInit {
       throw err;
     }
 
-    return new SSXConnected(builder, this.config, this.extensions, provider, signer);
+
+    return new SSXConnected(
+      builder,
+      this.config,
+      this.extensions,
+      provider,
+      signer
+    );
   }
 
   /**

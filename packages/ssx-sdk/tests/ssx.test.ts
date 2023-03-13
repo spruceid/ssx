@@ -181,3 +181,22 @@ test('Should accept extensions successfully', async () => {
 
   await expect(ssx.signIn()).resolves.not.toThrowError();
 });
+
+test('Should accept an ethers Signer object', async () => {
+  const wallet = ethers.Wallet.createRandom();
+  const driver = new ethers.providers.JsonRpcProvider(
+    'https://eth.rpc.blxrbdn.com'
+  );
+  const signer = wallet.connect(driver);
+
+  const ssx = new SSX({
+    resolveEns: false,
+    enableDaoLogin: false,
+    providers: {
+      signer,
+    },
+  });
+
+  await expect(ssx.signIn()).resolves.not.toThrowError();
+
+});

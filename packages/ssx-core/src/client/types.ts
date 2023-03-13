@@ -61,10 +61,6 @@ export interface SSXProviderWeb3 {
    * const signer = useSigner(); const provider = signer.provider; from Wagmi for Rainbowkit
    * */
   driver: any;
-  /**
-   * Ethers Signer class to sign messages
-   */
-  signer?: Signer;
 }
 
 /** SSX web3 configuration settings */
@@ -76,6 +72,10 @@ export interface SSXClientProviders {
   /** Optional reference to server running ssx-server.
    * Providing this field enables communication with ssx-server */
   server?: SSXProviderServer;
+  /** Optional signer that will be defaulted to instead of the one
+   * provided by the web3 provider.
+   */
+  signer?: Signer;
 }
 
 /** Optional session configuration for the SIWE message. */
