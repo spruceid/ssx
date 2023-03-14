@@ -1,5 +1,15 @@
 # @spruceid/ssx-core
 
+## 1.2.0
+
+### Minor Changes
+
+- 94cee9c: This updates the `SSXServerRoutes` type to enable callbacks on ssx server middlewares routes.
+
+### Patch Changes
+
+- 7f0343b: Ensures users on a different network with `resolveEns` set to true don't experience sign-in failures.
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @spruceid/ssx-gnosis-extension
 
+## 1.1.5
+
+### Patch Changes
+
+- c1f0720: This fixes the SSX instance freezing if multisig modal is closed during the sign-in process.
+- ef51b85: This prevents failing the sign-in process if daoLogin is enabled and fails.
+- 0274cdf: Updates the modal code to prevent it showing before it finishes loading. This change should prevent a flash in the modal
+- Updated dependencies [94cee9c]
+- Updated dependencies [7f0343b]
+  - @spruceid/ssx-core@1.2.0
+
 ## 1.1.4
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @spruceid/ssx-react
 
+## 1.3.0
+
+### Minor Changes
+
+- 94a507a: Implements an event listener that prompts the user with a new sign in message when they change the selected account in their connected wallet
+
+### Patch Changes
+
+- @spruceid/ssx@1.2.5
+- @spruceid/ssx-server@1.2.3
+
 ## 1.2.5
 
 ### Patch Changes

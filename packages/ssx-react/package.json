@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-react",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,8 +50,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@spruceid/ssx": "1.2.4",
-    "@spruceid/ssx-server": "1.2.2",
+    "@spruceid/ssx": "1.2.5",
+    "@spruceid/ssx-server": "1.2.3",
     "next-auth": "^4.10.3"
   },
   "peerDependencies": {

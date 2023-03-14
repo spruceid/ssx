@@ -1,5 +1,37 @@
 # @spruceid/ssx-server-middleware
 
+## 1.1.0
+
+### Minor Changes
+
+- 94cee9c: This adds callbacks on ssx server middlewares routes. Usage example:
+
+  ```js
+  SSXExpressMiddleware(
+    // same to SSXHttpMiddleware
+    ssx,
+    {
+      login: {
+        path: '/ssx-login',
+        callback: (req: Request) => {
+          console.log(`User ${req.body.address} successfully signed in`);
+        },
+      },
+      logout: '/ssx-custom-logout',
+    }
+  );
+  ```
+
+### Patch Changes
+
+- Updated dependencies [94cee9c]
+- Updated dependencies [c1f0720]
+- Updated dependencies [7f0343b]
+- Updated dependencies [ef51b85]
+- Updated dependencies [0274cdf]
+  - @spruceid/ssx-core@1.2.0
+  - @spruceid/ssx-gnosis-extension@1.1.5
+
 ## 1.0.2
 
 ### Patch Changes

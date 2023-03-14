@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-authjs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,8 +36,8 @@
   },
   "dependencies": {
     "@auth/core": "^0.4.0",
-    "@spruceid/ssx": "^1.2.2",
-    "@spruceid/ssx-server": "1.2.2",
+    "@spruceid/ssx": "^1.2.5",
+    "@spruceid/ssx-server": "1.2.3",
     "@sveltejs/kit": "^1.8.8",
     "next-auth": "^4.10.3",
     "siwe": "^2.1.3"
