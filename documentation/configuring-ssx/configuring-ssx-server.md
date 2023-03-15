@@ -24,7 +24,12 @@ const ssxMiddleware = SSXHttpMiddleware(ssx);
 /* It's possible to override the routes by passing a second parameter:
 const ssxMiddleware = SSXHttpMiddleware(ssx, {
   nonce: '/ssx-custom-nonce',
-  login: '/ssx-custom-login',
+  login: {
+    path: '/ssx-custom-login',
+    callback: async (req: IncomingMessage, body?: Record<string, any>) => {
+      console.log(`User ${body.address} successfully signed in`);
+    }
+  },
   logout: '/ssx-custom-logout',
 }); */
 

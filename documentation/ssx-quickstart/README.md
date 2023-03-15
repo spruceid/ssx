@@ -98,7 +98,12 @@ app.use(SSXExpressMiddleware(ssx));
 /* It's possible to override the routes by passing a second parameter:
 app.use(SSXExpressMiddleware(ssx, {
   nonce: '/ssx-custom-nonce',
-  login: '/ssx-custom-login',
+  login: {
+    path: '/ssx-custom-login',
+    callback: (req: Request) => {
+      console.log(`User ${req.body.address} successfully signed in`);
+    }
+  },
   logout: '/ssx-custom-logout',
 })); */
 ```
