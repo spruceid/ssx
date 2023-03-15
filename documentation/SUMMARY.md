@@ -13,7 +13,8 @@
 ## Tutorials
 
 * [Moving From SIWE to SSX](tutorials/moving-from-siwe-to-ssx.md)
-* [Using SSX with NextAuth](tutorials/using-ssx-with-nextauth.md)
+* [Using SSX with Auth.js](tutorials/using-ssx-with-auth.js.md)
+* [Using SSX with NextAuth](appendix/using-ssx-with-nextauth.md)
 * [Build a Token-Gated Dapp](tutorials/build-a-token-gated-dapp.md)
 * [From Email Login to SIWE](tutorials/from-email-login-to-siwe.md)
 
