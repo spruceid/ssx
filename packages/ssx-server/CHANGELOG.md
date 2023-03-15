@@ -1,5 +1,19 @@
 # @spruceid/ssx-server
 
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies [94cee9c]
+- Updated dependencies [c1f0720]
+- Updated dependencies [7f0343b]
+- Updated dependencies [ef51b85]
+- Updated dependencies [94cee9c]
+- Updated dependencies [0274cdf]
+  - @spruceid/ssx-core@1.2.0
+  - @spruceid/ssx-gnosis-extension@1.1.5
+  - @spruceid/ssx-server-middleware@1.1.0
+
 ## 1.2.2
 
 ### Patch Changes
