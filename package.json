@@ -8,13 +8,7 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/ssx-test-dapp",
-    "examples/ssx-test-express-api",
-    "examples/ssx-test-gulp-dapp",
-    "examples/ssx-test-http-api",
-    "examples/ssx-test-serverless-dynamodb-api",
-    "examples/ssx-test-web3modal-v2-react",
-    "examples/ssx-test-web3modal-v2-standalone"
+    "examples/*"
   ],
   "scripts": {
     "postinstall": "npm run clean && npm run build",
