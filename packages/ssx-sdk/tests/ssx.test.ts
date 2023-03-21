@@ -188,15 +188,20 @@ test('Should accept an ethers Signer object', async () => {
     'https://eth.rpc.blxrbdn.com'
   );
   const signer = wallet.connect(driver);
+  console.log("pre creation")
 
   const ssx = new SSX({
     resolveEns: false,
     enableDaoLogin: false,
     providers: {
       signer,
+      web3: {
+        driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
+      }
     },
   });
 
+  console.log("post creation")
   await expect(ssx.signIn()).resolves.not.toThrowError();
 
 });

@@ -15,7 +15,7 @@ const main = async () => {
         resolveEns: false,
         enableDaoLogin: false,
         providers: {
-            web3: { driver: driver as ethers.providers.Web3Provider, signer },
+            signer,
         },
     });
     
