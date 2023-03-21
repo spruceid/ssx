@@ -1,4 +1,4 @@
-import { SSXAuthRouteConfigOptions } from '../types.js';
+import { SSXAuthRouteConfigOptions } from '../types';
 
 export const SSXSvelteAuthRouteConfig = (config?: SSXAuthRouteConfigOptions) => {
   const login = {

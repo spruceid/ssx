@@ -1,12 +1,23 @@
 {
   "name": "@spruceid/ssx-authjs",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "SSX AuthJS library",
   "author": "Spruce Systems, Inc.",
   "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/spruceid/ssx/packages/ssx-authjs#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/spruceid/ssx/issues"
+  },
+  "directories": {
+    "src": "src"
+  },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.js",
+      "default": "./dist/index.js"
+    },
     "./client": {
       "types": "./dist/client/index.d.js",
       "default": "./dist/client/index.js"
@@ -18,6 +29,9 @@
   },
   "typesVersions": {
     "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
       "server": [
         "dist/server/index.d.ts"
       ],
