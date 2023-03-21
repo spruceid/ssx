@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@spruceid/ssx": "file:../../packages/ssx-sdk",
+    "@spruceid/ssx": "*",
     "@wagmi/core": "0.8.11",
     "@web3modal/ethereum": "2.0.0-rc.2",
     "@web3modal/html": "2.0.0-rc.2",
