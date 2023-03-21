@@ -32,6 +32,31 @@ declare global {
   }
 }
 
+interface SSXEncryptionModuleConfig {
+  module: 'SignatureEncryption' | 'LitEncryption';
+}
+
+interface SignatureEncryptionConfig  extends SSXEncryptionModuleConfig {
+  module: 'SignatureEncryption';
+  /**
+   * A message used to generate the detereministic sugnature for deriving the encryption key.
+   * @default "Sign this message to generate an encryption key for {address}"
+   */
+  message?: () => string;
+}
+
+/**
+ * Configuration for managing SSX Modules
+ */
+interface SSXModuleConfig {
+  encryption: boolean | SSXEncryptionModuleConfig | IEncryption;
+}
+
+// temporary: will move to ssx-core
+interface SSXConfig extends SSXClientConfig {
+  modules?: SSXModuleConfig;
+}
+
 const SSX_DEFAULT_CONFIG: SSXClientConfig = {
   providers: {
     web3: {
@@ -81,9 +106,12 @@ export class SSX {
   /** Credential Module */
   public credential: ICredential;
 
-  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
+  constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
     // TODO: initialize these based on the config
     this.userAuthorization = new UserAuthorization(config);
+    // get encryption config from config.modules.encryption
+    // determine which encryption module to use
+    // if encryption module is false, don't initialize encryption or dependent modules
     this.encryption = new SignatureEncryption({}, this.userAuthorization);
     this.dataVault = new BrowserDataVault({}, this.encryption);
     this.credential = new Credential({}, this.dataVault);
