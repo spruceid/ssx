@@ -1,7 +1,8 @@
 name: Build and Test Monorepo Packages
 on: [push, pull_request]
 jobs:
-  Build-And-Test-Monorepo-Packages:
+  Build-Monorepo-Packages:
+    name: Build-Monorepo-Packages
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -11,9 +12,14 @@ jobs:
         with:
           node-version: "18.x"
       - name: Install dependencies and build packages
-        run: |
-          yarn
-          yarn test
+        run: yarn
+  Test-Monorepo-Packages:
+    name: Test-Monorepo-Packages
+    needs: Build-Monorepo-Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test packages
+        run: yarn test
       - uses: codecov/codecov-action@v3
         with:
           files: ./coverage/coverage-final.json
