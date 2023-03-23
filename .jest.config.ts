@@ -34,7 +34,7 @@ export default async (): Promise<Config> => ({
       displayName: SSXSDK.name,
       testEnvironment: "jsdom",
       transform: {
-        "^.+\\.(ts|tsx)?$": [
+        "^.+\\.(js|ts|tsx)?$": [
           "ts-jest",
           { tsconfig: "<rootDir>/packages/ssx-sdk/tsconfig.json" },
         ],
@@ -44,7 +44,7 @@ export default async (): Promise<Config> => ({
         "<rootDir>/packages/ssx-sdk/tests/modules/?(*.)+(spec|test).[jt]s?(x)",
       ],
       transformIgnorePatterns: [
-        'node_modules/(?!(jose)/)',
+        '<rootDir>/node_modules/(?!(jose)/)',
       ],
     },
     {

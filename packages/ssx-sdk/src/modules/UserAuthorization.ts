@@ -34,6 +34,7 @@ interface IUserAuthorization {
   provider: ethers.providers.Web3Provider;
 
   /* createUserAuthorization */
+  extend: (extension: SSXExtension) => void;
   connect(): Promise<any>;
   signIn(): Promise<any>;
   /**
@@ -472,6 +473,13 @@ class UserAuthorization implements IUserAuthorization {
       const gnosis = new GnosisDelegation();
       this.init.extend(gnosis);
     }
+  }
+
+  /**
+   * Extends SSX with a functions that are called after connecting and signing in.
+   */
+  public extend(extension: SSXExtension): void {
+    this.init.extend(extension);
   }
 
   public async connect(): Promise<void> {

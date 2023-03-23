@@ -70,17 +70,12 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
  * A toolbox for user-controlled identity, credentials, storage and more.
  */
 export class SSX {
-  /** SSXClientSession builder. */
-  private init: UserAuthorizationInit;
 
   /** The Ethereum provider */
   public provider: ethers.providers.Web3Provider;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
-
-  /** Current connection of SSX */
-  public connection?: UserAuthorizationConnected;
 
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
@@ -120,11 +115,8 @@ export class SSX {
   /**
    * Extends SSX with a functions that are called after connecting and signing in.
    */
-  /**
-   * Extends SSX with a functions that are called after connecting and signing in.
-   */
   public extend(extension: SSXExtension): void {
-    this.init.extend(extension);
+    this.userAuthorization.extend(extension);
   }
 
   /**
