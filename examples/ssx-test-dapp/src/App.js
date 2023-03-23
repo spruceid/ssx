@@ -49,6 +49,8 @@ function App() {
   const [message, setMessage] = useState(null);
   const [ciphertext, setCiphertext] = useState(null);
   const [decrypted, setDecrypted] = useState(null);
+  const [encrypted, setEncrypted] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   const getSSXConfig = () => {
     let ssxConfig = {};
@@ -109,7 +111,7 @@ function App() {
 
     const modules = {};
     if (encryptionEnabled === "On") {
-      modules.encryption = true; 
+      modules.encryption = true;
     }
 
     if (modules) {
@@ -205,9 +207,9 @@ function App() {
       throw Error("No message to encrypt")
     }
     // convert content to blob
-    const blob = new Blob([message], {type: "text/plain"});
+    const blob = new Blob([message], { type: "text/plain" });
     const encryptedData = await ssxProvider.encryption.encrypt(blob);
-    setCiphertext(JSON.stringify(encryptedData))
+    setCiphertext(JSON.stringify(encryptedData, null,2))
   }
 
   const decryptionHandler = async () => {
@@ -231,6 +233,18 @@ function App() {
     ssxProvider.signOut();
     setSSX(null);
   };
+
+  const copyHandler = () => {
+    console.log("hello?")
+    navigator.clipboard.writeText(ciphertext)
+    setCopied(true)
+    console.log(copied)
+  }
+
+  useEffect(() => {
+    setCopied(false)
+    // eslint-disable-next-line
+  }, [ciphertext]);
 
   return (
     <div className='App'>
@@ -264,7 +278,7 @@ function App() {
                 </Button>
               </>
           }
-          <Dropdown 
+          <Dropdown
             id='selectPreferences'
             label='Select Preference(s)'
           >
@@ -464,46 +478,60 @@ function App() {
           }
         </div>
       </div>
-      
+
       {
-          encryptionEnabled === "On"
-          && ssxProvider
-          && <div className='Content' style={{marginTop: '30px'}}>
+        encryptionEnabled === "On"
+        && ssxProvider
+        && <div className='Content' style={{ marginTop: '30px' }}>
           <div className='Content-container'>
 
             <Input
-                label='Message to Encrypt'
-                value={message}
-                onChange={setMessage}
-              />
-              <Button
-                id='encryptButton'
-                onClick={encryptionHandler}
-              >
-                Encrypt
-              </Button>
+              label='Message to Encrypt'
+              value={message}
+              onChange={setMessage}
+            />
+            <Button
+              id='encryptButton'
+              onClick={encryptionHandler}
+            >
+              Encrypt
+            </Button>
 
-              <Input
-                label='Message to Decrypt'
-                value={ciphertext}
-                onChange={setCiphertext}
-              />
+            <Input
+              label='Message to Decrypt'
+              onChange={setEncrypted}
+            />
+            <Button
+              id='decryptButton'
+              onClick={decryptionHandler}
+              enabled={encrypted}
+            >
+              Decrypt
+            </Button>
+            {
+              decrypted && <h2 className='Title-h2'>
+                Decrypted message: "{decrypted}"
+              </h2>
+            }
+            {
+              ciphertext && <div className='CipherText'>
+                <pre style={{wordWrap:'break-word',whiteSpace:'pre-wrap'}}>
+                ciphertext: "{ciphertext}"
+              </pre>
               <Button
-                id='decryptButton'
-                onClick={decryptionHandler}
-                enabled={ciphertext}
-              >
-                Decrypt
-              </Button>
-              {
-                decrypted &&  <h2 className='Title-h2'>
-                  Decrypted message: "{decrypted}"
-                </h2>
-              }
-            </div>
+              id='copytoClipboard'
+              onClick={copyHandler}            >
+              Copy
+            </Button>
+            {
+              copied && <p style={{textAlign:"right", color:"#667080"}}>Copied to clipboard!</p>
+            }
+              </div>
+            }
           </div>
+        </div>
 
-        }
+      }
     </div>
   );
 }
