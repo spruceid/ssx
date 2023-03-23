@@ -12,7 +12,6 @@ import {
   optimism,
   arbitrum,
   goerli,
-  sepolia,
 } from 'wagmi/chains';
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
@@ -28,14 +27,14 @@ const { chains, provider, webSocketProvider } = configureChains(
     optimism,
     arbitrum,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [goerli, sepolia]
+      ? [goerli]
       : []),
   ],
   [
     alchemyProvider({
       // This is Alchemy's default API key.
       // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
+      alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
     }),
     publicProvider(),
   ]
