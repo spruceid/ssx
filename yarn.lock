@@ -8797,15 +8797,7 @@
     "@web3modal/core" "2.0.0-rc.2"
     "@web3modal/ui" "2.0.0-rc.2"
 
-"@web3modal/standalone@2.0.0-rc.2":
-  version "2.0.0-rc.2"
-  resolved "https://registry.npmjs.org/@web3modal/standalone/-/standalone-2.0.0-rc.2.tgz#ca6637ad109b3a444cbc3e12189b99cb6255f4cf"
-  integrity sha512-wiUugFqyLu2DIZMKT+A7164pVCQKSEYv/4p2PhegrN5fXV6aRjd6uogdF4VRw89u3i/7CJ295vzaOBCpJA4nIw==
-  dependencies:
-    "@web3modal/core" "2.0.0-rc.2"
-    "@web3modal/ui" "2.0.0-rc.2"
-
-"@web3modal/standalone@2.2.2", "@web3modal/standalone@^2.1.1", "@web3modal/standalone@^2.2.1":
+"@web3modal/standalone@2.2.2", "@web3modal/standalone@^2.1.1", "@web3modal/standalone@^2.2.1", "@web3modal/standalone@^2.2.2":
   version "2.2.2"
   resolved "https://registry.npmjs.org/@web3modal/standalone/-/standalone-2.2.2.tgz#2d5ce74bbb7f112b31da32049620afa75c4a4686"
   integrity sha512-c05kkTFNGZqnjJ3n2C8uo+wWL6ut1jexGYAyTvbweDengdsOr8LDo0VpK5V3XSKCV2fFcPh5JE9H1aA4jpnZPg==
