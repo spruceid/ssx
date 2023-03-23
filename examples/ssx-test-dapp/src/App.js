@@ -117,6 +117,7 @@ function App() {
         ...ssxConfig,
         modules
       }
+    }
 
     return ssxConfig;
   };

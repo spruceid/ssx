@@ -43,6 +43,9 @@ export default async (): Promise<Config> => ({
         "<rootDir>/packages/ssx-sdk/tests/?(*.)+(spec|test).[jt]s?(x)",
         "<rootDir>/packages/ssx-sdk/tests/modules/?(*.)+(spec|test).[jt]s?(x)",
       ],
+      transformIgnorePatterns: [
+        'node_modules/(?!(jose)/)',
+      ],
     },
     {
       displayName: SSXReact.name,
