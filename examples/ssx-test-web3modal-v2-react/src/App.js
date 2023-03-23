@@ -3,8 +3,8 @@ import './App.css';
 import Main from './components/Main';
 import {
   EthereumClient,
-  modalConnectors,
-  walletConnectProvider
+  w3mConnectors, 
+  w3mProvider
 } from '@web3modal/ethereum';
 import {
   configureChains,
@@ -34,14 +34,15 @@ const chains = [mainnet, polygon, optimism, arbitrum, avalanche, fantom, bsc];
 
 const {
   provider
-} = configureChains(chains, [walletConnectProvider({
+} = configureChains(chains, [w3mProvider({
   projectId
 })]);
 
 export const wagmiClient = createClient({
   autoConnect: false,
-  connectors: modalConnectors({
-    appName: 'web3Modal',
+  connectors: w3mConnectors({
+    projectId,
+    version: 1,
     chains
   }),
   provider
