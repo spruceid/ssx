@@ -32,6 +32,31 @@ declare global {
   }
 }
 
+interface SSXEncryptionModuleConfig {
+  module: 'SignatureEncryption' | 'LitEncryption';
+}
+
+interface SignatureEncryptionConfig  extends SSXEncryptionModuleConfig {
+  module: 'SignatureEncryption';
+  /**
+   * A message used to generate the detereministic sugnature for deriving the encryption key.
+   * @default "Sign this message to generate an encryption key for {address}"
+   */
+  message?: () => string;
+}
+
+/**
+ * Configuration for managing SSX Modules
+ */
+interface SSXModuleConfig {
+  encryption: boolean | SSXEncryptionModuleConfig | IEncryption;
+}
+
+// temporary: will move to ssx-core
+interface SSXConfig extends SSXClientConfig {
+  modules?: SSXModuleConfig;
+}
+
 const SSX_DEFAULT_CONFIG: SSXClientConfig = {
   providers: {
     web3: {
@@ -45,17 +70,12 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
  * A toolbox for user-controlled identity, credentials, storage and more.
  */
 export class SSX {
-  /** SSXClientSession builder. */
-  private init: UserAuthorizationInit;
 
   /** The Ethereum provider */
   public provider: ethers.providers.Web3Provider;
 
   /** The session representation (once signed in). */
   public session?: SSXClientSession;
-
-  /** Current connection of SSX */
-  public connection?: UserAuthorizationConnected;
 
   /** Supported RPC Providers */
   public static RPCProviders = SSXRPCProviders;
@@ -81,9 +101,12 @@ export class SSX {
   /** Credential Module */
   public credential: ICredential;
 
-  constructor(private config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
+  constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
     // TODO: initialize these based on the config
     this.userAuthorization = new UserAuthorization(config);
+    // get encryption config from config.modules.encryption
+    // determine which encryption module to use
+    // if encryption module is false, don't initialize encryption or dependent modules
     this.encryption = new SignatureEncryption({}, this.userAuthorization);
     this.dataVault = new BrowserDataVault({}, this.encryption);
     this.credential = new Credential({}, this.dataVault);
@@ -92,11 +115,8 @@ export class SSX {
   /**
    * Extends SSX with a functions that are called after connecting and signing in.
    */
-  /**
-   * Extends SSX with a functions that are called after connecting and signing in.
-   */
   public extend(extension: SSXExtension): void {
-    this.init.extend(extension);
+    this.userAuthorization.extend(extension);
   }
 
   /**
