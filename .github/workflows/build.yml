@@ -13,11 +13,29 @@ jobs:
           node-version: "18.x"
       - name: Install dependencies and build packages
         run: yarn
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            examples/**/node_modules
+            packages/**/node_modules
+            packages/**/dist
+          key: modules-${{ hashFiles('yarn.lock') }}
   Test-Monorepo-Packages:
     name: Test-Monorepo-Packages
     needs: Build-Monorepo-Packages
     runs-on: ubuntu-latest
     steps:
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            examples/**/node_modules
+            packages/**/node_modules
+            packages/**/dist
+          key: modules-${{ hashFiles('yarn.lock') }}
       - name: Test packages
         run: yarn test
       - uses: codecov/codecov-action@v3
