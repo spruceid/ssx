@@ -185,6 +185,12 @@
   margin: 16px 0px;
 }
 
+.CipherText {
+  margin-top: 16px;
+  padding: 16px 8px;
+  border: 1px solid #555555;
+  border-radius: 12px;
+}
 .Input-label {
   font-weight: 500;
   color: #fff;
@@ -233,6 +239,14 @@
   width: 14px;
   height: 14px;
   animation: spin 1s linear infinite;
+}
+
+svg {
+  width: 70px;
+  height: 70px;
+}
+svg:hover {
+  fill: red;
 }
 
 /*  */

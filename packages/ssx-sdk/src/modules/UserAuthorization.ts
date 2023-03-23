@@ -35,6 +35,7 @@ interface IUserAuthorization {
   provider: ethers.providers.Web3Provider;
 
   /* createUserAuthorization */
+  extend: (extension: SSXExtension) => void;
   connect(): Promise<any>;
   signIn(): Promise<any>;
   /**
@@ -70,6 +71,11 @@ interface IUserAuthorization {
   ): Promise<string | SSXLensProfilesResponse>;
   address(): string | undefined;
   chainId(): number | undefined;
+  /**
+   * Signs a message using the private key of the connected address.
+   * @returns signature;
+   */
+  signMessage(message: string): Promise<string>;
   /* getUserAuthorization */
   // getSIWE
   // getSessionData
@@ -473,6 +479,13 @@ class UserAuthorization implements IUserAuthorization {
     }
   }
 
+  /**
+   * Extends SSX with a functions that are called after connecting and signing in.
+   */
+  public extend(extension: SSXExtension): void {
+    this.init.extend(extension);
+  }
+
   public async connect(): Promise<void> {
     if (this.connection) {
       return;
@@ -564,7 +577,7 @@ class UserAuthorization implements IUserAuthorization {
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
-  async resolveLens(
+  public async resolveLens(
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
@@ -599,6 +612,19 @@ class UserAuthorization implements IUserAuthorization {
    * @returns chainId.
    */
   public chainId: () => number | undefined = () => this.session?.chainId;
+
+  /**
+   * Signs a message using the private key of the connected address.
+   * @returns signature;
+   */
+  public async signMessage(message: string): Promise<string> {
+    return this.provider.getSigner().signMessage(message);
+  }
 }
 
-export { IUserAuthorization, UserAuthorization, UserAuthorizationInit, UserAuthorizationConnected };
+export {
+  IUserAuthorization,
+  UserAuthorization,
+  UserAuthorizationInit,
+  UserAuthorizationConnected,
+};

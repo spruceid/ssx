@@ -3,6 +3,7 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules/", "dist/**/*"],
   "compilerOptions": {
-    "outDir": "./dist" /* Specify an output folder for all emitted files. */
-  }
+    "outDir": "./dist", /* Specify an output folder for all emitted files. */
+    "allowJs": true /* Allow javascript files to be compiled. */,
+  },
 }
