@@ -22,7 +22,7 @@ class MyReactApp extends React.Component<any, any> {
             },
         });
         const session = await ssx.signIn();
-        console.log(session)
+        alert(JSON.stringify(session, null, 2));
         const { address, siwe, signature, ens: { domain } } = session;
     };
 
