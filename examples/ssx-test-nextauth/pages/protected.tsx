@@ -1,18 +1,20 @@
 import React from "react";
 import styles from '../styles/Protected.module.css'
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useSession, signOut as nextauthSignOut } from 'next-auth/react';
 import { useSSX } from "@spruceid/ssx-react";
 
 
 export default function Protected() {
-    const router = useRouter();
     const { data: session, status } = useSession();
     const { ssx, ssxLoaded } = useSSX();
 
     const signOut = async () => {
-        await ssx?.signOut();
-        router.push('/')
+        try {
+            await ssx?.signOut();
+        } catch(e) {
+            console.error(e);
+        }
+        nextauthSignOut({ callbackUrl: '/' });
     }
     
 
