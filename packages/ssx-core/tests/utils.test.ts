@@ -128,7 +128,7 @@ test('Should get default Provider successfully', () => {
 test('Should fail to resolve ENS domain', async () => {
   const provider = getProvider();
   await expect(ssxResolveEns(provider, '')).rejects.toThrow();
-});
+}, 30000);
 
 test('Should resolve ENS domain successfully', async () => {
   const provider = getProvider();
@@ -138,7 +138,7 @@ test('Should resolve ENS domain successfully', async () => {
       avatar: false,
     })
   ).resolves.not.toThrow();
-}, 10000);
+}, 30000);
 
 test('Should resolve ENS avatar successfully', async () => {
   const provider = getProvider();
@@ -148,7 +148,7 @@ test('Should resolve ENS avatar successfully', async () => {
       avatar: true,
     })
   ).resolves.not.toThrow();
-}, 10000);
+}, 30000);
 
 test('Should resolve ENS domain and avatar successfully', async () => {
   const provider = getProvider();
@@ -158,7 +158,7 @@ test('Should resolve ENS domain and avatar successfully', async () => {
       avatar: true,
     })
   ).resolves.not.toThrow();
-}, 10000);
+}, 30000);
 
 test('Should fail requesting Lens profile', async () => {
   const provider = getProvider({
