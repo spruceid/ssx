@@ -92,6 +92,7 @@ class SignatureEncryption implements IEncryption {
     // blob => jwe
     // get data blob as binary and structure as Uint8Array
     // TODO: update approach to encode entire blob (including type) as Uint8Array
+    console.log(data)
     const binaryData = await data
       .arrayBuffer()
       .then(arraybuffer => new Uint8Array(arraybuffer));
