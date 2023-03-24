@@ -19,7 +19,7 @@
     "@spruceid/ssx-server": "*",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
-    "next-auth": "^4.10.3",
+    "next-auth": "^4.20.1",
     "nodemailer": "^6.9.0",
     "prisma": "^4.9.0",
     "react": "^18.1.0",
