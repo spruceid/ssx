@@ -13,7 +13,7 @@
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.9.0",
-    "@rainbow-me/rainbowkit": "^0.11.1",
+    "@rainbow-me/rainbowkit": "^0.12.3",
     "@spruceid/ssx-authjs": "*",
     "@spruceid/ssx-react": "*",
     "@spruceid/ssx-server": "*",
@@ -25,7 +25,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "sass": "^1.58.0",
-    "wagmi": "^0.11.6"
+    "wagmi": "^0.12.6"
   },
   "devDependencies": {
     "@types/node": "^17.0.35",
