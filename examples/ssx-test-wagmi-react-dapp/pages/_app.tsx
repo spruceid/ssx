@@ -15,9 +15,9 @@ import {
 } from 'wagmi/chains';
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
-  throw new Error(
+  console.log(new Error(
     'Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local'
-  );
+  ));
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
