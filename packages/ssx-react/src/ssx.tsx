@@ -6,8 +6,7 @@ import React, {
   ReactNode,
 } from 'react';
 import ssx from '@spruceid/ssx';
-import { useSigner } from 'wagmi';
-import { fetchSigner, watchAccount } from 'wagmi/actions';
+import { useSigner, useAccount } from 'wagmi';
 
 const { SSX } = ssx;
 type SSX = ssx.SSX;
@@ -54,7 +53,7 @@ export const SSXProvider = ({
   web3Provider,
   onChangeAccount,
 }: SSXProviderProps) => {
-  let provider, providerLoaded;
+  let provider, providerLoaded, walletAddress;
   let usingWagmi = false;
 
   if (web3Provider) {
@@ -65,8 +64,10 @@ export const SSXProvider = ({
     usingWagmi = true;
     if (typeof window !== 'undefined') {
       const { data, isSuccess } = useSigner();
+      const { address } = useAccount()
       provider = data?.provider;
       providerLoaded = isSuccess;
+      walletAddress = address;
     }
   }
 
@@ -81,9 +82,9 @@ export const SSXProvider = ({
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
   const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
 
-  const updateStateOnChange = async (account, ssx) => {
+  const updateStateOnChange = async (address, ssx) => {
     if (onChangeAccount) {
-      const newSSX = await onChangeAccount(account.address, ssx);
+      const newSSX = await onChangeAccount(address, ssx);
       if (newSSX) {
         setSSX(newSSX);
       }
@@ -91,19 +92,13 @@ export const SSXProvider = ({
   }
 
   useEffect(() => {
-    const unwatch = watchAccount(async (account) => {
-      if (account.address) {
-        const signer = await fetchSigner();
-        if (ssx) {
-          ssx.provider = signer.provider;
-        }
-        updateStateOnChange(account, ssx);
+    if(walletAddress) {
+      if(ssx) {
+        ssx.provider = provider.provider;
       }
-    })
-    return () => {
-      unwatch();
+      updateStateOnChange(walletAddress, ssx);
     }
-  })
+  }, [walletAddress]);
 
   async function initializeSSX() {
     const modifiedSSXConfig = {

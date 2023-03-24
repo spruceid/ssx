@@ -52,6 +52,7 @@ const serverlessConfiguration: AWS = {
   package: { individually: true },
   custom: {
     dynamodb: {
+      stages: ['dev'],
       start: {
         docker: true,
         image: 'dynamo',

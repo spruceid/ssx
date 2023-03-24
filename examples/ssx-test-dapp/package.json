@@ -11,8 +11,8 @@
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "@walletconnect/web3-provider": "^1.8.0",
-    "@web3modal/ethereum": "2.0.0-rc.2",
-    "@web3modal/react": "2.0.0-rc.2",
+    "@web3modal/ethereum": "^2.2.2",
+    "@web3modal/react": "^2.2.2",
     "buffer": "^6.0.3",
     "ethers": "^5.6.8",
     "https-browserify": "^1.0.0",
@@ -23,7 +23,7 @@
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "wagmi": "0.10.5",
+    "wagmi": "^0.12.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

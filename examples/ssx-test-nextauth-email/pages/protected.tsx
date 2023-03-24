@@ -26,6 +26,11 @@ export default function Protected() {
     }
 
     const unlinkAccount = async () => {
+        try{
+            await ssx?.signOut();
+        } catch(e) {
+            console.error(e);
+        }
         fetch(`/api/auth/unlinkWeb3Account`)
             .then(reloadSession)
     }

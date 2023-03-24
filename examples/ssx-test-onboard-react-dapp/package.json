@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@spruceid/ssx-react": "file:../../packages/ssx-react/dist",
+    "@spruceid/ssx-react": "*",
     "@web3-onboard/injected-wallets": "^2.4.0",
     "@web3-onboard/react": "2.4.1",
     "next": "12.2.5",
