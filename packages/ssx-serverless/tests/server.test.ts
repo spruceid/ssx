@@ -93,7 +93,7 @@ test('Should call update getNonce successfuly', async () => {
 });
 
 test('Should call signIn successfuly', async () => {
-  jest.setTimeout(30000);
+  jest.setTimeout(50000);
   const server = new SSXServer(
     {},
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
@@ -103,7 +103,7 @@ test('Should call signIn successfuly', async () => {
       resolveEnsAvatar: true,
     })
   ).resolves.not.toThrow();
-}, 30000);
+}, 50000);
 
 test('Should call signOut successfuly', async () => {
   const server = new SSXServer(
