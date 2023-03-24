@@ -5,6 +5,9 @@ const config = {
   plugins: [sveltekit()],
   define: {
     'process.env': process.env
+  }, 
+  resolve: {
+    preserveSymlinks: true,
   }
 }
 

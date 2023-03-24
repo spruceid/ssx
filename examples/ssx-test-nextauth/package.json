@@ -11,16 +11,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rainbow-me/rainbowkit": "^0.7.2",
-    "@spruceid/ssx-authjs": "file:../../packages/ssx-authjs",
-    "@spruceid/ssx-react": "file:../../packages/ssx-react",
+    "@rainbow-me/rainbowkit": "^0.12.3",
+    "@spruceid/ssx-authjs": "*",
+    "@spruceid/ssx-react": "*",
     "@spruceid/ssx-server": "*",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "next-auth": "^4.10.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "wagmi": "^0.5.0"
+    "wagmi": "^0.12.6"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",

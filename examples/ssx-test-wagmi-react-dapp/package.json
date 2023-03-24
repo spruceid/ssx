@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rainbow-me/rainbowkit": "0.8.1",
-    "@spruceid/ssx-react": "file:../../packages/ssx-react",
+    "@rainbow-me/rainbowkit": "0.4.8",
+    "@spruceid/ssx-react": "*",
     "ethers": "^5.0.0",
     "next": "^12.1.6",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "wagmi": "^0.11.5"
+    "wagmi": "0.6.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.35",

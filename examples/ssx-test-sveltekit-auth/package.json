@@ -1,7 +1,10 @@
 {
+  "name": "ssx-test-sveltekit-auth",
+  "version": "0.1.0",
   "private": true,
   "description": "An example project for SSX with Auth.js and SvelteKit",
   "scripts": {
+    "prepare": "svelte-kit sync",
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
@@ -9,19 +12,19 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
-    "svelte": "3.55.0",
-    "svelte-check": "2.10.2",
-    "typescript": "4.9.4",
-    "vite": "4.0.1"
+    "@sveltejs/adapter-auto": "^2.0.0",
+    "@sveltejs/kit": "^1.13.0",
+    "svelte": "^3.55.0",
+    "svelte-check": "^2.10.2",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.1"
   },
   "dependencies": {
-    "@auth/core": "latest",
-    "@auth/sveltekit": "latest",
-    "@spruceid/ssx": "^1.2.4",
-    "@spruceid/ssx-server": "^1.2.2",
-    "@spruceid/ssx-authjs":"file:../../packages/ssx-authjs",
+    "@auth/core": "^0.5.1",
+    "@auth/sveltekit": "^0.3.0",
+    "@spruceid/ssx": "*",
+    "@spruceid/ssx-server": "*",
+    "@spruceid/ssx-authjs":"*",
     "siwe": "^2.1.3"
   },
   "type": "module"

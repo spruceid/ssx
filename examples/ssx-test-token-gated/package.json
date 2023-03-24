@@ -6,7 +6,8 @@
     "url": "ssh://git@github.com:spruceid/ssx.git"
   },
   "dependencies": {
-    "@spruceid/ssx": "file:../../packages/ssx-sdk",
+    "@rainbow-me/rainbowkit": "^0.12.3",
+    "@spruceid/ssx-react": "*",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
@@ -23,9 +24,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "web-vitals": "^2.1.4",
-    "@rainbow-me/rainbowkit": "^0.8.1",
-    "@spruceid/ssx-react": "file:../../packages/ssx-react",
-    "wagmi": "0.10.10"
+    "wagmi": "^0.12.6"
   },
   "scripts": {
     "start": "react-app-rewired start",
