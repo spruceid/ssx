@@ -11,8 +11,10 @@
     "examples/*"
   ],
   "scripts": {
-    "postinstall": "npm run clean && lerna run --ignore \"ssx-test-*\" build",
+    "postinstall": "npm run clean && npm run build:packages",
     "build": "lerna run build",
+    "build:packages": "lerna run --ignore \"ssx-test-*\" build",
+    "build:examples": "lerna run --scope \"ssx-test-*\" build",
     "clean": "lerna run clean",
     "reset": "rm -rf node_modules packages/**/dist packages/**/node_modules examples/**/dist examples/**/node_modules examples/**/.next",
     "test": "jest --config ./.jest.config.ts --runInBand --detectOpenHandles --forceExit",
