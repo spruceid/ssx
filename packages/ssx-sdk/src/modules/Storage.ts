@@ -1,3 +1,9 @@
+import fetch, { Blob } from 'node-fetch';
+if (!globalThis.fetch) {
+  globalThis.fetch = fetch;
+  globalThis.Blob = Blob;
+}
+
 import { IEncryption } from './Encryption';
 import { IUserAuthorization } from './UserAuthorization';
 
@@ -156,6 +162,39 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
 //     this.encryption = encryption;
 //   }
 // }
+type JsonBlob = Blob;
+
+// Convert JSON data to a blob
+function blobify(jsonData: any): JsonBlob {
+  if (typeof jsonData === 'function') {
+    throw new Error('Cannot blobify functions');
+  }
+
+  const jsonString = JSON.stringify(jsonData);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  return blob;
+}
+
+// Convert a blob back to JSON data
+async function unblobify(blob: JsonBlob): Promise<any> {
+  const jsonString = await blob.text();
+  return JSON.parse(jsonString);
+}
+
+// // Example usage
+// const jsonData = {
+//   name: "John Doe",
+//   age: 30,
+//   hobbies: ["reading", "hiking"],
+// };
+
+// const blob = blobify(jsonData);
+// console.log("Blob:", blob);
+
+// (async () => {
+//   const parsedData = await unblobify(blob);
+//   console.log("Parsed data:", parsedData);
+// })();
 
 export {
   IStorage,
@@ -163,4 +202,6 @@ export {
   BrowserStorage,
   BrowserDataVault,
   // KeplerDataVault,
+  blobify,
+  unblobify,
 };
