@@ -29,6 +29,8 @@ import {
   BrowserStorage,
   SignatureEncryption,
   UserAuthorization,
+  blobify,
+  unblobify,
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
