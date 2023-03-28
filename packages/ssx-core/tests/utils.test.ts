@@ -126,12 +126,12 @@ test('Should get default Provider successfully', () => {
 });
 
 test('Should fail to resolve ENS domain', async () => {
-  const provider = getProvider();
+  const provider = getProvider(ssxRPCProviders.goerli);
   await expect(ssxResolveEns(provider, '')).rejects.toThrow();
 }, 30000);
 
 test('Should resolve ENS domain successfully', async () => {
-  const provider = getProvider();
+  const provider = getProvider(ssxRPCProviders.goerli);
   await expect(
     ssxResolveEns(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1', {
       domain: true,
@@ -141,7 +141,7 @@ test('Should resolve ENS domain successfully', async () => {
 }, 30000);
 
 test('Should resolve ENS avatar successfully', async () => {
-  const provider = getProvider();
+  const provider = getProvider(ssxRPCProviders.goerli);
   await expect(
     ssxResolveEns(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1', {
       domain: false,
@@ -151,7 +151,7 @@ test('Should resolve ENS avatar successfully', async () => {
 }, 30000);
 
 test('Should resolve ENS domain and avatar successfully', async () => {
-  const provider = getProvider();
+  const provider = getProvider(ssxRPCProviders.goerli);
   await expect(
     ssxResolveEns(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1', {
       domain: true,
@@ -177,7 +177,7 @@ test('Should resolve Lens profile on Mainnet with a message advertising about th
   await expect(
     ssxResolveLens(provider, '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1')
   ).resolves.toEqual(`Can't resolve Lens to 0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1 on network 'homestead'. Use 'matic' (Polygon) or 'maticmum' (Mumbai) instead.`);
-}, 10000);
+}, 30000);
 
 test('Should resolve Lens profile on Polygon Mainnet successfully', async () => {
   const provider = getProvider({
@@ -195,7 +195,7 @@ test('Should resolve Lens profile on Polygon Mainnet successfully', async () => 
       })
     })
   );
-}, 10000);
+}, 30000);
 
 test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
   const provider = getProvider({
@@ -213,4 +213,4 @@ test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
       })
     })
   );
-}, 10000);
+}, 30000);
