@@ -1,4 +1,4 @@
-import { SSXEventLogTypes, SSXServer } from '../src';
+import { SSXEventLogTypes, SSXInfuraProviderNetworks, SSXRPCProviders, SSXServer } from '../src';
 
 const _create = async <T>(): Promise<T> => {
   return '' as T;
@@ -93,9 +93,16 @@ test('Should call update getNonce successfuly', async () => {
 });
 
 test('Should call signIn successfuly', async () => {
-  jest.setTimeout(50000);
+  jest.setTimeout(30000);
   const server = new SSXServer(
-    {},
+    {
+      providers: {
+        rpc: {
+          service: SSXRPCProviders.SSXInfuraProvider,
+          network: SSXInfuraProviderNetworks.GOERLI,
+        }
+      }
+    },
     { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
   );
   await expect(
@@ -103,7 +110,7 @@ test('Should call signIn successfuly', async () => {
       resolveEnsAvatar: true,
     })
   ).resolves.not.toThrow();
-}, 50000);
+}, 30000);
 
 test('Should call signOut successfuly', async () => {
   const server = new SSXServer(
