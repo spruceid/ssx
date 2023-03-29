@@ -7,9 +7,7 @@ import {
   BrowserDataVault,
   BrowserStorage,
   SignatureEncryption,
-  UserAuthorization,
-  blobify,
-  unblobify,
+  UserAuthorization
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
@@ -78,20 +76,17 @@ describe('Storage', () => {
     });
 
     test('Should be able to set and get an encrypted value', async () => {
-      const myJsonObj = {
+      const data = {
         name: 'John Doe',
         age: 30,
         city: 'New York',
       };
-      const data = blobify(myJsonObj);
       // console.log(data.arrayBuffer());
       // const arrayBuffer = await data.arrayBuffer();
       // console.log("ArrayBuffer:", arrayBuffer);
       await dataVault.put('test', data);
       const result = await dataVault.get('test');
-      const resultText = await result.text();
-      const dataText = await data.text();
-      expect(resultText).toEqual(dataText);
+      expect(result).toEqual(data);
     });
 
     // test('Should be able to set and get an unencrypted value', async () => {

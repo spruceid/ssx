@@ -11,25 +11,25 @@ import {
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
-xdescribe('Encryption', () => {
+describe('Encryption', () => {
   let encryption;
   // depends on UserAuthorization
   // TODO: configure UserAuth for testing
   const userAuth = new UserAuthorization();
 
-  xdescribe('Signature Encryption', () => {
+  describe('Signature Encryption', () => {
     beforeEach(() => {
       const encryptionConfig = {};
       encryption = new SignatureEncryption(encryptionConfig, userAuth);
     });
 
     test('Should be able to encrypt and decrypt a message', async () => {
-      const message = 'Hello World';
-      const blob = new Blob([message], { type: 'text/plain' });
-      const encryptedBlob = await encryption.encrypt(blob);
-      const decryptedBlob = await encryption.decrypt(encryptedBlob);
-      const decryptedText = await decryptedBlob.text();
-      expect(decryptedText).toEqual(message);
+      const data = {
+        message: 'Hello World',
+      };
+      const encryptedData = await encryption.encrypt(data);
+      const decryptedData = await encryption.decrypt(encryptedData);
+      expect(decryptedData).toEqual(data);
     });
   });
 

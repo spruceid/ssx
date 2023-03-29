@@ -63,22 +63,18 @@ const signIn = async (connector: Providers) => {
             statement: 'SIWE Notepad Example',
         },
     });
+    
+    // add ssx to window for debugging
+    (window as any).ssx = ssx;
 
     try {
         let { address, ens } = await ssx.signIn();
         updateTitle(ens?.domain || address);
 
-        const res = await fetch(`/api/me`);
-        if (res.status === 200) {
-            res.json().then(({ text, address, ens }) => {
-                connectedState(text, address, ens);
-                return;
-            });
-        } else {
-            res.json().then((err) => {
-                console.error(err);
-            });
-        }
+        // fetch data from store + state
+        const text = await ssx.dataVault.get('notes');
+        connectedState(text, address, ens.domain);
+
     } catch (error) {
         console.error(error);
     }
@@ -101,30 +97,41 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
-    return fetch('/api/save', {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-    }).then(() => blockSave());
+    return ssx.dataVault.put('notes', text)
+    // return fetch('/api/save', {
+    //     method: 'PUT',
+    //     credentials: 'include',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ text }),
+    // }).then(() => blockSave());
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     /**
      * Try to fetch user information and updates the state accordingly
      */
-    fetch('/api/me', { credentials: 'include' }).then((res) => {
-        if (res.status === 200) {
-            res.json().then(({ text, address, ens }) => {
-                connectedState(text, address, ens);
-            });
-        } else {
-            /**
-             * No session we need to enable signIn buttons
-             */
-            disconnectedState();
-        }
-    });
+    // fetch data from store
+    if (ssx?.session) {
+        const text = await ssx.dataVault.get('notes');
+        const { address, ens } = ssx.session;
+        // update state
+        connectedState(text, address, ens.domain);
+    } else {
+        disconnectedState();
+    }
+
+    // fetch('/api/me', { credentials: 'include' }).then((res) => {
+    //     if (res.status === 200) {
+    //         res.json().then(({ text, address, ens }) => {
+    //             connectedState(text, address, ens);
+    //         });
+    //     } else {
+    //         /**
+    //          * No session we need to enable signIn buttons
+    //          */
+    //         disconnectedState();
+    //     }
+    // });
 
     /**
      * Bellow here are just helper functions to manage app state
@@ -187,13 +194,13 @@ const connectedState = (text: string, address: string, ens: string) => {
 
 const disconnectedState = () => {
     if (typeof metamask !== undefined) {
-        metamaskButton.classList.remove('hidden');
+        metamaskButton?.classList.remove('hidden');
     }
-    walletConnectButton.classList.remove('hidden');
-    closeButton.removeEventListener('click', signOut);
-    closeButton.setAttribute('disabled', 'disabled');
-    saveButton.classList.add('hidden');
-    disconnectButton.classList.add('hidden');
+    walletConnectButton?.classList.remove('hidden');
+    closeButton?.removeEventListener('click', signOut);
+    closeButton?.setAttribute('disabled', 'disabled');
+    saveButton?.classList.add('hidden');
+    disconnectButton?.classList.add('hidden');
 };
 
 const updateTitle = (text: string) => (document.getElementById('title').innerText = text);

@@ -71,11 +71,19 @@ interface IDataVault extends IStorage {
 }
 
 class BrowserStorage implements IStorage {
+  private prefix: string;
+
   constructor(config: any) {
     // if no window object, throw error
     if (typeof window === 'undefined') {
       throw new Error('BrowserStorage: window object not found');
     }
+
+    this.prefix = config?.prefix || '';
+  }
+
+  private prefixKey(key: string): string {
+    return this.prefix ? `${this.prefix}/${key}` : key;
   }
 
   private dataToStorage(data: any): string {
@@ -87,7 +95,7 @@ class BrowserStorage implements IStorage {
   }
 
   public get(key: string): any {
-    const stringData = window.localStorage.getItem(key);
+    const stringData = window.localStorage.getItem(this.prefixKey(key));
     if (stringData) {
       return this.storageToData(stringData);
     }
@@ -96,7 +104,7 @@ class BrowserStorage implements IStorage {
 
   public put(key: string, value: any): void {
     const stringData = this.dataToStorage(value);
-    return window.localStorage.setItem(key, stringData);
+    return window.localStorage.setItem(this.prefixKey(key), stringData);
   }
 
   public list(): string[] {
@@ -105,7 +113,7 @@ class BrowserStorage implements IStorage {
   }
 
   public delete(key: string): void {
-    return window.localStorage.removeItem(key);
+    return window.localStorage.removeItem(this.prefixKey(key));
   }
 
   public deleteAll = (): void => {
