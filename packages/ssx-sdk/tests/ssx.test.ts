@@ -183,6 +183,7 @@ test('Should accept extensions successfully', async () => {
 });
 
 test('Should accept an ethers Signer object', async () => {
+  const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
   const wallet = ethers.Wallet.createRandom();
   const driver = new ethers.providers.JsonRpcProvider(
     'https://eth.rpc.blxrbdn.com'
