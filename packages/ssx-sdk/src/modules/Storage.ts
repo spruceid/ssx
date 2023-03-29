@@ -1,9 +1,3 @@
-import fetch, { Blob } from 'node-fetch';
-if (!globalThis.fetch) {
-  globalThis.fetch = fetch;
-  globalThis.Blob = Blob;
-}
-
 import { IEncryption } from './Encryption';
 import { IUserAuthorization } from './UserAuthorization';
 
@@ -143,8 +137,8 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
   }
 
   // encrypt data and store
-  public put(key: string, value: any): void {
-    const encryptedData = this.encryption.encrypt(value);
+  public async put(key: string, value: any): Promise<void> {
+    const encryptedData = await this.encryption.encrypt(value);
     return super.put(key, encryptedData);
   }
 
