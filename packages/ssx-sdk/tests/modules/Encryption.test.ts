@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { generateTestingUtils } from 'eth-testing';
 import { TextEncoder as TE, TextDecoder as TD } from 'util';
 global.TextEncoder = TE;
@@ -15,7 +16,14 @@ describe('Encryption', () => {
   let encryption;
   // depends on UserAuthorization
   // TODO: configure UserAuth for testing
-  const userAuth = new UserAuthorization();
+  const config = {
+    providers: {
+      web3: {
+        driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
+      },
+    },
+  };
+  const userAuth = new UserAuthorization(config);
 
   describe('Signature Encryption', () => {
     beforeEach(() => {

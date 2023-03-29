@@ -97,6 +97,7 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
+    console.log('saving', text)
     return ssx.dataVault.put('notes', text)
     // return fetch('/api/save', {
     //     method: 'PUT',
