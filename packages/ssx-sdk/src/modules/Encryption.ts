@@ -1,25 +1,6 @@
 import * as jose from 'jose';
 import { IUserAuthorization } from './UserAuthorization';
 
-// type JsonBlob = Blob;
-
-// Convert JSON data to a blob
-function blobify(jsonData: any): Blob {
-  if (typeof jsonData === 'function') {
-    throw new Error('Cannot convert function to blob');
-  }
-
-  const jsonString = JSON.stringify(jsonData);
-  const blob = new Blob([jsonString], { type: 'application/json' });
-  return blob;
-}
-
-// Convert a blob back to JSON data
-async function unblobify(blob: Blob): Promise<any> {
-  const jsonString = await blob.text();
-  return JSON.parse(jsonString);
-}
-
 function jsonToUint8Array(jsonObj) {
   // Stringify the JSON object
   const jsonString = JSON.stringify(jsonObj);
@@ -45,7 +26,6 @@ function uint8ArrayToJson(uint8Array) {
 
   return jsonObj;
 }
-
 
 /**
  * The Encryption module handles the encryption and decryption of data.
@@ -135,25 +115,8 @@ class SignatureEncryption implements IEncryption {
   };
 
   public encrypt = async (data: any) => {
-    // json => blob => jwe
-    // get data blob as binary and structure as Uint8Array
-    // TODO: update approach to encode entire blob (including type) as Uint8Array
-    // console.log(data)
-    // console.log(data.arrayBuffer())
-    // new Response(data)
-    // const dataAsBlob = blobify(data);
-
-
-    // // add arrayBuffer method to Blob if not present
-    // Blob.prototype.arrayBuffer ??= function () {
-    //   return new Response(this).arrayBuffer();
-    // };
-
-    // const binaryData = await data
-    //   .arrayBuffer()
-    //   .then(arraybuffer => new Uint8Array(arraybuffer));
-    
-    const binaryData = jsonToUint8Array(data); 
+    // json => jwe
+    const binaryData = jsonToUint8Array(data);
 
     // fetch/generate encryption key
     await this.generateEncryptionKey();
@@ -171,7 +134,7 @@ class SignatureEncryption implements IEncryption {
   };
 
   public decrypt = async (encrypted: any) => {
-    // jwe => blob => json
+    // jwe => json
     // fetch/generate encryption key
     await this.generateEncryptionKey();
     const { plaintext } = await jose.flattenedDecrypt(
@@ -181,10 +144,6 @@ class SignatureEncryption implements IEncryption {
 
     // convert Uint8Array to json
     const data = uint8ArrayToJson(plaintext);
-    
-    // TODO: update approach to encode entire blob (including type) as Uint8Array
-    // const blob = new Blob([plaintext], { type: 'text/plain' });
-
     return data;
   };
 }
