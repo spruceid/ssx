@@ -5,7 +5,6 @@ import { SSX } from '@spruceid/ssx';
 
 declare global {
     interface Window {
-        // ethereum: any;
         web3: unknown;
     }
 }
@@ -58,6 +57,7 @@ const signIn = async (connector: Providers) => {
             web3: { driver: provider },
           },
         siweConfig: {
+            domain: 'localhost:3000',
             statement: 'SIWE Notepad Example',
         },
     });
@@ -69,7 +69,7 @@ const signIn = async (connector: Providers) => {
         let { address, ens } = await ssx.signIn();
         updateTitle(ens?.domain || address);
 
-        // fetch data from store + state
+        // fetch data from store + update state
         const text = await ssx.dataVault.get('notes');
         connectedState(text, address, ens.domain);
 
@@ -95,14 +95,7 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
-    console.log('saving', text)
     return ssx.dataVault.put('notes', text)
-    // return fetch('/api/save', {
-    //     method: 'PUT',
-    //     credentials: 'include',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ text }),
-    // }).then(() => blockSave());
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -118,19 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         disconnectedState();
     }
-
-    // fetch('/api/me', { credentials: 'include' }).then((res) => {
-    //     if (res.status === 200) {
-    //         res.json().then(({ text, address, ens }) => {
-    //             connectedState(text, address, ens);
-    //         });
-    //     } else {
-    //         /**
-    //          * No session we need to enable signIn buttons
-    //          */
-    //         disconnectedState();
-    //     }
-    // });
 
     /**
      * Bellow here are just helper functions to manage app state
