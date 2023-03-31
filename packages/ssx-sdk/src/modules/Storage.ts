@@ -1,3 +1,4 @@
+import { openDB } from 'idb';
 import { IEncryption } from './Encryption';
 import { IUserAuthorization } from './UserAuthorization';
 
@@ -7,31 +8,31 @@ interface IStorage {
    * @param key The unique identifier for the stored value.
    * @returns The value associated with the given key, or undefined if the key does not exist.
    */
-  get(key: string): any;
+  get(key: string): Promise<any>;
 
   /**
    * Stores a value with the specified key.
    * @param key The unique identifier for the stored value.
    * @param value The value to store under the given key.
    */
-  put(key: string, value: any): void;
+  put(key: string, value: any): Promise<void>;
 
   /**
    * Lists all keys currently stored in the storage.
    * @returns An array of strings representing the stored keys.
    */
-  list(): string[];
+  list(): Promise<string[]>;
 
   /**
    * Deletes the stored value for the specified key.
    * @param key The unique identifier for the stored value to be deleted.
    */
-  delete(key: string): void;
+  delete(key: string): Promise<void>;
 
   /**
    * Deletes all stored key-value pairs in the storage.
    */
-  deleteAll(): void;
+  deleteAll(): Promise<void>;
 }
 
 interface IDataVault extends IStorage {
@@ -40,40 +41,50 @@ interface IDataVault extends IStorage {
    * @param key The unique identifier for the stored value.
    * @returns The unencrypted value associated with the given key, or undefined if the key does not exist.
    */
-  unencrypted_get(key: string): any;
+  unencrypted_get(key: string): Promise<any>;
 
   /**
    * Stores a value without encryption with the specified key.
    * @param key The unique identifier for the stored value.
    * @param value The value to store under the given key without encryption.
    */
-  unencrypted_put(key: string, value: any): void;
+  unencrypted_put(key: string, value: any): Promise<void>;
 
   /**
    * Retrieves the encrypted stored value for the specified key, decrypting it before returning.
    * @param key The unique identifier for the stored value.
    * @returns The decrypted value associated with the given key, or undefined if the key does not exist.
    */
-  get(key: string): any;
+  get(key: string): Promise<any>;
 
   /**
    * Stores a value with the specified key, encrypting it before storage.
    * @param key The unique identifier for the stored value.
    * @param value The value to store under the given key with encryption.
    */
-  put(key: string, value: any): void;
+  put(key: string, value: any): Promise<void>;
+}
+
+interface IStorageConfig {
+  prefix?: string;
+}
+
+interface IBrowserStorageConfig extends IStorageConfig {
+  dbname?: string;
 }
 
 class BrowserStorage implements IStorage {
   private prefix: string;
+  private dbname: string;
 
-  constructor(config: any) {
+  constructor(config: IBrowserStorageConfig) {
     // if no window object, throw error
     if (typeof window === 'undefined') {
       throw new Error('BrowserStorage: window object not found');
     }
 
     this.prefix = config?.prefix || '';
+    this.dbname = config?.dbname || 'ssx-browser-storage';
   }
 
   private prefixKey(key: string): string {
@@ -88,34 +99,48 @@ class BrowserStorage implements IStorage {
     return JSON.parse(data);
   }
 
-  public get(key: string): any {
-    const stringData = window.localStorage.getItem(this.prefixKey(key));
-    if (stringData) {
-      return this.storageToData(stringData);
-    }
-    return null;
+  public async get(key: string): Promise<any> {
+    const db = await openDB(this.dbname, 1);
+    const tx = db.transaction('store', 'readonly');
+    const store = tx.objectStore('store');
+    const value = await store.get(this.prefixKey(key));
+    await tx.done;
+    console.log('browserstorage-get-value', value)
+    return value ? this.storageToData(value) : null;
   }
 
-  public put(key: string, value: any): void {
-    const stringData = this.dataToStorage(value);
-    return window.localStorage.setItem(this.prefixKey(key), stringData);
+  public async put(key: string, value: any): Promise<void> {
+    const db = await openDB(this.dbname, 1);
+    const tx = db.transaction('store', 'readwrite');
+    const store = tx.objectStore('store');
+    await store.put(this.dataToStorage(value), this.prefixKey(key));
+    await tx.done;
   }
 
-  public list(): string[] {
-    const keys = Object.keys(window.localStorage);
-    return keys;
+  public async list(): Promise<string[]> {
+    const db = await openDB(this.dbname, 1);
+    const tx = db.transaction('store', 'readonly');
+    const store = tx.objectStore('store');
+    const keys = await store.getAllKeys();
+    await tx.done;
+    return keys as string[];
   }
 
-  public delete(key: string): void {
-    return window.localStorage.removeItem(this.prefixKey(key));
+  public async delete(key: string): Promise<void> {
+    const db = await openDB(this.dbname, 1);
+    const tx = db.transaction('store', 'readwrite');
+    const store = tx.objectStore('store');
+    await store.delete(this.prefixKey(key));
+    await tx.done;
   }
 
-  public deleteAll = (): void => {
-    const keys = this.list();
-    keys.forEach(key => {
-      this.delete(key);
-    });
-  };
+  public async deleteAll(): Promise<void> {
+    const db = await openDB(this.dbname, 1);
+    const tx = db.transaction('store', 'readwrite');
+    const store = tx.objectStore('store');
+    await store.clear();
+    await tx.done;
+  }
 }
 
 // class BrowserDataVault extends BrowserStorage implements IDataVault {
@@ -142,11 +167,11 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
     return super.put(key, encryptedData);
   }
 
-  public unencrypted_get(key: string): any {
+  public unencrypted_get(key: string): Promise<any> {
     return super.get(key);
   }
 
-  public unencrypted_put(key: string, value: any): void {
+  public unencrypted_put(key: string, value: any): Promise<void> {
     return super.put(key, value);
   }
 }
@@ -164,24 +189,6 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
 //     this.encryption = encryption;
 //   }
 // }
-type JsonBlob = Blob;
-
-// Convert JSON data to a blob
-function blobify(jsonData: any): JsonBlob {
-  if (typeof jsonData === 'function') {
-    throw new Error('Cannot blobify functions');
-  }
-
-  const jsonString = JSON.stringify(jsonData);
-  const blob = new Blob([jsonString], { type: 'application/json' });
-  return blob;
-}
-
-// Convert a blob back to JSON data
-async function unblobify(blob: JsonBlob): Promise<any> {
-  const jsonString = await blob.text();
-  return JSON.parse(jsonString);
-}
 
 // // Example usage
 // const jsonData = {
@@ -204,6 +211,4 @@ export {
   BrowserStorage,
   BrowserDataVault,
   // KeplerDataVault,
-  blobify,
-  unblobify,
 };
