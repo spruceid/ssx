@@ -69,6 +69,7 @@
     "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "fake-indexeddb":"4.0.1",
     "gh-pages": "^4.0.0",
     "node-fetch": "3.3.1",
     "typedoc": "^0.23.0",

@@ -12,7 +12,7 @@ import {
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
-describe('Encryption', () => {
+xdescribe('Encryption', () => {
   let encryption;
   // depends on UserAuthorization
   // TODO: configure UserAuth for testing

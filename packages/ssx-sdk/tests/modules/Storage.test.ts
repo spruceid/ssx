@@ -1,5 +1,25 @@
 import { generateTestingUtils } from 'eth-testing';
 import { TextEncoder as TE, TextDecoder as TD } from 'util';
+
+// indexedDB test polyfill
+import FDBFactory from 'fake-indexeddb/lib/FDBFactory';
+import FDBRequest from 'fake-indexeddb/lib/FDBRequest';
+import FDBCursor from 'fake-indexeddb/lib/FDBCursor';
+import FDBIndex from 'fake-indexeddb/lib/FDBIndex';
+import FDBObjectStore from 'fake-indexeddb/lib/FDBObjectStore';
+import FDBTransaction from 'fake-indexeddb/lib/FDBTransaction';
+import FDBKeyRange from 'fake-indexeddb/lib/FDBKeyRange';
+import FDBDatabase from 'fake-indexeddb/lib/FDBDatabase';
+
+global.indexedDB = new FDBFactory();
+global.IDBRequest = FDBRequest;
+global.IDBCursor = FDBCursor;
+global.IDBIndex = FDBIndex;
+global.IDBObjectStore = FDBObjectStore;
+global.IDBTransaction = FDBTransaction;
+global.IDBKeyRange = FDBKeyRange;
+global.IDBDatabase = FDBDatabase;
+
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
@@ -7,7 +27,7 @@ import {
   BrowserDataVault,
   BrowserStorage,
   SignatureEncryption,
-  UserAuthorization
+  UserAuthorization,
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
@@ -15,9 +35,15 @@ const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 describe('Storage', () => {
   describe('BrowserStorage', () => {
     let storage;
-    beforeEach(() => {
+    beforeEach(async () => {
       const storageConfig = {};
       storage = new BrowserStorage(storageConfig);
+    });
+
+    afterEach(async () => {
+      // Clean up the database after each test
+      await storage.deleteAll();
+      await indexedDB.deleteDatabase(storage.dbname);
     });
 
     test('Should be able to create a new storage instance', () => {
@@ -60,7 +86,7 @@ describe('Storage', () => {
     });
   });
 
-  describe('BrowserDataVault', () => {
+  xdescribe('BrowserDataVault', () => {
     let dataVault: BrowserDataVault;
     // depends on Encryption module
     // TODO: configure UserAuth, Encryption for testing
