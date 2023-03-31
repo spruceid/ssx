@@ -75,6 +75,7 @@ interface IUserAuthorization {
    * @returns signature;
    */
   signMessage(message: string): Promise<string>;
+  getSigner(): ethers.Signer;
   /* getUserAuthorization */
   // getSIWE
   // getSessionData
@@ -615,6 +616,15 @@ class UserAuthorization implements IUserAuthorization {
    */
   public async signMessage(message: string): Promise<string> {
     return this.provider.getSigner().signMessage(message);
+  }
+
+  /**
+   * Returns the signer of the connected address.
+   * @returns ethers.Signer
+   * @see https://docs.ethers.io/v5/api/signer/#Signer
+   */
+  public getSigner(): ethers.Signer {
+    return this.provider.getSigner();
   }
 }
 

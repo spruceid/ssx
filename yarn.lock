@@ -22214,6 +22214,24 @@ keccak@^3.0.0, keccak@^3.0.1, keccak@^3.0.2:
     node-gyp-build "^4.2.0"
     readable-stream "^3.6.0"
 
+kepler-sdk-wasm-wrapper@=0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/kepler-sdk-wasm-wrapper/-/kepler-sdk-wasm-wrapper-0.1.3.tgz#b958a0838484f78808c936fce5b597b28d84268c"
+  integrity sha512-Ta6cNRzpJddlAV7FbbcmyUiBbSNNy50F5MVFB1KiJ3EetjJUY4JFtWZ6qlmMjbq7oUZ7VkXZMW4JpF1XTQ2C9g==
+
+kepler-sdk-wasm@=0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/kepler-sdk-wasm/-/kepler-sdk-wasm-0.1.0.tgz#56229d09cf894ffc24aee2d87dc5c984721d71bf"
+  integrity sha512-BUvTFOnjOLelmJFIrMn0vvt9xblG1Ez3XVhfUgfR9nKNB8AlARD6obGmjvmVcfTP9O84muHKaS2WNbu4b/gaOA==
+
+kepler-sdk@^0.12.5:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/kepler-sdk/-/kepler-sdk-0.12.5.tgz#0ce31fc054341460aaaaea04f27db0ca3f1e8587"
+  integrity sha512-/luEPtxidCrrh8YwMGnZLUMMnRccDJvV4n3yNoWvVtsDat9JCd1hlN1L2uCgmbZl0VSBn4cVPiBPZtosGXb7zQ==
+  dependencies:
+    kepler-sdk-wasm "=0.1.0"
+    kepler-sdk-wasm-wrapper "=0.1.3"
+
 keyv@3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/keyv/-/keyv-3.0.0.tgz#44923ba39e68b12a7cec7df6c3268c031f2ef373"

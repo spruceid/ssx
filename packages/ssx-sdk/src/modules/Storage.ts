@@ -1,6 +1,24 @@
+import {
+  OrbitConnection,
+  activateSession,
+  hostOrbit,
+  wasmPromise,
+  Request,
+} from 'kepler-sdk';
+import { initialized } from '@spruceid/ssx-sdk-wasm';
+
 import { openDB, IDBPDatabase } from 'idb';
 import { IEncryption } from './Encryption';
-import { IUserAuthorization } from './UserAuthorization';
+import {
+  IUserAuthorization,
+  UserAuthorizationConnected,
+  SiweMessage,
+} from '../';
+import {
+  ConfigOverrides,
+  SSXClientSession,
+  SSXExtension,
+} from '@spruceid/ssx-core/client';
 
 /**
  * Represents a storage interface that defines basic storage operations.
@@ -90,6 +108,9 @@ interface IBrowserStorageConfig extends IStorageConfig {
   storeName?: string;
 }
 
+const orbitId = (address, chain = 1) =>
+  `kepler:pkh:eip155:${chain}:${address}://default`;
+
 /**
  * Represents a class for managing browser storage operations.
  */
@@ -114,10 +135,10 @@ class BrowserStorage implements IStorage {
   }
 
   /**
-  * Prefixes the provided key based on the stored prefix.
-  * @param key - The key to be prefixed.
-  * @returns The prefixed key.
-  */
+   * Prefixes the provided key based on the stored prefix.
+   * @param key - The key to be prefixed.
+   * @returns The prefixed key.
+   */
   private prefixKey(key: string): string {
     return this.prefix ? `${this.prefix}/${key}` : key;
   }
@@ -241,6 +262,106 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
   }
 }
 
+class KeplerStorage extends SSXExtension implements IStorage {
+  private prefix: string;
+  private hosts: string[];
+  private userAuth: IUserAuthorization;
+  private keplerModule?: any;
+  /** The users orbitId. */
+  private orbitId?: string;
+
+  /** The connection to the orbit. */
+  orbit?: OrbitConnection;
+
+  /** The domain to display in the SIWE message. */
+  domain?: string;
+
+  constructor(config: any, userAuth: IUserAuthorization) {
+    super();
+    this.userAuth = userAuth;
+  }
+
+  async afterConnect(
+    ssx: UserAuthorizationConnected
+  ): Promise<ConfigOverrides> {
+    await initialized;
+    this.keplerModule = await wasmPromise;
+    (global as any).keplerModule = this.keplerModule;
+
+    // this.wallet = ssx.provider.getSigner();
+    this.orbitId = orbitId(
+      await this.userAuth.address(),
+      await this.userAuth.chainId()
+    );
+    this.domain = ssx.config.siweConfig?.domain;
+    return {};
+  }
+
+  async targetedActions(): Promise<{ [target: string]: string[] }> {
+    const actions = {};
+    actions[`${this.orbitId}/capabilities/`] = ['read'];
+    actions[`${this.orbitId}/kv/${this.prefix}`] = [
+      'put',
+      'get',
+      'list',
+      'del',
+      'metadata',
+    ];
+    return actions;
+  }
+
+  async afterSignIn(ssxSession: SSXClientSession): Promise<void> {
+    const keplerHost = this.hosts[0];
+    const session = await Promise.resolve({
+      jwk: JSON.parse(ssxSession.sessionKey),
+      orbitId: this.orbitId,
+      service: 'kv',
+      siwe: new SiweMessage(ssxSession.siwe).toMessage(),
+      signature: ssxSession.signature,
+      verificationMethod: new SiweMessage(ssxSession.siwe).uri,
+    })
+      .then(JSON.stringify)
+      .then(this.keplerModule.completeSessionSetup)
+      .then(JSON.parse);
+
+    return activateSession(session, keplerHost)
+      .catch(async ({ status, msg }) => {
+        if (status !== 404) {
+          throw new Error(
+            `Failed to submit session key delegation to Kepler: ${msg}`
+          );
+        }
+        const { status: hostStatus, statusText } = await hostOrbit(
+          this.userAuth.getSigner(),
+          keplerHost,
+          this.orbitId,
+          this.domain
+        );
+        if (hostStatus !== 200) {
+          throw new Error(`Failed to open new Kepler Orbit: ${statusText}`);
+        }
+        return activateSession(session, keplerHost);
+      })
+      .then(authn => {
+        this.orbit = new OrbitConnection(keplerHost, authn);
+      });
+  }
+
+  public async get(key: string): Promise<any> {
+    return null;
+  }
+
+  public async put(key: string, value: any): Promise<void> {}
+
+  public async list(): Promise<string[]> {
+    return [];
+  }
+
+  public async delete(key: string): Promise<void> {}
+
+  public async deleteAll(): Promise<void> {}
+}
+
 // class KeplerDataVault implements IDataVault {
 //   private userAuth: IUserAuthorization;
 //   private encryption: IEncryption;
@@ -290,5 +411,6 @@ export {
   IDataVault,
   BrowserStorage,
   BrowserDataVault,
+  KeplerStorage,
   // KeplerDataVault,
 };

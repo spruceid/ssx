@@ -10,6 +10,10 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.wasm$/,
+        type: 'webassembly/async',
+      },
     ],
   },
   resolve: {
@@ -42,4 +46,7 @@ module.exports = {
       Buffer: ['buffer', 'Buffer'],
     }),
   ],
+  experiments: {
+    asyncWebAssembly: true,
+  },
 };
