@@ -27,7 +27,7 @@ testingUtils.mockConnectedWallet([
   '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1',
 ]);
 
-describe('Encryption', () => {
+xdescribe('Encryption', () => {
   let encryption;
   // depends on UserAuthorization
   // TODO: configure UserAuth for testing

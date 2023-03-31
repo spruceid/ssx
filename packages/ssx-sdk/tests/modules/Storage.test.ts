@@ -28,7 +28,7 @@ import {
   BrowserDataVault,
   BrowserStorage,
   SignatureEncryption,
-  UserAuthorization
+  UserAuthorization,
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
