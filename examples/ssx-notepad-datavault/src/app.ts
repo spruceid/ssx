@@ -56,10 +56,8 @@ const signIn = async (connector: Providers) => {
         resolveEns: true,
         providers: {
             web3: { driver: provider },
-            server: { host: "/" },
           },
         siweConfig: {
-            domain: 'localhost:4361',
             statement: 'SIWE Notepad Example',
         },
     });

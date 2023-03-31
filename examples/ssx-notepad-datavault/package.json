@@ -5,6 +5,7 @@
     "main": "src/index.ts",
     "scripts": {
         "dev": "concurrently \"nodemon src/index.ts --ignore public/ --ignore db/ --ignore build/\" \"webpack --watch\"",
+        "clean": "rm -rf build db node_modules",
         "build": "concurrently \"tsc\" \"webpack\""
     },
     "author": "Spruce Systems Inc.",

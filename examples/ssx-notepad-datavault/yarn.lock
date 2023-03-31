@@ -765,6 +765,7 @@
     ethers "^5.7.1"
     events "^3.3.0"
     https-browserify "^1.0.0"
+    idb "7.1.1"
     jose "^4.13.1"
     lodash.merge "^4.6.2"
     os-browserify "^0.3.0"
@@ -3969,6 +3970,11 @@ iconv-lite@0.4.24:
   integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
+
+idb@7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-7.1.1.tgz#d910ded866d32c7ced9befc5bfdf36f572ced72b"
+  integrity sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==
 
 ieee754@^1.1.13, ieee754@^1.2.1:
   version "1.2.1"
