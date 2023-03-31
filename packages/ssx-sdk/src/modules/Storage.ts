@@ -1,4 +1,4 @@
-import { openDB } from 'idb';
+import { openDB, IDBPDatabase } from 'idb';
 import { IEncryption } from './Encryption';
 import { IUserAuthorization } from './UserAuthorization';
 
@@ -70,12 +70,13 @@ interface IStorageConfig {
 }
 
 interface IBrowserStorageConfig extends IStorageConfig {
-  dbname?: string;
+  storeName?: string;
 }
 
 class BrowserStorage implements IStorage {
   private prefix: string;
-  private dbname: string;
+  private dbName: string;
+  private storeName: string;
 
   constructor(config: IBrowserStorageConfig) {
     // if no window object, throw error
@@ -84,50 +85,52 @@ class BrowserStorage implements IStorage {
     }
 
     this.prefix = config?.prefix || '';
-    this.dbname = config?.dbname || 'ssx-browser-storage';
+    this.dbName = 'ssx-browser-storage';
+    this.storeName = config?.storeName || 'ssx-browser-storage-store';
   }
 
   private prefixKey(key: string): string {
     return this.prefix ? `${this.prefix}/${key}` : key;
   }
 
-  private dataToStorage(data: any): string {
-    return JSON.stringify(data);
-  }
-
-  private storageToData(data: string): any {
-    return JSON.parse(data);
+  private async getDB(): Promise<IDBPDatabase> {
+    return await openDB(this.dbName, 1, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains('store')) {
+          db.createObjectStore('store');
+        }
+      },
+    });
   }
 
   public async get(key: string): Promise<any> {
-    const db = await openDB(this.dbname, 1);
+    const db = await this.getDB();
     const tx = db.transaction('store', 'readonly');
     const store = tx.objectStore('store');
     const value = await store.get(this.prefixKey(key));
     await tx.done;
-    console.log('browserstorage-get-value', value)
-    return value ? this.storageToData(value) : null;
+    return value;
   }
 
   public async put(key: string, value: any): Promise<void> {
-    const db = await openDB(this.dbname, 1);
+    const db = await this.getDB();
     const tx = db.transaction('store', 'readwrite');
     const store = tx.objectStore('store');
-    await store.put(this.dataToStorage(value), this.prefixKey(key));
+    await store.put(value, this.prefixKey(key));
     await tx.done;
   }
 
   public async list(): Promise<string[]> {
-    const db = await openDB(this.dbname, 1);
+    const db = await this.getDB();
     const tx = db.transaction('store', 'readonly');
     const store = tx.objectStore('store');
     const keys = await store.getAllKeys();
     await tx.done;
-    return keys as string[];
+    return keys as unknown as string[];
   }
 
   public async delete(key: string): Promise<void> {
-    const db = await openDB(this.dbname, 1);
+    const db = await this.getDB();
     const tx = db.transaction('store', 'readwrite');
     const store = tx.objectStore('store');
     await store.delete(this.prefixKey(key));
@@ -135,7 +138,7 @@ class BrowserStorage implements IStorage {
   }
 
   public async deleteAll(): Promise<void> {
-    const db = await openDB(this.dbname, 1);
+    const db = await this.getDB();
     const tx = db.transaction('store', 'readwrite');
     const store = tx.objectStore('store');
     await store.clear();
@@ -153,8 +156,8 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
   }
 
   // get data and decrypt
-  public get(key: string): any {
-    const encryptedData = super.get(key);
+  public async get(key: string): Promise<any> {
+    const encryptedData = await super.get(key);
     if (encryptedData) {
       return this.encryption.decrypt(encryptedData);
     }
