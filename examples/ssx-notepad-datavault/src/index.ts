@@ -1,5 +1,6 @@
 
 import { config } from 'dotenv';
+import Helmet from 'helmet';
 import Express from 'express';
 import Path from 'path';
 
@@ -7,6 +8,11 @@ config();
 
 const app = Express();
 
+app.use(	
+    Helmet({	
+        contentSecurityPolicy: false,	
+    }),	
+);
 app.use(Express.static(Path.resolve(__dirname, '../public')));
 
 const PORT = process.env.PORT || 4361;
