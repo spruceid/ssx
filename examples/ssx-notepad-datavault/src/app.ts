@@ -95,7 +95,6 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
-    console.log('saving', text)
     return ssx.dataVault.put('notes', text)
 };
 
@@ -112,15 +111,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         disconnectedState();
     }
-<<<<<<< HEAD
-=======
-
-    // fetch('/api/me', { credentials: 'include' }).then((res) => {
-    //     if (res.status === 200) {
-    //         res.json().then(({ text, address, ens }) => {
-    //             connectedState(text, address, ens);
-    //         });
-    //     } else {
+    /**
+     * Bellow here are just helper functions to manage app state
+     */
+    metamaskButton = document.getElementById('metamask') as HTMLButtonElement;
+    walletConnectButton = document.getElementById('walletconnect') as HTMLButtonElement;
+    disconnectButton = document.getElementById('disconnectButton') as HTMLDivElement;
+    toggleSize = document.getElementById('toggleSize') as HTMLButtonElement;
+    saveButton = document.getElementById('saveButton') as HTMLDivElement;
     notepad = document.getElementById('notepad') as HTMLTextAreaElement;
     closeButton = document.getElementById('closeButton') as HTMLButtonElement;
     unsaved = document.getElementById('unsaved') as HTMLParagraphElement;
