@@ -376,19 +376,71 @@ class KeplerStorage extends SSXExtension implements IStorage {
   }
 }
 
-// class KeplerDataVault implements IDataVault {
-//   private userAuth: IUserAuthorization;
-//   private encryption: IEncryption;
+class KeplerDataVault extends KeplerStorage implements IDataVault {
+  private encryption: IEncryption;
 
-//   constructor(
-//     config: any,
-//     userAuth: IUserAuthorization,
-//     encryption: IEncryption
-//   ) {
-//     this.userAuth = userAuth;
-//     this.encryption = encryption;
-//   }
-// }
+  /**
+   * Constructs a new instance of KeplerDataVault.
+   * @param config - An object containing configuration properties for Kepler.
+   * @param userAuth - An instance of IUserAuthorization for user authorization.
+   * @param encryption - An instance of IEncryption for encryption/decryption ops.
+   */
+  constructor(
+    config: any,
+    userAuth: IUserAuthorization,
+    encryption: IEncryption
+  ) {
+    super(config, userAuth);
+    this.encryption = encryption;
+  }
+
+  /**
+   * Retrieves the encrypted stored value for the specified key,
+   * decrypts it, and returns the decrypted value.
+   * @param key - The unique identifier for the stored value.
+   * @returns A Promise that resolves to the decrypted value associated
+   * with the given key or null if the key does not exist.
+   */
+  public async get(key: string): Promise<any> {
+    const encryptedData = await super.get(key);
+    // TODO: check metadata for encryption type
+    if (encryptedData) {
+      return this.encryption.decrypt(encryptedData);
+    }
+    return null;
+  }
+
+  /**
+   * Stores a value with the specified key, encrypting it before storage.
+   * @param key - The unique identifier for the stored value.
+   * @param value - The value to store under the given key with encryption.
+   * @returns A Promise that resolves when the operation is complete.
+   */
+  public async put(key: string, value: any): Promise<void> {
+    // TODO: put metadata for encryption type
+    const encryptedData = await this.encryption.encrypt(value);
+    return super.put(key, encryptedData);
+  }
+
+  /**
+   * Retrieves the unencrypted stored value associated with the specified key.
+   * @param key - The unique identifier for the stored value.
+   * @returns A Promise that resolves to the unencrypted value associated with the given key or undefined if the key does not exist.
+   */
+  public unencrypted_get(key: string): Promise<any> {
+    return super.get(key);
+  }
+
+  /**
+   * Stores a value without encryption with the specified key.
+   * @param key - The unique identifier for the stored value.
+   * @param value - The value to store under the given key without encryption.
+   * @returns A Promise that resolves when the operation is complete.
+   */
+  public unencrypted_put(key: string, value: any): Promise<void> {
+    return super.put(key, value);
+  }
+}
 
 // // Example usage
 // const jsonData = {
@@ -426,5 +478,5 @@ export {
   BrowserStorage,
   BrowserDataVault,
   KeplerStorage,
-  // KeplerDataVault,
+  KeplerDataVault,
 };
