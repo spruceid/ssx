@@ -7,7 +7,8 @@
   },
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "postinstall": "npm run clean && npm run build:packages",
