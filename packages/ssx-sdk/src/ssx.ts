@@ -14,6 +14,8 @@ import {
   UserAuthorizationInit,
   BrowserStorage,
   IStorage,
+  KeplerDataVault,
+  KeplerStorage,
 } from './modules';
 import {
   SSXClientConfig,
@@ -113,9 +115,14 @@ export class SSX {
     // determine which encryption module to use
     // if encryption module is false, don't initialize encryption or dependent modules
     this.encryption = new SignatureEncryption({}, this.userAuthorization);
-    this.dataVault = new BrowserDataVault({}, this.encryption);
+    // this.dataVault = new BrowserDataVault({}, this.encryption);
+    this.dataVault = new KeplerDataVault({}, this.userAuthorization, this.encryption)
     this.credential = new Credential({}, this.dataVault);
-    this.storage = new BrowserStorage({});
+    // this.storage = new BrowserStorage({});
+    this.storage = new KeplerStorage({}, this.userAuthorization);
+
+    // TODO: do this programmatically will all modules
+    this.extend(this.dataVault);
   }
 
   /**

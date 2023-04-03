@@ -23,7 +23,7 @@ import {
 /**
  * Represents a storage interface that defines basic storage operations.
  */
-interface IStorage {
+interface IStorage extends SSXExtension {
   /**
    * Retrieves the stored value associated with the specified key.
    * @param key - The unique identifier for the stored value.
@@ -262,7 +262,7 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
   }
 }
 
-class KeplerStorage extends SSXExtension implements IStorage {
+class KeplerStorage implements IStorage {
   private prefix: string;
   private hosts: string[];
   private userAuth: IUserAuthorization;
@@ -277,7 +277,6 @@ class KeplerStorage extends SSXExtension implements IStorage {
   domain?: string;
 
   constructor(config: any, userAuth: IUserAuthorization) {
-    super();
     this.userAuth = userAuth;
   }
 
@@ -441,36 +440,6 @@ class KeplerDataVault extends KeplerStorage implements IDataVault {
     return super.put(key, value);
   }
 }
-
-// // Example usage
-// const jsonData = {
-//   name: "John Doe",
-//   age: 30,
-//   hobbies: ["reading", "hiking"],
-// };
-
-// const blob = blobify(jsonData);
-// console.log("Blob:", blob);
-
-// (async () => {
-//   const parsedData = await unblobify(blob);
-//   console.log("Parsed data:", parsedData);
-// })();
-
-// // Example usage
-// const jsonData = {
-//   name: "John Doe",
-//   age: 30,
-//   hobbies: ["reading", "hiking"],
-// };
-
-// const blob = blobify(jsonData);
-// console.log("Blob:", blob);
-
-// (async () => {
-//   const parsedData = await unblobify(blob);
-//   console.log("Parsed data:", parsedData);
-// })();
 
 export {
   IStorage,
