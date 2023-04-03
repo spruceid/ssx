@@ -271,7 +271,7 @@ class KeplerStorage extends SSXExtension implements IStorage {
   private orbitId?: string;
 
   /** The connection to the orbit. */
-  orbit?: OrbitConnection;
+  private _orbit?: OrbitConnection;
 
   /** The domain to display in the SIWE message. */
   domain?: string;
@@ -343,23 +343,37 @@ class KeplerStorage extends SSXExtension implements IStorage {
         return activateSession(session, keplerHost);
       })
       .then(authn => {
-        this.orbit = new OrbitConnection(keplerHost, authn);
+        this._orbit = new OrbitConnection(keplerHost, authn);
       });
   }
 
-  public async get(key: string): Promise<any> {
-    return null;
+  get orbit(): OrbitConnection {
+    if (!this._orbit) {
+      throw new Error('KeplerStorage is not connected');
+    }
+    return this._orbit;
   }
 
-  public async put(key: string, value: any): Promise<void> {}
-
-  public async list(): Promise<string[]> {
-    return [];
+  public async get(key: string, request?: Request): Promise<any> {
+    return this.orbit.get(`${this.prefix}/${key}`, request);
   }
 
-  public async delete(key: string): Promise<void> {}
+  public async put(key: string, value: any, request?: Request): Promise<any> {
+    return this.orbit.put(`${this.prefix}/${key}`, value, request);
+  }
 
-  public async deleteAll(): Promise<void> {}
+  public async list(prefix?: string, request?: Request): Promise<any> {
+    const p = prefix ? `${this.prefix}/${prefix}` : `${this.prefix}/`;
+    return this.orbit.list(p, request);
+  }
+
+  public async delete(key: string, request?: Request): Promise<any> {
+    return this.orbit.delete(`${this.prefix}/${key}`, request);
+  }
+
+  public async deleteAll(): Promise<any> {
+    return this.orbit.deleteAll(this.prefix);
+  }
 }
 
 // class KeplerDataVault implements IDataVault {
