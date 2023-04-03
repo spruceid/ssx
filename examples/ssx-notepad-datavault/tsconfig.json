@@ -6,6 +6,7 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,
+        "skipLibCheck": true,
         "outDir": "build/",
         "baseUrl": ".",
         "paths": {

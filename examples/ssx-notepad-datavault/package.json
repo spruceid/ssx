@@ -1,5 +1,5 @@
 {
-    "name": "ssx-notepad-datavault",
+    "name": "ssx-test-notepad-datavault",
     "version": "1.0.0",
     "description": "A simple demonstration of SSX and it's capabilities, forked off of siwe-notepad",
     "private": true,
@@ -12,9 +12,9 @@
     "author": "Spruce Systems Inc.",
     "license": "MIT",
     "dependencies": {
-        "@spruceid/ssx": "file:../../packages/ssx-sdk",
-        "@walletconnect/client": "^2.0.0-beta.20",
-        "@walletconnect/web3-provider": "^1.6.6",
+        "@spruceid/ssx": "*",
+        "@walletconnect/client": "^1.8.0",
+        "@walletconnect/web3-provider": "^1.8.0",
         "assert": "^2.0.0",
         "buffer": "^6.0.3",
         "dotenv": "^16.0.0",

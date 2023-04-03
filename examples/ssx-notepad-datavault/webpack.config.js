@@ -35,7 +35,7 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
             Buffer: ['buffer', 'Buffer'],
-            process: path.resolve(path.join(__dirname, 'node_modules/process/browser')),
+            process: 'process/browser',
         }),
     ],
 };
