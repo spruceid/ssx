@@ -1,28 +1,32 @@
-import '../styles/globals.css';
-import '@rainbow-me/rainbowkit/styles.css';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { goerli, mainnet, configureChains, createClient, WagmiConfig } from 'wagmi';
+import '@rainbow-me/rainbowkit/styles.css';
+import { SSXProvider } from '@spruceid/ssx-react';
+import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
+import { SessionProvider } from 'next-auth/react';
+import {
+  WagmiConfig,
+  configureChains,
+  createClient,
+  goerli,
+  mainnet,
+} from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import { SSXProvider } from '@spruceid/ssx-react';
-import { SSXNextAuthRouteConfig } from '@spruceid/ssx-authjs/client';
-import { SessionProvider } from "next-auth/react";
-
+import '../styles/globals.css';
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
-  console.error('Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local');
+  console.error(
+    'Missing NEXT_PUBLIC_ALCHEMY_API_KEY environment variable. Add to .env.local'
+  );
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [
-    mainnet,
-    goerli,
-  ],
+  [mainnet, goerli],
   [
     alchemyProvider({
       // This is Alchemy's default API key.
       // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? "",
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '',
     }),
     publicProvider(),
   ]
@@ -40,37 +44,40 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const { server } = SSXNextAuthRouteConfig({ signInOptions: { callbackUrl: '/protected' } });
+const { server } = SSXNextAuthRouteConfig({
+  signInOptions: { callbackUrl: '/protected' },
+});
 const ssxConfig: any = {
   siweConfig: {
-    domain: "localhost:3000",
+    domain: 'localhost:3000',
   },
   providers: {
     server,
   },
 };
 
-
 function MyApp({ Component, pageProps }: any) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <SSXProvider ssxConfig={ssxConfig} onChangeAccount={async (address: string, ssx: any) => {
-          console.log('changed', address)
-          if (address && ssx) {
-            try {
-              await ssx.signOut()
-            } catch (e) {
-              console.error(e)
+        <SSXProvider
+          ssxConfig={ssxConfig}
+          onChangeAccount={async (address: string, ssx: any) => {
+            console.log('changed', address);
+            if (address && ssx) {
+              try {
+                await ssx.signOut();
+              } catch (e) {
+                console.error(e);
+              }
+              try {
+                await ssx.signIn();
+              } catch (e) {
+                console.error(e);
+              }
+              return ssx;
             }
-            try {
-              await ssx.signIn()
-            } catch (e) {
-              console.error(e)
-            }
-            return ssx;
-          }
-        }}>
+          }}>
           <SessionProvider session={pageProps.session} refetchInterval={0}>
             <Component {...pageProps} />
           </SessionProvider>
