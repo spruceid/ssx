@@ -4,6 +4,17 @@ import { TextEncoder as TE, TextDecoder as TD } from 'util';
 global.TextEncoder = TE;
 global.TextDecoder = TD;
 
+// import crypto from "@trust/webcrypto";
+// Object.defineProperty(global.self, "crypto", {
+//   ...crypto,
+//   value: {
+//     ...crypto.subtle,
+//     subtle: {
+//       importKey: () => new CryptoKey()
+//     },
+//   },
+// });
+
 import {
   SignatureEncryption,
   LitEncryption,
@@ -11,6 +22,10 @@ import {
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+testingUtils.mockChainId('0x5');
+testingUtils.mockConnectedWallet([
+  '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1',
+]);
 
 xdescribe('Encryption', () => {
   let encryption;
@@ -24,7 +39,7 @@ xdescribe('Encryption', () => {
     },
   };
   const userAuth = new UserAuthorization(config);
-
+  userAuth.connect();
   describe('Signature Encryption', () => {
     beforeEach(() => {
       const encryptionConfig = {};

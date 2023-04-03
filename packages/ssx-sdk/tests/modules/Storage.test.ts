@@ -1,5 +1,6 @@
 import { generateTestingUtils } from 'eth-testing';
 import { TextEncoder as TE, TextDecoder as TD } from 'util';
+import { ethers } from 'ethers';
 
 // indexedDB test polyfill
 import FDBFactory from 'fake-indexeddb/lib/FDBFactory';
@@ -31,6 +32,10 @@ import {
 } from '../../src/modules';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
+testingUtils.mockChainId('0x5');
+testingUtils.mockConnectedWallet([
+  '0x96F7fB7ed32640d9D3a982f67CD6c09fc53EBEF1',
+]);
 
 describe('Storage', () => {
   describe('BrowserStorage', () => {
@@ -90,7 +95,15 @@ describe('Storage', () => {
     let dataVault: BrowserDataVault;
     // depends on Encryption module
     // TODO: configure UserAuth, Encryption for testing
-    const userAuth = new UserAuthorization();
+    const config = {
+      providers: {
+        web3: {
+          driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
+        },
+      },
+    };
+    const userAuth = new UserAuthorization(config);
+    userAuth.connect();
     const encryption = new SignatureEncryption({}, userAuth);
     beforeEach(() => {
       const dataVaultConfig = {};
