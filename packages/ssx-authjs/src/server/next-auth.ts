@@ -1,12 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { getCsrfToken } from 'next-auth/react';
 import { SSXServer } from '@spruceid/ssx-server';
 
-export const SSXNextAuth = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  ssx: SSXServer
-) => {
+export const SSXNextAuth = (ssx: SSXServer) => {
   const credentials = {
     message: {
       label: 'Message',
@@ -30,7 +25,7 @@ export const SSXNextAuth = (
     },
   };
 
-  const authorize = async credentials => {
+  const authorize = async (credentials, req) => {
     try {
       const nonce = await getCsrfToken({ req });
 
@@ -44,7 +39,6 @@ export const SSXNextAuth = (
       );
       const { siwe, signature, daoLogin, ens } = session;
       if (!siwe) return null;
-
 
       if (success) {
         return {
@@ -63,7 +57,7 @@ export const SSXNextAuth = (
   };
 
   const session = async sessionData => {
-    const { session, user, token } = sessionData;
+    const { session, token } = sessionData;
     if (session.user) {
       session.user.name = token.sub;
     }
