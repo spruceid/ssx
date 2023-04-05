@@ -52,6 +52,7 @@
   "dependencies": {
     "@spruceid/ssx": "1.2.5",
     "@spruceid/ssx-server": "1.2.3",
+    "@spruceid/ssx-authjs": "1.0.0",
     "next-auth": "^4.10.3"
   },
   "peerDependencies": {
