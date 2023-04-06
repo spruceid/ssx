@@ -276,3 +276,16 @@ svg:hover {
     transform: rotate(360deg);
   }
 }
+ 
+.storage-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.List-pane,
+.View-pane {
+  width: calc(50% - 10px);
+  padding: 10px;
+  box-sizing:border-box;
+}
