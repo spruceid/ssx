@@ -14,10 +14,17 @@ https://docs.ssx.id
 - Server side under [`./packages/ssx-server`](./packages/ssx-server).
 
 ## Useful Commands
+> **⚠** This repository requires node >= 16.13.0
 
-- `npm run build` - Build all packages
-- `npm run examples` - Concurrently run the example server and app found in `./examples`
-- `npm run clean` - Remove all build artifacts and node_modules
+- `yarn` - Install dependencies and build packages
+- `yarn build` - Build all packages and examples
+- `yarn build:packages` - Build all packages
+- `yarn build:examples` - Build all examples
+- `yarn examples` - Concurrently run the `ssx-test-dapp` and `ssx-test-express-api` found in `./examples`
+- `yarn test` - Run unit tests (Jest)
+- `yarn test:e2e` - Run E2E tests (Cypress/Synpress)
+- `yarn clean` - Remove all build artifacts and node_modules
+
 
 ## Docker
 
