@@ -6626,10 +6626,10 @@
   dependencies:
     import-meta-resolve "^2.2.0"
 
-"@sveltejs/kit@^1.15.1":
-  version "1.15.1"
-  resolved "https://registry.npmjs.org/@sveltejs/kit/-/kit-1.15.1.tgz#241f1d7e6cf457112b8c098ca26fd2eb85f8db5f"
-  integrity sha512-Wexy3N+COoClTuRawVJRbLoH5HFxNrXG3uoHt/Yd5IGx8WAcJM9Nj/CcBLw/tjCR9uDDYMnx27HxuPy3YIYQUA==
+"@sveltejs/kit@^1.15.2":
+  version "1.15.4"
+  resolved "https://registry.npmjs.org/@sveltejs/kit/-/kit-1.15.4.tgz#2e80dd336e5b2b1e5b20fdd5daff61433dc41cbb"
+  integrity sha512-m+Tid9nbtFawmiu85lDlal0AQ7UeuV48UsuKMe06QLr3ntMQSUzIPqyswNRZqFrar6NhVTUXQ0aO61M3U4MWpQ==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.0.0"
     "@types/cookie" "^0.5.1"
@@ -6646,9 +6646,9 @@
     undici "5.20.0"
 
 "@sveltejs/kit@^1.8.8":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.11.0.tgz#23f233c351e5956356ba6f3206e40637c5f5dbda"
-  integrity sha512-PwViZcMoLgEU/jhLoSyjf5hSrHS67wvSm0ifBo4prP9irpGa5HuPOZeVDTL5tPDSBoKxtdYi1zlGdoiJfO86jA==
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/@sveltejs/kit/-/kit-1.15.2.tgz#2d351b15aa39ab792c36c2c236c7e31a2010a6b0"
+  integrity sha512-rLNxZrjbrlPf8AWW8GAU4L/Vvu17e9v8EYl7pUip7x72lTft7RcxeP3z7tsrHpMSBBxC9o4XdKzFvz1vMZyXZw==
   dependencies:
     "@sveltejs/vite-plugin-svelte" "^2.0.0"
     "@types/cookie" "^0.5.1"
@@ -23076,22 +23076,7 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.npmjs.org/nested-error-stacks/-/nested-error-stacks-2.1.1.tgz#26c8a3cee6cc05fbcf1e333cd2fc3e003326c0b5"
   integrity sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==
 
-next-auth@^4.10.3:
-  version "4.20.1"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.20.1.tgz#6e65c4fde14171f6ce64f05f672f80f39fc418c7"
-  integrity sha512-ZcTUN4qzzZ/zJYgOW0hMXccpheWtAol8QOMdMts+LYRcsPGsqf2hEityyaKyECQVw1cWInb9dF3wYwI5GZdEmQ==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@panva/hkdf" "^1.0.2"
-    cookie "^0.5.0"
-    jose "^4.11.4"
-    oauth "^0.9.15"
-    openid-client "^5.4.0"
-    preact "^10.6.3"
-    preact-render-to-string "^5.1.19"
-    uuid "^8.3.2"
-
-next-auth@^4.20.1:
+next-auth@^4.10.3, next-auth@^4.20.1:
   version "4.20.1"
   resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.20.1.tgz#6e65c4fde14171f6ce64f05f672f80f39fc418c7"
   integrity sha512-ZcTUN4qzzZ/zJYgOW0hMXccpheWtAol8QOMdMts+LYRcsPGsqf2hEityyaKyECQVw1cWInb9dF3wYwI5GZdEmQ==
