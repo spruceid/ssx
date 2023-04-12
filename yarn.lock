@@ -23173,21 +23173,6 @@ next-auth@^4.10.3, next-auth@^4.20.1:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
-next-auth@^4.20.1, next-auth@^4.21.1:
-  version "4.21.1"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.21.1.tgz#8db520395b2c697bd1259b76831d319728f0d50d"
-  integrity sha512-NYkU4jAPSVxWhCblE8dDFAnKM7kOoO/QEobQ0RoEVP9Wox99A3PKHwOAsWhSg8ahJG/iKIWk2Bo1xHvsS4R39Q==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@panva/hkdf" "^1.0.2"
-    cookie "^0.5.0"
-    jose "^4.11.4"
-    oauth "^0.9.15"
-    openid-client "^5.4.0"
-    preact "^10.6.3"
-    preact-render-to-string "^5.1.19"
-    uuid "^8.3.2"
-
 next-tick@1, next-tick@^1.0.0, next-tick@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
