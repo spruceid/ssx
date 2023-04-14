@@ -160,8 +160,8 @@ class BrowserStorage implements IStorage {
 
   public async get(key: string): Promise<any> {
     const db = await this.getDB();
-    const tx = db.transaction(this.storeName, 'readonly');
-    const store = tx.objectStore(this.storeName);
+    const transaction = db.transaction(this.storeName, 'readonly');
+    const store = transaction.objectStore(this.storeName);
     const value = await store.get(this.prefixKey(key));
     await transaction.done;
     return value;
@@ -169,16 +169,16 @@ class BrowserStorage implements IStorage {
 
   public async put(key: string, value: any): Promise<void> {
     const db = await this.getDB();
-    const tx = db.transaction(this.storeName, 'readwrite');
-    const store = tx.objectStore(this.storeName);
+    const transaction = db.transaction(this.storeName, 'readwrite');
+    const store = transaction.objectStore(this.storeName);
     await store.put(value, this.prefixKey(key));
     await transaction.done;
   }
 
   public async list(): Promise<string[]> {
     const db = await this.getDB();
-    const tx = db.transaction(this.storeName, 'readonly');
-    const store = tx.objectStore(this.storeName);
+    const transaction = db.transaction(this.storeName, 'readonly');
+    const store = transaction.objectStore(this.storeName);
     const keys = await store.getAllKeys();
     await transaction.done;
     return keys as unknown as string[];
@@ -186,16 +186,16 @@ class BrowserStorage implements IStorage {
 
   public async delete(key: string): Promise<void> {
     const db = await this.getDB();
-    const tx = db.transaction(this.storeName, 'readwrite');
-    const store = tx.objectStore(this.storeName);
+    const transaction = db.transaction(this.storeName, 'readwrite');
+    const store = transaction.objectStore(this.storeName);
     await store.delete(this.prefixKey(key));
     await transaction.done;
   }
 
   public async deleteAll(): Promise<void> {
     const db = await this.getDB();
-    const tx = db.transaction(this.storeName, 'readwrite');
-    const store = tx.objectStore(this.storeName);
+    const transaction = db.transaction(this.storeName, 'readwrite');
+    const store = transaction.objectStore(this.storeName);
     await store.clear();
     await transaction.done;
   }
