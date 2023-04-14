@@ -46,6 +46,7 @@
     "test:e2e": "start-test 'yarn start:test-dapp' 3000 'SSX_SIGNING_KEY=test_key yarn start:test-api' 3001 'SECRET_WORDS=\"test test test test test test test test test test test junk\" synpress run'"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.16",
     "@changesets/cli": "^2.25.0",
     "@synthetixio/synpress": "^3.5.1",
     "@types/jest": "^29.2.3",

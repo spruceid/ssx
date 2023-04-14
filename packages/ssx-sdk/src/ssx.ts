@@ -5,13 +5,15 @@ import {
   SSXLensProfilesResponse,
 } from '@spruceid/ssx-core';
 
-import type {
+import {
   IUserAuthorization,
   IEncryption,
   IDataVault,
   ICredential,
   UserAuthorizationConnected,
   UserAuthorizationInit,
+  BrowserStorage,
+  IStorage,
 } from './modules';
 import {
   SSXClientConfig,
@@ -101,6 +103,9 @@ export class SSX {
   /** Credential Module */
   public credential: ICredential;
 
+  /** Storage Module */
+  public storage: IStorage;
+
   constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
     // TODO: initialize these based on the config
     this.userAuthorization = new UserAuthorization(config);
@@ -110,6 +115,7 @@ export class SSX {
     this.encryption = new SignatureEncryption({}, this.userAuthorization);
     this.dataVault = new BrowserDataVault({}, this.encryption);
     this.credential = new Credential({}, this.dataVault);
+    this.storage = new BrowserStorage({});
   }
 
   /**
