@@ -151,8 +151,8 @@ class BrowserStorage implements IStorage {
     const storeName = this.storeName;
     return await openDB(this.dbName, 1, {
       upgrade(db) {
-        if (!db.objectStoreNames.contains(this.storeName)) {
-          db.createObjectStore(this.storeName);
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.createObjectStore(storeName);
         }
       },
     });
@@ -278,6 +278,7 @@ class KeplerStorage implements IStorage {
 
   constructor(config: any, userAuth: IUserAuthorization) {
     this.userAuth = userAuth;
+    this.hosts = ['kepler.spruceid.xyz']; // accept from config
   }
 
   async afterConnect(
@@ -315,7 +316,7 @@ class KeplerStorage implements IStorage {
       jwk: JSON.parse(ssxSession.sessionKey),
       orbitId: this.orbitId,
       service: 'kv',
-      siwe: new SiweMessage(ssxSession.siwe).toMessage(),
+      siwe: ssxSession.siwe,
       signature: ssxSession.signature,
       verificationMethod: new SiweMessage(ssxSession.siwe).uri,
     })
