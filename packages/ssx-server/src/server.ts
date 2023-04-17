@@ -113,6 +113,10 @@ export class SSXServer extends SSXServerBaseClass {
     error: SiweError;
     session: Partial<SessionData>;
   }> => {
+    if (nonce === null || nonce === undefined || typeof nonce !== 'string') {
+      throw new Error('Invalid nonce.');
+    }
+
     const siweMessage = new SiweMessage(siwe);
 
     let siweMessageVerifyPromise: any = siweMessage
@@ -134,7 +138,7 @@ export class SSXServer extends SSXServerBaseClass {
       }
       promises.push(this.resolveEns(siweMessage.address, resolveEnsOpts));
     }
-    
+
     let lens: string | SSXLensProfilesResponse;
     if (resolveLens) {
       promises.push(this.resolveLens(siweMessage.address));
@@ -214,15 +218,15 @@ export class SSXServer extends SSXServerBaseClass {
   };
 
   /**
-   * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
    * limited by 10. To get other pages you must to pass the pageCursor parameter.
-   * 
+   *
    * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
    * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
-   *  
+   *
    * @param address - Ethereum User address.
-   * @param pageCursor - Page cursor used to paginate the request. Default to 
-   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
    * information.
    * @returns Object containing Lens profiles items and pagination info.
    */
@@ -230,7 +234,7 @@ export class SSXServer extends SSXServerBaseClass {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = "{}"
+    pageCursor: string = '{}',
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.provider, address, pageCursor);
   }
