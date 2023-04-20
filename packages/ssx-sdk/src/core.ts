@@ -9,17 +9,14 @@ import {
   ISSXConnected,
   SSXExtension,
 } from '@spruceid/ssx-core/client';
-import {
-  SSXEnsResolveOptions,
-  isSSXRouteConfig,
-} from '@spruceid/ssx-core';
+import { SSXEnsResolveOptions, isSSXRouteConfig } from '@spruceid/ssx-core';
 
 /** Initializer for an SSXClientSession. */
 export class SSXInit {
   /** Extensions for the SSXClientSession. */
   private extensions: SSXExtension[] = [];
 
-  constructor(private config?: SSXClientConfig) { }
+  constructor(private config?: SSXClientConfig) {}
 
   /** Extend the session with an SSX compatible extension. */
   extend(extension: SSXExtension) {
@@ -120,7 +117,10 @@ export class SSXConnected implements ISSXConnected {
     for (const extension of this.extensions) {
       if (extension.afterConnect) {
         const overrides = await extension.afterConnect(this);
-        this.config = { ...this.config, siweConfig: { ...overrides?.siwe } };
+        this.config = {
+          ...this.config,
+          siweConfig: { ...this.config?.siweConfig, ...overrides?.siwe },
+        };
       }
 
       if (extension.namespace && extension.defaultActions) {
@@ -167,13 +167,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
 
     const { customAPIOperation } = requestConfig;
     if (customAPIOperation) {
@@ -212,13 +212,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
     const { customAPIOperation } = requestConfig;
 
     if (customAPIOperation) {
@@ -279,14 +279,16 @@ export class SSXConnected implements ISSXConnected {
     }
 
     const defaults = {
-      address: this.config.siweConfig?.address ?? await this.provider.getSigner().getAddress(),
+      address:
+        this.config.siweConfig?.address ??
+        (await this.provider.getSigner().getAddress()),
       walletAddress: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
       domain: globalThis.location.hostname,
       issuedAt: new Date().toISOString(),
       nonce: generateNonce(),
     };
-    
+
     const serverNonce = await this.ssxServerNonce(defaults);
     if (serverNonce) defaults.nonce = serverNonce;
 
@@ -326,13 +328,13 @@ export class SSXConnected implements ISSXConnected {
     const route = this.config.providers?.server?.routes?.login ?? '/ssx-logout';
     const requestConfig = isSSXRouteConfig(route)
       ? {
-        customAPIOperation: undefined,
-        ...route,
-      }
+          customAPIOperation: undefined,
+          ...route,
+        }
       : {
-        customAPIOperation: undefined,
-        url: route,
-      };
+          customAPIOperation: undefined,
+          url: route,
+        };
     // check if we should run a custom operation instead
     const { customAPIOperation } = requestConfig;
 
