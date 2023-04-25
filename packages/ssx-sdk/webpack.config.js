@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = {
+const webpackConfig = {
   entry: './src/index.ts',
   module: {
     rules: [
@@ -36,10 +36,7 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     globalObject: 'this'
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      Buffer: ['buffer', 'Buffer'],
-    }),
-  ],
+  }
 };
+
+module.exports = webpackConfig;
