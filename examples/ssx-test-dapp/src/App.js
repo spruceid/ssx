@@ -13,6 +13,17 @@ import { useWeb3Modal } from '@web3modal/react';
 import { useSigner } from 'wagmi';
 import './App.css';
 
+const LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS = [{
+  contractAddress: "",
+  standardContractType: "",
+  chain: "ethereum",
+  method: "eth_getBalance",
+  parameters: [":userAddress", "latest"],
+  returnValueTest: {
+    comparator: ">=",
+    value: "000000000000", // 0.000000 ETH
+  },
+}];
 
 function App() {
 
@@ -46,6 +57,7 @@ function App() {
   const [statement, setStatement] = useState('');
   // ssx module config
   const [encryptionEnabled, setEncryptionEnabled] = useState('On');
+  const [encryptionType, setEncryptionType] = useState('SignatureEncryption');
   const [message, setMessage] = useState(null);
   const [ciphertext, setCiphertext] = useState(null);
   const [decrypted, setDecrypted] = useState(null);
@@ -111,7 +123,9 @@ function App() {
 
     const modules = {};
     if (encryptionEnabled === "On") {
-      modules.encryption = true;
+      modules.encryption = {
+        module: encryptionType
+      };
     }
 
     if (modules) {
@@ -206,22 +220,41 @@ function App() {
     if (message === "") {
       throw Error("No message to encrypt")
     }
-    // convert content to blob
-    const blob = new Blob([message], { type: "text/plain" });
-    const encryptedData = await ssxProvider.encryption.encrypt(blob);
-    setCiphertext(JSON.stringify(encryptedData, null,2))
+    let encryptedData;
+    if (encryptionType === 'SignatureEncryption') {
+      // convert content to blob
+      const blob = new Blob([message], {
+        type: "text/plain"
+      });
+      encryptedData = await ssxProvider.encryption.encrypt(blob);
+    } else {
+      encryptedData = await ssxProvider.encryption.encrypt({
+        content: message,
+        accessControlConditions: LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS
+      });
+    }
+    console.log("JESUUUS", encryptedData)
+    setCiphertext(encryptedData)
   }
 
   const decryptionHandler = async () => {
     if (!ssxProvider) {
       throw Error("No SSX Instance found");
     }
-    if (ciphertext === "") {
+    if (!ciphertext || ciphertext === "" || ciphertext === null) {
       throw Error("No ciphertext to decrypt")
     }
-    const parsedCiphertext = JSON.parse(ciphertext)
-    const decryptedData = await ssxProvider.encryption.decrypt(parsedCiphertext);
-    const text = await decryptedData.text()
+    let text;
+    if (encryptionType === 'SignatureEncryption') {
+      const decryptedData = await ssxProvider.encryption.decrypt(ciphertext);
+      text = await decryptedData?.text();
+    } else {
+      const decryptedData = await ssxProvider.encryption.decrypt({
+        ...ciphertext,
+        accessControlConditions: LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS
+      });
+      text = await decryptedData.decryptedString;
+    }
     setDecrypted(text);
   }
 
@@ -235,8 +268,7 @@ function App() {
   };
 
   const copyHandler = () => {
-    console.log("hello?")
-    navigator.clipboard.writeText(ciphertext)
+    navigator.clipboard.writeText(JSON.stringify(ciphertext))
     setCopied(true)
     console.log(copied)
   }
@@ -421,6 +453,21 @@ function App() {
               null
           }
           {
+            encryptionEnabled === 'On' ?
+              <>
+                <RadioGroup
+                  label='Encryption Type'
+                  name='encryptionType'
+                  options={
+                    ['SignatureEncryption', 'LitEncryption']
+                  }
+                  value={encryptionType}
+                  onChange={setEncryptionType}
+                />
+              </> :
+              null
+          }
+          {
             siweConfig === 'On' ?
               <div>
                 <Input
@@ -504,7 +551,7 @@ function App() {
             <Button
               id='decryptButton'
               onClick={decryptionHandler}
-              enabled={encrypted}
+              disabled={!encrypted}
             >
               Decrypt
             </Button>
@@ -515,17 +562,17 @@ function App() {
             }
             {
               ciphertext && <div className='CipherText'>
-                <pre style={{wordWrap:'break-word',whiteSpace:'pre-wrap'}}>
-                ciphertext: "{ciphertext}"
-              </pre>
-              <Button
-              id='copytoClipboard'
-              onClick={copyHandler}            >
-              Copy
-            </Button>
-            {
-              copied && <p style={{textAlign:"right", color:"#667080"}}>Copied to clipboard!</p>
-            }
+                <pre style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>
+                  ciphertext: "{JSON.stringify(ciphertext, null, 2)}"
+                </pre>
+                <Button
+                  id='copytoClipboard'
+                  onClick={copyHandler}            >
+                  Copy
+                </Button>
+                {
+                  copied && <p style={{ textAlign: "right", color: "#667080" }}>Copied to clipboard!</p>
+                }
               </div>
             }
           </div>
