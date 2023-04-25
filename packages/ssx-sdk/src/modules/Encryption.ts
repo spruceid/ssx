@@ -1,5 +1,6 @@
 import * as jose from 'jose';
-import { IUserAuthorization } from './UserAuthorization';
+import { IUserAuthorization, UserAuthorization } from './UserAuthorization';
+import * as LitJsSdk from '@lit-protocol/lit-node-client';
 
 function jsonToUint8Array(jsonObj) {
   // Stringify the JSON object
@@ -51,14 +52,131 @@ interface IEncryption {
   decrypt: (encrypted: any) => Promise<any>;
 }
 
+/**
+ * The LitEncryptData interface describes the parameters for the 
+ * LitEncryption's encrypt method.
+ */
+interface LitEncryptData {
+  /**
+   * 
+   */
+  content: any;
+  /** 
+   * Lit's access control. Check out 
+   * {@link https://developer.litprotocol.com/accessControl/intro Lit's docs} 
+   * for more information. 
+   */
+  accessControlConditions: Array<any>;
+  /** 
+   * Supported Blockchains. Check out 
+   * {@link https://developer.litprotocol.com/resources/supportedChains Lit's docs} 
+   * for more information. 
+   */
+  // chain: string;
+}
+
+/**
+ * The LitDencryptData interface describes the parameters for the 
+ * LitEncryption's decrypt method.
+ */
+interface LitDecryptData {
+  /** Blob content returned by the encrypt method. */
+  encryptedString: Blob;
+  /** encryptedSymmetricKey content returned by the encrypt method. */
+  encryptedSymmetricKey: string;
+  /**
+   * Lit's access control. Check out 
+   * {@link https://developer.litprotocol.com/accessControl/intro Lit's docs} 
+   * for more information. 
+   */
+  accessControlConditions: Array<any>;
+  /**
+   * Supported Blockchains. Check out 
+   * {@link https://developer.litprotocol.com/resources/supportedChains Lit's docs} 
+   * for more information. 
+   */
+  // chain: string;
+}
+
 class LitEncryption implements IEncryption {
   private userAuth: IUserAuthorization;
+  private client = new LitJsSdk.LitNodeClient({});
+  private litNodeClient;
 
   constructor(config: any, userAuth: IUserAuthorization) {
     this.userAuth = userAuth;
   }
-  encrypt: (data: any) => Promise<any>;
-  decrypt: (encrypted: any) => Promise<any>;
+
+  public connect = async () => {
+    await this.client.connect();
+    this.litNodeClient = this.client;
+  }
+
+  public encrypt = async (data: LitEncryptData) => {
+    if (!this.litNodeClient) {
+      await this.connect();
+    }
+
+    const { session } = this.userAuth as UserAuthorization;
+
+    if (!session) {
+      throw new Error("Sign in before trying to encrypt your data.")
+    }
+
+    const authSig = {
+      address: session.address,
+      derivedVia: "web3.eth.personal.sign",
+      sig: session.signature,
+      signedMessage: session.siwe,
+    };
+
+    const { encryptedString, symmetricKey } = await LitJsSdk.encryptString(data.content)
+
+    const encryptedSymmetricKey = await this.litNodeClient.saveEncryptionKey({
+      accessControlConditions: data.accessControlConditions,
+      symmetricKey,
+      authSig,
+      chain: "ethereum",
+    });
+
+    return {
+      encryptedString,
+      encryptedSymmetricKey: LitJsSdk.uint8arrayToString(encryptedSymmetricKey, "base16")
+    }
+  };
+
+  public decrypt = async (encrypted: LitDecryptData) => {
+    if (!this.litNodeClient) {
+      await this.connect()
+    }
+
+    const { session } = this.userAuth as UserAuthorization;
+
+    if (!session) {
+      throw new Error("Sign in before trying to encrypt your data.")
+    }
+
+    const authSig = {
+      address: session.address,
+      derivedVia: "web3.eth.personal.sign",
+      sig: session.signature,
+      signedMessage: session.siwe,
+    };
+
+    const symmetricKey = await this.litNodeClient.getEncryptionKey({
+      accessControlConditions: encrypted.accessControlConditions,
+      toDecrypt: encrypted.encryptedSymmetricKey,
+      chain: "ethereum",
+      authSig
+    })
+
+    const decryptedString = await LitJsSdk.decryptString(
+      encrypted.encryptedString,
+      symmetricKey
+    );
+
+    return { decryptedString }
+  }
 }
 
 /**
