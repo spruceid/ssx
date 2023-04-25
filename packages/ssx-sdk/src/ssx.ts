@@ -118,11 +118,11 @@ export class SSX {
     // determine which encryption module to use
     // if encryption module is false, don't initialize encryption or dependent modules
     if (
-      this.config.modules.encryption === true ||
-      (this.config.modules.encryption as SSXEncryptionModuleConfig).module === 'SignatureEncryption'
+      this.config?.modules?.encryption === true ||
+      (this.config?.modules?.encryption as SSXEncryptionModuleConfig)?.module === 'SignatureEncryption'
     ) {
       this.encryption = new SignatureEncryption({}, this.userAuthorization);
-    } else if ((this.config.modules.encryption as SSXEncryptionModuleConfig).module === 'LitEncryption') {
+    } else if ((this.config?.modules?.encryption as SSXEncryptionModuleConfig)?.module === 'LitEncryption') {
       this.encryption = new LitEncryption({}, this.userAuthorization);
     }
     this.dataVault = new BrowserDataVault({}, this.encryption);
