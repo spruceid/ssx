@@ -44,7 +44,7 @@ export default async (): Promise<Config> => ({
         "<rootDir>/packages/ssx-sdk/tests/modules/?(*.)+(spec|test).[jt]s?(x)",
       ],
       transformIgnorePatterns: [
-        '<rootDir>/node_modules/(?!(jose)/)',
+        'node_modules/(?!(jose|ipfs-core-utils|ipfs-http-client|ipfs-unixfs|@ipld|multiformats|cborg|dag-jose|uint8arrays)/)',
       ],
     },
     {

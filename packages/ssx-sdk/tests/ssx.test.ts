@@ -42,7 +42,7 @@ test('Instantiate SSX with providers.web3.driver and daoLogin', async () => {
   const abi = [
     'event SetDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
     'event ClearDelegate(address indexed delegator, bytes32 indexed id, address indexed delegate)',
-  ] as const;
+  ];
   const contractTestingUtils = testingUtils.generateContractUtils(abi);
   contractTestingUtils.mockGetLogs('SetDelegate', []);
   contractTestingUtils.mockGetLogs('ClearDelegate', []);
