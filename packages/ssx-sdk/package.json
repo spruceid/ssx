@@ -25,6 +25,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@lit-protocol/lit-node-client": "^2.1.135",
     "@metamask/detect-provider": "^1.2.0",
     "@spruceid/ssx-core": "1.2.0",
     "@spruceid/ssx-gnosis-extension": "1.1.5",

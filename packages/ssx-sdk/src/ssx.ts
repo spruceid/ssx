@@ -25,6 +25,7 @@ import {
   UserAuthorization,
   BrowserDataVault,
   SignatureEncryption,
+  LitEncryption,
   Credential,
 } from './modules';
 
@@ -38,13 +39,17 @@ interface SSXEncryptionModuleConfig {
   module: 'SignatureEncryption' | 'LitEncryption';
 }
 
-interface SignatureEncryptionConfig  extends SSXEncryptionModuleConfig {
+interface SignatureEncryptionConfig extends SSXEncryptionModuleConfig {
   module: 'SignatureEncryption';
   /**
-   * A message used to generate the detereministic sugnature for deriving the encryption key.
+   * A message used to generate the detereministic signature for deriving the encryption key.
    * @default "Sign this message to generate an encryption key for {address}"
    */
   message?: () => string;
+}
+
+interface LitEncryptionConfig extends SSXEncryptionModuleConfig {
+  module: 'LitEncryption';
 }
 
 /**
@@ -112,7 +117,14 @@ export class SSX {
     // get encryption config from config.modules.encryption
     // determine which encryption module to use
     // if encryption module is false, don't initialize encryption or dependent modules
-    this.encryption = new SignatureEncryption({}, this.userAuthorization);
+    if (
+      this.config?.modules?.encryption === true ||
+      (this.config?.modules?.encryption as SSXEncryptionModuleConfig)?.module === 'SignatureEncryption'
+    ) {
+      this.encryption = new SignatureEncryption({}, this.userAuthorization);
+    } else if ((this.config?.modules?.encryption as SSXEncryptionModuleConfig)?.module === 'LitEncryption') {
+      this.encryption = new LitEncryption({}, this.userAuthorization);
+    }
     this.dataVault = new BrowserDataVault({}, this.encryption);
     this.credential = new Credential({}, this.dataVault);
     this.storage = new BrowserStorage({});

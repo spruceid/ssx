@@ -15,6 +15,18 @@ global.TextDecoder = TD;
 //   },
 // });
 
+const LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS = [{
+  contractAddress: "",
+  standardContractType: "",
+  chain: "goerli",
+  method: "eth_getBalance",
+  parameters: [":userAddress", "latest"],
+  returnValueTest: {
+    comparator: ">=",
+    value: "000000000000", // 0.000000 ETH
+  },
+}];
+
 import {
   SignatureEncryption,
   LitEncryption,
@@ -39,8 +51,8 @@ xdescribe('Encryption', () => {
     },
   };
   const userAuth = new UserAuthorization(config);
-  userAuth.connect();
-  describe('Signature Encryption', () => {
+  userAuth.signIn();
+  xdescribe('Signature Encryption', () => {
     beforeEach(() => {
       const encryptionConfig = {};
       encryption = new SignatureEncryption(encryptionConfig, userAuth);
@@ -64,9 +76,15 @@ xdescribe('Encryption', () => {
 
     test('Should be able to encrypt and decrypt a message', async () => {
       const message = 'Hello World';
-      const encryptedMessage = await encryption.encrypt(message);
-      const decryptedMessage = await encryption.decrypt(encryptedMessage);
-      expect(decryptedMessage).toEqual(message);
+      const encryptedData = await encryption.encrypt({
+        content: message,
+        accessControlConditions: LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS
+      });
+      const decryptedData = await encryption.decrypt({
+        ...encryptedData,
+        accessControlConditions: LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS
+      });
+      expect(decryptedData.decryptedString).toEqual(message);
     });
 
     test('Should be able to encrypt and decrypt a message with a symmetric key', async () => {
