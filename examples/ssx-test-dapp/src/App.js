@@ -233,7 +233,6 @@ function App() {
         accessControlConditions: LIT_ENCRYPTION_ACCESS_CONTROL_CONDITIONS
       });
     }
-    console.log("JESUUUS", encryptedData)
     setCiphertext(encryptedData)
   }
 
