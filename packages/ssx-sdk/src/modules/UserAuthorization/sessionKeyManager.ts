@@ -26,7 +26,7 @@ class SessionKeyManager {
 
   public getDID = () => {
     // Key creation following https://w3c-ccg.github.io/did-method-key/#format
-    const publicKeyBytes = base64url.decoder.baseDecode(sessionKey.x);
+    const publicKeyBytes = base64url.decoder.baseDecode(this.sessionKey.x);
     const ed25519PublicKey = new Uint8Array(
       [0xed, 0x01].concat(Array.from(publicKeyBytes))
     );
@@ -39,7 +39,7 @@ class SessionKeyManager {
   };
 
   public getPublicKey = () => {
-    const { y: _, ...remaining } = this.sessionKey;
+    const { d: _, ...remaining } = this.sessionKey;
     return remaining;
   };
 

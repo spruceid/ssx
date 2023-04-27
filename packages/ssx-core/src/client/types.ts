@@ -30,9 +30,8 @@ export type SSXClientSession = {
   address: string;
   /** User address without delegation */
   walletAddress: string;
+  /** The chainId the user is connected to */
   chainId: number;
-  /** Key to identify the session */
-  sessionKey: string;
   /** The message that can be obtained by SiweMessage.prepareMessage() */
   siwe: string;
   /** The signature of the siwe message */
@@ -95,8 +94,10 @@ export interface SSXEnsConfig {
 
 /** Interface to an intermediate SSX state: connected, but not signed-in. */
 export interface ISSXConnected {
-  /** Instance of SSXSessionBuilder. */
-  builder: ssxSession.SSXSessionBuilder;
+  // /** SIWE Message Builder */
+  // builder: MessageBuilder;
+  // /** Session Key Manager */
+  // sessionKeyManager: SessionKeyManager;
   /** SSXConfig object. */
   config: SSXClientConfig;
   /** List of enabled extensions. */
