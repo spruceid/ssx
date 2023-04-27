@@ -18,6 +18,8 @@ import {
   SSXExtension,
 } from '@spruceid/ssx-core/client';
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
+import MessageBuilder from './messageBuilder';
+import SessionKeyManager from './sessionKeyManager';
 
 /** UserAuthorization Module
  *
@@ -137,19 +139,19 @@ class UserAuthorizationInit {
       }
     }
 
-    let builder;
-    try {
-      builder = await initialized.then(
-        () => new ssxSession.SSXSessionBuilder()
-      );
-    } catch (err) {
-      // SSX wasm related error
-      console.error(err);
-      throw err;
-    }
+    // let builder;
+    // try {
+    //   builder = await initialized.then(
+    //     () => new ssxSession.SSXSessionBuilder()
+    //   );
+    // } catch (err) {
+    //   // SSX wasm related error
+    //   console.error(err);
+    //   throw err;
+    // }
 
     return new UserAuthorizationConnected(
-      builder,
+      // builder,
       this.config,
       this.extensions,
       provider
@@ -172,11 +174,15 @@ class UserAuthorizationConnected implements ISSXConnected {
   /** Axios instance. */
   public api?: AxiosInstance;
 
-  /** Ethereum Provider */
+  /** SIWE Message Builder */
+  public builder: MessageBuilder;
+
+  /** Session Key Manager */
+  public sessionKeyManager: SessionKeyManager;
 
   constructor(
     /** Instance of SSXSessionBuilder */
-    public builder: ssxSession.SSXSessionBuilder,
+    // public builder: ssxSession.SSXSessionBuilder,
     /** SSXConfig object. */
     public config: SSXClientConfig,
     /** Enabled extensions. */
@@ -191,7 +197,11 @@ class UserAuthorizationConnected implements ISSXConnected {
         withCredentials: true,
       });
     }
-    // this.provider = provider;
+
+    // initialize the builder
+    this.builder = new MessageBuilder();
+    // initialize the session key manager
+    this.sessionKeyManager = new SessionKeyManager();
   }
 
   /** Applies the "afterConnect" methods and the delegated capabilities of the extensions. */
@@ -202,26 +212,26 @@ class UserAuthorizationConnected implements ISSXConnected {
         this.config = { ...this.config, siweConfig: { ...overrides?.siwe } };
       }
 
-      if (extension.namespace && extension.defaultActions) {
-        const defaults = await extension.defaultActions();
-        this.builder.addDefaultActions(extension.namespace, defaults);
-      }
+      //   if (extension.namespace && extension.defaultActions) {
+      //     const defaults = await extension.defaultActions();
+      //     this.builder.addDefaultActions(extension.namespace, defaults);
+      //   }
 
-      if (extension.namespace && extension.extraFields) {
-        const defaults = await extension.extraFields();
-        this.builder.addExtraFields(extension.namespace, defaults);
-      }
+      //   if (extension.namespace && extension.extraFields) {
+      //     const defaults = await extension.extraFields();
+      //     this.builder.addExtraFields(extension.namespace, defaults);
+      //   }
 
-      if (extension.namespace && extension.targetedActions) {
-        const targetedActions = await extension.targetedActions();
-        for (const target in targetedActions) {
-          this.builder.addTargetedActions(
-            extension.namespace,
-            target,
-            targetedActions[target]
-          );
-        }
-      }
+      //   if (extension.namespace && extension.targetedActions) {
+      //     const targetedActions = await extension.targetedActions();
+      //     for (const target in targetedActions) {
+      //       this.builder.addTargetedActions(
+      //         extension.namespace,
+      //         target,
+      //         targetedActions[target]
+      //       );
+      //     }
+      //   }
     }
   }
 
@@ -352,15 +362,13 @@ class UserAuthorizationConnected implements ISSXConnected {
   async signIn(): Promise<SSXClientSession> {
     await this.afterConnectHooksPromise;
 
-    const sessionKey = this.builder.jwk();
-    if (sessionKey === undefined) {
-      return Promise.reject(new Error('unable to retrieve session key'));
-    }
+    const sessionKey = this.builder.getDID();
 
     const defaults = {
       address:
         this.config.siweConfig?.address ??
         (await this.provider.getSigner().getAddress()),
+      uri: sessionKey,
       walletAddress: await this.provider.getSigner().getAddress(),
       chainId: await this.provider.getSigner().getChainId(),
       domain: globalThis.location.hostname,
@@ -381,7 +389,6 @@ class UserAuthorizationConnected implements ISSXConnected {
       address: siweConfig.address,
       walletAddress: await this.provider.getSigner().getAddress(),
       chainId: siweConfig.chainId,
-      sessionKey,
       siwe,
       signature,
     };
