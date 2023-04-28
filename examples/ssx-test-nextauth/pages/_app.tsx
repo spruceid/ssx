@@ -56,7 +56,6 @@ function MyApp({ Component, pageProps }: any) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <SSXProvider ssxConfig={ssxConfig} onChangeAccount={async (address: string, ssx: any) => {
-          console.log('changed', address)
           if (address && ssx) {
             try {
               await ssx.signOut()
