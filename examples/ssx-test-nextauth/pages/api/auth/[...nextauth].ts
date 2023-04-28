@@ -1,22 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { SSXNextAuth } from "@spruceid/ssx-authjs/server";
 import { SSXServer } from "@spruceid/ssx-server";
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
-  const ssxConfig = {};
-  const ssx = new SSXServer(ssxConfig);
-  const { credentials, authorize, session } = SSXNextAuth(req, res, ssx);
-  const providers = [
-    CredentialsProvider({
-      name: "Ethereum",
-      credentials,
-      authorize,
-    }),
-  ];
+const ssxConfig = {};
+const ssx = new SSXServer(ssxConfig);
+const { credentials, authorize, session } = SSXNextAuth(ssx);
+const providers = [
+  CredentialsProvider({
+    name: "Ethereum",
+    credentials,
+    authorize,
+  }),
+];
 
-  return await NextAuth(req, res, {
+export const authOptions: NextAuthOptions = {
     providers,
     session: {
       strategy: "jwt",
@@ -25,5 +23,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     callbacks: {
       session,
     },
-  });
 }
+
+export default NextAuth(authOptions)
+
