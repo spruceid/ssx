@@ -1,6 +1,12 @@
 import * as jose from 'jose';
-import { base58btc } from 'multiformats/bases/base58';
-import { base64url } from 'multiformats/bases/base64';
+import { base58btc } from 'multiformats/base58';
+import { base64url } from 'multiformats/base64';
+
+interface ISessionKeyManager {
+  getDID: () => string;
+  getPublicKey: () => jose.JWK;
+  getPrivateKey: () => jose.JWK;
+}
 
 class SessionKeyManager {
   private sessionKey: jose.JWK;

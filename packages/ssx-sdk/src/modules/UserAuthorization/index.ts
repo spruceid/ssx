@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { initialized, ssxSession } from '@spruceid/ssx-sdk-wasm';
+// import { initialized, ssxSession } from '@spruceid/ssx-sdk-wasm';
 import merge from 'lodash.merge';
 import axios, { AxiosInstance } from 'axios';
 import { generateNonce } from 'siwe';
@@ -362,7 +362,7 @@ class UserAuthorizationConnected implements ISSXConnected {
   async signIn(): Promise<SSXClientSession> {
     await this.afterConnectHooksPromise;
 
-    const sessionKey = this.builder.getDID();
+    const sessionKey = this.sessionKeyManager.getDID();
 
     const defaults = {
       address:
