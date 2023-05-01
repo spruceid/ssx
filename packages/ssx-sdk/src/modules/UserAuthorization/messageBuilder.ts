@@ -3,14 +3,14 @@ import { SiweMessage } from 'siwe';
 import { CID } from 'multiformats/cid';
 
 interface IMessageBuilder {
-    addAttenuation(
-        resource: string,
-        namespace?: string,
-        name?: string,
-        restriction?: {}
-    ): void;
-    addProof(cid: string | CID): void;
-    build(config: string | Partial<SiweMessage>): SiweMessage;
+  addAttenuation(
+    resource: string,
+    namespace?: string,
+    name?: string,
+    restriction?: {}
+  ): void;
+  addProof(cid: string | CID): void;
+  build(config: string | Partial<SiweMessage>): SiweMessage;
 }
 
 class MessageBuilder {

@@ -362,7 +362,7 @@ class UserAuthorizationConnected implements ISSXConnected {
   async signIn(): Promise<SSXClientSession> {
     await this.afterConnectHooksPromise;
 
-    const sessionKey = this.sessionKeyManager.getDID();
+    const sessionKey = await this.sessionKeyManager.getDID();
 
     const defaults = {
       address:
