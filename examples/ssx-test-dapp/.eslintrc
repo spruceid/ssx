@@ -4,18 +4,13 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "eslint:recommended"
   ],
   "ignorePatterns": ["examples/", "packages/create-ssx-dapp/"],
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
+    "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": {
     "import/prefer-default-export": "off",
@@ -27,10 +22,9 @@
     "no-use-before-define": "warn",
     "import/extensions": "off",
     "import/no-unresolved": "off",
-    "max-len": "warn",
+    "max-len": "off",
     "max-classes-per-file": "off",
     "no-plusplus": "off",
-    "no-await-in-loop": "off",
-    "@typescript-eslint/no-empty-interface": "off"
+    "no-await-in-loop": "off"
   }
 }

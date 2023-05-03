@@ -18,7 +18,7 @@ import './App.css';
 function App() {
 
   const { open: openWeb3Modal } = useWeb3Modal();
-  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
+  const { isLoading: wagmiIsLoading } = useSigner();
 
   const [loading, setLoading] = useState(false);
 
