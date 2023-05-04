@@ -13,7 +13,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
     fallback: {
       util: require.resolve('util/'),
       path: require.resolve('path-browserify'),
@@ -28,18 +28,6 @@ module.exports = {
       events: require.resolve('events/'),
       process: require.resolve('process/browser'),
     },
-    alias: {
-      // 'multiformats/bases/base58': path.resolve(
-      //   __dirname,
-      //   'node_modules/multiformats/src/bases/base58'
-        
-      // ),
-      'multiformats/bases/base64': path.resolve(
-        __dirname,
-        'node_modules/multiformats/src/bases/base64'
-      ),
-    },
-    aliasFields: ['browser'],
   },
   output: {
     filename: 'index.js',

@@ -1,6 +1,5 @@
 import { Recap } from 'siwe-recap';
 import { SiweMessage } from 'siwe';
-import { CID } from 'multiformats/cid';
 
 interface IMessageBuilder {
   addAttenuation(
@@ -9,7 +8,7 @@ interface IMessageBuilder {
     name?: string,
     restriction?: {}
   ): void;
-  addProof(cid: string | CID): void;
+  addProof(cid: string): void;
   build(config: string | Partial<SiweMessage>): SiweMessage;
 }
 
@@ -29,7 +28,7 @@ class MessageBuilder {
     this.recap.addAttenuation(resource, namespace, name, restriction);
   }
 
-  addProof(cid: string | CID) {
+  addProof(cid: string) {
     this.recap.addProof(cid);
   }
 
