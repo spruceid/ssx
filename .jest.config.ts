@@ -44,7 +44,7 @@ export default async (): Promise<Config> => ({
         "<rootDir>/packages/ssx-sdk/tests/modules/?(*.)+(spec|test).[jt]s?(x)",
       ],
       transformIgnorePatterns: [
-        '<rootDir>/node_modules/(?!(jose)/)',
+        '<rootDir>/node_modules/(?!(jose|multiformats)/)',
       ],
     },
     {
