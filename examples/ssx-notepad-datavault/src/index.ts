@@ -9,33 +9,6 @@ const app = Express();
 
 app.use(
     Helmet({
-        // contentSecurityPolicy: {
-        //   directives: {
-        //     "default-src": ["'self'"],
-        //     "style-src": [
-        //       "'self'",
-        //       "'unsafe-inline'",
-        //       "https://unpkg.com",
-        //     ],
-        //     "img-src": [
-        //       "'self'",
-        //       "data:",
-        //     ],
-        //     "font-src": [
-        //       "'self'",
-        //       "https://unpkg.com",
-        //     ],
-        //     "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://kepler.spruceid.xyz"],
-        //     "connect-src": [
-        //       "'self'",
-        //       "https://kepler.spruceid.xyz",
-        //       "https://kepler.spruceid.xyz/delegate",
-        //       "wss://*.walletconnect.org",
-        //       "https://*.walletconnect.org",
-        //       "https://*.infura.io",
-        //     ],
-        //   },
-        // },
         contentSecurityPolicy: false,
         referrerPolicy: { policy: "no-referrer-when-downgrade" },
       }),
