@@ -18,6 +18,8 @@ import {
   SSXExtension,
 } from '@spruceid/ssx-core/client';
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
+import { config } from 'dotenv';
+import { SiweConfig } from '../../../ssx-core/dist/client/types';
 
 /** UserAuthorization Module
  *
@@ -200,7 +202,10 @@ class UserAuthorizationConnected implements ISSXConnected {
     for (const extension of this.extensions) {
       if (extension.afterConnect) {
         const overrides = await extension.afterConnect(this);
-        this.config = { ...this.config, siweConfig: { ...overrides?.siwe } };
+        this.config = {
+          ...this.config,
+          siweConfig: { ...overrides?.siwe, ...this.config?.siweConfig },
+        };
       }
 
       if (extension.namespace && extension.defaultActions) {

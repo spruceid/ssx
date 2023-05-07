@@ -119,7 +119,8 @@ export class SSX {
     this.dataVault = new KeplerDataVault({}, this.userAuthorization, this.encryption)
     this.credential = new Credential({}, this.dataVault);
     // this.storage = new BrowserStorage({});
-    this.storage = new KeplerStorage({}, this.userAuthorization);
+    const storageConfig = { prefix: 'ssx' };
+    this.storage = new KeplerStorage(storageConfig, this.userAuthorization);
 
     // TODO: do this programmatically will all modules
     this.extend(this.dataVault);

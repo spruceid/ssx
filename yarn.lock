@@ -6853,10 +6853,37 @@
     uri-js "^4.4.1"
     valid-url "^1.0.9"
 
-"@spruceid/ssx-sdk-wasm@0.1.2":
+"@spruceid/ssx-sdk-wasm@file:../ssx-rs/sdk":
   version "0.1.2"
-  resolved "https://registry.npmjs.org/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.1.2.tgz#d28301d83b4b008247fef774a082c4c50bd3c4ee"
-  integrity sha512-PuxRlyTlycXrTU11B22XcCz1PUU7p5krXxnb+ztPkgR3fAMP3ubENgoUyLllUJXxx2O/Jpne+0P9HIro+vilPg==
+
+"@spruceid/ssx@file:packages/ssx-sdk":
+  version "1.2.5"
+  dependencies:
+    "@metamask/detect-provider" "^1.2.0"
+    "@spruceid/ssx-core" "1.2.0"
+    "@spruceid/ssx-gnosis-extension" "1.1.5"
+    "@spruceid/ssx-sdk-wasm" "file:../ssx-rs/sdk"
+    "@types/lodash.merge" "^4.6.7"
+    assert "^2.0.0"
+    axios "^0.27.2"
+    browser "^0.2.6"
+    buffer "^6.0.3"
+    cross-env "5.0.5"
+    ethers "^5.7.1"
+    events "^3.3.0"
+    https-browserify "^1.0.0"
+    idb "7.1.1"
+    jose "^4.13.1"
+    lodash.merge "^4.6.2"
+    os-browserify "^0.3.0"
+    path-browserify "^1.0.1"
+    process "^0.11.10"
+    siwe "^2.1.2"
+    stream-browserify "^3.0.0"
+    stream-http "^3.2.0"
+    url "^0.11.0"
+    util "^0.12.4"
+    web3modal "^1.9.7"
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
@@ -22044,24 +22071,6 @@ keccak@^3.0.0, keccak@^3.0.1, keccak@^3.0.2:
     node-addon-api "^2.0.0"
     node-gyp-build "^4.2.0"
     readable-stream "^3.6.0"
-
-kepler-sdk-wasm-wrapper@=0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/kepler-sdk-wasm-wrapper/-/kepler-sdk-wasm-wrapper-0.1.3.tgz#b958a0838484f78808c936fce5b597b28d84268c"
-  integrity sha512-Ta6cNRzpJddlAV7FbbcmyUiBbSNNy50F5MVFB1KiJ3EetjJUY4JFtWZ6qlmMjbq7oUZ7VkXZMW4JpF1XTQ2C9g==
-
-kepler-sdk-wasm@=0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/kepler-sdk-wasm/-/kepler-sdk-wasm-0.1.0.tgz#56229d09cf894ffc24aee2d87dc5c984721d71bf"
-  integrity sha512-BUvTFOnjOLelmJFIrMn0vvt9xblG1Ez3XVhfUgfR9nKNB8AlARD6obGmjvmVcfTP9O84muHKaS2WNbu4b/gaOA==
-
-kepler-sdk@^0.12.5:
-  version "0.12.5"
-  resolved "https://registry.yarnpkg.com/kepler-sdk/-/kepler-sdk-0.12.5.tgz#0ce31fc054341460aaaaea04f27db0ca3f1e8587"
-  integrity sha512-/luEPtxidCrrh8YwMGnZLUMMnRccDJvV4n3yNoWvVtsDat9JCd1hlN1L2uCgmbZl0VSBn4cVPiBPZtosGXb7zQ==
-  dependencies:
-    kepler-sdk-wasm "=0.1.0"
-    kepler-sdk-wasm-wrapper "=0.1.3"
 
 keyv@3.0.0:
   version "3.0.0"

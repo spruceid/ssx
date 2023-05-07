@@ -39,7 +39,8 @@ module.exports = {
     library: '@spruceid/ssx',
     libraryTarget: 'umd',
     umdNamedDefine: true,
-    globalObject: 'this'
+    globalObject: 'this',
+    chunkFilename: '[name].[id].js',
   },
   plugins: [
     new webpack.ProvidePlugin({

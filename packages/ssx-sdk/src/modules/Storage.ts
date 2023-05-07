@@ -1,11 +1,5 @@
-import {
-  OrbitConnection,
-  activateSession,
-  hostOrbit,
-  wasmPromise,
-  Request,
-} from 'kepler-sdk';
-import { initialized } from '@spruceid/ssx-sdk-wasm';
+import { OrbitConnection, activateSession, hostOrbit, Request } from './kepler';
+import { initialized, kepler } from '@spruceid/ssx-sdk-wasm';
 
 import { openDB, IDBPDatabase } from 'idb';
 import { IEncryption } from './Encryption';
@@ -107,9 +101,6 @@ interface IStorageConfig {
 interface IBrowserStorageConfig extends IStorageConfig {
   storeName?: string;
 }
-
-const orbitId = (address, chain = 1) =>
-  `kepler:pkh:eip155:${chain}:${address}://default`;
 
 /**
  * Represents a class for managing browser storage operations.
@@ -263,6 +254,7 @@ class BrowserDataVault extends BrowserStorage implements IDataVault {
 }
 
 class KeplerStorage implements IStorage {
+  public namespace = 'kepler';
   private prefix: string;
   private hosts: string[];
   private userAuth: IUserAuthorization;
@@ -278,26 +270,27 @@ class KeplerStorage implements IStorage {
 
   constructor(config: any, userAuth: IUserAuthorization) {
     this.userAuth = userAuth;
-    this.hosts = ['kepler.spruceid.xyz']; // accept from config
+    this.hosts = ['https://kepler.spruceid.xyz']; // accept from config
+    this.prefix = config?.prefix || '';
   }
 
-  async afterConnect(
+  public async afterConnect(
     ssx: UserAuthorizationConnected
   ): Promise<ConfigOverrides> {
     await initialized;
-    this.keplerModule = await wasmPromise;
+    this.keplerModule = await kepler;
     (global as any).keplerModule = this.keplerModule;
 
-    // this.wallet = ssx.provider.getSigner();
-    this.orbitId = orbitId(
-      await this.userAuth.address(),
-      await this.userAuth.chainId()
-    );
+    const address = await ssx.provider.getSigner().getAddress();
+    const chain = await ssx.provider.getSigner().getChainId();
+
+    this.orbitId = `kepler:pkh:eip155:${chain}:${address}://default`;
+
     this.domain = ssx.config.siweConfig?.domain;
     return {};
   }
 
-  async targetedActions(): Promise<{ [target: string]: string[] }> {
+  public async targetedActions(): Promise<{ [target: string]: string[] }> {
     const actions = {};
     actions[`${this.orbitId}/capabilities/`] = ['read'];
     actions[`${this.orbitId}/kv/${this.prefix}`] = [
@@ -310,7 +303,7 @@ class KeplerStorage implements IStorage {
     return actions;
   }
 
-  async afterSignIn(ssxSession: SSXClientSession): Promise<void> {
+  public async afterSignIn(ssxSession: SSXClientSession): Promise<void> {
     const keplerHost = this.hosts[0];
     const session = await Promise.resolve({
       jwk: JSON.parse(ssxSession.sessionKey),
@@ -323,14 +316,16 @@ class KeplerStorage implements IStorage {
       .then(JSON.stringify)
       .then(this.keplerModule.completeSessionSetup)
       .then(JSON.parse);
-
+    console.log("session", session);
     return activateSession(session, keplerHost)
       .catch(async ({ status, msg }) => {
+        console.log("error", status, msg);
         if (status !== 404) {
           throw new Error(
             `Failed to submit session key delegation to Kepler: ${msg}`
           );
         }
+        console.log("hosting orbit");
         const { status: hostStatus, statusText } = await hostOrbit(
           this.userAuth.getSigner(),
           keplerHost,
@@ -343,6 +338,7 @@ class KeplerStorage implements IStorage {
         return activateSession(session, keplerHost);
       })
       .then(authn => {
+        console.log('authn', authn);
         this._orbit = new OrbitConnection(keplerHost, authn);
       });
   }
