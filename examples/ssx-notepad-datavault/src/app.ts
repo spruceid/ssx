@@ -24,6 +24,7 @@ let toggleSize: HTMLButtonElement;
 let closeButton: HTMLButtonElement;
 let disconnectButton: HTMLDivElement;
 let saveButton: HTMLDivElement;
+let deleteButton: HTMLDivElement;
 let notepad: HTMLTextAreaElement;
 let unsaved: HTMLParagraphElement;
 let ssx: SSX | undefined;
@@ -70,7 +71,7 @@ const signIn = async (connector: Providers) => {
         updateTitle(ens?.domain || address);
 
         // fetch data from store + update state
-        const text = await ssx.storage.get('notes');
+        const { data: text } = await ssx.dataVault.get('notes');
         connectedState(text, address, ens.domain);
 
     } catch (error) {
@@ -95,7 +96,16 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
-    return ssx.storage.put('notes', text)
+    return ssx.dataVault.put('notes', text)
+};
+
+/**
+ * delete the current content of our notepad
+ */
+const deleteNote = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
+    e?.preventDefault();
+    updateNotepad('');
+    return ssx.dataVault.delete('notes')
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -104,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     // fetch data from store
     if (ssx?.session) {
-        const text = await ssx.storage.get('notes');
+        const { data: text } = await ssx.dataVault.get('notes');
         const { address, ens } = ssx.session;
         // update state
         connectedState(text, address, ens.domain);
@@ -119,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     disconnectButton = document.getElementById('disconnectButton') as HTMLDivElement;
     toggleSize = document.getElementById('toggleSize') as HTMLButtonElement;
     saveButton = document.getElementById('saveButton') as HTMLDivElement;
+    deleteButton = document.getElementById('deleteButton') as HTMLDivElement;
     notepad = document.getElementById('notepad') as HTMLTextAreaElement;
     closeButton = document.getElementById('closeButton') as HTMLButtonElement;
     unsaved = document.getElementById('unsaved') as HTMLParagraphElement;
@@ -134,12 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     metamaskButton.addEventListener('click', () => signIn(Providers.METAMASK));
     walletConnectButton.addEventListener('click', () => signIn(Providers.WALLET_CONNECT));
     saveButton.addEventListener('click', save);
+    deleteButton.addEventListener('click', deleteNote);
     notepad.addEventListener('input', enableSave);
 });
 
 const blockSave = () => {
     saveButton.removeEventListener('click', save);
     saveButton.setAttribute('disabled', 'true');
+    deleteButton.removeEventListener('click', deleteNote);
+    deleteButton.setAttribute('disabled', 'true');
     updateUnsavedChanges('');
     window.onbeforeunload = null;
 };
@@ -147,6 +161,8 @@ const blockSave = () => {
 const enableSave = () => {
     saveButton.addEventListener('click', save);
     saveButton.removeAttribute('disabled');
+    deleteButton.addEventListener('click', deleteNote);
+    deleteButton.removeAttribute('disabled');
     updateUnsavedChanges('- (***Unsaved Changes***)');
     window.onbeforeunload = () => '(***Unsaved Changes***)';
 };
@@ -162,6 +178,7 @@ const connectedState = (text: string, address: string, ens: string) => {
     closeButton.addEventListener('click', signOut);
     closeButton.removeAttribute('disabled');
     saveButton.classList.remove('hidden');
+    deleteButton.classList.remove('hidden');
     disconnectButton.classList.remove('hidden');
     if (text) {
         updateNotepad(text);
@@ -178,6 +195,7 @@ const disconnectedState = () => {
     closeButton?.removeEventListener('click', signOut);
     closeButton?.setAttribute('disabled', 'disabled');
     saveButton?.classList.add('hidden');
+    deleteButton?.classList.add('hidden');
     disconnectButton?.classList.add('hidden');
 };
 

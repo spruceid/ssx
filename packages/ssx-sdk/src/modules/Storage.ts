@@ -271,7 +271,6 @@ class KeplerStorage implements IStorage {
   constructor(config: any, userAuth: IUserAuthorization) {
     this.userAuth = userAuth;
     this.hosts = ['https://kepler.spruceid.xyz']; // accept from config
-    // this.hosts = ['http://localhost:8000']; // accept from config
     this.prefix = config?.prefix || '';
   }
 
@@ -362,7 +361,9 @@ class KeplerStorage implements IStorage {
 
   public async list(prefix?: string, request?: Request): Promise<any> {
     const p = prefix ? `${this.prefix}/${prefix}` : `${this.prefix}/`;
-    return this.orbit.list(p, request);
+    const response = await this.orbit.list(p, request);
+    // remove prefix from keys
+    return { ...response, data: response.data.map(key => key.slice(p.length)) };
   }
 
   public async delete(key: string, request?: Request): Promise<any> {
@@ -400,12 +401,13 @@ class KeplerDataVault extends KeplerStorage implements IDataVault {
    * with the given key or null if the key does not exist.
    */
   public async get(key: string): Promise<any> {
-    const encryptedData = await super.get(key);
+    const { data } = await super.get(key);
     // TODO: check metadata for encryption type
-    if (encryptedData) {
-      return this.encryption.decrypt(encryptedData);
+    if (data) {
+      const decrypted = await this.encryption.decrypt(data);
+      return { data: decrypted };
     }
-    return null;
+    return { data };
   }
 
   /**

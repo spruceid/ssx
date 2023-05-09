@@ -17,8 +17,7 @@ function StorageModule({ ssx }) {
   useEffect(() => {
     const getContentList = async () => {
       const { data } = await ssx.storage.list();
-      console.log('data', data);
-      // setContentList(data);
+      setContentList(data);
     };
     getContentList();
   }, [ssx]);
@@ -28,8 +27,8 @@ function StorageModule({ ssx }) {
     const { data } = await ssx.storage.get(content);
     console.log(data);
     setSelectedContent(content);
-    // setName(content.name);
-    // setText(content.text);
+    setName(content);
+    setText(data);
     setViewingList(false);
   };
 
@@ -42,7 +41,11 @@ function StorageModule({ ssx }) {
   };
 
   const handlePostContent = async () => {
-    // update ssx
+    // check for invalid key
+    if (!name || !text || name.includes(' ')) {
+      alert('Invalid key or text');
+      return;
+    }
     await ssx.storage.put(name, text);
     if (selectedContent) {
       setContentList((prevList) =>
