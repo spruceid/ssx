@@ -6853,8 +6853,10 @@
     uri-js "^4.4.1"
     valid-url "^1.0.9"
 
-"@spruceid/ssx-sdk-wasm@file:../ssx-rs/sdk":
-  version "0.1.2"
+"@spruceid/ssx-sdk-wasm@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.2.0.tgz#e7d45f32bdc3f365afc7f6e9738d964474098496"
+  integrity sha512-9qLxeiltCHpZ5EFAQ3qkrbzZHRZBCuvyAVR8IlG3NNXnmiG05InVHhqazR3TPDS48Kxsi12+mx1f6MvV6O4eCw==
 
 "@spruceid/ssx@file:packages/ssx-sdk":
   version "1.2.5"
@@ -6862,7 +6864,7 @@
     "@metamask/detect-provider" "^1.2.0"
     "@spruceid/ssx-core" "1.2.0"
     "@spruceid/ssx-gnosis-extension" "1.1.5"
-    "@spruceid/ssx-sdk-wasm" "file:../ssx-rs/sdk"
+    "@spruceid/ssx-sdk-wasm" "0.2.0"
     "@types/lodash.merge" "^4.6.7"
     assert "^2.0.0"
     axios "^0.27.2"

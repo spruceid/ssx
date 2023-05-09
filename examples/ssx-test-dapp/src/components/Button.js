@@ -1,7 +1,7 @@
-const Button = ({ id, children, onClick, loading }) => {
+const Button = ({ id, className, children, onClick, loading }) => {
     return <button
         id={id}
-        className='Button'
+        className={`Button ${className}`}
         onClick={!loading ? onClick : () => { }}
     >
         {

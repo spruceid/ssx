@@ -1,36 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from './components/Input';
-import Button from './components/Button';
+import Button from './components/Button'
+const init = [
+  { name: 'test1', text: 'test1' },
+  { name: 'test2', text: 'test2' },
+  { name: 'test3', text: 'test3' },
+]
 
-function StorageModule() {
+function StorageModule({ ssx }) {
   const [contentList, setContentList] = useState([]);
   const [selectedContent, setSelectedContent] = useState(null);
   const [name, setName] = useState('');
   const [text, setText] = useState('');
   const [viewingList, setViewingList] = useState(true);
 
-  const handleGetContent = (content) => {
+  useEffect(() => {
+    const getContentList = async () => {
+      const { data } = await ssx.storage.list();
+      console.log('data', data);
+      // setContentList(data);
+    };
+    getContentList();
+  }, [ssx]);
+
+
+  const handleGetContent = async (content) => {
+    const { data } = await ssx.storage.get(content);
+    console.log(data);
     setSelectedContent(content);
-    setName(content.name);
-    setText(content.text);
+    // setName(content.name);
+    // setText(content.text);
     setViewingList(false);
   };
 
-  const handleDeleteContent = (content) => {
+  const handleDeleteContent = async (content) => {
+    await ssx.storage.delete(content);
     setContentList((prevList) => prevList.filter((c) => c !== content));
     setSelectedContent(null);
     setName('');
     setText('');
   };
 
-  const handlePostContent = () => {
+  const handlePostContent = async () => {
+    // update ssx
+    await ssx.storage.put(name, text);
     if (selectedContent) {
       setContentList((prevList) =>
-        prevList.map((c) => (c === selectedContent ? { name, text } : c))
+        prevList.map((c) => (c === selectedContent ? name : c))
       );
       setSelectedContent(null);
     } else {
-      setContentList((prevList) => [...prevList, { name, text }]);
+      setContentList((prevList) => [...prevList, name]);
     }
     setName('');
     setText('');
@@ -52,19 +72,17 @@ function StorageModule() {
         {viewingList ? (
           <div className="List-pane">
             <h3>List Pane</h3>
-            {contentList.length === 0 ? (
-              <Button onClick={handlePostNewContent}>Post new content</Button>
-            ) : (
-              contentList.map((content) => (
-                <div key={content.name}>
-                  <span>{content.name}</span>
-                  <Button onClick={() => handleGetContent(content)}>Get</Button>
-                  <Button onClick={() => handleDeleteContent(content)}>
+            {contentList.map((content) => (
+                <div className="item-container" key={content}>
+                  <span>{content}</span>
+                  <Button className="smallButton" onClick={() => handleGetContent(content)}>Get</Button>
+                  <Button className="smallButton" onClick={() => handleDeleteContent(content)}>
                     Delete
                   </Button>
                 </div>
-              ))
-            )}
+              ))}
+            <Button onClick={handlePostNewContent}>Post new content</Button>
+
           </div>
         ) : (
           <div className="View-pane">
@@ -73,13 +91,13 @@ function StorageModule() {
               type="text"
               label="Key"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={setName}
             />
             <Input
               type="text"
               label="Text"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={setText}
             />
             <Button onClick={handlePostContent}>Post</Button>
             <Button onClick={() => setViewingList(true)}>Back</Button>

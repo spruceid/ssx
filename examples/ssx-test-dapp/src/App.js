@@ -435,7 +435,7 @@ function App() {
       {
         storageEnabled === "On"
         && ssx
-        && <StorageModule />
+        && <StorageModule ssx={ssx}/>
       }
     </div>
   );
@@ -455,8 +455,7 @@ function App() {
         throw Error("No message to encrypt")
       }
       // convert content to blob
-      const blob = new Blob([message], { type: "text/plain" });
-      const encryptedData = await ssx.encryption.encrypt(blob);
+      const encryptedData = await ssx.encryption.encrypt(message);
       setCiphertext(JSON.stringify(encryptedData, null,2))
     }
   
@@ -469,15 +468,12 @@ function App() {
       }
       const parsedCiphertext = JSON.parse(ciphertext)
       const decryptedData = await ssx.encryption.decrypt(parsedCiphertext);
-      const text = await decryptedData.text()
-      setDecrypted(text);
+      setDecrypted(decryptedData);
     }
 
     const copyHandler = () => {
-      console.log("hello?")
       navigator.clipboard.writeText(ciphertext)
       setCopied(true)
-      console.log(copied)
     }
   
     useEffect(() => {

@@ -289,3 +289,37 @@ svg:hover {
   padding: 10px;
   box-sizing:border-box;
 }
+
+.smallButton {
+  padding: 4px 8px;
+  margin-left: 5px;
+  font-size: 14px;
+  width: auto;
+  white-space: nowrap;
+  margin-right: 5px;
+}
+
+.storage-container {
+  width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+.List-pane,
+.View-pane {
+  width: 100%;
+  padding: 10px;
+  box-sizing:border-box;
+}
+
+.item-container {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.Content-container {
+  padding: 30px;
+  overflow: auto;
+}

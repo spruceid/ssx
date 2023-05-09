@@ -16,7 +16,7 @@ export async function startSession(
   const address = config?.address ?? (await wallet.getAddress());
   const chainId = config?.chainId ?? (await wallet.getChainId());
   const domain = config?.domain ?? window.location.hostname;
-  console.log("start session", address, chainId, domain);
+
   return Promise.resolve({
     address,
     chainId,
@@ -54,9 +54,6 @@ export async function activateSession(
     method: 'POST',
     headers: session.delegationHeader,
   });
-
-  console.log("activateSession url + res", url);
-  console.log(res);
 
   if (res.status === 200) {
     return new Authenticator(session);

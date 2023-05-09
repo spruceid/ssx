@@ -1,7 +1,7 @@
 // import { SessionConfig } from ".";
-import { startSession, activateSession } from "./authenticator";
-import { hostOrbit, OrbitConnection } from "./orbit";
-import { WalletProvider } from "./walletProvider";
+import { startSession, activateSession } from './authenticator';
+import { hostOrbit, OrbitConnection } from './orbit';
+import { WalletProvider } from './walletProvider';
 
 type SessionConfig = any;
 /** Configuration for [[Kepler]]. */
@@ -64,17 +64,17 @@ export class Kepler {
           if (hostStatus === 200) {
             return await activateSession(sessionInfo, keplerUrl);
           } else {
-            throw new Error("Failed to open new Orbit: " + statusText);
+            throw new Error('Failed to open new Orbit: ' + statusText);
           }
         } else {
-          throw new Error("Failed to delegate to session key: " + msg);
+          throw new Error('Failed to delegate to session key: ' + msg);
         }
       })
-      .then((authn) => new OrbitConnection(keplerUrl, authn));
+      .then(authn => new OrbitConnection(keplerUrl, authn));
   }
 }
 
 export const invoke = (
   url: string,
   params: { headers: HeadersInit; body?: Blob }
-) => fetch(url + "/invoke", { method: "POST", ...params });
+) => fetch(url + '/invoke', { method: 'POST', ...params });

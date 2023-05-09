@@ -269,8 +269,10 @@ class KeplerStorage implements IStorage {
   domain?: string;
 
   constructor(config: any, userAuth: IUserAuthorization) {
+    console.log("KeplerStorage constructor");
     this.userAuth = userAuth;
-    this.hosts = ['https://kepler.spruceid.xyz']; // accept from config
+    // this.hosts = ['https://kepler.spruceid.xyz']; // accept from config
+    this.hosts = ['http://localhost:8000']; // accept from config
     this.prefix = config?.prefix || '';
   }
 
@@ -340,6 +342,7 @@ class KeplerStorage implements IStorage {
       .then(authn => {
         console.log('authn', authn);
         this._orbit = new OrbitConnection(keplerHost, authn);
+        console.log(this._orbit)
       });
   }
 
