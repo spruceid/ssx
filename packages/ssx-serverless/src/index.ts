@@ -266,11 +266,19 @@ export class SSXServer {
       throw error;
     }
 
+    if (
+      session.nonce === null ||
+      session.nonce === undefined ||
+      typeof session.nonce !== 'string'
+    ) {
+      throw new Error('Invalid nonce.');
+    }
+
     const siweMessage = new SiweMessage(siwe);
 
     let siweMessageVerifyPromise: any = siweMessage
       .verify(
-        { signature, nonce: session?.nonce },
+        { signature, nonce: session.nonce },
         {
           verificationFallback: signInOpts?.daoLogin
             ? SiweGnosisVerify
@@ -287,7 +295,8 @@ export class SSXServer {
     const promises: Array<Promise<any>> = [siweMessageVerifyPromise];
 
     let ens: ISSXEnsData = {};
-    const resolveEns = signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar;
+    const resolveEns =
+      signInOpts?.resolveEnsDomain || signInOpts?.resolveEnsAvatar;
     if (resolveEns) {
       const resolveEnsOpts = {
         domain: signInOpts?.resolveEnsDomain,
@@ -390,23 +399,23 @@ export class SSXServer {
   };
 
   /**
- * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
- * limited by 10. To get other pages you must to pass the pageCursor parameter.
- * 
- * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
- * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
- *  
- * @param address - Ethereum User address.
- * @param pageCursor - Page cursor used to paginate the request. Default to 
- * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
- * information.
- * @returns Object containing Lens profiles items and pagination info.
- */
+   * Resolves Lens profiles owned by the given Ethereum Address. Each request is
+   * limited by 10. To get other pages you must to pass the pageCursor parameter.
+   *
+   * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
+   * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
+   *
+   * @param address - Ethereum User address.
+   * @param pageCursor - Page cursor used to paginate the request. Default to
+   * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
+   * information.
+   * @returns Object containing Lens profiles items and pagination info.
+   */
   async resolveLens(
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = "{}"
+    pageCursor: string = '{}'
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.provider, address, pageCursor);
   }

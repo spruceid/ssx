@@ -21,10 +21,19 @@ const SIGNATURE =
 let app: Express;
 
 beforeAll(() => {
-  app = express();
+  const mockApp = express();
   const server = new SSXServer();
-  app.use(session({ secret: 'FAKESECRET' }));
-  app.use(SSXExpressMiddleware(server));
+  const mockSession = session({ secret: 'FAKESECRET' });
+  mockApp.use(mockSession);
+  mockApp.use(SSXExpressMiddleware(server));
+
+  app = express();
+  app.use(mockSession);
+  app.all('*', function (req, res, next) {
+    req.session.nonce = SIWE_MESSAGE.nonce;
+    next();
+  });
+  app.use(mockApp);
 });
 
 test('Should get nonce successfully', async () => {
@@ -86,10 +95,11 @@ test('Should log out successfully', async () => {
 });
 
 describe('Should override all paths successfully', () => {
-  const customApp = express();
+  const mockApp = express();
   const server = new SSXServer();
-  customApp.use(session({ secret: 'FAKESECRET' }));
-  customApp.use(
+  const mockSession = session({ secret: 'FAKESECRET' });
+  mockApp.use(mockSession);
+  mockApp.use(
     SSXExpressMiddleware(server, {
       nonce: '/ssx-custom-nonce',
       login: '/ssx-custom-login',
@@ -97,13 +107,28 @@ describe('Should override all paths successfully', () => {
     }),
   );
 
+  const getCustomApp = (nonce) => {
+    const customApp = express();
+    customApp.use(mockSession);
+
+    customApp.all('*', function (req, res, next) {
+      req.session.nonce = nonce;
+      next();
+    });
+    customApp.use(mockApp);
+    return customApp;
+  };
+
   test('Should get /ssx-custom-nonce successfully', async () => {
+    const customApp = getCustomApp(SIWE_MESSAGE.nonce);
+
     const res = await request(customApp).get('/ssx-custom-nonce');
 
     expect(res.statusCode).toEqual(200);
   });
 
   test('Should post /ssx-custom-login successfully', async () => {
+    const customApp = getCustomApp(SIWE_MESSAGE.nonce);
     const res = await request(customApp).post('/ssx-custom-login').send({
       siwe: SIWE_MESSAGE,
       signature: SIGNATURE,
@@ -114,7 +139,48 @@ describe('Should override all paths successfully', () => {
     expect(res.statusCode).toEqual(200);
   });
 
+  test('Should post /ssx-custom-login and fail because of the nonce is undefined', async () => {
+    const customApp = getCustomApp(undefined);
+
+    const res = await request(customApp).post('/ssx-custom-login').send({
+      siwe: SIWE_MESSAGE,
+      signature: SIGNATURE,
+      daoLogin: false,
+      resolveEns: false,
+    });
+
+    expect(res.statusCode).toEqual(500);
+  });
+
+  test('Should post /ssx-custom-login and fail because of the nonce is null', async () => {
+    const customApp = getCustomApp(null);
+
+    const res = await request(customApp).post('/ssx-custom-login').send({
+      siwe: SIWE_MESSAGE,
+      signature: SIGNATURE,
+      daoLogin: false,
+      resolveEns: false,
+    });
+
+    expect(res.statusCode).toEqual(500);
+  });
+
+  test('Should post /ssx-custom-login and fail because of the nonce is not a string', async () => {
+    const customApp = getCustomApp(1234567890);
+
+    const res = await request(customApp).post('/ssx-custom-login').send({
+      siwe: SIWE_MESSAGE,
+      signature: SIGNATURE,
+      daoLogin: false,
+      resolveEns: false,
+    });
+
+    expect(res.statusCode).toEqual(500);
+  });
+
   test('Should post /ssx-custom-logout successfully', async () => {
+    const customApp = getCustomApp(SIWE_MESSAGE.nonce);
+
     const res = await request(customApp).post('/ssx-custom-logout');
 
     expect(res.statusCode).toEqual(204);

@@ -1,17 +1,9 @@
-import { SSXEventLogTypes, SSXInfuraProviderNetworks, SSXRPCProviders, SSXServer } from '../src';
-
-const _create = async <T>(): Promise<T> => {
-  return '' as T;
-};
-const _retrieve = async <T>(): Promise<T> => {
-  return '' as T;
-};
-const _update = async <T>(): Promise<T> => {
-  return '' as T;
-};
-const _delete = async <T>(): Promise<T> => {
-  return '' as T;
-};
+import {
+  SSXEventLogTypes,
+  SSXInfuraProviderNetworks,
+  SSXRPCProviders,
+  SSXServer,
+} from '../src';
 
 const SIWE_MESSAGE = {
   domain: 'login.xyz',
@@ -23,6 +15,19 @@ const SIWE_MESSAGE = {
   issuedAt: '2022-01-27T17:09:38.578Z',
   chainId: 1,
   expirationTime: '2100-01-07T14:31:43.952Z',
+};
+
+const _create = async <T>(): Promise<T> => {
+  return '' as T;
+};
+const _retrieve = async <T>(ret): Promise<T> => {
+  return ret as T;
+};
+const _update = async <T>(): Promise<T> => {
+  return '' as T;
+};
+const _delete = async <T>(): Promise<T> => {
+  return '' as T;
 };
 
 const SIGNATURE =
@@ -100,16 +105,96 @@ test('Should call signIn successfuly', async () => {
         rpc: {
           service: SSXRPCProviders.SSXInfuraProvider,
           network: SSXInfuraProviderNetworks.GOERLI,
-        }
-      }
+        },
+      },
     },
-    { create: _create, retrieve: _retrieve, update: _update, delete: _delete }
+    {
+      create: _create,
+      retrieve: () => _retrieve({ nonce: SIWE_MESSAGE.nonce }),
+      update: _update,
+      delete: _delete,
+    }
   );
   await expect(
     server.signIn(SIWE_MESSAGE, SIGNATURE, '...', {
       resolveEnsAvatar: true,
     })
   ).resolves.not.toThrow();
+}, 30000);
+
+test('Should call signIn and fail with undefined nonce', async () => {
+  jest.setTimeout(30000);
+  const server = new SSXServer(
+    {
+      providers: {
+        rpc: {
+          service: SSXRPCProviders.SSXInfuraProvider,
+          network: SSXInfuraProviderNetworks.GOERLI,
+        },
+      },
+    },
+    {
+      create: _create,
+      retrieve: () => _retrieve({ nonce: undefined }),
+      update: _update,
+      delete: _delete,
+    }
+  );
+  await expect(
+    server.signIn(SIWE_MESSAGE, SIGNATURE, '...', {
+      resolveEnsAvatar: true,
+    })
+  ).rejects.toThrow();
+}, 30000);
+
+test('Should call signIn and fail with null nonce', async () => {
+  jest.setTimeout(30000);
+  const server = new SSXServer(
+    {
+      providers: {
+        rpc: {
+          service: SSXRPCProviders.SSXInfuraProvider,
+          network: SSXInfuraProviderNetworks.GOERLI,
+        },
+      },
+    },
+    {
+      create: _create,
+      retrieve: () => _retrieve({ nonce: null }),
+      update: _update,
+      delete: _delete,
+    }
+  );
+  await expect(
+    server.signIn(SIWE_MESSAGE, SIGNATURE, '...', {
+      resolveEnsAvatar: true,
+    })
+  ).rejects.toThrow();
+}, 30000);
+
+test('Should call signIn and fail with a nonce that is not a string', async () => {
+  jest.setTimeout(30000);
+  const server = new SSXServer(
+    {
+      providers: {
+        rpc: {
+          service: SSXRPCProviders.SSXInfuraProvider,
+          network: SSXInfuraProviderNetworks.GOERLI,
+        },
+      },
+    },
+    {
+      create: _create,
+      retrieve: () => _retrieve({ nonce: 1234567890 }),
+      update: _update,
+      delete: _delete,
+    }
+  );
+  await expect(
+    server.signIn(SIWE_MESSAGE, SIGNATURE, '...', {
+      resolveEnsAvatar: true,
+    })
+  ).rejects.toThrow();
 }, 30000);
 
 test('Should call signOut successfuly', async () => {
