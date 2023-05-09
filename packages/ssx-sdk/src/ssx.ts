@@ -124,6 +124,7 @@ export class SSX {
 
     // TODO: do this programmatically will all modules
     this.extend(this.dataVault);
+    this.extend(this.storage);
   }
 
   /**
