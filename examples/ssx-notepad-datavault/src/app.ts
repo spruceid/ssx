@@ -70,7 +70,7 @@ const signIn = async (connector: Providers) => {
         updateTitle(ens?.domain || address);
 
         // fetch data from store + update state
-        const text = await ssx.dataVault.get('notes');
+        const text = await ssx.storage.get('notes');
         connectedState(text, address, ens.domain);
 
     } catch (error) {
@@ -95,7 +95,7 @@ const save = async (e?: Mousetrap.ExtendedKeyboardEvent | MouseEvent) => {
         alert('Your message is too big.');
         return;
     }
-    return ssx.dataVault.put('notes', text)
+    return ssx.storage.put('notes', text)
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     // fetch data from store
     if (ssx?.session) {
-        const text = await ssx.dataVault.get('notes');
+        const text = await ssx.storage.get('notes');
         const { address, ens } = ssx.session;
         // update state
         connectedState(text, address, ens.domain);
