@@ -12,6 +12,7 @@ export class BrowserDataVault extends BrowserStorage implements IDataVault {
    * @param config - An object containing optional configuration properties for browser storage.
    * @param encryption - An instance of an object that implements IEncryption for encryption and decryption operations.
    */
+  // @TODO: define config interface
   constructor(config: any, encryption: IEncryption) {
     super(config);
     this.encryption = encryption;
