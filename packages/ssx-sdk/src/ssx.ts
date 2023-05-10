@@ -53,10 +53,10 @@ interface SignatureEncryptionConfig extends SSXEncryptionModuleConfig {
  * Configuration for managing SSX Modules
  */
 interface SSXModuleConfig {
-  encryption: boolean | SSXEncryptionModuleConfig;
+  encryption?: boolean | SSXEncryptionModuleConfig;
   storage?: boolean | { [key: string]: any };
   dataVault?: boolean | { [key: string]: any };
-  // encryption: boolean | SSXEncryptionModuleConfig | (() => IEncryption);
+  // encryption?: boolean | SSXEncryptionModuleConfig | (() => IEncryption);
   // storage?: boolean | { [key: string]: any } | (() => IStorage);
   // dataVault?: boolean | { [key: string]: any } | (() => IDataVault);
 }
