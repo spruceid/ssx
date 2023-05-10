@@ -43,7 +43,7 @@ interface SSXEncryptionModuleConfig {
 interface SignatureEncryptionConfig extends SSXEncryptionModuleConfig {
   module: 'SignatureEncryption';
   /**
-   * A message used to generate the detereministic sugnature for deriving the encryption key.
+   * A message used to generate the detereministic signature for deriving the encryption key.
    * @default "Sign this message to generate an encryption key for {address}"
    */
   message?: () => string;
@@ -53,7 +53,12 @@ interface SignatureEncryptionConfig extends SSXEncryptionModuleConfig {
  * Configuration for managing SSX Modules
  */
 interface SSXModuleConfig {
-  encryption: boolean | SSXEncryptionModuleConfig | IEncryption;
+  encryption: boolean | SSXEncryptionModuleConfig;
+  storage?: boolean | { [key: string]: any };
+  dataVault?: boolean | { [key: string]: any };
+  // encryption: boolean | SSXEncryptionModuleConfig | (() => IEncryption);
+  // storage?: boolean | { [key: string]: any } | (() => IStorage);
+  // dataVault?: boolean | { [key: string]: any } | (() => IDataVault);
 }
 
 // temporary: will move to ssx-core
@@ -108,26 +113,93 @@ export class SSX {
   public storage: IStorage;
 
   constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
-    // TODO: initialize these based on the config
+    // TODO: pull out config validation into separate function
+    // TODO: pull out userAuthorization config
     this.userAuthorization = new UserAuthorization(config);
-    // get encryption config from config.modules.encryption
-    // determine which encryption module to use
-    // if encryption module is false, don't initialize encryption or dependent modules
-    this.encryption = new SignatureEncryption({}, this.userAuthorization);
-    // this.dataVault = new BrowserDataVault({}, this.encryption);
-    this.dataVault = new KeplerDataVault(
-      {},
-      this.userAuthorization,
-      this.encryption
-    );
-    this.credential = new Credential({}, this.dataVault);
-    // this.storage = new BrowserStorage({});
-    const storageConfig = { prefix: 'ssx' };
-    this.storage = new KeplerStorage(storageConfig, this.userAuthorization);
 
-    // TODO: do this programmatically will all modules
-    this.extend(this.dataVault);
-    this.extend(this.storage);
+    // credential module disabled for now
+    // this.credential = new Credential({}, this.dataVault);
+
+    // initialize encryption module
+    // assume encryption module is **enabled** if config.encryption is not defined
+    const encryptionConfig =
+      config?.modules?.encryption === undefined
+        ? true
+        : config.modules.encryption;
+    if (encryptionConfig !== false) {
+      if (typeof encryptionConfig === 'object') {
+        // determine which encryption module to use
+        // initialize encryption with the provided config
+        if (encryptionConfig.module === 'SignatureEncryption') {
+          this.encryption = new SignatureEncryption(
+            encryptionConfig,
+            this.userAuthorization
+          );
+        } else {
+          throw new Error(
+            `Encryption module ${encryptionConfig.module} not supported`
+          );
+        }
+        // } else if (typeof encryptionConfig === 'function') {
+        //   // Initialize encryption with the return from the provided function
+        //   this.encryption = encryptionConfig();
+      } else {
+        // encryption == true or undefined
+        // Initialize encryption with default config when no other condition is met
+        this.encryption = new SignatureEncryption({}, this.userAuthorization);
+      }
+      // IEncryption does not yet extend ISSXExtension
+      // this.extend(this.encryption);
+    }
+
+    // initialize storage module
+    // assume storage module is **enabled** if config.storage is not defined
+    const storageConfig =
+      config?.modules?.storage === undefined ? true : config.modules.storage;
+    if (storageConfig !== false) {
+      if (typeof storageConfig === 'object') {
+        // Initialize storage with the provided config
+        this.storage = new KeplerStorage(storageConfig, this.userAuthorization);
+        // } else if (typeof storageConfig === 'function') {
+        //   // Initialize storage with the return from the provided function
+        //   this.storage = config.modules.storage();
+      } else {
+        // storage == true or undefined
+        // Initialize storage with default config when no other condition is met
+        this.storage = new KeplerStorage(
+          { prefix: 'ssx' },
+          this.userAuthorization
+        );
+      }
+      this.extend(this.storage);
+    }
+
+    // initialize data vault module
+    // assume data vault is **disabled** if config.dataVault is not defined
+    const dataVaultConfig =
+      config?.modules?.dataVault === undefined ? false : config.modules.dataVault;
+    if (dataVaultConfig !== false) {
+      if (typeof dataVaultConfig === 'object') {
+        // Initialize data vault with the provided config
+        this.dataVault = new KeplerDataVault(
+          dataVaultConfig,
+          this.userAuthorization,
+          this.encryption
+        );
+        // } else if (typeof dataVaultConfig === 'function') {
+        //   // Initialize data vault with the return from the provided function
+        //   this.dataVault = dataVaultConfig();
+      } else {
+        // dataVault == true or undefined
+        // Initialize data vault with default config when no other condition is met
+        this.dataVault = new KeplerDataVault(
+          { prefix: 'ssx' },
+          this.userAuthorization,
+          this.encryption
+        );
+      }
+      this.extend(this.dataVault);
+    }
   }
 
   /**
