@@ -88,4 +88,17 @@ interface IBrowserStorageConfig extends IStorageConfig {
   storeName?: string;
 }
 
-export { IStorage, IDataVault, IStorageConfig, IBrowserStorageConfig };
+/**
+ * Represents a Kepler storage configuration object that extends IStorageConfig.
+ */
+interface IKeplerStorageConfig extends IStorageConfig {
+  host?: string;
+}
+
+export {
+  IStorage,
+  IDataVault,
+  IStorageConfig,
+  IBrowserStorageConfig,
+  IKeplerStorageConfig,
+};
