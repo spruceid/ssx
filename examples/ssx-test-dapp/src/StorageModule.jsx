@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Input from './components/Input';
 import Button from './components/Button'
-const init = [
-  { name: 'test1', text: 'test1' },
-  { name: 'test2', text: 'test2' },
-  { name: 'test3', text: 'test3' },
-]
 
 function StorageModule({ ssx }) {
   const [contentList, setContentList] = useState([]);
@@ -25,7 +20,6 @@ function StorageModule({ ssx }) {
 
   const handleGetContent = async (content) => {
     const { data } = await ssx.storage.get(content);
-    console.log(data);
     setSelectedContent(content);
     setName(content);
     setText(data);
@@ -62,7 +56,6 @@ function StorageModule({ ssx }) {
 
   const handlePostNewContent = (e) => {
     e.preventDefault();
-    // e.target.va
     setSelectedContent(null);
     setName('');
     setText('');

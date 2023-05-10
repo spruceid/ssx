@@ -64,4 +64,3 @@ export class BrowserDataVault extends BrowserStorage implements IDataVault {
 }
 
 export default BrowserDataVault;
-
