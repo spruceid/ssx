@@ -1,12 +1,12 @@
-import { Authenticator } from "./authenticator";
-import { invoke } from "./kepler";
+import { Authenticator } from './authenticator';
+import { invoke } from './kepler';
 
 export class Capabilities {
   constructor(private url: string, private auth: Authenticator) {}
 
   async get(query: string): Promise<{ [cid: string]: CapSummary }> {
-    let res = await this.invoke({
-      headers: await this.auth.invocationHeaders("capabilities", "read", query),
+    const res = await this.invoke({
+      headers: await this.auth.invocationHeaders('capabilities', 'read', query),
     });
     if (res.status == 200 && res.body !== null) {
       return await res.json();

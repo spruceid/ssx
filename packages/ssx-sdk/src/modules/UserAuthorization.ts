@@ -18,8 +18,6 @@ import {
   SSXExtension,
 } from '@spruceid/ssx-core/client';
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
-import { config } from 'dotenv';
-import { SiweConfig } from '../../../ssx-core/dist/client/types';
 
 /** UserAuthorization Module
  *

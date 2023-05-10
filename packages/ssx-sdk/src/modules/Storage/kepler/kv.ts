@@ -1,18 +1,18 @@
-import { Authenticator } from "./authenticator";
-import { invoke } from "./kepler";
+import { Authenticator } from './authenticator';
+import { invoke } from './kepler';
 
 export class KV {
   constructor(private url: string, private auth: Authenticator) {}
 
   public async get(key: string): Promise<Response> {
     return await this.invoke({
-      headers: await this.auth.invocationHeaders("kv", "get", key),
+      headers: await this.auth.invocationHeaders('kv', 'get', key),
     });
   }
 
   public async head(key: string): Promise<Response> {
     return await this.invoke({
-      headers: await this.auth.invocationHeaders("kv", "metadata", key),
+      headers: await this.auth.invocationHeaders('kv', 'metadata', key),
     });
   }
 
@@ -25,20 +25,20 @@ export class KV {
       body: value,
       headers: {
         ...metadata,
-        ...(await this.auth.invocationHeaders("kv", "put", key)),
+        ...(await this.auth.invocationHeaders('kv', 'put', key)),
       },
     });
   }
 
   public async del(key: string): Promise<Response> {
     return await this.invoke({
-      headers: await this.auth.invocationHeaders("kv", "del", key),
+      headers: await this.auth.invocationHeaders('kv', 'del', key),
     });
   }
 
   public async list(prefix: string): Promise<Response> {
     return await this.invoke({
-      headers: await this.auth.invocationHeaders("kv", "list", prefix),
+      headers: await this.auth.invocationHeaders('kv', 'list', prefix),
     });
   }
 

@@ -40,7 +40,7 @@ interface SSXEncryptionModuleConfig {
   module: 'SignatureEncryption' | 'LitEncryption';
 }
 
-interface SignatureEncryptionConfig  extends SSXEncryptionModuleConfig {
+interface SignatureEncryptionConfig extends SSXEncryptionModuleConfig {
   module: 'SignatureEncryption';
   /**
    * A message used to generate the detereministic sugnature for deriving the encryption key.
@@ -74,7 +74,6 @@ const SSX_DEFAULT_CONFIG: SSXClientConfig = {
  * A toolbox for user-controlled identity, credentials, storage and more.
  */
 export class SSX {
-
   /** The Ethereum provider */
   public provider: ethers.providers.Web3Provider;
 
@@ -116,7 +115,11 @@ export class SSX {
     // if encryption module is false, don't initialize encryption or dependent modules
     this.encryption = new SignatureEncryption({}, this.userAuthorization);
     // this.dataVault = new BrowserDataVault({}, this.encryption);
-    this.dataVault = new KeplerDataVault({}, this.userAuthorization, this.encryption)
+    this.dataVault = new KeplerDataVault(
+      {},
+      this.userAuthorization,
+      this.encryption
+    );
     this.credential = new Credential({}, this.dataVault);
     // this.storage = new BrowserStorage({});
     const storageConfig = { prefix: 'ssx' };
