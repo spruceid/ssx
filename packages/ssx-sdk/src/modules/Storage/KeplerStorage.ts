@@ -69,6 +69,7 @@ export class KeplerStorage implements IStorage {
       verificationMethod: new SiweMessage(ssxSession.siwe).uri,
     })
       .then(JSON.stringify)
+      // @TODO: figure out unit test issue
       .then(this.keplerModule.completeSessionSetup)
       .then(JSON.parse);
 
