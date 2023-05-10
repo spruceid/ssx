@@ -61,6 +61,9 @@ const signIn = async (connector: Providers) => {
             domain: 'localhost:4361',
             statement: 'SIWE Notepad Example',
         },
+        modules: {
+            dataVault: true,
+        }
     });
     
     // add ssx to window for debugging
