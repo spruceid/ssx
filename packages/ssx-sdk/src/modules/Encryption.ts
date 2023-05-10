@@ -115,36 +115,49 @@ class SignatureEncryption implements IEncryption {
   };
 
   public encrypt = async (data: any) => {
-    // json => jwe
-    const binaryData = jsonToUint8Array(data);
+    try {
+      if (!data) {
+        throw new Error('No data provided');
+      }
+      // json => jwe
+      const binaryData = jsonToUint8Array(data);
 
-    // fetch/generate encryption key
-    await this.generateEncryptionKey();
+      // fetch/generate encryption key
+      await this.generateEncryptionKey();
 
-    // encrypt data as JWE
-    const encrypted = await new jose.FlattenedEncrypt(
-      // new TextEncoder().encode(data),
-      binaryData
-    )
-      .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
-      .encrypt(this.encryptionKey);
+      // encrypt data as JWE
+      const encrypted = await new jose.FlattenedEncrypt(
+        // new TextEncoder().encode(data),
+        binaryData
+      )
+        .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
+        .encrypt(this.encryptionKey);
 
-    // return JWE
-    return encrypted;
+      // return JWE
+      return encrypted;
+    } catch (error) {
+      throw new Error('Error encrypting data: ' + error.message || error);
+    }
   };
 
   public decrypt = async (encrypted: any) => {
-    // jwe => json
-    // fetch/generate encryption key
-    await this.generateEncryptionKey();
-    const { plaintext } = await jose.flattenedDecrypt(
-      encrypted,
-      this.encryptionKey
-    );
-
-    // convert Uint8Array to json
-    const data = uint8ArrayToJson(plaintext);
-    return data;
+    try {
+      if (!encrypted) {
+        throw new Error('No encrypted data provided');
+      }
+      // jwe => json
+      // fetch/generate encryption key
+      await this.generateEncryptionKey();
+      const { plaintext } = await jose.flattenedDecrypt(
+        encrypted,
+        this.encryptionKey
+      );
+      // convert Uint8Array to json
+      const data = uint8ArrayToJson(plaintext);
+      return data;
+    } catch (error) {
+      throw new Error('Error decrypting data: ' + error.message || error);
+    }
   };
 }
 

@@ -11,17 +11,18 @@ import Button from './components/Button';
 import AccountInfo from './components/AccountInfo';
 import { useWeb3Modal } from '@web3modal/react';
 import { useSigner } from 'wagmi';
+import StorageModule from './StorageModule';
 import './App.css';
 
 
 function App() {
 
   const { open: openWeb3Modal } = useWeb3Modal();
-  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
+  const { isLoading: wagmiIsLoading } = useSigner();
 
   const [loading, setLoading] = useState(false);
 
-  const [ssxProvider, setSSX] = useState(null);
+  const [ssx, setSSX] = useState(null);
   const [provider, setProvider] = useState('MetaMask');
   const [enableDaoLogin, setDaoLogin] = useState('Off');
   const [server, setServer] = useState('Off');
@@ -46,11 +47,7 @@ function App() {
   const [statement, setStatement] = useState('');
   // ssx module config
   const [encryptionEnabled, setEncryptionEnabled] = useState('On');
-  const [message, setMessage] = useState(null);
-  const [ciphertext, setCiphertext] = useState(null);
-  const [decrypted, setDecrypted] = useState(null);
-  const [encrypted, setEncrypted] = useState(null);
-  const [copied, setCopied] = useState(false);
+  const [storageEnabled, setStorageEnabled] = useState('On');
 
   const getSSXConfig = () => {
     let ssxConfig = {};
@@ -114,6 +111,10 @@ function App() {
       modules.encryption = true;
     }
 
+    if (encryptionEnabled === "On") {
+      modules.storage = true;
+    }
+
     if (modules) {
       ssxConfig = {
         ...ssxConfig,
@@ -124,37 +125,6 @@ function App() {
     return ssxConfig;
   };
 
-  const initSSX = async (signer) => {
-    if (signer) {
-      let ssxConfig = getSSXConfig();
-
-      ssxConfig = {
-        ...ssxConfig,
-        providers: {
-          ...ssxConfig.providers,
-          web3: {
-            driver: signer.provider
-          }
-        }
-      }
-
-      const ssx = new SSX(ssxConfig);
-      try {
-        await ssx.signIn();
-        setSSX(ssx);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      ssxProvider && ssxProvider.signOut();
-      setSSX(null);
-    }
-  };
-
-  useEffect(() => {
-    initSSX(signer);
-    // eslint-disable-next-line
-  }, [signer]);
 
   const ssxHandler = async () => {
     if (provider === 'Web3Modal v2') {
@@ -190,6 +160,8 @@ function App() {
     }
 
     const ssx = new SSX(ssxConfig);
+    window.ssx = ssx;
+
     try {
       await ssx.signIn();
       setSSX(ssx);
@@ -199,52 +171,14 @@ function App() {
     setLoading(false);
   };
 
-  const encryptionHandler = async () => {
-    if (!ssxProvider) {
-      throw Error("No SSX Instance found");
-    }
-    if (message === "") {
-      throw Error("No message to encrypt")
-    }
-    // convert content to blob
-    const blob = new Blob([message], { type: "text/plain" });
-    const encryptedData = await ssxProvider.encryption.encrypt(blob);
-    setCiphertext(JSON.stringify(encryptedData, null,2))
-  }
-
-  const decryptionHandler = async () => {
-    if (!ssxProvider) {
-      throw Error("No SSX Instance found");
-    }
-    if (ciphertext === "") {
-      throw Error("No ciphertext to decrypt")
-    }
-    const parsedCiphertext = JSON.parse(ciphertext)
-    const decryptedData = await ssxProvider.encryption.decrypt(parsedCiphertext);
-    const text = await decryptedData.text()
-    setDecrypted(text);
-  }
-
   const ssxLogoutHandler = async () => {
     if (provider === 'Web3Modal v2') {
       return openWeb3Modal();
     }
 
-    ssxProvider.signOut();
+    ssx.signOut();
     setSSX(null);
   };
-
-  const copyHandler = () => {
-    console.log("hello?")
-    navigator.clipboard.writeText(ciphertext)
-    setCopied(true)
-    console.log(copied)
-  }
-
-  useEffect(() => {
-    setCopied(false)
-    // eslint-disable-next-line
-  }, [ciphertext]);
 
   return (
     <div className='App'>
@@ -254,7 +188,7 @@ function App() {
       <div className='Content'>
         <div className='Content-container'>
           {
-            ssxProvider ?
+            ssx ?
               <>
                 <Button
                   id='signOutButton'
@@ -264,8 +198,8 @@ function App() {
                   SIGN OUT
                 </Button>
                 <AccountInfo
-                  address={ssxProvider?.address()}
-                  session={ssxProvider?.session}
+                  address={ssx?.address()}
+                  session={ssx?.session}
                 />
               </> :
               <>
@@ -371,6 +305,19 @@ function App() {
                   options={['On', 'Off']}
                   value={encryptionEnabled}
                   onChange={setEncryptionEnabled}
+                />
+              </div>
+            </div>
+            <div className='Dropdown-item'>
+              <span className='Dropdown-item-name'>
+                Storage
+              </span>
+              <div className='Dropdown-item-options'>
+                <RadioGroup
+                  name='storageEnabled'
+                  options={['On', 'Off']}
+                  value={storageEnabled}
+                  onChange={setStorageEnabled}
                 />
               </div>
             </div>
@@ -481,59 +428,101 @@ function App() {
 
       {
         encryptionEnabled === "On"
-        && ssxProvider
-        && <div className='Content' style={{ marginTop: '30px' }}>
-          <div className='Content-container'>
+        && ssx
+        && <EncryptMessage ssx={ssx}/>
+      }
 
-            <Input
-              label='Message to Encrypt'
-              value={message}
-              onChange={setMessage}
-            />
-            <Button
-              id='encryptButton'
-              onClick={encryptionHandler}
-            >
-              Encrypt
-            </Button>
-
-            <Input
-              label='Message to Decrypt'
-              onChange={setEncrypted}
-            />
-            <Button
-              id='decryptButton'
-              onClick={decryptionHandler}
-              enabled={encrypted}
-            >
-              Decrypt
-            </Button>
-            {
-              decrypted && <h2 className='Title-h2'>
-                Decrypted message: "{decrypted}"
-              </h2>
-            }
-            {
-              ciphertext && <div className='CipherText'>
-                <pre style={{wordWrap:'break-word',whiteSpace:'pre-wrap'}}>
-                ciphertext: "{ciphertext}"
-              </pre>
-              <Button
-              id='copytoClipboard'
-              onClick={copyHandler}            >
-              Copy
-            </Button>
-            {
-              copied && <p style={{textAlign:"right", color:"#667080"}}>Copied to clipboard!</p>
-            }
-              </div>
-            }
-          </div>
-        </div>
-
+      {
+        storageEnabled === "On"
+        && ssx
+        && <StorageModule ssx={ssx}/>
       }
     </div>
   );
+
+  function EncryptMessage({ ssx }) {
+    const [message, setMessage] = useState(null);
+    const [ciphertext, setCiphertext] = useState(null);
+    const [decrypted, setDecrypted] = useState(null);
+    const [encrypted, setEncrypted] = useState(null);
+    const [copied, setCopied] = useState(false);
+
+    const encryptionHandler = async () => {
+      if (!ssx) {
+        throw Error("No SSX Instance found");
+      }
+      if (message === "") {
+        throw Error("No message to encrypt")
+      }
+      // convert content to blob
+      const encryptedData = await ssx.encryption.encrypt(message);
+      setCiphertext(JSON.stringify(encryptedData, null,2))
+    }
+  
+    const decryptionHandler = async () => {
+      if (!ssx) {
+        throw Error("No SSX Instance found");
+      }
+      if (ciphertext === "") {
+        throw Error("No ciphertext to decrypt")
+      }
+      const parsedCiphertext = JSON.parse(ciphertext)
+      const decryptedData = await ssx.encryption.decrypt(parsedCiphertext);
+      setDecrypted(decryptedData);
+    }
+
+    const copyHandler = () => {
+      navigator.clipboard.writeText(ciphertext)
+      setCopied(true)
+    }
+  
+    useEffect(() => {
+      setCopied(false)
+      // eslint-disable-next-line
+    }, [ciphertext]);
+
+    return <div className='Content' style={{ marginTop: '30px' }}>
+      <div className='Content-container'>
+
+        <Input
+          label='Message to Encrypt'
+          value={message}
+          onChange={setMessage} />
+        <Button
+          id='encryptButton'
+          onClick={encryptionHandler}
+        >
+          Encrypt
+        </Button>
+
+        <Input
+          label='Message to Decrypt'
+          onChange={setEncrypted} />
+        <Button
+          id='decryptButton'
+          onClick={decryptionHandler}
+          enabled={encrypted}
+        >
+          Decrypt
+        </Button>
+        {decrypted && <h2 className='Title-h2'>
+          Decrypted message: "{decrypted}"
+        </h2>}
+        {ciphertext && <div className='CipherText'>
+          <pre style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>
+            ciphertext: "{ciphertext}"
+          </pre>
+          <Button
+            id='copytoClipboard'
+            onClick={copyHandler}>
+            Copy
+          </Button>
+          {copied && <p style={{ textAlign: "right", color: "#667080" }}>Copied to clipboard!</p>}
+        </div>}
+      </div>
+    </div>;
+  }
+  
 }
 
 export default App;

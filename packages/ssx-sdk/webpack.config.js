@@ -10,6 +10,10 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.wasm$/,
+        type: 'webassembly/async',
+      },
     ],
   },
   resolve: {
@@ -35,11 +39,15 @@ module.exports = {
     library: '@spruceid/ssx',
     libraryTarget: 'umd',
     umdNamedDefine: true,
-    globalObject: 'this'
+    globalObject: 'this',
+    chunkFilename: '[name].[id].js',
   },
   plugins: [
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
   ],
+  experiments: {
+    asyncWebAssembly: true,
+  },
 };

@@ -27,6 +27,11 @@ test('Instantiate SSX with providers.web3.driver and successfully sign in and si
         driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
       },
     },
+    modules: {
+      encryption: false,
+      storage: false,
+      dataVault: false,
+    },
   };
   const ssx = new SSX(config);
   await expect(ssx.signIn()).resolves.not.toThrowError();
@@ -53,6 +58,11 @@ test('Instantiate SSX with providers.web3.driver and daoLogin', async () => {
       },
     },
     enableDaoLogin: true,
+    modules: {
+      encryption: false,
+      storage: false,
+      dataVault: false,
+    },
   };
   const ssx = new SSX(config);
   await expect(ssx.signIn()).resolves.not.toThrowError();
@@ -72,6 +82,11 @@ test('Instantiate SSX with providers.web3.driver and server and successfully sig
       server: {
         host: 'http://localhost:3001',
       },
+    },
+    modules: {
+      encryption: false,
+      storage: false,
+      dataVault: false,
     },
   };
   const ssx = new SSX(config);
@@ -173,6 +188,11 @@ test('Should accept extensions successfully', async () => {
       web3: {
         driver: new ethers.providers.Web3Provider(testingUtils.getProvider()),
       },
+    },
+    modules: {
+      encryption: false,
+      storage: false,
+      dataVault: false,
     },
   };
   const ssx = new SSX(ssxConfig);

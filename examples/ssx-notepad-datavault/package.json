@@ -5,6 +5,7 @@
     "private": true,
     "main": "src/index.ts",
     "scripts": {
+        "start": "yarn dev",
         "dev": "concurrently \"nodemon src/index.ts --ignore public/ --ignore db/ --ignore build/\" \"webpack --watch\"",
         "clean": "rm -rf build db node_modules",
         "build": "concurrently \"tsc\" \"webpack\""
