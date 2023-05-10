@@ -32,7 +32,7 @@ export default async (): Promise<Config> => ({
     },
     {
       displayName: SSXSDK.name,
-      testEnvironment: "jsdom",
+      testEnvironment: "./jest-environment-jsdom.js",
       transform: {
         "^.+\\.(js|ts|tsx)?$": [
           "ts-jest",
