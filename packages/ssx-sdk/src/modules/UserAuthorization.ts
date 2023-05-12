@@ -17,7 +17,6 @@ import {
   ISSXConnected,
   SSXExtension,
 } from '@spruceid/ssx-core/client';
-import { SSXEnsResolveOptions, isSSXRouteConfig } from '@spruceid/ssx-core';
 import { GnosisDelegation } from '@spruceid/ssx-gnosis-extension';
 
 /** UserAuthorization Module
