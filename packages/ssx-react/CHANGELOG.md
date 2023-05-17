@@ -1,5 +1,16 @@
 # @spruceid/ssx-react
 
+## 1.3.1
+
+### Patch Changes
+
+- eddc834: Updates the ssx-react package by removing the `watchAccount` method used to manage the account switching and added `useAccount` instead.
+- Updated dependencies [c3a1930]
+- Updated dependencies [ce89464]
+- Updated dependencies [eddc834]
+  - @spruceid/ssx-authjs@1.1.0
+  - @spruceid/ssx-server@1.2.4
+
 ## 1.3.0
 
 ### Minor Changes

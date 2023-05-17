@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-serverless",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Create SSX applications in serverless architectures",
   "author": "Spruce Systems Inc.",
   "license": "Apache-2.0 OR MIT",

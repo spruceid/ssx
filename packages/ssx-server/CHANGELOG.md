@@ -1,5 +1,11 @@
 # @spruceid/ssx-server
 
+## 1.2.4
+
+### Patch Changes
+
+- ce89464: Adds stricter checks on nonces
+
 ## 1.2.3
 
 ### Patch Changes
