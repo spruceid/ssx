@@ -28,7 +28,7 @@
     "url": "git+https://github.com/spruceid/ssx.git"
   },
   "dependencies": {
-    "siwe": "^2.1.2",
+    "siwe": "^2.1.4",
     "@spruceid/ssx-core": "1.2.0",
     "@spruceid/ssx-gnosis-extension": "1.1.5",
     "axios": "^0.27.2"
