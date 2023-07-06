@@ -2,9 +2,6 @@
   "name": "ssx",
   "version": "2.0.0",
   "repository": "ssh://git@github.com:spruceid/ssx.git",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "private": true,
   "workspaces": [
     "packages/*",

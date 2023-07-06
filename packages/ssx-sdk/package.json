@@ -1,7 +1,7 @@
 {
   "name": "@spruceid/ssx",
   "version": "1.2.5",
-  "description": "An identity solution that enables SSI to JS/TS dApps.",
+  "description": "An identity solution that enables SSI to JS/TS apps.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -28,7 +28,7 @@
     "@metamask/detect-provider": "^1.2.0",
     "siwe": "^2.1.2",
     "@spruceid/ssx-core": "1.2.0",
-    "@spruceid/ssx-sdk-wasm": "0.2.1",
+    "@spruceid/ssx-sdk-wasm": "0.2.0",
     "@types/lodash.merge": "^4.6.7",
     "assert": "^2.0.0",
     "axios": "^0.27.2",
