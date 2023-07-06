@@ -14,7 +14,7 @@ https://docs.ssx.id
 - Server side under [`./packages/ssx-server`](./packages/ssx-server).
 
 ## Useful Commands
-> **⚠** This repository requires node >= 16.13.0
+> **⚠** This repository requires node >= 18.16.0
 
 - `yarn` - Install dependencies and build packages
 - `yarn build` - Build all packages and examples
