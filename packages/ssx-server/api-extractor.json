@@ -61,7 +61,7 @@
    * local files for library1.
    */
   "bundledPackages": ["@spruceid/ssx-core"],  // fix TSdoc Errors in SIWE we can have relevant siwe docs generated as well
-  // "bundledPackages": ["@spruceid/siwe", "@spruceid/ssx-wasm"],
+  // "bundledPackages": ["@spruceid/siwe", "@spruceid/ssx-sdk-wasm"],
 
   /**
    * Specifies what type of newlines API Extractor should use when writing output files.  By default, the output files

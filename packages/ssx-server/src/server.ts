@@ -1,5 +1,4 @@
 import { generateNonce, SiweError, SiweMessage } from 'siwe';
-import { SiweGnosisVerify } from '@spruceid/ssx-gnosis-extension';
 import axios, { AxiosInstance } from 'axios';
 import {
   SSXEnsData,
@@ -8,6 +7,7 @@ import {
   getProvider,
   ssxResolveLens,
   SSXLensProfilesResponse,
+  SiweGnosisVerify,
 } from '@spruceid/ssx-core';
 import {
   SSXLogFields,
