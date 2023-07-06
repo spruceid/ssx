@@ -1,5 +1,10 @@
 
-const AccountInfo = ({ address, session }) => {
+interface IAccountInfo {
+  address?: string;
+  session?: Record<string, any>;
+}
+
+const AccountInfo = ({ address, session }: IAccountInfo) => {
   return (
     <div className='AccountInfo'>
       <h2 className='AccountInfo-h2'>
@@ -53,7 +58,7 @@ const AccountInfo = ({ address, session }) => {
                   </b>
                   <br />
                   {
-                    session.lens.items.map((profile, i) => (
+                    session.lens.items.map((profile: Record<string, any>, i: number) => (
                       <div key={i} className='AccountInfo-container'>
                         {
                           profile.picture?.original?.url ?
@@ -99,7 +104,7 @@ const AccountInfo = ({ address, session }) => {
           id='userAddress'
           className='AccountInfo-value'
         >
-          {address.toLowerCase()}
+          {address?.toLowerCase()}
         </code>
       </p>
     </div>

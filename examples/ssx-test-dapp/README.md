@@ -1,6 +1,6 @@
-# ssx-test-dapp
+# ssx-test-app
 
-This is a dapp to test SSX functionality.
+This is an app to test SSX functionality.
 
 
 **Install Dependencies**

@@ -4,13 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { WagmiConfig } from 'wagmi';
-import { ethereumClient, projectId, wagmiClient } from './utils/web3modalV2Settings';
+import { ethereumClient, projectId, wagmiConfig } from './utils/web3modalV2Settings';
 import { Web3Modal as Web3ModalV2 } from '@web3modal/react';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <App />
     </WagmiConfig>
     <Web3ModalV2

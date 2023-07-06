@@ -1,53 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SSX } from '@spruceid/ssx';
-import Web3Modal from 'web3modal';
 import Header from './components/Header';
 import Title from './components/Title';
 import Dropdown from './components/Dropdown';
 import RadioGroup from './components/RadioGroup';
 import Input from './components/Input';
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import Button from './components/Button';
 import AccountInfo from './components/AccountInfo';
 import { useWeb3Modal } from '@web3modal/react';
-import { useSigner } from 'wagmi';
+import { getWalletClient } from '@wagmi/core'
+import StorageModule from './components/StorageModule';
+import { walletClientToEthers5Signer } from './utils/web3modalV2Settings';
+import { useWalletClient } from 'wagmi';
 import './App.css';
 
+declare global {
+  interface Window {
+    ssx: SSX;
+  }
+}
 
 function App() {
 
   const { open: openWeb3Modal } = useWeb3Modal();
-  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
+  const { data: walletClient } = useWalletClient()
 
   const [loading, setLoading] = useState(false);
 
-  const [ssxProvider, setSSX] = useState(null);
-  const [provider, setProvider] = useState('MetaMask');
-  const [enableDaoLogin, setDaoLogin] = useState('Off');
-  const [server, setServer] = useState('Off');
-  const [resolveEns, setResolveEns] = useState('Off');
-  const [resolveLens, setResolveLens] = useState('Off');
-  const [siweConfig, setSiweConfig] = useState('Off');
-  const [infuraId, setInfuraId] = useState('');
-  const [host, setHost] = useState('');
-  const [resolveOnServer, setResolveOnServer] = useState('Off');
-  const [resolveEnsDomain, setResolveEnsDomain] = useState('On');
-  const [resolveEnsAvatar, setResolveEnsAvatar] = useState('On');
+  const [ssx, setSSX] = useState<SSX | null>(null);
+  const [provider, setProvider] = useState<string>('MetaMask');
+  const [enableDaoLogin, setDaoLogin] = useState<string>('Off');
+  const [server, setServer] = useState<string>('Off');
+  const [resolveEns, setResolveEns] = useState<string>('Off');
+  const [resolveLens, setResolveLens] = useState<string>('Off');
+  const [siweConfig, setSiweConfig] = useState<string>('Off');
+  const [host, setHost] = useState<string>('');
+  const [resolveOnServer, setResolveOnServer] = useState<string>('Off');
+  const [resolveEnsDomain, setResolveEnsDomain] = useState<string>('On');
+  const [resolveEnsAvatar, setResolveEnsAvatar] = useState<string>('On');
   // siweConfig Fields
-  const [address, setAddress] = useState('');
-  const [chainId, setChainId] = useState('');
-  const [domain, setDomain] = useState('');
-  const [nonce, setNonce] = useState('');
-  const [issuedAt, setIssuedAt] = useState('');
-  const [expirationTime, setExpirationTime] = useState('');
-  const [requestId, setRequestId] = useState('');
-  const [notBefore, setNotBefore] = useState('');
-  const [resources, setResources] = useState('');
-  const [statement, setStatement] = useState('');
+  const [address, setAddress] = useState<string>('');
+  const [chainId, setChainId] = useState<string>('');
+  const [domain, setDomain] = useState<string>('');
+  const [nonce, setNonce] = useState<string>('');
+  const [issuedAt, setIssuedAt] = useState<string>('');
+  const [expirationTime, setExpirationTime] = useState<string>('');
+  const [requestId, setRequestId] = useState<string>('');
+  const [notBefore, setNotBefore] = useState<string>('');
+  const [resources, setResources] = useState<string>('');
+  const [statement, setStatement] = useState<string>('');
+  // ssx module config
+  const [storageEnabled, setStorageEnabled] = useState<string>('Off');
 
-  const getSSXConfig = () => {
-    let ssxConfig = {};
-
+  const getSSXConfig = (ssxConfig: Record<string, any> = {}) => {
     if (server === 'On') {
       ssxConfig = {
         providers: {
@@ -60,7 +65,7 @@ function App() {
     }
 
     if (siweConfig === 'On') {
-      const siweConfig = {};
+      const siweConfig: Record<string, any> = {};
       if (address) siweConfig.address = address;
       if (chainId) siweConfig.chainId = chainId;
       if (domain) siweConfig.domain = domain;
@@ -102,82 +107,76 @@ function App() {
       }
     }
 
+    const modules: Record<string, any> = {};
+
+    if (storageEnabled === "On") {
+      modules.storage = true;
+    }
+
+    if (modules) {
+      ssxConfig = {
+        ...ssxConfig,
+        modules
+      }
+    }
+
     return ssxConfig;
   };
 
-  const initSSX = async (signer) => {
-    if (signer) {
-      let ssxConfig = getSSXConfig();
+  const signInUsingWeb3Modal = async (walletClient: any) => {
+    const chainId = await walletClient.getChainId();
+    const newWalletClient = await getWalletClient({ chainId });
+    const signer = walletClientToEthers5Signer(newWalletClient as any);
+    if (ssx) return;
 
-      ssxConfig = {
-        ...ssxConfig,
-        providers: {
-          ...ssxConfig.providers,
-          web3: {
-            driver: signer.provider
-          }
+    setLoading(true);
+    const ssxConfig = getSSXConfig({
+      provider: {
+        web3: {
+          driver: signer.provider
         }
       }
+    });
+
+    const ssxProvider = new SSX(ssxConfig);
+
+    try {
+      await ssxProvider.signIn();
+      setSSX(ssxProvider);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    if (walletClient) {
+      signInUsingWeb3Modal(walletClient);
+    } else {
+      ssx?.signOut?.();
+      setSSX(null);
+    }
+    // eslint-disable-next-line
+  }, [walletClient]);
+
+  const ssxHandler = async () => {
+    if (provider === 'Web3Modal v2') {
+      return openWeb3Modal();
+    } else {
+      setLoading(true);
+      let ssxConfig = getSSXConfig();
 
       const ssx = new SSX(ssxConfig);
+      window.ssx = ssx;
+
       try {
         await ssx.signIn();
         setSSX(ssx);
       } catch (err) {
         console.error(err);
       }
-    } else {
-      ssxProvider.signOut();
-      setSSX(null);
+      setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    initSSX(signer);
-    // eslint-disable-next-line
-  }, [signer]);
-
-  const ssxHandler = async () => {
-    if (provider === 'Web3Modal v2') {
-      return openWeb3Modal();
-    }
-
-    setLoading(true);
-    let ssxConfig = getSSXConfig();
-
-    if (provider !== 'MetaMask') {
-      let driver;
-      if (provider === 'Web3Modal') {
-        driver = await new Web3Modal().connect();
-      } else {
-        driver = await new Web3Modal({
-          providerOptions: {
-            walletconnect: {
-              package: WalletConnectProvider,
-              options: {
-                infuraId,
-              },
-            },
-          },
-        }).connect();
-      }
-      ssxConfig = {
-        ...ssxConfig,
-        providers: {
-          ...ssxConfig.providers,
-          web3: { driver }
-        }
-      }
-    }
-
-    const ssx = new SSX(ssxConfig);
-    try {
-      await ssx.signIn();
-      setSSX(ssx);
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
   };
 
   const ssxLogoutHandler = async () => {
@@ -185,7 +184,7 @@ function App() {
       return openWeb3Modal();
     }
 
-    ssxProvider.signOut();
+    ssx?.signOut?.();
     setSSX(null);
   };
 
@@ -197,31 +196,31 @@ function App() {
       <div className='Content'>
         <div className='Content-container'>
           {
-            ssxProvider ?
+            ssx ?
               <>
                 <Button
                   id='signOutButton'
                   onClick={ssxLogoutHandler}
-                  loading={loading || wagmiIsLoading}
+                  loading={loading}
                 >
-                  SIGN OUT
+                  SIGN-OUT
                 </Button>
                 <AccountInfo
-                  address={ssxProvider?.address()}
-                  session={ssxProvider?.session}
+                  address={ssx?.address()}
+                  session={ssx?.session()}
                 />
               </> :
               <>
                 <Button
                   id='signInButton'
                   onClick={ssxHandler}
-                  loading={loading || wagmiIsLoading}
+                  loading={loading}
                 >
                   SIGN-IN WITH ETHEREUM
                 </Button>
               </>
           }
-          <Dropdown 
+          <Dropdown
             id='selectPreferences'
             label='Select Preference(s)'
           >
@@ -232,7 +231,7 @@ function App() {
               <div className='Dropdown-item-options'>
                 <RadioGroup
                   name='provider'
-                  options={['MetaMask', 'Web3Modal', 'Web3Modal and WalletConnect', 'Web3Modal v2']}
+                  options={['MetaMask', 'Web3Modal v2']}
                   value={provider}
                   onChange={setProvider}
                   inline={false}
@@ -304,16 +303,20 @@ function App() {
                 />
               </div>
             </div>
+            <div className='Dropdown-item'>
+              <span className='Dropdown-item-name'>
+                Storage
+              </span>
+              <div className='Dropdown-item-options'>
+                <RadioGroup
+                  name='storageEnabled'
+                  options={['On', 'Off']}
+                  value={storageEnabled}
+                  onChange={setStorageEnabled}
+                />
+              </div>
+            </div>
           </Dropdown>
-          {
-            provider === 'Web3Modal + WalletConnect' ?
-              <Input
-                label='Infura ID'
-                value={infuraId}
-                onChange={setInfuraId}
-              /> :
-              null
-          }
           {
             server === 'On' ?
               <Input
@@ -407,6 +410,11 @@ function App() {
               null
           }
         </div>
+        {
+          storageEnabled === "On"
+          && ssx
+          && <StorageModule ssx={ssx} />
+        }
       </div>
 
     </div>

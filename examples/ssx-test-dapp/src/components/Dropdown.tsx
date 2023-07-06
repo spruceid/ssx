@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 
-const Dropdown = ({ id, label, children }) => {
+interface IDropdown {
+    id: string;
+    label: string;
+    children: React.ReactNode;
+}
+
+const Dropdown = ({ id, label, children }: IDropdown) => {
 
     const [open, setOpen] = useState(false);
 
-    const verifyClickOutside = (e) => {
-        if (!document.getElementById('dropdown').contains(e.target)) {
+    const verifyClickOutside = (e: any) => {
+        if (!document.getElementById('dropdown')?.contains(e.target)) {
             setOpen(false);
         }
     }

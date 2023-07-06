@@ -1,4 +1,13 @@
-const RadioGroup = ({ label, name, options, value, onChange, inline = true }) => {
+interface IRadioGroup {
+    label?: string;
+    name: string;
+    options: Array<string>;
+    value: string;
+    onChange: (option: string) => void;
+    inline?: boolean;
+}
+
+const RadioGroup = ({ label, name, options, value, onChange, inline = true }: IRadioGroup) => {
     return <>
         {
             label ?

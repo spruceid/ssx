@@ -1,4 +1,11 @@
-const Input = ({ label, value, onChange, helperText }) => {
+interface IInput {
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+    helperText?: string;
+}
+
+const Input = ({ label, value, onChange, helperText }: IInput) => {
     return <div className='Input'>
         <label
             className='Input-label'
