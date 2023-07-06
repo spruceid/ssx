@@ -3,8 +3,7 @@
 This directory contains examples of how to use the various packages in the SSX Monorepo. The examples can be run standalone or together.
 
 Frontend examples include 
-- `ssx-test-dapp`
-- `ssx-test-react-dapp`
+- `ssx-test-app`
 
 Backend examples include
 - `ssx-test-express-api`
@@ -20,13 +19,13 @@ yarn ci
 yarn && yarn build
 ```
 
-Then, you can run ssx-test-dapp and ssx-test-express-api:
+Then, you can run ssx-test-app and ssx-test-express-api:
 ```sh
 # From the root of the repo
 yarn run-examples
 # OR
-yarn test-dapp start
+yarn test-app start
 yarn express-api start
 ```
 
-The ssx-test-dapp is compatible with any example backend and is a good way to test them.
+The ssx-test-app is compatible with any example backend and is a good way to test them.

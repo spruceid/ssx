@@ -2,13 +2,13 @@
 
 ## Quick Start
 
-You can add SSX to your dapp using your favorite package manager.
+You can add SSX to your app using your favorite package manager.
 
 ```bash
 yarn add ssx-sdk
 ```
 
-and then you can use it in your dapp.
+and then you can use it in your app.
 
 ```js
 import { SSX } from "ssx-sdk";
