@@ -34,7 +34,7 @@ interface SSXConfig extends SSXClientConfig {
   modules?: SSXModuleConfig;
 }
 
-const SPRUCEKIT_DEFAULT_CONFIG: SSXClientConfig = {
+const SSX_DEFAULT_CONFIG: SSXClientConfig = {
   providers: {
     web3: {
       driver: globalThis.ethereum,
@@ -68,7 +68,7 @@ export class SSX {
   /** Storage Module */
   public storage: KeplerStorage;
 
-  constructor(private config: SSXConfig = SPRUCEKIT_DEFAULT_CONFIG) {
+  constructor(private config: SSXConfig = SSX_DEFAULT_CONFIG) {
     // TODO: pull out config validation into separate function
     // TODO: pull out userAuthorization config
     this.userAuthorization = new UserAuthorization(config);

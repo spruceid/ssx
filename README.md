@@ -23,7 +23,7 @@ https://docs.ssx.id
 - `yarn examples` - Concurrently run the `ssx-test-app` and `ssx-test-express-api` found in `./examples`
 - `yarn test` - Run unit tests (Jest)
 - `yarn test:e2e` - Run E2E tests (Cypress/Synpress)
-- `yarn clean` - Remove all build artifacts and node_modules
+- `yarn reset` - Remove all build artifacts and node_modules
 
 
 ## Docker

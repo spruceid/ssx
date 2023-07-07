@@ -450,7 +450,7 @@ class UserAuthorizationConnected implements ISSXConnected {
     }
   }
 }
-const SPRUCEKIT_DEFAULT_CONFIG: SSXClientConfig = {
+const SSX_DEFAULT_CONFIG: SSXClientConfig = {
   providers: {
     web3: {
       driver: globalThis.ethereum,
@@ -475,13 +475,13 @@ class UserAuthorization implements IUserAuthorization {
   private config: SSXClientConfig;
 
   constructor(
-    private _config: SSXClientConfig = SPRUCEKIT_DEFAULT_CONFIG
+    private _config: SSXClientConfig = SSX_DEFAULT_CONFIG
   ) {
     this.config = _config;
     this.init = new UserAuthorizationInit({
       ...this.config,
       providers: {
-        ...SPRUCEKIT_DEFAULT_CONFIG.providers,
+        ...SSX_DEFAULT_CONFIG.providers,
         ...this.config?.providers,
       },
     });

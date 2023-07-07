@@ -4,19 +4,19 @@ This directory contains examples of how to use the various packages in the SSX M
 
 Frontend examples include 
 - `ssx-test-app`
+- `ssx-test-next`
+- `ssx-test-sveltekit`
 
 Backend examples include
 - `ssx-test-express-api`
-- `ssx-test-http-api`
-- `ssx-test-serverless-dynamodb-api`
+- `ssx-test-next`
+- `ssx-test-sveltekit`
 
 
 ## Running the examples
 To run the examples, you'll need to build the packages first. The best way to do that is in the root of the repo:
 ```sh
-yarn ci
-# OR
-yarn && yarn build
+yarn
 ```
 
 Then, you can run ssx-test-app and ssx-test-express-api:
@@ -27,5 +27,3 @@ yarn run-examples
 yarn test-app start
 yarn express-api start
 ```
-
-The ssx-test-app is compatible with any example backend and is a good way to test them.
