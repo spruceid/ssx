@@ -17,7 +17,11 @@ function StorageModule({ ssx }: IStorageModule) {
   useEffect(() => {
     const getContentList = async () => {
       const { data } = await ssx.storage.list();
-      setContentList(data);
+      setContentList(data.map((d: string) => {
+        const contentArr = d.split('/');
+        contentArr.shift(); // remove the prefix
+        return contentArr.join('/');
+      }));
     };
     getContentList();
   }, [ssx]);
@@ -74,14 +78,14 @@ function StorageModule({ ssx }: IStorageModule) {
           <div className="List-pane">
             <h3>List Pane</h3>
             {contentList.map((content) => (
-                <div className="item-container" key={content}>
-                  <span>{content}</span>
-                  <Button className="smallButton" onClick={() => handleGetContent(content)}>Get</Button>
-                  <Button className="smallButton" onClick={() => handleDeleteContent(content)}>
-                    Delete
-                  </Button>
-                </div>
-              ))}
+              <div className="item-container" key={content}>
+                <span>{content}</span>
+                <Button className="smallButton" onClick={() => handleGetContent(content)}>Get</Button>
+                <Button className="smallButton" onClick={() => handleDeleteContent(content)}>
+                  Delete
+                </Button>
+              </div>
+            ))}
             <Button onClick={handlePostNewContent}>Post new content</Button>
           </div>
         ) : (
