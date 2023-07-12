@@ -6,7 +6,6 @@ import React, {
   ReactNode,
 } from 'react';
 import ssx from '@spruceid/ssx';
-import { useSigner, useAccount } from 'wagmi';
 
 const { SSX } = ssx;
 type SSX = ssx.SSX;
@@ -16,8 +15,6 @@ type SSXClientConfig = ssx.SSXClientConfig;
 export interface SSXWeb3Provider {
   /** web3 Provider. */
   provider: any;
-  /** web3 Provider Loaded. */
-  providerLoaded?: boolean;
 }
 
 /** Props for SSX Provider. */
@@ -29,21 +26,21 @@ export interface SSXProviderProps {
   /** Optional SSX Signer. Will . */
   web3Provider?: SSXWeb3Provider;
   /** Optional on change account callback. */
-  onChangeAccount?: (address: string, ssx: SSX) => Promise<void | SSX>;
+  watchProvider?: (provider: any, ssx: SSX) => Promise<void | SSX>;
 }
 
 /** Interface for contents provided to the Hook. */
 export interface SSXContextInterface {
   /** SSX Instance. */
   ssx: SSX | undefined;
-  /** SSX Instance loading state. */
-  ssxLoaded: boolean;
+  /** Provider Instance. */
+  provider: any;
 }
 
 /** Default, uninitialized context. */
 const SSXContext = createContext<SSXContextInterface>({
   ssx: undefined,
-  ssxLoaded: false,
+  provider: undefined,
 });
 
 /** SSX Provider Component. */
@@ -51,56 +48,22 @@ export const SSXProvider = ({
   ssxConfig,
   children,
   web3Provider,
-  onChangeAccount,
+  watchProvider,
 }: SSXProviderProps) => {
-  let provider, providerLoaded, walletAddress;
-  let usingWagmi = false;
-
-  if (web3Provider) {
-    provider = web3Provider.provider;
-    providerLoaded = web3Provider.providerLoaded || true;
-  } else {
-    // assume using wagmi.sh if no provider is provided
-    usingWagmi = true;
-    if (typeof window !== 'undefined') {
-      const { data, isSuccess } = useSigner();
-      const { address } = useAccount()
-      provider = data?.provider;
-      providerLoaded = isSuccess;
-      walletAddress = address;
-    }
-  }
+  const provider = web3Provider.provider;
 
   const [ssxState, setSSXState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
       ssx: undefined,
-      ssxLoaded: false,
+      provider: web3Provider.provider,
     }
   );
-  const { ssx, ssxLoaded } = ssxState;
+  const { ssx } = ssxState;
   const setSSX = (ssx: SSX) => setSSXState({ ssx });
-  const setSSXLoaded = (ssxLoaded: boolean) => setSSXState({ ssxLoaded });
+  const setProvider = (provider: any) => setSSXState({ provider });
 
-  const updateStateOnChange = async (address, ssx) => {
-    if (onChangeAccount) {
-      const newSSX = await onChangeAccount(address, ssx);
-      if (newSSX) {
-        setSSX(newSSX);
-      }
-    }
-  }
-
-  useEffect(() => {
-    if(walletAddress) {
-      if(ssx) {
-        ssx.provider = provider.provider;
-      }
-      updateStateOnChange(walletAddress, ssx);
-    }
-  }, [walletAddress]);
-
-  async function initializeSSX() {
+  function initializeSSX() {
     const modifiedSSXConfig = {
       ...ssxConfig,
       siweConfig: {
@@ -109,7 +72,7 @@ export const SSXProvider = ({
       providers: {
         ...ssxConfig?.providers,
         web3: {
-          driver: usingWagmi ? provider?.provider : provider,
+          driver: provider,
           ...ssxConfig?.providers?.web3,
         },
       },
@@ -117,19 +80,32 @@ export const SSXProvider = ({
 
     const ssxInstance = new SSX(modifiedSSXConfig);
     setSSX(ssxInstance);
-    setSSXLoaded(true);
     return ssx;
   }
 
+  const updateStateOnChangeProvider = async (ssx) => {
+    if(watchProvider) {
+      const newSSX = await watchProvider(provider, ssx);
+      if(newSSX) {
+        setSSX(newSSX);
+      }
+    }
+  }
+
   useEffect(() => {
-    if (providerLoaded && provider) {
+    if(provider && !ssx) {
       initializeSSX();
     }
-  }, [provider, providerLoaded, ssxConfig]);
+    if(ssx && provider) {
+      ssx.provider = provider.provider;
+    }
+    updateStateOnChangeProvider(ssx);
+    setProvider(provider);
+  }, [provider, ssx]);
 
   const SSXProviderValue: SSXContextInterface = {
     ssx,
-    ssxLoaded,
+    provider,
   };
 
   return (

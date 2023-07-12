@@ -1,10 +1,10 @@
 services:
-  example-dapp:
-    container_name: ssx-example-dapp-dev
-    image: spruce/ssx-test-dapp-dev
+  example-app:
+    container_name: ssx-example-app-dev
+    image: spruce/ssx-test-app-dev
     build:
       context: .
-      dockerfile: ssx-test-dapp.Dockerfile
+      dockerfile: ssx-test-app.Dockerfile
     ports:
       - "3000:3000"
   ssx-server:

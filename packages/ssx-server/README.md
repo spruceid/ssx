@@ -1,6 +1,6 @@
-# SSX-Server
+# ssx-server
 
-SSX-Server is a server-side library made to work with the SSX client libraries. SSX-Server provides authentication and session management, which can be enabled via an ExpressJS middleware or using the methods provided on the SSXServer class.
+SSX Server is a server-side library made to work with the SSX client libraries. SSX-Server provides authentication and session management, which can be enabled via an ExpressJS middleware or using the methods provided on the SSXServer class.
 
 Full documentation for the SSX-Server SDK can be found at [docs.ssx.id](https://docs.ssx.id/readme-1#installation-on-server).
 
@@ -9,9 +9,11 @@ Full documentation for the SSX-Server SDK can be found at [docs.ssx.id](https://
 You can add SSX to your server from npm:
 
 ```bash
+yarn add @spruceid/ssx-server
+# or
 npm install @spruceid/ssx-server
 # or
-yarn add @spruceid/ssx-server
+pnpm add @spruceid/ssx-server
 ```
 
 > **Note:** Looking for SSX support for other servers besides Express? Check out [Configuring SSX on other Servers](https://docs.ssx.id/configuring-ssx/configuring-ssx-server).

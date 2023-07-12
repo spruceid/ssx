@@ -16,6 +16,7 @@ jobs:
           yarn test
       - uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/coverage-final.json
           name: Push coverage results
           fail_ci_if_error: true

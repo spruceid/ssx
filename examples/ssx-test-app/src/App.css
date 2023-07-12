@@ -1,0 +1,313 @@
+/* App */
+.App {
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Header */
+.Header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 64px;
+  display: flex;
+  align-items: center;
+  background-color: #212121;
+}
+
+.Header-span {
+  font-weight: 600;
+  font-size: 32px;
+}
+
+
+.Header-logo {
+  height: 40px;
+  pointer-events: none;
+  margin-right: 16px;
+}
+
+/* Title */
+.Title {
+  margin: 24px auto;
+}
+
+.Title-h1 {
+  font-weight: 500;
+  font-size: 36px;
+}
+
+.Title-h2 {
+  font-weight: 400;
+  font-size: 16px;
+  color: #667080;
+}
+
+/* Dropdown */
+.Dropdown {
+  margin: 16px 0px;
+}
+
+.Dropdown-input {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #555;
+  border-radius: 12px;
+  padding: 15px 20px;
+}
+
+.Dropdown-label {
+  margin: 0px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.Dropdown-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.Dropdown-popover {
+  width: calc(100% - 60px);
+  border: 1px solid #555;
+  border-radius: 12px;
+  position: absolute;
+  background-color: #212121;
+}
+
+.Dropdown-item {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.Dropdown-item-name,
+.Dropdown-item-options {
+  width: 50%;
+}
+
+.Dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #555;
+}
+
+/* RadioGroup */
+.RadioGroup.inline {
+  display: flex;
+}
+
+.RadioGroup.margin {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.RadioGroup-label {
+  font-weight: 500;
+  color: #fff;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.RadioGroup-option,
+.RadioGroup-option input,
+.RadioGroup-option label {
+  cursor: pointer;
+}
+
+/* Content */
+.Content {
+  width: 480px;
+  max-width: 100%;
+  min-height: 180px;
+  background-color: rgba(39, 39, 39, 0.7);
+  backdrop-filter: blur(2px);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.Content-container {
+  padding: 30px;
+}
+
+.Content-h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* AccountInfo */
+.AccountInfo {
+  margin-top: 16px;
+  padding: 16px 8px;
+  border: 1px solid #555555;
+  border-radius: 12px;
+}
+
+.AccountInfo-h2 {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.AccountInfo-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.AccountInfo-container {
+  display: flex;
+  align-items: center;
+}
+
+.AccountInfo-label {
+  font-size: 14px;
+  color: #667080;
+}
+
+.AccountInfo-value {
+  color: #fff;
+  word-break: break-all;
+  font-size: 15px;
+}
+
+/* Input */
+.Input {
+  margin: 16px 0px;
+}
+
+.CipherText {
+  margin-top: 16px;
+  padding: 16px 8px;
+  border: 1px solid #555555;
+  border-radius: 12px;
+}
+
+.Input-label {
+  font-weight: 500;
+  color: #fff;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.Input-input {
+  margin-top: 8px;
+  background-color: rgba(39, 39, 39, 0.7);
+  color: #fff;
+  border-radius: 12px;
+  border: 1px solid #555555;
+  height: 50px;
+  padding: 0px 24px;
+  width: calc(100% - 48px);
+}
+
+/* Button */
+.Button {
+  border: none;
+  width: 100%;
+  padding: 16px 24px;
+  color: white;
+  background: linear-gradient(107.8deg, #4C49E4 11.23%, #26C2F3 78.25%);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 150ms ease 0s;
+  margin: 16px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Button:hover {
+  transform: scale(1.01);
+}
+
+.Button-loader {
+  margin: 0px 8px;
+}
+
+.Button-loader img {
+  width: 14px;
+  height: 14px;
+  animation: spin 1s linear infinite;
+}
+
+/*  */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+    supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* Animation Spin */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.storage-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.List-pane,
+.View-pane {
+  width: calc(50% - 10px);
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.smallButton {
+  padding: 4px 8px;
+  margin-left: 5px;
+  font-size: 14px;
+  width: auto;
+  white-space: nowrap;
+  margin-right: 5px;
+}
+
+.storage-container {
+  width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+.List-pane,
+.View-pane {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.item-container {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}

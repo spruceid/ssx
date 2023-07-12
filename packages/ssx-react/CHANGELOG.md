@@ -1,5 +1,35 @@
 # @spruceid/ssx-react
 
+## 1.3.5
+
+### Patch Changes
+
+- Updated dependencies [5e90f6a]
+- Updated dependencies [5c2f20c]
+  - @spruceid/ssx@1.4.0
+
+## 1.3.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx@1.3.2
+
+## 1.3.3
+
+### Patch Changes
+
+- Updated dependencies [7d799b7]
+  - @spruceid/ssx@1.3.1
+
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies [95dcfee]
+- Updated dependencies [6f85eb7]
+  - @spruceid/ssx@1.3.0
+
 ## 1.3.1
 
 ### Patch Changes

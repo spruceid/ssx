@@ -1,0 +1,175 @@
+body {
+  background-color: #1B1B1B;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* App */
+.App {
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Header */
+.Header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 64px;
+  display: flex;
+  align-items: center;
+  background-color: #212121;
+}
+
+.Header-span {
+  font-weight: 600;
+  font-size: 32px;
+}
+
+/* Title */
+.Title {
+  margin: 24px auto;
+}
+
+.Title-h1 {
+  font-weight: 500;
+  font-size: 36px;
+}
+
+.Title-h2 {
+  font-weight: 400;
+  font-size: 16px;
+  color: #667080;
+}
+
+/* Content */
+.Content {
+  width: 480px;
+  max-width: 100%;
+  background-color: rgba(39, 39, 39, 0.7);
+  backdrop-filter: blur(2px);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.Content-container {
+  padding: 30px;
+}
+
+.Content-h3 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* AccountInfo */
+.AccountInfo {
+  margin-top: 16px;
+  padding: 16px 8px;
+  border: 1px solid #555555;
+  border-radius: 12px;
+}
+
+.AccountInfo-h2 {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.AccountInfo-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.AccountInfo-container {
+  display: flex;
+  align-items: center;
+}
+
+.AccountInfo-label {
+  font-size: 14px;
+  color: #667080;
+}
+
+.AccountInfo-value {
+  color: #fff;
+  word-break: break-all;
+  font-size: 15px;
+}
+
+/* Button */
+.Button {
+  border: none;
+  width: 100%;
+  padding: 16px 24px;
+  color: white;
+  background: linear-gradient(107.8deg, #4C49E4 11.23%, #26C2F3 78.25%);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 150ms ease 0s;
+  margin: 16px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Button:hover {
+  transform: scale(1.01);
+}
+
+.Button-loader {
+  margin: 0px 8px;
+}
+
+.Button-loader img {
+  width: 14px;
+  height: 14px;
+  animation: spin 1s linear infinite;
+}
+
+/*  */
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+    supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* Animation Spin */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
