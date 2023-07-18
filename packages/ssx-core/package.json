@@ -54,7 +54,7 @@
     "url": "git+https://github.com/spruceid/ssx.git"
   },
   "dependencies": {
-    "@spruceid/ssx-sdk-wasm": "/Users/samgbafa/Documents/github/ssx-rs/sdk/dist",
+    "@spruceid/ssx-sdk-wasm": "0.3.0",
     "axios": "^0.27.2",
     "ethers": "^5.7.2",
     "events": "^3.3.0",
