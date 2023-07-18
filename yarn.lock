@@ -3880,10 +3880,10 @@
     uri-js "^4.4.1"
     valid-url "^1.0.9"
 
-"@spruceid/ssx-sdk-wasm@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.2.1.tgz#2357b41753c99a3e6414538a812cfb28a6a57756"
-  integrity sha512-KAuUtXKGVHHqZ2eA0hmyI9mZkiQ0j+/92M/8QytB9kY8kb1se3UShZhqg/oslBUcK140ZFYNkgWmYaXeuGKS4Q==
+"@spruceid/ssx-sdk-wasm@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@spruceid/ssx-sdk-wasm/-/ssx-sdk-wasm-0.3.0.tgz#baf7d6170e9add0e5fc8aa5c7995891703bb272c"
+  integrity sha512-uuLVoajjgMahhv+i5xPHz/v6I1TMycDW5zmIOE3F29+amDt2q+C14yjFOlr0j625Zm4qiB3O4QbxZEqWKrQ5Hg==
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
