@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-react",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "SSX React Hooks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@spruceid/ssx": "2.0.0-beta.0"
+    "@spruceid/ssx": "2.0.0-beta.1"
   },
   "peerDependencies": {
     "wagmi": ">=0.5.0"
