@@ -24,7 +24,7 @@ export declare class SSXConnected
 |  --- | --- | --- | --- |
 |  [afterConnectHooksPromise](./ssx.ssxconnected.afterconnecthookspromise.md) |  | Promise&lt;void&gt; | Promise that is initialized on construction of this class to run the "afterConnect" methods of the extensions. |
 |  [api?](./ssx.ssxconnected.api.md) |  | AxiosInstance | <i>(Optional)</i> |
-|  [builder](./ssx.ssxconnected.builder.md) |  | ssxSession.SSXSessionBuilder |  |
+|  [builder](./ssx.ssxconnected.builder.md) |  | ssxSession.SSXSessionManager |  |
 |  [config](./ssx.ssxconnected.config.md) |  | [SSXConfig](./ssx.ssxconfig.md) |  |
 |  [extensions](./ssx.ssxconnected.extensions.md) |  | [SSXExtension](./ssx.ssxextension.md)<!-- -->\[\] |  |
 |  [isExtensionEnabled](./ssx.ssxconnected.isextensionenabled.md) |  | (namespace: string) =&gt; boolean |  |

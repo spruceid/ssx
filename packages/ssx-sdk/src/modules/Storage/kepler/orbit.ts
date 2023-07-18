@@ -3,9 +3,7 @@ import { KV } from './kv';
 import { generateHostSIWEMessage, siweToDelegationHeaders } from './module';
 import { WalletProvider } from './walletProvider';
 import { Capabilities, CapSummary } from './capabilities';
-
-// @TODO: define HostConfig type
-type HostConfig = any;
+import { HostConfig } from './types';
 
 /**
  * a connection to an orbit in a Kepler instance.

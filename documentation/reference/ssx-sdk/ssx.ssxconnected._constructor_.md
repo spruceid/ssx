@@ -9,14 +9,14 @@ Constructs a new instance of the `SSXConnected` class
 <b>Signature:</b>
 
 ```typescript
-constructor(builder: ssxSession.SSXSessionBuilder, config: SSXConfig, extensions: SSXExtension[], provider: ethers.providers.Web3Provider);
+constructor(builder: ssxSession.SSXSessionManager, config: SSXConfig, extensions: SSXExtension[], provider: ethers.providers.Web3Provider);
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  builder | ssxSession.SSXSessionBuilder |  |
+|  builder | ssxSession.SSXSessionManager |  |
 |  config | [SSXConfig](./ssx.ssxconfig.md) |  |
 |  extensions | [SSXExtension](./ssx.ssxextension.md)<!-- -->\[\] |  |
 |  provider | ethers.providers.Web3Provider |  |

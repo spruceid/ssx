@@ -95,8 +95,8 @@ export interface SSXEnsConfig {
 
 /** Interface to an intermediate SSX state: connected, but not signed-in. */
 export interface ISSXConnected {
-  /** Instance of SSXSessionBuilder. */
-  builder: ssxSession.SSXSessionBuilder;
+  /** Instance of SSXSessionManager. */
+  builder: ssxSession.SSXSessionManager;
   /** SSXConfig object. */
   config: SSXClientConfig;
   /** List of enabled extensions. */

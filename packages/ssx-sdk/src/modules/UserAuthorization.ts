@@ -146,7 +146,7 @@ class UserAuthorizationInit {
     let builder;
     try {
       builder = await initialized.then(
-        () => new ssxSession.SSXSessionBuilder()
+        () => new ssxSession.SSXSessionManager()
       );
     } catch (err) {
       // SSX wasm related error
@@ -181,8 +181,8 @@ class UserAuthorizationConnected implements ISSXConnected {
   /** Ethereum Provider */
 
   constructor(
-    /** Instance of SSXSessionBuilder */
-    public builder: ssxSession.SSXSessionBuilder,
+    /** Instance of SSXSessionManager */
+    public builder: ssxSession.SSXSessionManager,
     /** SSXConfig object. */
     public config: SSXClientConfig,
     /** Enabled extensions. */
