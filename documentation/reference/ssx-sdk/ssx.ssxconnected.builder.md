@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-builder: ssxSession.SSXSessionManager;
+builder: ssxSession.SSXSessionBuilder;
 ```
