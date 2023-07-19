@@ -1,7 +1,7 @@
 import { providers, Signer } from "ethers";
 import {
   initialized,
-  ssxSession as ssxSession,
+  ssxSession,
 } from "@spruceid/ssx-sdk-wasm";
 import merge from "lodash.merge";
 import axios, { AxiosInstance } from "axios";

@@ -201,8 +201,12 @@ export class KeplerStorage implements IStorage, IKepler {
     return this.orbit.delete(`${prefix}/${key}`, request);
   }
 
-  public async deleteAll(prefix: string = this.prefix): Promise<Response[]> {
-    return this.orbit.deleteAll(prefix);
+  public async deleteAll(prefix?: string): Promise<Response[]> {
+    if (!!prefix) {
+      return this.orbit.deleteAll(`${this.prefix}/${prefix}`);
+    } else {
+      return this.orbit.deleteAll(this.prefix);
+    }
   }
 
   public async activateSession(
