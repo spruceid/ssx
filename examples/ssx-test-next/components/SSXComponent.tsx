@@ -37,7 +37,7 @@ const SSXComponent = () => {
             </Button>
             <AccountInfo
               address={ssxProvider?.address()}
-              session={ssxProvider?.session()}
+              session={ssxProvider?.session}
             />
           </> :
           <Button onClick={ssxHandler}>
