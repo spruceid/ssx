@@ -1,11 +1,8 @@
-import { providers, Signer } from "ethers";
-import {
-  initialized,
-  ssxSession,
-} from "@spruceid/ssx-sdk-wasm";
-import merge from "lodash.merge";
-import axios, { AxiosInstance } from "axios";
-import { generateNonce } from "siwe";
+import { providers, Signer } from 'ethers';
+import { initialized, ssxSession } from '@spruceid/ssx-sdk-wasm';
+import merge from 'lodash.merge';
+import axios, { AxiosInstance } from 'axios';
+import { generateNonce } from 'siwe';
 import {
   SSXEnsData,
   ssxResolveEns,
@@ -13,14 +10,14 @@ import {
   SSXLensProfilesResponse,
   SSXEnsResolveOptions,
   isSSXRouteConfig,
-} from "@spruceid/ssx-core";
+} from '@spruceid/ssx-core';
 import {
   SSXClientSession,
   SSXClientConfig,
   ISSXConnected,
   SSXExtension,
   GnosisDelegation,
-} from "@spruceid/ssx-core/client";
+} from '@spruceid/ssx-core/client';
 
 /** UserAuthorization Module
  *
@@ -116,7 +113,9 @@ class UserAuthorizationInit {
     // eslint-disable-next-line no-underscore-dangle
     if (!this.config.providers.web3.driver?._isProvider) {
       try {
-        provider = new providers.Web3Provider(this.config.providers.web3.driver);
+        provider = new providers.Web3Provider(
+          this.config.providers.web3.driver
+        );
       } catch (err) {
         // Provider creation error
         console.error(err);
@@ -127,12 +126,12 @@ class UserAuthorizationInit {
     }
 
     if (
-      !this.config.providers.web3?.driver?.bridge?.includes("walletconnect")
+      !this.config.providers.web3?.driver?.bridge?.includes('walletconnect')
     ) {
       const connectedAccounts = await provider.listAccounts();
       if (connectedAccounts.length === 0) {
         try {
-          await provider.send("wallet_requestPermissions", [
+          await provider.send('wallet_requestPermissions', [
             { eth_accounts: {} },
           ]);
         } catch (err) {
@@ -173,7 +172,7 @@ class UserAuthorizationConnected implements ISSXConnected {
 
   /** Verifies if extension is enabled. */
   public isExtensionEnabled = (namespace: string) =>
-    this.extensions.filter((e) => e.namespace === namespace).length === 1;
+    this.extensions.filter(e => e.namespace === namespace).length === 1;
 
   /** Axios instance. */
   public api?: AxiosInstance;
@@ -251,11 +250,8 @@ class UserAuthorizationConnected implements ISSXConnected {
    * @param params - Request params.
    * @returns Promise with nonce.
    */
-  public async ssxServerNonce(
-    params: Record<string, any>
-  ): Promise<string> {
-    const route =
-      this.config.providers?.server?.routes?.nonce ?? "/ssx-nonce";
+  public async ssxServerNonce(params: Record<string, any>): Promise<string> {
+    const route = this.config.providers?.server?.routes?.nonce ?? '/ssx-nonce';
     const requestConfig = isSSXRouteConfig(route)
       ? {
           customAPIOperation: undefined,
@@ -277,8 +273,8 @@ class UserAuthorizationConnected implements ISSXConnected {
       try {
         nonce = (
           await this.api.request({
-            method: "get",
-            url: "/ssx-nonce",
+            method: 'get',
+            url: '/ssx-nonce',
             ...requestConfig,
             params,
           })
@@ -288,7 +284,7 @@ class UserAuthorizationConnected implements ISSXConnected {
         throw error;
       }
       if (!nonce) {
-        throw new Error("Unable to retrieve nonce from server.");
+        throw new Error('Unable to retrieve nonce from server.');
       }
       return nonce;
     }
@@ -299,11 +295,8 @@ class UserAuthorizationConnected implements ISSXConnected {
    * @param session - SSXClientSession object.
    * @returns Promise with server session data.
    */
-  public async ssxServerLogin(
-    session: SSXClientSession
-  ): Promise<any> {
-    const route =
-      this.config.providers?.server?.routes?.login ?? "/ssx-login";
+  public async ssxServerLogin(session: SSXClientSession): Promise<any> {
+    const route = this.config.providers?.server?.routes?.login ?? '/ssx-login';
     const requestConfig = isSSXRouteConfig(route)
       ? {
           customAPIOperation: undefined,
@@ -322,13 +315,13 @@ class UserAuthorizationConnected implements ISSXConnected {
     if (this.api) {
       let resolveEns: boolean | SSXEnsResolveOptions = false;
       if (
-        typeof this.config.resolveEns === "object" &&
+        typeof this.config.resolveEns === 'object' &&
         this.config.resolveEns.resolveOnServer
       ) {
         resolveEns = this.config.resolveEns.resolve;
       }
 
-      const resolveLens: boolean = this.config.resolveLens === "onServer";
+      const resolveLens: boolean = this.config.resolveLens === 'onServer';
 
       try {
         const data = {
@@ -337,19 +330,19 @@ class UserAuthorizationConnected implements ISSXConnected {
           address: session.address,
           walletAddress: session.walletAddress,
           chainId: session.chainId,
-          daoLogin: this.isExtensionEnabled("delegationRegistry"),
+          daoLogin: this.isExtensionEnabled('delegationRegistry'),
           resolveEns,
           resolveLens,
         };
         // @TODO(w4ll3): figure out how to send a custom sessionKey
         return this.api
           .request({
-            method: "post",
-            url: "/ssx-login",
+            method: 'post',
+            url: '/ssx-login',
             ...requestConfig,
             data,
           })
-          .then((response) => response.data);
+          .then(response => response.data);
       } catch (error) {
         console.error(error);
         throw error;
@@ -368,7 +361,7 @@ class UserAuthorizationConnected implements ISSXConnected {
     await this.afterConnectHooksPromise;
     const sessionKey = this.builder.jwk();
     if (sessionKey === undefined) {
-      return Promise.reject(new Error("unable to retrieve session key"));
+      return Promise.reject(new Error('unable to retrieve session key'));
     }
     const signer = await this.provider.getSigner();
     const walletAddress = await signer.getAddress();
@@ -416,7 +409,7 @@ class UserAuthorizationConnected implements ISSXConnected {
   async signOut(session: SSXClientSession): Promise<void> {
     // get request configuration
     const route =
-      this.config.providers?.server?.routes?.logout ?? "/ssx-logout";
+      this.config.providers?.server?.routes?.logout ?? '/ssx-logout';
     const requestConfig = isSSXRouteConfig(route)
       ? {
           customAPIOperation: undefined,
@@ -438,8 +431,8 @@ class UserAuthorizationConnected implements ISSXConnected {
         const data = { ...session };
 
         await this.api.request({
-          method: "post",
-          url: "/ssx-logout",
+          method: 'post',
+          url: '/ssx-logout',
           ...requestConfig,
           data,
         });
@@ -474,9 +467,7 @@ class UserAuthorization implements IUserAuthorization {
   /** The SSXClientConfig object. */
   private config: SSXClientConfig;
 
-  constructor(
-    private _config: SSXClientConfig = SSX_DEFAULT_CONFIG
-  ) {
+  constructor(private _config: SSXClientConfig = SSX_DEFAULT_CONFIG) {
     this.config = _config;
     this.init = new UserAuthorizationInit({
       ...this.config,
@@ -574,11 +565,7 @@ class UserAuthorization implements IUserAuthorization {
       avatar: true,
     }
   ): Promise<SSXEnsData> {
-    return ssxResolveEns(
-      this.connection.provider,
-      address,
-      resolveEnsOpts
-    );
+    return ssxResolveEns(this.connection.provider, address, resolveEnsOpts);
   }
 
   /**
@@ -598,7 +585,7 @@ class UserAuthorization implements IUserAuthorization {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor = "{}"
+    pageCursor = '{}'
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.connection.provider, address, pageCursor);
   }

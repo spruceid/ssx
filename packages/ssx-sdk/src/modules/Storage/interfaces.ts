@@ -1,38 +1,38 @@
 import { SSXClientSession, SSXExtension } from '@spruceid/ssx-core/client';
-import type { Request, Response } from './kepler';
+import type { Request, Response, Session } from './kepler';
 
-/** 
+/**
  * @interface IStorageBaseOptions
  * @property prefix - Optional string identifying the folder in the storage.
  * @property request - Optional request object to use for the operation.
  */
 export interface IStorageBaseOptions {
-  prefix?: string,
-  request?: Request
+  prefix?: string;
+  request?: Request;
 }
 
-/** 
+/**
  * @interface IStorageGetOptions
  * @property prefix - Optional string identifying the folder in the storage.
  * @property request - Optional request object to use for the operation.
  */
-export interface IStorageGetOptions extends IStorageBaseOptions { }
+export interface IStorageGetOptions extends IStorageBaseOptions {}
 
-/** 
+/**
  * @interface IStoragePutOptions
  * @property prefix - Optional string identifying the folder in the storage.
  * @property request - Optional request object to use for the operation.
  */
-export interface IStoragePutOptions extends IStorageBaseOptions { }
+export interface IStoragePutOptions extends IStorageBaseOptions {}
 
-/** 
+/**
  * @interface IStorageDeleteOptions
  * @property prefix - Optional string identifying the folder in the storage.
  * @property request - Optional request object to use for the operation.
  */
-export interface IStorageDeleteOptions extends IStorageBaseOptions { }
+export interface IStorageDeleteOptions extends IStorageBaseOptions {}
 
-/** 
+/**
  * @interface IStorageListOptions
  * @property prefix - Optional string identifying the folder in the storage.
  * @property path - Optional string identifying the path to be combined with the prefix in the storage.
@@ -40,8 +40,8 @@ export interface IStorageDeleteOptions extends IStorageBaseOptions { }
  * @property request - Optional request object to use for the operation.
  */
 export interface IStorageListOptions extends IStorageBaseOptions {
-  path?: string,
-  removePrefix?: boolean
+  path?: string;
+  removePrefix?: boolean;
 }
 
 /**
@@ -54,10 +54,7 @@ interface IStorage extends SSXExtension {
    * @param options - IStorageGetOptions object.
    * @returns A Promise that resolves to the value associated with the given key or undefined if the key does not exist.
    */
-  get(
-    key: string,
-    options?: IStorageGetOptions
-  ): Promise<Response>;
+  get(key: string, options?: IStorageGetOptions): Promise<Response>;
 
   /**
    * Stores a value with the specified key.
@@ -66,11 +63,7 @@ interface IStorage extends SSXExtension {
    * @param options - IStoragePutOptions object.
    * @returns A Promise that resolves when the operation is complete.
    */
-  put(
-    key: string,
-    value: any,
-    options?: IStoragePutOptions
-  ): Promise<Response>;
+  put(key: string, value: any, options?: IStoragePutOptions): Promise<Response>;
 
   /**
    * Lists all keys currently stored in the storage.
@@ -91,10 +84,7 @@ interface IStorage extends SSXExtension {
    * @param options - IStorageDeleteOptions object.
    * @returns A Promise that resolves when the operation is complete.
    */
-  delete(
-    key: string,
-    options?: IStorageListOptions
-  ): Promise<Response>;
+  delete(key: string, options?: IStorageListOptions): Promise<Response>;
 
   /**
    * Deletes all stored key-value pairs in the storage.
@@ -113,9 +103,7 @@ export interface IKepler extends IStorage {
   ): Promise<boolean>;
   generateSharingLink(key: string, params?: any): Promise<string>;
   retrieveSharingLink(link: string): Promise<Response>;
-  generateKeplerSession(
-    ssxSession: SSXClientSession
-  ): Promise<SSXClientSession>;
+  generateKeplerSession(ssxSession: SSXClientSession): Promise<Session>;
 }
 
 /**
@@ -143,8 +131,4 @@ interface IKeplerStorageConfig extends IStorageConfig {
   autoCreateNewOrbit?: boolean;
 }
 
-export {
-  IStorage,
-  IStorageConfig,
-  IKeplerStorageConfig,
-};
+export { IStorage, IStorageConfig, IKeplerStorageConfig };

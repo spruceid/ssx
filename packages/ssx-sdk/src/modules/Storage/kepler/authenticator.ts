@@ -5,9 +5,7 @@ import {
   prepareSession,
 } from './module';
 import { WalletProvider } from './walletProvider';
-
-type SessionConfig = any;
-type Session = any;
+import { SessionConfig, Session } from './types';
 
 export async function startSession(
   wallet: WalletProvider,

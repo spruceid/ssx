@@ -75,7 +75,7 @@ export interface SSXClientProviders {
 }
 
 /** Optional session configuration for the SIWE message. */
-export interface SiweConfig extends Partial<ssxSession.SiweConfig> { }
+export interface SiweConfig extends Partial<ssxSession.SiweConfig> {}
 
 /** Extra SIWE fields. */
 export type ExtraFields = ssxSession.ExtraFields;
@@ -95,7 +95,7 @@ export interface SSXEnsConfig {
 
 /** Interface to an intermediate SSX state: connected, but not signed-in. */
 export interface ISSXConnected {
-  /** Instance of SSXSessionBuilder. */
+  /** Instance of SSXSessionManager. */
   builder: ssxSession.SSXSessionManager;
   /** SSXConfig object. */
   config: SSXClientConfig;

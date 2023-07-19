@@ -1,8 +1,3 @@
-export {
-  SSXExpressMiddleware,
-  SSXAuthenticated
-} from './express';
+export { SSXExpressMiddleware, SSXAuthenticated } from './express';
 
-export {
-  SSXHttpMiddleware,
-} from './http';
+export { SSXHttpMiddleware } from './http';

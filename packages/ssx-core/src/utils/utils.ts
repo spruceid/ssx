@@ -85,9 +85,9 @@ export const ssxResolveEns = async (
     /* Enables ENS avatar resolution */
     avatar?: boolean;
   } = {
-      domain: true,
-      avatar: true,
-    }
+    domain: true,
+    avatar: true,
+  }
 ): Promise<SSXEnsData> => {
   if (!address) {
     throw new Error('Missing address.');
@@ -119,20 +119,20 @@ export const ssxResolveEns = async (
 };
 
 const LENS_API_LINKS = {
-  'matic': 'https://api.lens.dev',
-  'maticmum': 'https://api-mumbai.lens.dev'
-}
+  matic: 'https://api.lens.dev',
+  maticmum: 'https://api-mumbai.lens.dev',
+};
 
 /**
- * Resolves Lens profiles owned by the given Ethereum Address. Each request is 
+ * Resolves Lens profiles owned by the given Ethereum Address. Each request is
  * limited by 10. To get other pages you must to pass the pageCursor parameter.
- * 
+ *
  * Lens profiles can be resolved on the Polygon Mainnet (matic) or Mumbai Testnet
  * (maticmum). Visit https://docs.lens.xyz/docs/api-links for more information.
- *  
+ *
  * @param address - Ethereum User address.
- * @param pageCursor - Page cursor used to paginate the request. Default to 
- * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more 
+ * @param pageCursor - Page cursor used to paginate the request. Default to
+ * first page. Visit https://docs.lens.xyz/docs/get-profiles#api-details for more
  * information.
  * @returns Object containing Lens profiles items and pagination info.
  */
@@ -141,9 +141,8 @@ export const ssxResolveLens = async (
   /* Ethereum User Address. */
   address: string,
   /* Page cursor used to paginate the request. Default to first page. */
-  pageCursor: string = "{}"
+  pageCursor = '{}'
 ): Promise<SSXLensProfilesResponse | string> => {
-
   if (!address) {
     throw new Error('Missing address.');
   }
@@ -157,18 +156,20 @@ export const ssxResolveLens = async (
 
   let lens: { data: { profiles: SSXLensProfilesResponse } };
   try {
-    lens = (await axios({
-      url: apiURL,
-      method: 'post',
-      data: {
-        operationName: 'Profiles',
-        query: getProfilesQuery,
-        variables: {
-          addresses: [address],
-          cursor: pageCursor
-        }
-      },
-    })).data;
+    lens = (
+      await axios({
+        url: apiURL,
+        method: 'post',
+        data: {
+          operationName: 'Profiles',
+          query: getProfilesQuery,
+          variables: {
+            addresses: [address],
+            cursor: pageCursor,
+          },
+        },
+      })
+    ).data;
   } catch (err) {
     throw new Error(err?.response?.data?.errors ?? err);
   }

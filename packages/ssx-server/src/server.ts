@@ -234,7 +234,7 @@ export class SSXServer extends SSXServerBaseClass {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor: string = '{}',
+    pageCursor = '{}',
   ): Promise<string | SSXLensProfilesResponse> {
     return ssxResolveLens(this.provider, address, pageCursor);
   }
