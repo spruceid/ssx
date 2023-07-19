@@ -5,10 +5,7 @@ import {
   SiweMessage,
   SiweGnosisVerify,
 } from '@spruceid/ssx-core';
-import { 
-  SSXLogFields, 
-  SSXServerBaseClass,
-} from '@spruceid/ssx-core/server';
+import { SSXLogFields, SSXServerBaseClass } from '@spruceid/ssx-core/server';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -103,7 +100,6 @@ export const ssxMiddleware = (ssx: SSXServerBaseClass) => {
             verificationFallback: daoLogin ? SiweGnosisVerify : null,
             provider: ssx.provider,
           },
-
         )
         .then((data) => ({ success: true, data }))
         .catch((error) => ({ success: false, error, data: null }));

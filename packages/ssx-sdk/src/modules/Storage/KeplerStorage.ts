@@ -202,7 +202,7 @@ export class KeplerStorage implements IStorage, IKepler {
   }
 
   public async deleteAll(prefix?: string): Promise<Response[]> {
-    if (!!prefix) {
+    if (prefix) {
       return this.orbit.deleteAll(`${this.prefix}/${prefix}`);
     } else {
       return this.orbit.deleteAll(this.prefix);

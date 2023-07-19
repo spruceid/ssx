@@ -13,7 +13,7 @@ const writePackages = async packages => {
   }
 };
 
-const getAllPackageJSON = async (includeExamples=false) => {
+const getAllPackageJSON = async (includeExamples = false) => {
   // read package.json
   const packageList = [];
   const packages = {};

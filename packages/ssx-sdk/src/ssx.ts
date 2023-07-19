@@ -3,18 +3,18 @@ import {
   SSXEnsData,
   SSXEnsResolveOptions,
   SSXLensProfilesResponse,
-} from "@spruceid/ssx-core";
+} from '@spruceid/ssx-core';
 import {
   IUserAuthorization,
   KeplerStorage,
   UserAuthorization,
-} from "./modules";
+} from './modules';
 import {
   SSXClientConfig,
   SSXClientSession,
   SSXExtension,
-} from "@spruceid/ssx-core/client";
-import type { providers, Signer } from "ethers";
+} from '@spruceid/ssx-core/client';
+import type { providers, Signer } from 'ethers';
 
 declare global {
   interface Window {
@@ -79,14 +79,14 @@ export class SSX {
       config?.modules?.storage === undefined ? false : config.modules.storage;
 
     if (storageConfig !== false) {
-      if (typeof storageConfig === "object") {
+      if (typeof storageConfig === 'object') {
         // Initialize storage with the provided config
         this.storage = new KeplerStorage(storageConfig, this.userAuthorization);
       } else {
         // storage == true or undefined
         // Initialize storage with default config when no other condition is met
         this.storage = new KeplerStorage(
-          { prefix: "ssx" },
+          { prefix: 'ssx' },
           this.userAuthorization
         );
       }
@@ -150,13 +150,13 @@ export class SSX {
     /* Ethereum User Address. */
     address: string,
     /* Page cursor used to paginate the request. Default to first page. */
-    pageCursor = "{}"
+    pageCursor = '{}'
   ): Promise<string | SSXLensProfilesResponse> {
     return this.userAuthorization.resolveLens(address, pageCursor);
   }
 
   /**
-   * Gets the session representation (once signed in). 
+   * Gets the session representation (once signed in).
    * @returns Address.
    */
   public session: () => SSXClientSession | undefined = () =>

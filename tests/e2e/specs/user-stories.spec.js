@@ -8,13 +8,13 @@ describe('SSX', () => {
       // sign in
       cy.get('#signInButton').click();
       cy.acceptMetamaskAccess({
-        signInSignature: true
+        signInSignature: true,
       }).then(connected => {
         expect(connected).to.be.true;
       });
       cy.get('#userAddress').should(
         'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
       );
 
       // sign out
@@ -34,7 +34,7 @@ describe('SSX', () => {
       });
       cy.get('#userAddress').should(
         'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
       );
 
       // sign out
@@ -61,7 +61,7 @@ describe('SSX', () => {
       });
       cy.get('#userAddress').should(
         'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
       );
 
       // sign out
@@ -91,11 +91,8 @@ describe('SSX', () => {
         expect(confirmed).to.be.true;
       });
       cy.get('#userAddress', {
-          defaultCommandTimeout: 60000
-        }).should(
-        'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-      );
+        defaultCommandTimeout: 60000,
+      }).should('have.text', '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266');
 
       // sign out
       cy.get('#signOutButton').click();
@@ -124,7 +121,7 @@ describe('SSX', () => {
       });
       cy.get('#userAddress').should(
         'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
       );
 
       // sign out
@@ -152,7 +149,7 @@ describe('SSX', () => {
       });
       cy.get('#userAddress').should(
         'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
       );
 
       // sign out
@@ -165,7 +162,7 @@ describe('SSX', () => {
       cy.get('#resolveEns-Off').click();
       cy.get('#selectPreferences').click();
     });
-    
+
     it(`Story 7 - Users should be able to sign in with Ethereum using MetaMask with DAO Login, resolve ENS on server and SIWE Config.`, () => {
       // configure settings
       cy.get('#selectPreferences').click();
@@ -183,11 +180,8 @@ describe('SSX', () => {
         expect(confirmed).to.be.true;
       });
       cy.get('#userAddress', {
-        timeout: 60000
-      }).should(
-        'have.text',
-        '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-      );
+        timeout: 60000,
+      }).should('have.text', '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266');
 
       // sign out
       cy.get('#signOutButton').click();
@@ -202,6 +196,5 @@ describe('SSX', () => {
       cy.get('#siweConfig-Off').click();
       cy.get('#selectPreferences').click();
     });
-
   });
 });

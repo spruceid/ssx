@@ -278,9 +278,9 @@ export const hostOrbit = async (
   const address = await wallet.getAddress();
   const chainId = await wallet.getChainId();
   const issuedAt = new Date(Date.now()).toISOString();
-  const peerId = await fetch(keplerUrl + `/peer/generate/${encodeURIComponent(orbitId)}`).then(
-    (res: FetchResponse) => res.text()
-  );
+  const peerId = await fetch(
+    keplerUrl + `/peer/generate/${encodeURIComponent(orbitId)}`
+  ).then((res: FetchResponse) => res.text());
   const config: HostConfig = {
     address,
     chainId,

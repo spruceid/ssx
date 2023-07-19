@@ -4,7 +4,6 @@ import { ssxMiddleware, SSXAuthenticated } from './middleware';
 import { SSXServerRoutes } from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 
-
 /**
  * This middleware function has two key functions:
  * 1. It provides 3 endpoints for the client to hit: /ssx-nonce, /ssx-login, and /ssx-logout. These endpoints are used to authenticate the SIWE message and issue sessions.
@@ -12,7 +11,10 @@ import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
  *
  * @param ssx - The SSX server instance.
  */
-const SSXExpressMiddleware = (ssx: SSXServerBaseClass, routes?: SSXServerRoutes) => {
+const SSXExpressMiddleware = (
+  ssx: SSXServerBaseClass,
+  routes?: SSXServerRoutes,
+) => {
   return [
     ssx.session,
     bodyParser.json(),
