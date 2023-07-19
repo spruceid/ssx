@@ -83,20 +83,20 @@ export const SSXProvider = ({
     return ssx;
   }
 
-  const updateStateOnChangeProvider = async (ssx) => {
-    if(watchProvider) {
+  const updateStateOnChangeProvider = async ssx => {
+    if (watchProvider) {
       const newSSX = await watchProvider(provider, ssx);
-      if(newSSX) {
+      if (newSSX) {
         setSSX(newSSX);
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if(provider && !ssx) {
+    if (provider && !ssx) {
       initializeSSX();
     }
-    if(ssx && provider) {
+    if (ssx && provider) {
       ssx.provider = provider.provider;
     }
     updateStateOnChangeProvider(ssx);

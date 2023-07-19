@@ -1,8 +1,4 @@
-import {
-  ConfigOverrides,
-  ISSXConnected,
-  SSXExtension,
-} from './types';
+import { ConfigOverrides, ISSXConnected, SSXExtension } from './types';
 import { providers } from 'ethers';
 import { gnosisDelegatorsFor } from '../utils';
 
@@ -149,7 +145,8 @@ const getBaseModal = (): Element => {
   // Backdrop
   const backdrop = document.createElement('span');
   backdrop.classList.add('ssx-gnosis-modal--backdrop');
-  backdrop.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
+  backdrop.onclick = () =>
+    window.gnosisModal.abortOperation('Operation aborted by the user.');
   container.appendChild(backdrop);
 
   // Brand
@@ -197,13 +194,14 @@ const getBaseModal = (): Element => {
   gLogo.appendChild(pathLogo3);
   svgLogo.appendChild(gLogo);
   const divSafe = document.createElement('div');
-  divSafe.classList.add('ssx-gnosis-modal--header-title')
+  divSafe.classList.add('ssx-gnosis-modal--header-title');
   divSafe.appendChild(document.createTextNode('Safe'));
   brand.appendChild(svgLogo);
   brand.appendChild(divSafe);
   // Close button
   const closeBtn = document.createElement('button');
-  closeBtn.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
+  closeBtn.onclick = () =>
+    window.gnosisModal.abortOperation('Operation aborted by the user.');
   const svgClose = document.createElementNS(
     'http://www.w3.org/2000/svg',
     'svg'
@@ -244,7 +242,8 @@ const getBaseModal = (): Element => {
   // Close button
   const footerCloseBtn = document.createElement('button');
   footerCloseBtn.classList.add('ssx-gnosis-modal--btn', 'secondary');
-  footerCloseBtn.onclick = () => window.gnosisModal.abortOperation('Operation aborted by the user.');
+  footerCloseBtn.onclick = () =>
+    window.gnosisModal.abortOperation('Operation aborted by the user.');
   footerCloseBtn.appendChild(document.createTextNode('Cancel'));
   // Continue button
   const continueBtn = document.createElement('button');
@@ -350,8 +349,9 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
-              }`;
+            modalCounter.textContent = `${options.length} result${
+              options.length > 1 ? 's' : ''
+            }`;
             modal.classList.add('visible');
           })
           .catch(e => {
@@ -369,8 +369,9 @@ export class GnosisDelegation implements SSXExtension {
               modalBodyContent.appendChild(newOption);
             });
             modalBody.replaceChildren(modalBodyContent);
-            modalCounter.textContent = `${options.length} result${options.length > 1 ? 's' : ''
-              }`;
+            modalCounter.textContent = `${options.length} result${
+              options.length > 1 ? 's' : ''
+            }`;
             if (!modal.classList.contains('visible')) {
               modal.classList.add('visible');
             }
@@ -465,7 +466,10 @@ export class GnosisDelegation implements SSXExtension {
    */
   connect = async (): Promise<void> => {
     const option = this.selectedOption.replace(/Yourself - /, '');
-    const hasDelegator = [...delegators, this._connectedAddress].filter(delegator => option === delegator).length !== 1;
+    const hasDelegator =
+      [...delegators, this._connectedAddress].filter(
+        delegator => option === delegator
+      ).length !== 1;
     if (!option || hasDelegator) {
       this._failure(new Error('Invalid address selected.'));
       this.closeModal();
