@@ -35,7 +35,6 @@ function StorageModule({ ssx }: IStorageModule) {
     );
     const sharingLink = `${window.location.origin}/share?data=${base64Content}`;
     await navigator.clipboard.writeText(sharingLink);
-    console.log('Sharing link', sharingLink);
   };
 
   const handleGetContent = async (content: string) => {

@@ -182,7 +182,6 @@ export class KeplerStorage implements IStorage, IKepler {
       request,
       removePrefix = false,
     } = options;
-    console.log(options);
     const p = path ? `${prefix}/${path}` : `${prefix}/`;
     const response = await this.orbit.list(prefix, request);
     // remove prefix from keys

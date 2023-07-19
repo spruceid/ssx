@@ -53,7 +53,7 @@ function App() {
   //eslint-disable-next-line
   }, [provider, ssx]);
   
-  const session = ssx?.session;
+  const session = ssx?.session();
 
   return (
     <div className='App'>

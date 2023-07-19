@@ -206,7 +206,7 @@ function Home() {
                 </Button>
                 <AccountInfo
                   address={ssx?.address()}
-                  session={ssx?.session}
+                  session={ssx?.session()}
                 />
               </> :
               <>
