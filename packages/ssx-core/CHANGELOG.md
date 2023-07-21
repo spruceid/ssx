@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- - Added new types to support the new structure
+  - Added new types to support the new structure
   - The package `@spruceid/ssx-gnosis-extension` had its code moved to this library.
 
 ## 1.2.0
