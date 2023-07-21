@@ -1,5 +1,109 @@
 # @spruceid/ssx-react
 
+## 2.0.0
+
+### Major Changes
+
+- ## Major rework to enable customizability
+
+  `@spruceid/ssx-react` no longer depends on `wagmi`. Instead, function hooks must be defined and used as arguments to the component.
+
+  - `onChangeAccount` property no longer exists. Replaced by the `watchProvider` property, which now allows for more customizability.
+  - `web3Provider.providerLoaded` property was also removed. The new architecture assumes the provider no longer needs to be initialized, and callback functions will be called when changes occur.
+  - `useSSX` now returns the `ssx` instance and the `provider`.
+  - Now `watchProvider` is the new interface for listening to provider changes. The developer must set up this function to be called whenever an interaction with the user happens. An example of how to do it can be found [here](https://github.com/spruceid/ssx/blob/main/examples/ssx-test-react/src/index.tsx#L25).
+
+  ```tsx
+  import React from 'react';
+  import ReactDOM from 'react-dom/client';
+  import { WagmiConfig, useWalletClient } from 'wagmi';
+  import { Web3Modal } from '@web3modal/react';
+  import { SSXProvider } from '@spruceid/ssx-react';
+  import {
+    EthereumClient,
+    w3mConnectors,
+    w3mProvider,
+  } from '@web3modal/ethereum';
+  import { configureChains, createConfig } from 'wagmi';
+  import { polygon, mainnet, goerli, sepolia } from 'wagmi/chains';
+  import { type WalletClient } from '@wagmi/core';
+  import { providers } from 'ethers';
+
+  // 1. Get projectID at https://cloud.walletconnect.com
+  if (!process.env.REACT_APP_PROJECT_ID) {
+    console.error('You need to provide REACT_APP_PROJECT_ID env variable');
+  }
+
+  export const projectId = process.env.REACT_APP_PROJECT_ID ?? '';
+
+  // 2. Configure wagmi client
+  const chains = [mainnet, goerli, sepolia, polygon];
+
+  const { publicClient } = configureChains(chains, [
+    w3mProvider({ projectId }),
+  ]);
+
+  export const wagmiConfig = createConfig({
+    autoConnect: false,
+    connectors: w3mConnectors({ projectId, chains }),
+    publicClient,
+  });
+
+  // 3. Configure modal ethereum client
+  export const ethereumClient = new EthereumClient(wagmiConfig, chains);
+
+  export function walletClientToEthers5Signer(walletClient: WalletClient) {
+    const { account, chain, transport } = walletClient;
+    const network = {
+      chainId: chain.id,
+      name: chain.name,
+      ensAddress: chain.contracts?.ensRegistry?.address,
+    };
+    const provider = new providers.Web3Provider(transport, network);
+    const signer = provider.getSigner(account.address);
+    return signer;
+  }
+
+  function SSXWithoutWatchProvider({ children }: any) {
+    const { data: walletClient } = useWalletClient();
+
+    const web3Provider = { provider: walletClient };
+
+    return (
+      <SSXProvider
+        ssxConfig={{ siweConfig: { domain: 'localhost:3000' } }}
+        web3Provider={web3Provider}>
+        {children}
+      </SSXProvider>
+    );
+  }
+
+  const root = ReactDOM.createRoot(
+    document.getElementById('root') as HTMLElement
+  );
+  root.render(
+    <React.StrictMode>
+      <WagmiConfig config={wagmiConfig}>
+        <SSXWithoutWatchProvider>
+          /* your code goes here */
+        </SSXWithoutWatchProvider>
+      </WagmiConfig>
+      <Web3ModalV2 projectId={projectId} ethereumClient={ethereumClient} />
+    </React.StrictMode>
+  );
+  ```
+
+  You can [check here](https://github.com/spruceid/ssx/tree/main/examples/ssx-test-react) a more detailed example.
+
+  ## Updated dependencies
+
+  Updated several dependencies.
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx@2.0.0
+
 ## 1.3.5
 
 ### Patch Changes

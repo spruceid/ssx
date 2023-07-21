@@ -1,5 +1,30 @@
 # @spruceid/ssx
 
+## 2.0.0
+
+### Major Changes
+
+- ## Major rework of the library architecture
+
+  SSX is now composed of modules that add significant functionality improvements. The previous functions of SSX were moved into a new module called [UserAuthorization](https://www.sprucekit.dev/ssx/installing-ssx/userauthorization-module) and will, from now on, be responsible for end-user signing-related operations.
+
+  A new module was added, [Storage](https://www.sprucekit.dev/ssx/installing-ssx/storage-module), which provides functionality to store and retrieve data in [Kepler](https://github.com/spruceid/kepler). Kepler is architected as a decentralized storage system that uses DIDs and Authorization Capabilities to define where your data lives and who has access.
+
+  ## Improved tests
+
+  To keep improving the library, additional tests were added.
+
+  ## Updated dependencies
+
+  Updated several libraries to address deprecation issues and possible vulnerabilities.
+
+  **⚠** You can [check here](https://www.sprucekit.dev/ssx/ssx-overview) for the latest documentation. **⚠**
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx-core@2.0.0
+
 ## 1.2.5
 
 ### Patch Changes
