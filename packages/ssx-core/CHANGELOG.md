@@ -1,5 +1,12 @@
 # @spruceid/ssx-core
 
+## 2.0.0
+
+### Major Changes
+
+  - Added new types to support the new structure
+  - The package `@spruceid/ssx-gnosis-extension` had its code moved to this library.
+
 ## 1.2.0
 
 ### Minor Changes
