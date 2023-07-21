@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- - Added stricter checks on nonces
+  - Added stricter checks on nonces
   - SSX middleware was moved back to the server package
 
 ### Patch Changes
