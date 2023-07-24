@@ -17,13 +17,7 @@ function StorageModule({ ssx }: IStorageModule) {
   useEffect(() => {
     const getContentList = async () => {
       const { data } = await ssx.storage.list({ removePrefix: true });
-      setContentList(
-        data.map((d: string) => {
-          const contentArr = d.split('/');
-          contentArr.shift(); // remove the prefix
-          return contentArr.join('/');
-        })
-      );
+      setContentList(data);
     };
     getContentList();
   }, [ssx]);
