@@ -131,32 +131,35 @@ export class KeplerStorage implements IStorage, IKepler {
 
   public async get(
     key: string,
-    options: IStorageGetOptions = {
-      prefix: this.prefix,
-    }
+    options: IStorageGetOptions = {}
   ): Promise<Response> {
-    const { prefix, request } = options;
+    const defaultOptions = {
+      prefix: this.prefix,
+    };
+    const { prefix, request } = { ...defaultOptions, ...options };
     return this.orbit.get(`${prefix}/${key}`, request);
   }
 
   public async put(
     key: string,
     value: any,
-    options: IStoragePutOptions = {
-      prefix: this.prefix,
-    }
+    options: IStoragePutOptions = {}
   ): Promise<Response> {
-    const { prefix, request } = options;
-    return this.orbit.put(`${prefix}/${key}`, value, request);
+    const defaultOptions = {
+      prefix: this.prefix,
+    };
+    const { prefix, request } = { ...defaultOptions, ...options };
+    return this.orbit.put(`${prefix || this.prefix}/${key}`, value, request);
   }
 
   public async list(
-    options: IStorageListOptions = {
+    options: IStorageListOptions = {}
+  ): Promise<Response> {
+    const defaultOptions = {
       prefix: this.prefix,
       removePrefix: false,
-    }
-  ): Promise<Response> {
-    const { prefix, path, request, removePrefix } = options;
+    };
+    const { prefix, path, request, removePrefix } = { ...defaultOptions, ...options };
     const p = path ? `${prefix}/${path}` : `${prefix}/`;
     const response = await this.orbit.list(prefix, request);
     // remove prefix from keys
@@ -167,11 +170,12 @@ export class KeplerStorage implements IStorage, IKepler {
 
   public async delete(
     key: string,
-    options: IStorageDeleteOptions = {
-      prefix: this.prefix,
-    }
+    options: IStorageDeleteOptions = {}
   ): Promise<Response> {
-    const { prefix, request } = options;
+    const defaultOptions = {
+      prefix: this.prefix,
+    };
+    const { prefix, request } = { ...defaultOptions, ...options };
     return this.orbit.delete(`${prefix}/${key}`, request);
   }
 
