@@ -28,20 +28,25 @@ export interface SSXRouteConfig {
 /** Type-Guard for SSXRouteConfig. */
 export const isSSXRouteConfig = (
   config: SSXServerRouteEndpointType
-): config is SSXRouteConfig | AxiosRequestConfig | SSXServerMiddlewareConfig => typeof config === 'object';
-
+): config is SSXRouteConfig | AxiosRequestConfig | SSXServerMiddlewareConfig =>
+  typeof config === 'object';
 
 export interface SSXServerMiddlewareConfig {
   path: string;
   callback?: (req: any, body?: Record<string, any>) => Promise<void> | void;
-};
+}
 
 /** Type-Guard for SSXServerMiddlewareConfig. */
 export const isSSXServerMiddlewareConfig = (
   config: SSXServerRouteEndpointType
-): config is SSXServerMiddlewareConfig => (config as SSXServerMiddlewareConfig)?.path !== undefined;
+): config is SSXServerMiddlewareConfig =>
+  (config as SSXServerMiddlewareConfig)?.path !== undefined;
 
-export type SSXServerRouteEndpointType = Partial<SSXRouteConfig> | AxiosRequestConfig | string | SSXServerMiddlewareConfig;
+export type SSXServerRouteEndpointType =
+  | Partial<SSXRouteConfig>
+  | AxiosRequestConfig
+  | string
+  | SSXServerMiddlewareConfig;
 
 /** Server endpoints configuration. */
 export interface SSXServerRoutes {

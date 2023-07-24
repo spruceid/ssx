@@ -2,11 +2,11 @@
 
 # SSX
 
-SSX is a library that enables you to easily add user authentication, session management, and more to your app.
+SSX is a [SpruceKit](https://www.sprucekit.dev) library that enables you to easily add user authentication, session management, and more to your app.
 
 ## Documentation
 
-https://docs.ssx.id
+Documentation for SSX can be found [here](https://www.sprucekit.dev/ssx/ssx-overview).
 
 ## SDKs
 

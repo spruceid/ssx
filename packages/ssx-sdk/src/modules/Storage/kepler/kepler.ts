@@ -1,9 +1,8 @@
-// import { SessionConfig } from ".";
 import { startSession, activateSession } from './authenticator';
 import { hostOrbit, OrbitConnection } from './orbit';
 import { WalletProvider } from './walletProvider';
+import { SessionConfig } from './types';
 
-type SessionConfig = any;
 /** Configuration for [[Kepler]]. */
 export type KeplerOptions = {
   /** The Kepler hosts that you wish to connect to.

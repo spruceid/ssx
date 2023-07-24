@@ -1,13 +1,13 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { SSXServerRoutes, isSSXServerMiddlewareConfig } from '@spruceid/ssx-core';
+import {
+  SSXServerRoutes,
+  isSSXServerMiddlewareConfig,
+} from '@spruceid/ssx-core';
 import { SSXServerBaseClass } from '@spruceid/ssx-core/server';
 import { getRoutePath } from '../utils';
 
-const ssxEndpoints = (
-  ssx: SSXServerBaseClass,
-  routes?: SSXServerRoutes
-) => {
+const ssxEndpoints = (ssx: SSXServerBaseClass, routes?: SSXServerRoutes) => {
   const router = express.Router();
 
   /**
@@ -25,9 +25,11 @@ const ssxEndpoints = (
       req.session.siwe = undefined;
       req.session.nonce = ssx.generateNonce();
       req.session.save(() => res.status(200).send(req.session.nonce));
-      isSSXServerMiddlewareConfig(routes?.nonce) ? routes?.nonce?.callback(req) : null;
+      isSSXServerMiddlewareConfig(routes?.nonce)
+        ? routes?.nonce?.callback(req)
+        : null;
       return;
-    }
+    },
   );
 
   /**
@@ -69,7 +71,7 @@ const ssxEndpoints = (
           req.body.daoLogin,
           req.body.resolveEns,
           req.session.nonce,
-          req.body.resolveLens
+          req.body.resolveLens,
         );
       } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -91,9 +93,11 @@ const ssxEndpoints = (
       req.session.ens = session.ens;
       req.session.lens = session.lens;
       req.session.save(() => res.status(200).json({ ...req.session }));
-      isSSXServerMiddlewareConfig(routes?.login) ? routes?.login?.callback(req) : null;
+      isSSXServerMiddlewareConfig(routes?.login)
+        ? routes?.login?.callback(req)
+        : null;
       return;
-    }
+    },
   );
 
   /**
@@ -117,9 +121,11 @@ const ssxEndpoints = (
         res.status(500).json({ message: error.message });
       }
       res.status(204).send();
-      isSSXServerMiddlewareConfig(routes?.logout) ? routes?.logout?.callback(req) : null;
+      isSSXServerMiddlewareConfig(routes?.logout)
+        ? routes?.logout?.callback(req)
+        : null;
       return;
-    }
+    },
   );
   return router;
 };

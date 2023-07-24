@@ -1,4 +1,7 @@
-import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType } from "@spruceid/ssx-core";
+import {
+  isSSXServerMiddlewareConfig,
+  SSXServerRouteEndpointType,
+} from '@spruceid/ssx-core';
 
 /**
  * This receives a routeConfig param and returns the path string.
@@ -6,7 +9,10 @@ import { isSSXServerMiddlewareConfig, SSXServerRouteEndpointType } from "@spruce
  * @param defaultPath - Default path string
  * @returns a path string
  */
-export const getRoutePath = (routeConfig: SSXServerRouteEndpointType, defaultPath: string) => {
+export const getRoutePath = (
+  routeConfig: SSXServerRouteEndpointType,
+  defaultPath: string,
+) => {
   if (isSSXServerMiddlewareConfig(routeConfig)) {
     return routeConfig.path;
   } else if (typeof routeConfig === 'string') {

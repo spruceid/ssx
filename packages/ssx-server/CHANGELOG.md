@@ -1,5 +1,17 @@
 # @spruceid/ssx-server
 
+## 2.0.0
+
+### Major Changes
+
+  - Added stricter checks on nonces
+  - SSX middleware was moved back to the server package
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx-core@2.0.0
+
 ## 1.2.4
 
 ### Patch Changes

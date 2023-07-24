@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Input from './Input';
-import Button from './Button'
+import Input from '../components/Input';
+import Button from '../components/Button';
 import { SSX } from '@spruceid/ssx';
 
 interface IStorageModule {
@@ -16,16 +16,26 @@ function StorageModule({ ssx }: IStorageModule) {
 
   useEffect(() => {
     const getContentList = async () => {
-      const { data } = await ssx.storage.list();
-      setContentList(data.map((d: string) => {
-        const contentArr = d.split('/');
-        contentArr.shift(); // remove the prefix
-        return contentArr.join('/');
-      }));
+      const { data } = await ssx.storage.list({ removePrefix: true });
+      setContentList(
+        data.map((d: string) => {
+          const contentArr = d.split('/');
+          contentArr.shift(); // remove the prefix
+          return contentArr.join('/');
+        })
+      );
     };
     getContentList();
   }, [ssx]);
 
+  const handleShareContent = async (content: string) => {
+    const prefix = ssx.storage.prefix;
+    const base64Content = await ssx.storage.generateSharingLink(
+      `${prefix}/${content}`
+    );
+    const sharingLink = `${window.location.origin}/share?data=${base64Content}`;
+    await navigator.clipboard.writeText(sharingLink);
+  };
 
   const handleGetContent = async (content: string) => {
     const { data } = await ssx.storage.get(content);
@@ -37,7 +47,7 @@ function StorageModule({ ssx }: IStorageModule) {
 
   const handleDeleteContent = async (content: string) => {
     await ssx.storage.delete(content);
-    setContentList((prevList) => prevList.filter((c) => c !== content));
+    setContentList(prevList => prevList.filter(c => c !== content));
     setSelectedContent(null);
     setName('');
     setText('');
@@ -51,12 +61,12 @@ function StorageModule({ ssx }: IStorageModule) {
     }
     await ssx.storage.put(name, text);
     if (selectedContent) {
-      setContentList((prevList) =>
-        prevList.map((c) => (c === selectedContent ? name : c))
+      setContentList(prevList =>
+        prevList.map(c => (c === selectedContent ? name : c))
       );
       setSelectedContent(null);
     } else {
-      setContentList((prevList) => [...prevList, name]);
+      setContentList(prevList => [...prevList, name]);
     }
     setName('');
     setText('');
@@ -77,12 +87,23 @@ function StorageModule({ ssx }: IStorageModule) {
         {viewingList ? (
           <div className="List-pane">
             <h3>List Pane</h3>
-            {contentList.map((content) => (
+            {contentList.map(content => (
               <div className="item-container" key={content}>
                 <span>{content}</span>
-                <Button className="smallButton" onClick={() => handleGetContent(content)}>Get</Button>
-                <Button className="smallButton" onClick={() => handleDeleteContent(content)}>
+                <Button
+                  className="smallButton"
+                  onClick={() => handleGetContent(content)}>
+                  Get
+                </Button>
+                <Button
+                  className="smallButton"
+                  onClick={() => handleDeleteContent(content)}>
                   Delete
+                </Button>
+                <Button
+                  className="smallButton"
+                  onClick={() => handleShareContent(content)}>
+                  Share
                 </Button>
               </div>
             ))}
@@ -91,16 +112,8 @@ function StorageModule({ ssx }: IStorageModule) {
         ) : (
           <div className="View-pane">
             <h3>View/Edit/Post Pane</h3>
-            <Input
-              label="Key"
-              value={name}
-              onChange={setName}
-            />
-            <Input
-              label="Text"
-              value={text}
-              onChange={setText}
-            />
+            <Input label="Key" value={name} onChange={setName} />
+            <Input label="Text" value={text} onChange={setText} />
             <Button onClick={handlePostContent}>Post</Button>
             <Button onClick={() => setViewingList(true)}>Back</Button>
           </div>
