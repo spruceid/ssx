@@ -1,5 +1,11 @@
 # @spruceid/ssx
 
+## 2.0.1
+
+### Patch Changes
+
+- ad0311d: Updates the way the default options are included in the KeplerStorage module
+
 ## 2.0.0
 
 ### Major Changes
