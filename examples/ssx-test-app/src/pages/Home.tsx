@@ -50,6 +50,7 @@ function Home() {
   const [statement, setStatement] = useState<string>('');
   // ssx module config
   const [storageEnabled, setStorageEnabled] = useState<string>('Off');
+  const [credentialsEnabled, setCredentialsEnabled] = useState('Off');
 
   const getSSXConfig = (ssxConfig: Record<string, any> = {}) => {
     if (server === 'On') {
@@ -110,6 +111,10 @@ function Home() {
 
     if (storageEnabled === "On") {
       modules.storage = true;
+    }
+
+    if (credentialsEnabled === "On") {
+      modules.credentials = true;
     }
 
     if (modules) {
@@ -312,6 +317,19 @@ function Home() {
                   options={['On', 'Off']}
                   value={storageEnabled}
                   onChange={setStorageEnabled}
+                />
+              </div>
+            </div>
+            <div className='Dropdown-item'>
+              <span className='Dropdown-item-name'>
+                Credentials
+              </span>
+              <div className='Dropdown-item-options'>
+                <RadioGroup
+                  name='credentialsEnabled'
+                  options={['On', 'Off']}
+                  value={credentialsEnabled}
+                  onChange={setCredentialsEnabled}
                 />
               </div>
             </div>

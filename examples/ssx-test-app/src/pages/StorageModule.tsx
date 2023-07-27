@@ -9,17 +9,24 @@ interface IStorageModule {
 
 function StorageModule({ ssx }: IStorageModule) {
   const [contentList, setContentList] = useState<Array<string>>([]);
+  const [credentialsList, setCredentialsList] = useState<Array<string>>([]);
   const [selectedContent, setSelectedContent] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
   const [text, setText] = useState<string>('');
   const [viewingList, setViewingList] = useState<boolean>(true);
+  const [allowPost, setAllowPost] = useState<boolean>(false);
 
   useEffect(() => {
     const getContentList = async () => {
       const { data } = await ssx.storage.list({ removePrefix: true });
       setContentList(data);
     };
+    const getCredentialList = async () => {
+      const { data } = await ssx.credentials?.list?.({ removePrefix: true });
+      setCredentialsList(data);
+    };
     getContentList();
+    getCredentialList();
   }, [ssx]);
 
   const handleShareContent = async (content: string) => {
@@ -33,6 +40,7 @@ function StorageModule({ ssx }: IStorageModule) {
 
   const handleGetContent = async (content: string) => {
     const { data } = await ssx.storage.get(content);
+    setAllowPost(true);
     setSelectedContent(content);
     setName(content);
     setText(data);
@@ -75,6 +83,15 @@ function StorageModule({ ssx }: IStorageModule) {
     setViewingList(false);
   };
 
+  const handleGetCredential = async (content: string) => {
+    const { data } = await ssx.credentials.get(content);
+    setAllowPost(false);
+    setSelectedContent(content);
+    setName(content);
+    setText(data);
+    setViewingList(false);
+  };
+
   return (
     <div className="Content" style={{ marginTop: '30px' }}>
       <div className="storage-container Content-container">
@@ -102,13 +119,28 @@ function StorageModule({ ssx }: IStorageModule) {
               </div>
             ))}
             <Button onClick={handlePostNewContent}>Post new content</Button>
+            <h3>Credentials List</h3>
+            {credentialsList.map(content => (
+              <div className="item-container" key={content}>
+                <span>{content}</span>
+                <Button
+                  className="smallButton"
+                  onClick={() => handleGetCredential(content)}>
+                  Get
+                </Button>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="View-pane">
             <h3>View/Edit/Post Pane</h3>
             <Input label="Key" value={name} onChange={setName} />
             <Input label="Text" value={text} onChange={setText} />
-            <Button onClick={handlePostContent}>Post</Button>
+            {
+              allowPost ?
+                <Button onClick={handlePostContent}>Post</Button> :
+                null
+            }
             <Button onClick={() => setViewingList(true)}>Back</Button>
           </div>
         )}

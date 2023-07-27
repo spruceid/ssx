@@ -49,6 +49,7 @@ export class KeplerStorage implements IStorage, IKepler {
   private autoCreateNewOrbit: boolean;
   private userAuth: IUserAuthorization;
   private keplerModule?: any;
+  private credentialsModule?: boolean;
   /** The users orbitId. */
   public orbitId?: string;
 
@@ -65,6 +66,7 @@ export class KeplerStorage implements IStorage, IKepler {
     this.userAuth = userAuth;
     this.hosts = [...(config?.hosts || []), 'https://kepler.spruceid.xyz'];
     this.prefix = config?.prefix || '';
+    this.credentialsModule = config?.credentialsModule;
     this.autoCreateNewOrbit =
       config?.autoCreateNewOrbit === undefined
         ? true
@@ -98,6 +100,13 @@ export class KeplerStorage implements IStorage, IKepler {
       'del',
       'metadata',
     ];
+    if (this.credentialsModule) {
+      actions[`${this.orbitId}/kv/shared/credentials`] = [
+        'get',
+        'list',
+        'metadata',
+      ];
+    }
     return actions;
   }
 
