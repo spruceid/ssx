@@ -28,7 +28,7 @@ export interface ICredentials extends SSXExtension {
 export class Credentials implements ICredentials {
   public namespace = 'credentials';
   private prefix: string = 'shared/credentials';
-  private storage?: IStorage;
+  private storage: IStorage;
 
   constructor(storage: IStorage) {
     this.storage = storage;
