@@ -6,7 +6,6 @@ This adds the Credentials Modules, which allows developers to fetch credentials 
 This module requires Storage Module, so you must enable both to make it work.
 
 ```ts
-
 const ssx = SSX({
   modules: {
     storage: true,
