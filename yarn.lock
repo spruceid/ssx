@@ -6347,9 +6347,18 @@ axios@^0.27.2:
     form-data "^4.0.0"
 
 axios@^1.0.0, axios@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
-  integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.1.tgz#76550d644bf0a2d469a01f9244db6753208397d7"
+  integrity sha512-vfBmhDpKafglh0EldBEbVuoe7DyAavGSLWhuSm5ZSEKQnHhBf0xAAwybbNH1IkrJNGnS/VG4I5yxig1pCEXE4g==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"
+  integrity sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -11545,9 +11554,20 @@ html-minifier-terser@^6.0.2:
     tapable "^1.1.3"
     util.promisify "1.0.0"
 
-"html-webpack-plugin-5@npm:html-webpack-plugin@^5", html-webpack-plugin@^5.0.0, html-webpack-plugin@^5.5.0:
+"html-webpack-plugin-5@npm:html-webpack-plugin@^5":
   version "5.5.3"
   resolved "https://registry.npmjs.org/html-webpack-plugin/-/html-webpack-plugin-5.5.3.tgz#72270f4a78e222b5825b296e5e3e1328ad525a3e"
+  integrity sha512-6YrDKTuqaP/TquFH7h4srYWsZx+x6k6+FbsTm0ziCwGHDP78Unr1r9F/H4+sGmMbX08GQcJ+K64x55b+7VM/jg==
+  dependencies:
+    "@types/html-minifier-terser" "^6.0.0"
+    html-minifier-terser "^6.0.2"
+    lodash "^4.17.21"
+    pretty-error "^4.0.0"
+    tapable "^2.0.0"
+
+html-webpack-plugin@^5.0.0, html-webpack-plugin@^5.5.0:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-5.5.3.tgz#72270f4a78e222b5825b296e5e3e1328ad525a3e"
   integrity sha512-6YrDKTuqaP/TquFH7h4srYWsZx+x6k6+FbsTm0ziCwGHDP78Unr1r9F/H4+sGmMbX08GQcJ+K64x55b+7VM/jg==
   dependencies:
     "@types/html-minifier-terser" "^6.0.0"

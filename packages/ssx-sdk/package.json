@@ -29,7 +29,7 @@
     "@spruceid/ssx-core": "2.0.0",
     "@spruceid/ssx-sdk-wasm": "0.3.0",
     "assert": "^2.0.0",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "browser": "^0.2.6",
     "buffer": "^6.0.3",
     "cross-env": "5.0.5",
