@@ -11,7 +11,6 @@
   "type": "commonjs",
   "author": "Spruce Systems, Inc.",
   "license": "Apache-2.0 OR MIT",
-  "private": false,
   "scripts": {
     "build": "webpack --mode production",
     "watch": "webpack --watch",

@@ -19,9 +19,7 @@
     "type": "git",
     "url": "ssh://git@github.com:spruceid/ssx.git"
   },
-  "bin": {
-    "ssx-server": "bin/ssx-server.js"
-  },
+  "bin": "bin/ssx-server.js",
   "dependencies": {
     "@spruceid/ssx-core": "2.0.0",
     "axios": "^1.6.0",
@@ -48,9 +46,9 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^28.1.3",
     "prettier": "^2.7.1",
+    "redis": "^4.3.1",
     "ts-jest": "^28.0.8",
-    "typescript": "^4.8.4",
-    "redis": "^4.3.1"
+    "typescript": "^4.8.4"
   },
   "files": [
     "dist"
