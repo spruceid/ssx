@@ -199,7 +199,8 @@ test('Should resolve Lens profile on Polygon Mainnet successfully', async () => 
   );
 }, 30000);
 
-test('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
+// api-mumbai.lens.dev isn't available anymore (there is now a v2 version)
+test.skip('Should resolve Lens profile on Mumbai Testnet successfully', async () => {
   const provider = getProvider({
     service: SSXRPCProviders.SSXInfuraProvider,
     network: SSXInfuraProviderNetworks.POLYGON_MUMBAI,
