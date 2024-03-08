@@ -1,11 +1,22 @@
 # @spruceid/ssx-server
 
+## 2.1.0
+
+### Minor Changes
+
+- Dependencies updates, including major bump for webpack-cli/generators, in order to address vulnerabilities including all critical ones.
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx-core@2.1.0
+
 ## 2.0.0
 
 ### Major Changes
 
-  - Added stricter checks on nonces
-  - SSX middleware was moved back to the server package
+- Added stricter checks on nonces
+- SSX middleware was moved back to the server package
 
 ### Patch Changes
 

@@ -1,6 +1,6 @@
 {
   "name": "@spruceid/ssx-server",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Spruce Systems, Inc.",
@@ -21,7 +21,7 @@
   },
   "bin": "bin/ssx-server.js",
   "dependencies": {
-    "@spruceid/ssx-core": "2.0.0",
+    "@spruceid/ssx-core": "2.1.0",
     "axios": "^1.6.7",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",

@@ -1,11 +1,17 @@
 # @spruceid/ssx-core
 
+## 2.1.0
+
+### Minor Changes
+
+- Dependencies updates, including major bump for webpack-cli/generators, in order to address vulnerabilities including all critical ones.
+
 ## 2.0.0
 
 ### Major Changes
 
-  - Added new types to support the new structure
-  - The package `@spruceid/ssx-gnosis-extension` had its code moved to this library.
+- Added new types to support the new structure
+- The package `@spruceid/ssx-gnosis-extension` had its code moved to this library.
 
 ## 1.2.0
 

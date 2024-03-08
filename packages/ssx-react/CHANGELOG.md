@@ -1,5 +1,16 @@
 # @spruceid/ssx-react
 
+## 2.1.0
+
+### Minor Changes
+
+- Dependencies updates, including major bump for webpack-cli/generators, in order to address vulnerabilities including all critical ones.
+
+### Patch Changes
+
+- Updated dependencies
+  - @spruceid/ssx@2.2.0
+
 ## 2.0.2
 
 ### Patch Changes
